@@ -1,0 +1,524 @@
+{
+  "@@locale": "en",
+  "navHome": "Home",
+  "@navHome": {
+    "description": "Label for home page"
+  },
+  "navOTM": "On the move",
+  "@navOTM": {
+    "description": "Label for On-The-Move-Page"
+  },
+  "navNotify": "Notifications",
+  "@navNotify": {
+    "description": "Label for notification page"
+  },
+  "navProfile": "Profile",
+  "@navProfile": {
+    "description": "Label for profile page"
+  },
+  "welcome": "Welcome!",
+  "@welcome": {
+    "description": "The word welcome"
+  },
+  "introText": "Great that you're here! To use this app, you need to link it with your Träwelling account. Use the Button below to do just that. If you don't have a Träwelling account yet, you can register one there as well.",
+  "@introText": {
+    "description": "Introduction text for on-boarding"
+  },
+  "titleInfo": "Information",
+  "@titleInfo": {
+    "description": "Title Bar Heading for app_info.dart"
+  },
+  "viewLicensesBtn": "View Open-Source Licensens",
+  "@viewLicensesBtn": {
+    "description": "Text for the Button on the AppInfo page to view licenses of used libraries/projects"
+  },
+  "licenses": "{count, plural, =0{Licenses} =1{License} other{Licenses}}",
+  "@licenses": {
+    "description": "The word license (also available pluralized)",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noLicense": "No License is available. Sorry.",
+  "@noLicense": {
+    "description": "Text to show when License is, for some reason, missing."
+  },
+  "addNotices": "Additional notices",
+  "@addNotices": {
+    "description": "Additional notices text for license viewer"
+  },
+  "fonts": "Fonts",
+  "close": "Close",
+  "@close": {
+    "description": "The word close"
+  },
+  "viewProjectBtn": "View Project on GitHub",
+  "@viewProjectBtn": {
+    "description": "Text AppInfo Button, GitHub"
+  },
+  "viewImprintBtn": "View Imprint & Privacy Policy",
+  "@viewImprintBtn": {
+    "description": "Text AppInfo Button, Legal"
+  },
+  "addAccountBtn": "Link Träwelling account",
+  "@addAccountBtn": {
+    "description": "Login Button text"
+  },
+  "time_summary": "{days}d {hours}h {minutes}min",
+  "@time_summary": {
+    "description": "Zeigt eine zusammengefasste Zeit an",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "points": "{points} {count, plural, =0{points} =1{point} other{points}}",
+  "@points": {
+    "description": "The word point (also available pluralized)",
+    "placeholders": {
+      "points": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "morePointsNotice": "To collect more points next time, make sure to check in earlier/later. To get the full amount of points, check in while you are träwelling or shortly before you board (up to 60 minutes before).",
+  "logOut": "Log out",
+  "logOutNotice": "You will be logged out, all data will be reset including preferences. Your account (settings) will not be affected",
+  "abrvHour": "h",
+  "@abrvHour": {
+    "description": "The abbreviation for hour(s)"
+  },
+  "abrvDay": "d",
+  "@abrvDay": {
+    "description": "The abbreviation for day(s)"
+  },
+  "abrvMinute": "min",
+  "@abrvMinute": {
+    "description": "The abbreviation for minute(s)"
+  },
+  "offerAlt": "If, after the authorization, this app didn't automatically open again, please press the button below. If it did, please wait up to 3 seconds to let it process your request. Depending on your network speed, this might take a bit longer",
+  "@offerAlt": {
+    "description": "Offer desktop auth to mobile"
+  },
+  "altLoginBtn": "Use alternative",
+  "@altLoginBtn": {
+    "description": "Button for manually open alternative login"
+  },
+  "noModifcationAllowed": "You are not allowed to edit this!",
+  "@noModifcationAllowed": {
+    "description": "Snackbar text to display when editing fails due to permissions"
+  },
+  "noModifcationAllowedGeneric": "You are not allowed to do this!",
+  "@noModifcationAllowedGeneric": {
+    "description": "Snackbar text to display when something fails due to permissions"
+  },
+  "statusNotFound": "This status does not exist, make sure it's not deleted!",
+  "@statusNotFound": {
+    "description": "Snackbar text to display when editing fails due to wrong status id"
+  },
+  "rateLimit": "You are too fast. Slow down",
+  "@rateLimit": {
+    "description": "Snackbar text to display when rate limit"
+  },
+  "genericErrorSnackBar": "Oops! That didn't work:",
+  "@genericErrorSnackBar": {
+    "description": "Snackbar text to display when error is unkown"
+  },
+  "notLikeable": "Sorry, you can't like this status!",
+  "@notLikeable": {
+    "description": "Snackbar text to display when isLikable is false for whatever reason"
+  },
+  "share": "Share",
+  "@share": {
+    "description": "share"
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "edit"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "delete"
+  },
+  "join_ride": "Join Ride",
+  "@join_ride": {
+    "description": "Text for when a user wants to copy another users checkin"
+  },
+  "report": "Report",
+  "@report": {
+    "description": "report"
+  },
+  "likes": "{count, plural, =0{likes} =1{like} other{likes}}",
+  "@likes": {
+    "description": "The word likes (also available pluralized)",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "privateOrBlocked": "Sorry, you can't view this profile. This is either because @{username} blocked you (or you blocked them), or put their profile on private. If you want, you can send a follow request.",
+  "@privateOrBlocked": {
+    "description": "error 403",
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "followRequest": "Send a follow request",
+  "@followRequest": {
+    "description": ""
+  },
+  "alreadyFollowRequest": "You already sent a follow request",
+  "followRequestSent": "Follow request sent!",
+  "@followRequestSent": {
+    "description": ""
+  },
+  "followingSnack": "You are now following @{username}!",
+  "@followingSnack": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "followFailBlocked": "This user blocked you or you blocked them. You can't follow them.",
+  "@followFailBlocked": {
+    "description": ""
+  },
+  "acceptFollowTooltip": "Accept follow request",
+  "denyFollowTooltip": "Deny follow request",
+  "remove": "Remove",
+  "requestNotFound": "This follow request doesn't exist (anymore)",
+  "userNotFoundSnack": "This user does not exist",
+  "muteOrBlockUser": "Mute/Block",
+  "mutedUser": "Muted",
+  "blockedUser": "Blocked",
+  "unfollowUser": "Unfollow",
+  "followUser": "Follow",
+  "muteOrBlockHeader": "Would you like to block or mute this user?",
+  "blockConfirm": "Yes, block them",
+  "muteConfirm": "Mute them instead",
+  "cancelMuteBlock": "Don't do anything",
+  "areYouSure": "Are you sure?",
+  "blockFinalConfirm": "Please note that as of now, unblocking isn't possible in Traewelcross.",
+  "yes": "Yes",
+  "no": "No",
+  "unmuteUser": "Unmute",
+  "loading": "Loading...",
+  "rideNotFound": "Ride not found",
+  "statusDeletedSuccessful": "Status successfully deleted!",
+  "editStatus": "Edit Status",
+  "checkIn": "Check-In",
+  "statusText": "Status",
+  "privateTrip": "Personal",
+  "commuteTrip": "Commute",
+  "businessTrip": "Business",
+  "private": "Private",
+  "@private": {
+    "description": "Visibility = private, only for logged in user"
+  },
+  "notListed": "Unlisted",
+  "followerOnly": "Follower Only",
+  "public": "Public",
+  "loggedInUsers": "Verified Users",
+  "addEvent": "Add Event",
+  "noEventsFound": "No events have been found for the timeframe of the ride",
+  "deselectEvent": "No event",
+  "deselectEventSubtitle": "Do not associate an event with this ride",
+  "selectEventBoxTitle": "Select an event",
+  "overrideDepartTime": "Overridden departure time",
+  "overrideArriveTime": "Overridden arrival time",
+  "now": "Now",
+  "checkInOtherUsers": "Add other users",
+  "noTrustedUsers": "Nobody has allowed for you to check them in",
+  "checkInOtherUsersTitle": "Select users to check-in",
+  "operatedBy": "Operated By:\n{operator}",
+  "@operatedBy": {
+    "placeholders": {
+      "operator": {
+        "type": "String"
+      }
+    }
+  },
+  "checkedInWith": "Checked in with:\n{client}",
+  "@checkedInWith": {
+    "placeholders": {
+      "client": {
+        "type": "String"
+      }
+    }
+  },
+  "homeCheckInPlaceholder": "Find Stop (via Name or RIL 100) or @user",
+  "@homeCheckInPlaceholder": {
+    "description": "The next the gets displayed in the top most card on the Homepage"
+  },
+  "stops": "Stops",
+  "@stops": {
+    "description": "The general word for the place where public transport holds to pick-up passengers"
+  },
+  "users": "Users",
+  "locationDisabled": "Location services are disabled on your device. You can't use this feature",
+  "locationNotAllowed": "You didn't allow Träwelcross to access your position",
+  "locationDenyForever": "Open Settings to allow GPS access?",
+  "departuresFrom": "Departures from: {stop}",
+  "@departuresFrom": {
+    "placeholders": {
+      "stop": {
+        "type": "String"
+      }
+    }
+  },
+  "platformAbrv": "Pl. {platform}",
+  "@platformAbrv": {
+    "description": "Prefix for the displayed platform",
+    "placeholders": {
+      "platform": {
+        "type": "String"
+      }
+    }
+  },
+  "startsAtDifferentStop": "From: {stop}",
+  "@startsAtDifferentStop": {
+    "description": "Displays when connection starts at diffrent stop than selected",
+    "placeholders": {
+      "stop": {
+        "type": "String"
+      }
+    }
+  },
+  "suburban": "Suburban",
+  "regional": "Regional",
+  "national": "Express",
+  "subway": "Subway",
+  "tram": "Tram",
+  "bus": "Bus",
+  "ferry": "Ferry",
+  "noRidesFound": "No rides available at this time with this mode of transportation",
+  "earlier": "Earlier",
+  "later": "Later",
+  "newHomeSuccessful": "Successfully set {station} as home",
+  "@newHomeSuccessful": {
+    "placeholders": {
+      "station": {
+        "type": "String"
+      }
+    }
+  },
+  "postOnFediverse": "Share ride on Mastodon",
+  "attachToLastToot": "Attach to last toot",
+  "save": "Save",
+  "@save": {
+    "description": "Confirm text for saving ride on edit"
+  },
+  "checkInSuccessful": "You are Träwelling!",
+  "alsoOnThisConnection": "Also in this connection",
+  "changeDestination": "Change Destination",
+  "geoLocationTookTooLong": "Hm, seems like we can't locate you right now, or there is no station near you!",
+  "reportBoxTitle": "Report status",
+  "reportBoxReportReason": "Reason:",
+  "reportBoxReportReasonInappropriate": "Inappropriate",
+  "reportBoxReportReasonImplausible": "Implausible",
+  "reportBoxReportReasonSpam": "Spam",
+  "reportBoxReportReasonIllegal": "Illegal",
+  "reportBoxReportReasonOther": "Other",
+  "reportBoxDescriptionTitle": "Description:",
+  "reportCancel": "Cancel",
+  "reportConfirm": "Report!",
+  "reportSending": "Submitting your report...",
+  "reportSuccess": "Your report has been submitted!",
+  "tagTipJourneyNumber": "Journey Number",
+  "tagTipLocomotiveClass": "Locomotive Class",
+  "tagTipPassengerRights": "Passenger Rights",
+  "tagTipPrice": "Price",
+  "tagTipRole": "Staff role",
+  "tagTipSeat": "Seat",
+  "tagTipTicket": "Ticket",
+  "tagTipTravelClass": "Travel class",
+  "tagTipVehicleNumber": "Vehicle number",
+  "tagTipWagon": "Coach",
+  "tagTipWagonClass": "Coach class",
+  "tagTipJourneyNumberExample": "RB 14439, ME 82848, ICE 1081, S 34747",
+  "tagTipLocomotiveClassExample": "BR 412, 101, ...",
+  "tagTipPassengerRightsExample": "Requested, paid out, ...",
+  "tagTipPriceExample": "69€",
+  "tagTipRoleExample": "Conductor, train manager, ...",
+  "tagTipSeatExample": "42",
+  "tagTipTicketExample": "Interrail, D-Ticket, ...",
+  "tagTipTravelClassExample": "First, second, economy, ...",
+  "tagTipVehicleNumberExample": "Tz 304, ...",
+  "tagTipWagonExample": "6",
+  "tagTipWagonClassExample": "Avmz, Bimmdzf, ...",
+  "tagAddTag": "Add Tag",
+  "tagUnknownTip": "Unknown Tag ({tagKey})",
+  "@tagUnknownTip": {
+    "placeholders": {
+      "tagKey": {
+        "type": "String"
+      }
+    }
+  },
+  "tagNoTagsLeft": "You already added all tags you can add. To edit or delete one, tap on the appropriate tag to do so.",
+  "settings": "Settings",
+  "account": "Account",
+  "appearance": "Appearance",
+  "behavior": "Behavior",
+  "misc": "Miscellaneous",
+  "username": "Username",
+  "displayName": "Display name",
+  "fieldRequired": "This field is required!",
+  "fieldNoSpecialChar": "You may only include alphanumeric characters as well as _ and .",
+  "privateAccount": "Private account",
+  "collectPoints": "Collect points",
+  "allowLikes": "Allow likes",
+  "hideCheckIns": "Hide Check-Ins after time",
+  "noOfDaysValid": "Number of days must be a positive integer.",
+  "noOfDays": "Number of days to hide check-in after",
+  "days": "{count, plural, =0{days} =1{day} other{days}}",
+  "@days": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "moreSettings": "More settings",
+  "moreSettingsSub": "To change things like your profile picture, tap here",
+  "unsavedChangesTitle": "Unsaved Changes",
+  "unsavedChanges": "You might have unsaved changes. Are you sure you want to go back?",
+  "trustedUsers": "Trusted Users",
+  "@trustedUsers": {
+    "description": "Only selected users may check the user in"
+  },
+  "friends": "Friends",
+  "@friends": {
+    "description": "If a follower is a followee, they may check the user in"
+  },
+  "friendsExplanation": "Friends (Follow each other)",
+  "noTrustedCheckIn": "No one",
+  "@noTrustedCheckIn": {
+    "description": "No one may check the user in"
+  },
+  "trustedUsersSelectTitle": "Who may check you in?",
+  "defaultVisibilitySelectTitle": "Who may see your check in by default?",
+  "mastodonVisibilitySelectTitle": "Who may see your Mastodon posts?",
+  "setupTrustedUsers": "Modify Trusted Users",
+  "bio": "Bio",
+  "@bio": {
+    "description": "Biography for account"
+  },
+  "expiresAt": "Expires At: {exp}",
+  "@expiresAt": {
+    "placeholders": {
+      "exp": {
+        "type": "String"
+      }
+    }
+  },
+  "stopTrust": "Don't trust this user anymore",
+  "addTrust": "Add User",
+  "@addTrust": {
+    "description": "Add a new user to trust"
+  },
+  "searchUser": "Search for username",
+  "@searchUser": {
+    "description": "User may search for a user by username"
+  },
+  "shouldTrustExpire": "Should trusting this user expire?",
+  "trustExpireWhen": "When should trusting this user expire?",
+  "useSystemAccent": "Use system accent color",
+  "selectAccent": "Select accent color:",
+  "cancel": "Cancel",
+  "lightMode": "Light",
+  "darkMode": "Dark",
+  "systemMode": "System",
+  "selectMode": "Select Design",
+  "useLineIcons": "Use custom line icons where available",
+  "selectMapType": "What Map overlay should be used?",
+  "selectMapStandard": "Standard",
+  "selectMapSignals": "Signals",
+  "selectMapMaxSpeed": "Max speeds",
+  "userMuted": "Sorry, you can't view this profile. This is because you muted @{username}. If you want, you can unmute them.",
+  "@userMuted": {
+    "description": "error 403",
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "overrideOnTimeTap": "Time can be directly be overwritten by timestamp",
+  "overrideOnTimeTapExplain": "You can override departure/arrival times directly by tapping the time stamp.",
+  "delaySystemTimeOverride": "Prefill Delay",
+  "delaySystemTimeOverrideExplain": "The time that needs to pass, that the prefilled time when overriding isn't system time, but planned time instead. Leave empty to always use system time. Tap to change.",
+  "delaySystemTimeOverrideTextField": "Enter a time in minutes. Empty to disable",
+  "confirmDelete": "Confirm deletion?",
+  "confirmDeleteExplain": "If enabled, you are prompted to confirm the deletion.",
+  "hideManualOnTimeOverride": "Hide redundant overrides",
+  "hideManualOnTimeOverrideExplain": "If the manual override is equal to the planned time, it will be displayed as if no override has happend.",
+  "activateNotifications": "Enable push notifications?",
+  "notificationChannelLikes": "Likes",
+  "notificationChannelCheckIns": "Checked in by other user",
+  "notificationChannelTravelTogether": "User shares your connection",
+  "notificationChannelAccount": "Account related",
+  "notificationChannelMisc": "Miscellaneous",
+  "notificationPreferences": "Notifications",
+  "openNotificationSettingsTitle": "What notifications to receive",
+  "openNotificationSettingsSub": "Toggle the notifications channels you want active in the system settings",
+  "bahnExpert": "Open in bahn.expert",
+  "defaultTextPreferenceTitle": "Default Text",
+  "defaultTextPreferenceSubtitle": "You can choose a text that should be inserted by default when checking in. Tap to change.",
+  "errorTitle": "Oh No! :(",
+  "@errorTitle": {
+    "description": "Title for the error page"
+  },
+  "errorText": "Snap! While trying to do this: **{errorType}**, this error occured: **{errorMsg}**.",
+  "@errorText": {
+    "placeholders": {
+      "errorType": {
+        "type": "String"
+      },
+      "errorMsg": {
+        "type": "String"
+      }
+    }
+  },
+  "errorDetail": "Tap here to see the exact error returned",
+  "errorTroubleshoot": "You may try any of these steps to resolve this problem:",
+  "errorTypeLogin": "Logging you in",
+  "errorTypeHttp": "HTTP Request",
+  "errorTypeLoginTroubleshoot": "1. Check if you have internet access\n2. Check if the OAuth2 Token hasn't expired\n3. Clear data & login again",
+  "errorTroubleshootSuffix": "If this error persists, do not hesitate to open an issue on GitHub",
+  "errorTypeUnknown": "N/A",
+  "errorTroubleshootButtonRestart": "Restart App",
+  "errorTroubleshootButtonLogout": "Logout & Reset App",
+  "errorTroubleshootButtonGithub": "Open GitHub",
+  "refreshTokenTitle": "Refresh Token",
+  "refreshTokenSubtitle": "The current token will expire on: {date}. Tap here to renew.",
+  "@refreshTokenSubtitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "requestTimeoutMessage": "The server took too long to respond. Therefore, the request has been cancelled.",
+  "retry": "Retry",
+  "noNotificationsAvailable": "You currently don't have any notifications",
+  "authTokenAboutToExpire": "Your auth token is expiring in less than 31 days. Please renew now!",
+  "renew": "Renew"
+}

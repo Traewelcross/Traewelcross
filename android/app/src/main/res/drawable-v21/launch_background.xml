@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modify this file to customize your launch splash screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 1. Solid background color -->
+    <item android:drawable="@color/splash_bg" />
+
+    <!-- 2. App Icon -->
+    <!-- The android:gravity="center" places it in the middle. -->
+    <item
+        android:width="240dp"
+        android:height="240dp"
+        android:gravity="center">
+        <bitmap
+            android:gravity="fill"
+            android:src="@drawable/icon_with_wordmark" />
+    </item>
+</layer-list>

@@ -1,0 +1,1 @@
+enum UserError { userBlockedOrPrivate(), userMuted() }

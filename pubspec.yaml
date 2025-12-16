@@ -1,0 +1,99 @@
+name: traewelcross
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.2.1+26
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  provider: ^6.1.5
+  dynamic_color: ^1.8.1
+  material_symbols_icons: ^4.2815.1
+  flutter_secure_storage: ^10.0.0-beta.4
+  url_launcher: ^6.3.1
+  app_links: ^6.4.0
+  oauth2: ^2.0.3
+  pkce: ^1.1.0+1
+  http: ^1.4.0
+  cached_network_image: ^3.4.1
+  terminate_restart: ^1.0.11
+  flutter_svg: ^2.2.0
+  package_info_plus: ^8.3.0
+  shared_preferences: ^2.5.3
+  flutter_map: ^8.2.2
+  latlong2: ^0.9.1
+  share_plus: ^12.0.0
+  flutter_markdown_plus: ^1.0.3
+  geolocator: ^14.0.2
+  path: ^1.9.1
+  json_annotation: ^4.9.0
+  flutter_colorpicker: ^1.1.0
+  firebase_messaging: ^16.0.4
+  google_api_availability: ^5.0.1
+  firebase_core: ^4.2.1
+  flutter_local_notifications: ^19.5.0
+  app_settings: ^6.1.1
+  get_it: ^9.1.1
+  watch_it: ^2.3.1
+  logger: ^2.6.2
+
+#dependency_overrides:
+  #flutter_secure_storage_linux:
+  #  git:
+  #    url: https://github.com/m-berto/flutter_secure_storage.git
+  #    ref: patch-2
+  #    path: flutter_secure_storage_linux
+  #flutter_secure_storage_platform_interface: 2.0.0
+  #flutter_map:
+  #  git:
+  #    url: https://github.com/fleaflet/flutter_map.git
+  #    ref: c7a534c5b012df2c58c8f7bb995f6249bebda4ad #34d4d5b27395e146fd0a27946006f1313675f249 
+
+dev_dependencies:
+  build_runner: ^2.9.0
+  json_serializable: ^6.11.1
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.6
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - icons/
+    - assets/notices/
+    - assets/line_colors/line_colors.json
+  fonts:
+    - family: NotoEmoji
+      fonts: 
+        - asset: fonts/NotoColorEmoji.ttf
+    - family: Outfit
+      fonts:
+        - asset: fonts/Outfit/Outfit-Black.ttf
+        - asset: fonts/Outfit/Outfit-Bold.ttf
+        - asset: fonts/Outfit/Outfit-ExtraBold.ttf
+        - asset: fonts/Outfit/Outfit-ExtraLight.ttf
+        - asset: fonts/Outfit/Outfit-Light.ttf
+        - asset: fonts/Outfit/Outfit-Medium.ttf
+        - asset: fonts/Outfit/Outfit-Regular.ttf
+        - asset: fonts/Outfit/Outfit-SemiBold.ttf
+        - asset: fonts/Outfit/Outfit-Thin.ttf
+    - family: SUSE
+      fonts:
+        - asset: fonts/SUSE/SUSE-Bold.ttf
+        - asset: fonts/SUSE/SUSE-ExtraBold.ttf
+        - asset: fonts/SUSE/SUSE-ExtraLight.ttf
+        - asset: fonts/SUSE/SUSE-Light.ttf
+        - asset: fonts/SUSE/SUSE-Medium.ttf
+        - asset: fonts/SUSE/SUSE-Regular.ttf
+        - asset: fonts/SUSE/SUSE-SemiBold.ttf
+        - asset: fonts/SUSE/SUSE-Thin.ttf
+

@@ -1,0 +1,73 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "traewelcross (foss)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_foss.dart",
+            "args": [
+                "--flavor",
+                "foss",
+                "--dart-define=BUILD_TYPE=foss"
+            ],
+        },
+        {
+            "name": "traewelcross (play)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_play.dart",
+            "args": [
+                "--flavor",
+                "play",
+                "--dart-define=BUILD_TYPE=play"
+            ]
+        },
+        {
+            "name": "traewelcross (desktop)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_foss.dart",
+            "args": [
+                "--dart-define=BUILD_TYPE=foss"
+            ],
+        },
+        {
+            "name": "traewelcross (play, attach)",
+            "request": "attach",
+            "type": "dart",
+            "program": "lib/main_play.dart",
+            "args": [
+                "--flavor",
+                "play",
+                "--dart-define=BUILD_TYPE=play"
+            ]
+        },
+        {
+            "name": "traewelcross (foss, attach)",
+            "request": "attach",
+            "type": "dart",
+            "program": "lib/main_foss.dart",
+            "args": [
+                "--flavor",
+                "foss",
+                "--dart-define=BUILD_TYPE=foss"
+            ]
+        },
+        {
+            "name": "traewelcross (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "traewelcross (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

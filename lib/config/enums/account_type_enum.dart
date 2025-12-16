@@ -1,0 +1,1 @@
+enum AccountTypeEnum { traewelling(), travelynx() }
