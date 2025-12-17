@@ -14,6 +14,7 @@ import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/api_service.dart';
+import 'package:traewelcross/utils/color_scheme.dart';
 import 'package:traewelcross/utils/shared.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -178,7 +179,6 @@ class _DetailedRideViewState extends State<DetailedRideView> {
               });
             },
             child: ListView(
-              shrinkWrap: true,
               children: [
                 FutureBuilder<List<LatLng>>(
                   future: _polylineFuture,
@@ -201,89 +201,82 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                   },
                 ),
                 const SizedBox(height: 12),
-                ListView(
-                  shrinkWrap: true,
+                FutureBuilder(
+                  future: SharedFunctions.getUserId(),
+                  builder: (context, asyncSnapshot) {
+                    return RideQuickView(
+                      rideData: rideData,
+                      authUserId: asyncSnapshot.data ?? 0,
+                      detailedView: true,
+                      likeCallback: _likeCallback,
+                    );
+                  },
+                ),
+                FutureBuilder(
+                  future: _likes,
+                  builder: (context, asyncSnapshot) {
+                    if (asyncSnapshot.hasData && asyncSnapshot.data != null) {
+                      return Card(
+                        clipBehavior: Clip.hardEdge,
+                        child: ExpansionTile(
+                          shape: Border.all(color: Colors.transparent),
+                          title: Text(
+                            "${asyncSnapshot.data!.length.toString()} ${localize.likes(asyncSnapshot.data!.length)}",
+                          ),
+                          dense: false,
+                          enabled: asyncSnapshot.data!.isEmpty ? false : true,
+                          children: List.generate(
+                            asyncSnapshot.data!.length,
+                            (int i) =>
+                                ProfileLink(userData: asyncSnapshot.data![i]),
+                          ),
+                        ),
+                      );
+                    }
+                    return Card(
+                      clipBehavior: Clip.hardEdge,
+                      child: ExpansionTile(
+                        shape: Border.all(color: Colors.transparent),
+                        clipBehavior: Clip.hardEdge,
+                        title: Text("0 ${localize.likes(0)}"),
+                        enabled: false,
+                        children: const [],
+                      ),
+                    );
+                  },
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
                   children: [
-                    FutureBuilder(
-                      future: SharedFunctions.getUserId(),
-                      builder: (context, asyncSnapshot) {
-                        return RideQuickView(
-                          rideData: rideData,
-                          authUserId: asyncSnapshot.data ?? 0,
-                          detailedView: true,
-                          likeCallback: _likeCallback,
-                        );
-                      },
-                    ),
-                    FutureBuilder(
-                      future: _likes,
-                      builder: (context, asyncSnapshot) {
-                        if (asyncSnapshot.hasData &&
-                            asyncSnapshot.data != null) {
-                          return Card(
-                            clipBehavior: Clip.hardEdge,
-                            child: ExpansionTile(
-                              shape: Border.all(color: Colors.transparent),
-                              title: Text(
-                                "${asyncSnapshot.data!.length.toString()} ${localize.likes(asyncSnapshot.data!.length)}",
-                              ),
-                              dense: false,
-                              enabled: asyncSnapshot.data!.isEmpty
-                                  ? false
-                                  : true,
-                              children: List.generate(
-                                asyncSnapshot.data!.length,
-                                (int i) => ProfileLink(
-                                  userData: asyncSnapshot.data![i],
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-                        return Card(
-                          clipBehavior: Clip.hardEdge,
-                          child: ExpansionTile(
-                            shape: Border.all(color: Colors.transparent),
-                            clipBehavior: Clip.hardEdge,
-                            title: Text("0 ${localize.likes(0)}"),
-                            enabled: false,
-                            children: const [],
-                          ),
-                        );
-                      },
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                localize.operatedBy(
-                                  rideData["train"]["operator"]?["name"] ??
-                                      "N/A",
-                                ),
-                              ),
+                    Expanded(
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            localize.operatedBy(
+                              rideData["train"]["operator"]?["name"] ?? "N/A",
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                localize.checkedInWith(
-                                  rideData["client"]?["name"] ?? "Träwelling",
-                                ),
-                              ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            localize.checkedInWith(
+                              rideData["client"]?["name"] ?? "Träwelling",
                             ),
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                    Row(
-                      children: [Expanded(
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
                       child: Card(
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -294,43 +287,42 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                           ),
                         ),
                       ),
-                    ),],
                     ),
-                    
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: FilledButton.icon(
-                              onPressed: () {
-                                SharedFunctions.launchURL(
-                                  Uri.parse(
-                                    "https://bahn.expert/details/${rideData["train"]["journeyNumber"]}/${rideData["train"]["origin"]["departurePlanned"]}?evaNumberAlongRoute=${rideData["train"]["origin"]["evaIdentifier"]}",
-                                  ),
-                                );
-                              },
-                              label: Text(localize.bahnExpert),
-                              icon: const Icon(Icons.train),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (kDebugMode)
-                      Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            "Debug\nID: ${rideData["id"].toString()}\n\n${rideData.toString()}",
-                          ),
-                        ),
-                      ),
-                    const SizedBox(height: 8),
                   ],
                 ),
+
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        child: FilledButton.icon(
+                          onPressed: () {
+                            SharedFunctions.launchURL(
+                              Uri.parse(
+                                "https://bahn.expert/details/${rideData["train"]["journeyNumber"]}/${rideData["train"]["origin"]["departurePlanned"]}?evaNumberAlongRoute=${rideData["train"]["origin"]["evaIdentifier"]}",
+                              ),
+                            );
+                          },
+                          label: Text(localize.bahnExpert),
+                          icon: const Icon(Icons.train),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (kDebugMode)
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "Debug\nID: ${rideData["id"].toString()}\n\n${rideData.toString()}",
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 8),
               ],
             ),
           ),
@@ -341,9 +333,9 @@ class _DetailedRideViewState extends State<DetailedRideView> {
 }
 
 class _MapDisplay extends StatelessWidget {
-  const _MapDisplay({required this.polylinePoints});
+  const _MapDisplay({this.polylinePoints});
 
-  final List<LatLng> polylinePoints;
+  final List<LatLng>? polylinePoints;
 
   @override
   Widget build(BuildContext context) {
@@ -351,10 +343,10 @@ class _MapDisplay extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       child: FlutterMap(
         options: MapOptions(
-          initialCameraFit: CameraFit.bounds(
-            bounds: LatLngBounds.fromPoints(polylinePoints),
+          initialCameraFit: polylinePoints != null ?  CameraFit.bounds(
+            bounds: LatLngBounds.fromPoints(polylinePoints!),
             padding: const EdgeInsets.all(50),
-          ),
+          ) : null,
           minZoom: 5,
           initialZoom: 5,
           maxZoom: 18,
@@ -362,45 +354,42 @@ class _MapDisplay extends StatelessWidget {
         children: [
           TileLayer(
             urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-            userAgentPackageName: "de.traewelcross.trwlcrss",
+            userAgentPackageName: "de.traewelcross",
           ),
           TileLayer(
             urlTemplate:
                 "https://{s}.tiles.openrailwaymap.org/${getIt<Config>().appearance.mapType.value}/{z}/{x}/{y}.png",
-            userAgentPackageName: "de.traewelcross.trwlcrss",
+            userAgentPackageName: "de.traewelcross",
           ),
+          if(polylinePoints != null)
           PolylineLayer(
             polylines: [
               Polyline(
-                points: polylinePoints,
+                points: polylinePoints!,
                 color: Theme.of(context).colorScheme.primary,
                 strokeWidth: 5.0,
               ),
             ],
           ),
+                    if(polylinePoints != null)
+
           MarkerLayer(
             markers: List<Marker>.generate(
-              polylinePoints.length,
+              polylinePoints!.length,
               (int i) => Marker(
-                point: polylinePoints[i],
+                point: polylinePoints![i],
                 child: Builder(
                   builder: (context) {
-                    if (i == polylinePoints.length - 1) {
-                      return Icon(
+                    if (i == polylinePoints!.length - 1) {
+                      return const Icon(
                         Icons.flag,
-                        color: Color.alphaBlend(
-                          Colors.white.withValues(alpha: 255),
-                          Theme.of(context).colorScheme.primary,
-                        ),
+                        color: tcColorLight
                       );
                     }
                     if (i == 0) {
-                      return Icon(
+                      return const Icon(
                         Icons.start,
-                        color: Color.alphaBlend(
-                          Colors.white.withValues(alpha: 255),
-                          Theme.of(context).colorScheme.primary,
-                        ),
+                        color: Colors.redAccent,
                       );
                     }
                     return const SizedBox(height: 0);

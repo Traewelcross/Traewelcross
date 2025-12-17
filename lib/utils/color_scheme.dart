@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final tcColorLight = Color(0xFF03bd72);
+const tcColorLight = Color(0xFF03bd72);
 
 final tcColorSchemeLight = ColorScheme.fromSeed(
   seedColor: tcColorLight,
@@ -17,7 +17,7 @@ final tcColorSchemeLight = ColorScheme.fromSeed(
   error: Colors.red,
   onError: Colors.white,
 ).harmonized();*/
-final tcColorDark = Color(0xFF17AB70);
+const tcColorDark = Color(0xFF17AB70);
 
 final tcColorSchemeDark = ColorScheme.fromSeed(
   seedColor: tcColorDark,

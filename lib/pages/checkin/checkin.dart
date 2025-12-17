@@ -53,7 +53,6 @@ class _CheckInState extends State<CheckIn> {
   void initState() {
     super.initState();
     _getDefault();
-    _getUserInfo();
     checkInInfo = widget.checkInInfo;
     if (widget.isEdit) {
       tripType = checkInInfo.tripType!;
@@ -98,12 +97,8 @@ class _CheckInState extends State<CheckIn> {
     super.dispose();
   }
 
-  void _getUserInfo() async {
-    userInfo = await SharedFunctions.getUserInfoFromCache();
-  }
-
   void _getDefault() async {
-    _getUserInfo();
+    userInfo = await SharedFunctions.getUserInfoFromCache();
     setState(() {
       tripVisi = !widget.isEdit
           ? TripVisibilityEnum.fromValue(userInfo["defaultStatusVisibility"])
