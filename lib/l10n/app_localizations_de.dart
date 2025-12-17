@@ -834,8 +834,8 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get authTokenAboutToExpire =>
-      'Your auth token is expiring in less than 31 days. Please renew now!';
+      'Dein Authentifizierungstoken läuft in weniger als 31 Tagen ab!';
 
   @override
-  String get renew => 'Renew';
+  String get renew => 'Erneuern';
 }
