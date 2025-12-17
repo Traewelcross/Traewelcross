@@ -4,9 +4,9 @@ GOOGLE_SERVICES_JSON := android/app/src/play/google-services.json
 
 FLUTTER := flutter
 
-FOSS_ARGS := build apk --flavor foss --dart-define=BUILD_TYPE=foss -t lib/main_foss.dart
+FOSS_ARGS := build apk --flavor foss --dart-define=BUILD_TYPE=foss -t lib/main_foss.dart --split-per-abi
+PLAY_APK_ARGS := build apk --flavor play --dart-define=BUILD_TYPE=play -t lib/main_play.dart --split-per-abi
 PLAY_BUNDLE_ARGS := build appbundle --flavor play --dart-define=BUILD_TYPE=play -t lib/main_play.dart
-PLAY_APK_ARGS := build apk --flavor play --dart-define=BUILD_TYPE=play -t lib/main_play.dart
 
 # Default target: Guide the user or build FOSS by default.
 all:
@@ -48,6 +48,6 @@ play-apk:
 # Build both flavors sequentially.
 both:
 	@echo ">>> Building both flavors sequentially..."
-	$(MAKE) play
+	$(MAKE) play-apk
 	$(MAKE) foss
 	@echo ">>> All builds finished."
