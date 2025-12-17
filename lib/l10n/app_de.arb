@@ -239,5 +239,7 @@
     "retry": "Neu probieren",
     "errorTypeHttp": "HTTP Anfrage",
     "requestTimeoutMessage": "Der Server hat zu lange gebraucht, um zu antworten. Die Anfrage wurde abgebrochen.",
-    "noNotificationsAvailable": "Du hast keine Benachrichtigungen."
+    "noNotificationsAvailable": "Du hast keine Benachrichtigungen.",
+    "authTokenAboutToExpire": "Dein Authentifizierungstoken läuft in weniger als 31 Tagen ab!",
+    "renew": "Erneuern"
 }
