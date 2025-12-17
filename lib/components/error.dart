@@ -33,6 +33,7 @@ class ErrorDisplayWidget extends StatelessWidget {
       child: ListView(
         shrinkWrap: true,
         children: [
+          if(errorInfo.httpStatusCode == null)
           Icon(
             isPage
                 ? Icons.sentiment_very_dissatisfied_outlined
@@ -40,7 +41,7 @@ class ErrorDisplayWidget extends StatelessWidget {
             size: 96,
           ),
           if (errorInfo.httpStatusCode != null)
-            Image.network("https://http.cat/${errorInfo.httpStatusCode}"),
+            SizedBox(height: 512, child: Image.network("https://http.cat/${errorInfo.httpStatusCode}", fit: BoxFit.scaleDown,)),
           const SizedBox(height: 8),
           MarkdownBody(
             data: localize.errorText(
