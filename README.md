@@ -1,6 +1,8 @@
 ![](/readme_asset/gp-vorstellung.png)
 # Träwelcross
 
+[Download on Google Play](https://play.google.com/store/apps/details?id=de.traewelcross)
+
 <b>English</b> / [Deutsch](/README.de.md)
 
 Träwelcross is an App inspired by [Träwelldroid](https://github.com/Traewelldroid/traewelldroid). Like Träwelldroid, Träwelcross is an App for checking into [traewelling.de](https://traewelling.de). Unlike Träwelldroid, Träwelcross is written in Flutter, which makes it cross-platform, hence the name Träwel*cross*. As I don't really have an elegant solution to build for iOS, no builds are provided, I did however test it and can confirm it works.
