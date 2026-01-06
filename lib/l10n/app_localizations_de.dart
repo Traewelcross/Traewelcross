@@ -840,5 +840,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get renew => 'Erneuern';
 
   @override
-  String get open_external => 'Öffnen';
+  String get openExternal => 'Öffnen';
+
+  @override
+  String get stats => 'Statistiken';
+
+  @override
+  String get statisticsExperimentalNote =>
+      'Der Statistikentab ist noch nicht fertig und daher nicht vollfunktionsumfassend geschweige denn schön. Trotzdem kannst du hier den Tab aktivieren';
 }

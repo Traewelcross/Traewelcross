@@ -834,5 +834,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get renew => 'Renew';
 
   @override
-  String get open_external => 'Open';
+  String get openExternal => 'Open';
+
+  @override
+  String get stats => 'Statistics';
+
+  @override
+  String get statisticsExperimentalNote =>
+      'The statistics tab is by no means feature complete or polished. If you still want to look at it, enable this option.';
 }

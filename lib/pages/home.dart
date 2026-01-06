@@ -665,7 +665,7 @@ class _AlertsState extends State<Alerts> {
                               ),
                               icon: const Icon(Icons.open_in_new),
                               label: Text(
-                                AppLocalizations.of(context)!.open_external,
+                                AppLocalizations.of(context)!.openExternal,
                               ),
                             ),
                           ],

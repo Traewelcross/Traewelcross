@@ -9,11 +9,13 @@ part of 'misc_config.dart';
 MiscConfig _$MiscConfigFromJson(Map<String, dynamic> json) => MiscConfig()
   ..accountType =
       $enumDecodeNullable(_$AccountTypeEnumEnumMap, json['accountType']) ??
-      AccountTypeEnum.traewelling;
+      AccountTypeEnum.traewelling
+  ..showStats = json['showStats'] as bool? ?? false;
 
 Map<String, dynamic> _$MiscConfigToJson(MiscConfig instance) =>
     <String, dynamic>{
       'accountType': _$AccountTypeEnumEnumMap[instance.accountType]!,
+      'showStats': instance.showStats,
     };
 
 const _$AccountTypeEnumEnumMap = {

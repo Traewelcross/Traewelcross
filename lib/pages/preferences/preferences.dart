@@ -7,6 +7,8 @@ import 'package:traewelcross/pages/app_info.dart';
 import 'package:traewelcross/pages/preferences/account_preferences.dart';
 import 'package:traewelcross/pages/preferences/appearance_preferences.dart';
 import 'package:traewelcross/pages/preferences/behavior_preferences.dart';
+// ignore: unused_import
+import 'package:traewelcross/pages/preferences/misc_preferences.dart';
 import 'package:traewelcross/pages/preferences/notification_preferences.dart';
 import 'package:traewelcross/utils/shared.dart';
 
@@ -85,10 +87,12 @@ class Preferences extends StatelessWidget {
             title: Text(localize.behavior),
           ),
 
-          /// There are currently no misc settings we can configure, hence this entry is unneeded for now
-          /*
-          ListTile(
-            onTap: () => "",
+          // Nothing to configure here yet
+          /*ListTile(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MiscPreferences()),
+            ),
             leading: const Icon(Icons.more),
             title: Text(localize.misc),
           ),*/

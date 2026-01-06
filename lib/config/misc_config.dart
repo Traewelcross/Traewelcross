@@ -18,4 +18,14 @@ class MiscConfig with ChangeNotifier {
     _accountType = value;
     notifyListeners();
   }
+
+  /// Is the statistics tab enabled?
+  /// TODO: remove once feature complete
+  bool _showStats = false;
+  @JsonKey(defaultValue: false)
+  bool get showStats => _showStats;
+  set showStats(bool val){
+    _showStats = val;
+    notifyListeners();
+  }
 }

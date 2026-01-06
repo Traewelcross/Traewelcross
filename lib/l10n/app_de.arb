@@ -242,5 +242,7 @@
     "noNotificationsAvailable": "Du hast keine Benachrichtigungen.",
     "authTokenAboutToExpire": "Dein Authentifizierungstoken läuft in weniger als 31 Tagen ab!",
     "renew": "Erneuern",
-    "open_external": "Öffnen"
+    "openExternal": "Öffnen",
+    "stats": "Statistiken",
+    "statisticsExperimentalNote": "Der Statistikentab ist noch nicht fertig und daher nicht vollfunktionsumfassend geschweige denn schön. Trotzdem kannst du hier den Tab aktivieren"
 }

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:app_links/app_links.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,6 +22,7 @@ import 'package:traewelcross/pages/login/oauth_login.dart';
 import 'package:traewelcross/pages/on_the_move.dart';
 import 'package:traewelcross/pages/preferences/preferences.dart';
 import 'package:traewelcross/pages/profile_view.dart';
+import 'package:traewelcross/pages/stats/statistics.dart';
 import 'package:traewelcross/push_notify/push_common.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/custom_providers.dart';
@@ -396,6 +398,9 @@ class _ChromeState extends State<Chrome> {
           ),
         ];
         break;
+      case 4:
+        selectedPage = Statistics();
+        break;
       default:
         selectedPage = const Placeholder();
     }
@@ -426,6 +431,8 @@ class _ChromeState extends State<Chrome> {
             icon: OwnProfilePicture(maxWidth: 42),
             label: AppLocalizations.of(context)!.navProfile,
           ),
+          if(watchIt<Config>().misc.showStats || kDebugMode)
+          NavigationDestination(icon: const Icon(Icons.bar_chart), label: AppLocalizations.of(context)!.stats)
         ],
         selectedIndex: selectedPageIndex,
         onDestinationSelected: (value) {
@@ -472,6 +479,8 @@ Widget _getTitleForIndex(int index, String? title, BuildContext context) {
       return AppBarTitle(l10n.navNotify);
     case 3:
       return AppBarTitle(l10n.navProfile);
+    case 4:
+      return AppBarTitle(l10n.stats);
     default:
       return AppBarTitle('');
   }

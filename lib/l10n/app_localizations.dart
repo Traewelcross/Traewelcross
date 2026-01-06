@@ -1550,11 +1550,23 @@ abstract class AppLocalizations {
   /// **'Renew'**
   String get renew;
 
-  /// No description provided for @open_external.
+  /// No description provided for @openExternal.
   ///
   /// In en, this message translates to:
   /// **'Open'**
-  String get open_external;
+  String get openExternal;
+
+  /// No description provided for @stats.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get stats;
+
+  /// No description provided for @statisticsExperimentalNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The statistics tab is by no means feature complete or polished. If you still want to look at it, enable this option.'**
+  String get statisticsExperimentalNote;
 }
 
 class _AppLocalizationsDelegate
