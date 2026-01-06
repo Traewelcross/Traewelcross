@@ -26,27 +26,27 @@ help:
 	@echo "	play-apk	- Build the Play Store APK for testing."
 	@echo "	foss		- Build the FOSS APK."
 	@echo "	both		- Build both 'play' and 'foss' flavors."
+	@echo "	both-apk	- Build both 'play-apk' and 'foss' flavors."
 
-# Build the FOSS flavor APK.
 foss:
 	@echo ">>> Building FOSS flavor..."
 	@$(FLUTTER) $(FOSS_ARGS)
 	@echo ">>> FOSS build finished."
-
-# Build the Play Store flavor app bundle.
 play:
 	@echo ">>> Building Play flavor (appbundle)..."
 	@$(FLUTTER) $(PLAY_BUNDLE_ARGS)
 	@echo ">>> Play (appbundle) build finished."
 
-# Build the Play Store flavor APK.
 play-apk:
 	@echo ">>> Building Play flavor (apk)..."
 	@$(FLUTTER) $(PLAY_APK_ARGS)
 	@echo ">>> Play (apk) build finished."
-
-# Build both flavors sequentially.
 both:
+	@echo ">>> Building both flavors sequentially..."
+	$(MAKE) play-apk
+	$(MAKE) foss
+	@echo ">>> All builds finished."
+both-apk:
 	@echo ">>> Building both flavors sequentially..."
 	$(MAKE) play-apk
 	$(MAKE) foss
