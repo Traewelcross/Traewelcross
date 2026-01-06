@@ -73,6 +73,7 @@ class _OauthLoginState extends State<OauthLogin> {
                     label: Text(localize.addAccountBtn),
                     icon: const Icon(Icons.open_in_new),
                   ),
+                  if(getIt<Config>().notification.notificationsAvailable)
                   Card(
                     child: ListTile(
                       leading: const Icon(Icons.notifications),
