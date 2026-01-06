@@ -43,7 +43,7 @@ play-apk:
 	@echo ">>> Play (apk) build finished."
 both:
 	@echo ">>> Building both flavors sequentially..."
-	$(MAKE) play-apk
+	$(MAKE) play
 	$(MAKE) foss
 	@echo ">>> All builds finished."
 both-apk:
