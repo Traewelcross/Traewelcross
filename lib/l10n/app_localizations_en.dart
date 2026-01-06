@@ -832,4 +832,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get renew => 'Renew';
+
+  @override
+  String get open_external => 'Open';
 }

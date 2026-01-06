@@ -241,5 +241,6 @@
     "requestTimeoutMessage": "Der Server hat zu lange gebraucht, um zu antworten. Die Anfrage wurde abgebrochen.",
     "noNotificationsAvailable": "Du hast keine Benachrichtigungen.",
     "authTokenAboutToExpire": "Dein Authentifizierungstoken läuft in weniger als 31 Tagen ab!",
-    "renew": "Erneuern"
+    "renew": "Erneuern",
+    "open_external": "Öffnen"
 }

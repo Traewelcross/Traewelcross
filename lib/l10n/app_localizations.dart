@@ -1549,6 +1549,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Renew'**
   String get renew;
+
+  /// No description provided for @open_external.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get open_external;
 }
 
 class _AppLocalizationsDelegate

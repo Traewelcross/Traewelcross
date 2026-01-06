@@ -520,5 +520,6 @@
   "retry": "Retry",
   "noNotificationsAvailable": "You currently don't have any notifications",
   "authTokenAboutToExpire": "Your auth token is expiring in less than 31 days. Please renew now!",
-  "renew": "Renew"
+  "renew": "Renew",
+  "open_external": "Open"
 }
