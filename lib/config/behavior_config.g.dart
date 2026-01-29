@@ -14,7 +14,8 @@ BehaviorConfig _$BehaviorConfigFromJson(Map<String, dynamic> json) =>
       ..confirmDelete = json['confirmDelete'] as bool? ?? true
       ..hideManualOnTimeOverride =
           json['hideManualOnTimeOverride'] as bool? ?? true
-      ..defaultStatusText = json['defaultStatusText'] as String?;
+      ..defaultStatusText = json['defaultStatusText'] as String?
+      ..volumeBtnCtrl = json['volumeBtnCtrl'] as bool? ?? false;
 
 Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
     <String, dynamic>{
@@ -23,4 +24,5 @@ Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
       'confirmDelete': instance.confirmDelete,
       'hideManualOnTimeOverride': instance.hideManualOnTimeOverride,
       'defaultStatusText': instance.defaultStatusText,
+      'volumeBtnCtrl': instance.volumeBtnCtrl,
     };

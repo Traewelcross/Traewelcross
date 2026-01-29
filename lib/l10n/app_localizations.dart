@@ -1556,6 +1556,12 @@ abstract class AppLocalizations {
   /// **'Open'**
   String get openExternal;
 
+  /// No description provided for @experimentalPrefrences.
+  ///
+  /// In en, this message translates to:
+  /// **'Experimental'**
+  String get experimentalPrefrences;
+
   /// No description provided for @stats.
   ///
   /// In en, this message translates to:
@@ -1567,6 +1573,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The statistics tab is by no means feature complete or polished. If you still want to look at it, enable this option.'**
   String get statisticsExperimentalNote;
+
+  /// No description provided for @volumeBtnCtrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume Button Control'**
+  String get volumeBtnCtrl;
+
+  /// No description provided for @volumeBtnCtrlNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Use basic features using your volume buttons. I.e. when using gloves'**
+  String get volumeBtnCtrlNote;
 }
 
 class _AppLocalizationsDelegate

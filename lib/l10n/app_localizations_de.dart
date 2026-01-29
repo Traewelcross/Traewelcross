@@ -843,9 +843,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get openExternal => 'Öffnen';
 
   @override
+  String get experimentalPrefrences => 'Experimentell';
+
+  @override
   String get stats => 'Statistiken';
 
   @override
   String get statisticsExperimentalNote =>
       'Der Statistikentab ist noch nicht fertig und daher nicht vollfunktionsumfassend geschweige denn schön. Trotzdem kannst du hier den Tab aktivieren';
+
+  @override
+  String get volumeBtnCtrl => 'Lautstärketasten überschreiben';
+
+  @override
+  String get volumeBtnCtrlNote =>
+      'Benutze Grundfeatures der App mit den Lautstärketasten, z.B. wenn du Handschuhe an hast.';
 }

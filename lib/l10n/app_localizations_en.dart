@@ -837,9 +837,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openExternal => 'Open';
 
   @override
+  String get experimentalPrefrences => 'Experimental';
+
+  @override
   String get stats => 'Statistics';
 
   @override
   String get statisticsExperimentalNote =>
       'The statistics tab is by no means feature complete or polished. If you still want to look at it, enable this option.';
+
+  @override
+  String get volumeBtnCtrl => 'Volume Button Control';
+
+  @override
+  String get volumeBtnCtrlNote =>
+      'Use basic features using your volume buttons. I.e. when using gloves';
 }

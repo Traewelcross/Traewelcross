@@ -244,5 +244,8 @@
     "renew": "Erneuern",
     "openExternal": "Öffnen",
     "stats": "Statistiken",
-    "statisticsExperimentalNote": "Der Statistikentab ist noch nicht fertig und daher nicht vollfunktionsumfassend geschweige denn schön. Trotzdem kannst du hier den Tab aktivieren"
+    "statisticsExperimentalNote": "Der Statistikentab ist noch nicht fertig und daher nicht vollfunktionsumfassend geschweige denn schön. Trotzdem kannst du hier den Tab aktivieren",
+    "experimentalPrefrences": "Experimentell",
+    "volumeBtnCtrl": "Lautstärketasten überschreiben",
+    "volumeBtnCtrlNote": "Benutze Grundfeatures der App mit den Lautstärketasten, z.B. wenn du Handschuhe an hast."
 }

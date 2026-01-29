@@ -6,6 +6,7 @@ import 'package:app_links/app_links.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +46,7 @@ class App extends WatchingWidget {
     ColorScheme? dynamicColor,
     Brightness brightness,
   ) {
+
     if (useSystemAccent && dynamicColor != null) {
       // https://github.com/material-foundation/flutter-packages/issues/649
       return dynamicColor;

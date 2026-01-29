@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart' as pkg;
@@ -589,11 +590,21 @@ class _AlertsState extends State<Alerts> {
       return Future.value([]);
     }
   }
-
+  static const _volChan = MethodChannel("volume");
   @override
   void initState() {
     super.initState();
     _alerts = _getAlerts();
+    _volChan.setMethodCallHandler((call) {
+      if(call.method == "volumePressed") {
+        if(call.arguments == "down"){
+          print("down");
+        } else {
+          print("up");
+        }
+      }
+      return Future.value(null);
+    });
   }
 
   @override

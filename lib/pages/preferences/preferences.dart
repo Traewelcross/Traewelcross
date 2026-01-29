@@ -7,6 +7,7 @@ import 'package:traewelcross/pages/app_info.dart';
 import 'package:traewelcross/pages/preferences/account_preferences.dart';
 import 'package:traewelcross/pages/preferences/appearance_preferences.dart';
 import 'package:traewelcross/pages/preferences/behavior_preferences.dart';
+import 'package:traewelcross/pages/preferences/experimental_preferences.dart';
 // ignore: unused_import
 import 'package:traewelcross/pages/preferences/misc_preferences.dart';
 import 'package:traewelcross/pages/preferences/notification_preferences.dart';
@@ -86,7 +87,11 @@ class Preferences extends StatelessWidget {
             leading: const Icon(Icons.psychology),
             title: Text(localize.behavior),
           ),
-
+          ListTile(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (ctx) => ExperimentalPreferences())),
+            leading: const Icon(Icons.science),
+            title: Text(localize.experimentalPrefrences)
+          )
           // Nothing to configure here yet
           /*ListTile(
             onTap: () => Navigator.push(

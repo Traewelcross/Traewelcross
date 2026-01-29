@@ -522,6 +522,9 @@
   "authTokenAboutToExpire": "Your auth token is expiring in less than 31 days. Please renew now!",
   "renew": "Renew",
   "openExternal": "Open",
+  "experimentalPrefrences": "Experimental",
   "stats": "Statistics",
-  "statisticsExperimentalNote": "The statistics tab is by no means feature complete or polished. If you still want to look at it, enable this option."
+  "statisticsExperimentalNote": "The statistics tab is by no means feature complete or polished. If you still want to look at it, enable this option.",
+  "volumeBtnCtrl": "Volume Button Control",
+  "volumeBtnCtrlNote": "Use basic features using your volume buttons. I.e. when using gloves"
 }
