@@ -76,7 +76,6 @@ class App extends WatchingWidget {
       (scheme).surface,
     );
   }
-
   @override
   Widget build(BuildContext context) {
     /*final config = watchValue(

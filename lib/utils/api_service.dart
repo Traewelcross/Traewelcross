@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +15,7 @@ class ApiService {
   static const String _baseURL = "https://traewelling.de/api/v1";
   static const int _timeoutDuration = 25;
   final AuthService _authService;
+  int _requestCount = 0;
 
   ApiService(this._authService);
 
@@ -39,6 +41,14 @@ class ApiService {
     Object? body,
     Encoding? encoding,
   }) async {
+    // Token Lifetime has been drastically reduced: https://github.com/Traewelling/traewelling/pull/3869
+    // The token will refresh on every 7th API request. This is to avoid potential ratelimits.
+    _requestCount++;
+    if(_requestCount >= 7){
+      _requestCount = 0;
+      if(kDebugMode) print("Refresh Token (7th api request)");
+      await refreshToken();
+    }
     encoding ??= Encoding.getByName("UTF-8");
     final client = await getAuthenticatedClient();
     if (client == null) {

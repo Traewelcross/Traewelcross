@@ -226,7 +226,9 @@ class _HomeState extends State<Home> {
     });
   }
 
-  Future<void> _checkTokenExpire() async {
+
+  // Irrelavant since we now renew automatically
+  /*Future<void> _checkTokenExpire() async {
     final apiService = getIt<ApiService>();
     final client = await apiService.getAuthenticatedClient();
     final expiration = client?.credentials.expiration;
@@ -248,7 +250,7 @@ class _HomeState extends State<Home> {
         ),
       );
     }
-  }
+  }*/
 
   Future<void> _isAppUpdate() async {
     bool isUpdate = false;
@@ -283,7 +285,6 @@ class _HomeState extends State<Home> {
         });
       }
     });
-    _checkTokenExpire();
     _isAppUpdate();
   }
 

@@ -61,7 +61,7 @@ class BehaviorConfig with ChangeNotifier {
     _defaultStatusText = value;
     notifyListeners();
   }
-       static const _volChan = MethodChannel("volume");
+  static const _volChan = MethodChannel("volume");
   /// Can the user control the App via the volume buttons
   /// Experimental!
   bool _volumeBtnCtrl = false;

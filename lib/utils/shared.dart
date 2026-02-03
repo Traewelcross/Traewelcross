@@ -61,6 +61,14 @@ class SharedFunctions {
     );
   }
 
+  static Future<void> refreshToken() async {
+    if(getIt.isRegistered(type: ApiService)){
+      if(kDebugMode) print("Refresh Token (boot)");
+      final apiService = getIt<ApiService>();
+      await apiService.refreshToken();
+    }
+  }
+
   static Future<void> launchURL(Uri url, {LaunchMode? launchMode}) async {
     if (!await launchUrl(url, mode: launchMode ?? LaunchMode.platformDefault)) {
       throw Exception('Could not launch $url');

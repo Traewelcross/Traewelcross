@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import "package:traewelcross/components/profile_link.dart";
 import 'package:flutter/material.dart';
