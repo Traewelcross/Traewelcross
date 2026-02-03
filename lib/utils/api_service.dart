@@ -44,9 +44,9 @@ class ApiService {
     // Token Lifetime has been drastically reduced: https://github.com/Traewelling/traewelling/pull/3869
     // The token will refresh on every 7th API request. This is to avoid potential ratelimits.
     _requestCount++;
-    if(_requestCount >= 7){
+    if (_requestCount >= 7) {
       _requestCount = 0;
-      if(kDebugMode) print("Refresh Token (7th api request)");
+      if (kDebugMode) print("Refresh Token (7th api request)");
       await refreshToken();
     }
     encoding ??= Encoding.getByName("UTF-8");
@@ -108,48 +108,61 @@ class ApiService {
   }
 
   Future<dynamic> refreshToken() async {
-    final client = await getAuthenticatedClient();
-    oauth2.Credentials? creds;
-    http.Response? res;
-    if (client == null) {
+    final oAuthClient = await getAuthenticatedClient();
+    if (oAuthClient == null) {
       return false;
     }
+
+    // Outer try-finally for oAuthClient
     try {
-      res = await client.post(
-        SharedFunctions.concatUri(["https://traewelling.de", "/oauth/token"]),
-        headers: {"Content-Type": "application/x-www-form-urlencoded"},
-        body: {
-          "refresh_token": client.credentials.refreshToken ?? "",
-          "grant_type": "refresh_token",
-          "client_id": client.identifier,
-        },
-        encoding: Encoding.getByName("UTF-8"),
-      );
-      if (res.statusCode == 200) {
-        final json = jsonDecode(res.body);
-        creds = oauth2.Credentials(
-          json["access_token"],
-          refreshToken: json["refresh_token"],
-          expiration: DateTime.now().add(Duration(seconds: json["expires_in"])),
-          tokenEndpoint: Uri.parse(AuthService.tokenEndpoint),
+      oauth2.Credentials? creds;
+      http.Response? res;
+      final client = http.Client();
+
+      // Inner try-finally for the plain http.Client
+      try {
+        res = await client.post(
+          SharedFunctions.concatUri(["https://traewelling.de", "/oauth/token"]),
+          headers: {"Content-Type": "application/x-www-form-urlencoded"},
+          body: {
+            "refresh_token": oAuthClient.credentials.refreshToken ?? "",
+            "grant_type": "refresh_token",
+            "client_id": oAuthClient.identifier,
+          },
+          encoding: Encoding.getByName("UTF-8"),
+        );
+        if (res.statusCode == 200) {
+          final json = jsonDecode(res.body);
+          creds = oauth2.Credentials(
+            json["access_token"],
+            refreshToken: json["refresh_token"],
+            expiration: DateTime.now().add(
+              Duration(seconds: json["expires_in"]),
+            ),
+            tokenEndpoint: Uri.parse(AuthService.tokenEndpoint),
+          );
+        }
+      } catch (e) {
+        return Future.error(e);
+      } finally {
+        client.close();
+      }
+
+      if (creds == null) {
+        return Future.error(
+          ErrorInfo(
+            "Couldn't refresh token, response credentials were null",
+            type: ErrorType.httpError,
+            httpStatusCode: res.statusCode,
+            exception: res.body,
+          ),
         );
       }
-    } catch (e) {
-      return Future.error(e);
+      await _authService.saveCredentials(creds);
+      return true;
+    } finally {
+      oAuthClient.close(); // Close the oauth2.Client
     }
-    if (creds == null) {
-      return Future.error(
-        ErrorInfo(
-          "Coudln't refresh token, response credentials were null",
-          type: ErrorType.httpError,
-          httpStatusCode: res.statusCode,
-          exception: res.body,
-        ),
-      );
-    }
-    await _authService.saveCredentials(creds);
-    client.close();
-    return true;
   }
 
   Future<String?> fetchUserProfilePicture(String userName) async {
@@ -157,7 +170,6 @@ class ApiService {
       final response = await request("/auth/user", HttpRequestTypes.GET);
       final jsonRes = jsonDecode(response.body);
       return jsonRes["data"]["profilePicture"];
-
     } catch (e) {
       return null;
     }

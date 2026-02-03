@@ -277,10 +277,10 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if(!getIt<Config>().misc.needsRelogin) return;
         if(!mounted) return;
-        Navigator.of(context).push(MaterialPageRoute(builder:(context) { return OauthLogin(onLoginSuccess: () => TerminateRestart.instance.restartApp(options: TerminateRestartOptions(terminate: true)), relogin: true,);}));
-
+        if(getIt<Config>().misc.needsRelogin) {
+          Navigator.of(context).push(MaterialPageRoute(builder:(context) { return OauthLogin(onLoginSuccess: () => TerminateRestart.instance.restartApp(options: TerminateRestartOptions(terminate: true)), relogin: true,);}));
+        }
       });
     _getHistory();
     _stationController.addListener(_typedText);

@@ -15,11 +15,11 @@ Future<Config> loadConfig() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedFunctions.configureGetIt();
-  // Refresh Token on every boot, see request() in utils/api_service.dart for why
-  await SharedFunctions.refreshToken();
   final appConfig = await loadConfig();
   getIt.unregister<Config>();
   getIt.registerSingleton<Config>(appConfig);
+  // Refresh Token on every boot, see request() in utils/api_service.dart for why
+  await SharedFunctions.refreshToken();
   final pushManager = PushManager(PushPlay());
   globalPushManager = pushManager;
   final getGPSAvailable = await GoogleApiAvailability.instance

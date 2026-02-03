@@ -72,7 +72,7 @@ class BehaviorConfig with ChangeNotifier {
   bool get volumeBtnCtrl => _volumeBtnCtrl;
   set volumeBtnCtrl(bool val){
     _volumeBtnCtrl = val;
-    if(Platform.isAndroid) _volChan.invokeMethod("setOverrideStatus",val);
+    if(Platform.isAndroid) _volChan.invokeMethod("setOverrideStatus",{"val": val});
     notifyListeners();
   }
 

@@ -65,15 +65,16 @@ class SharedFunctions {
   /// Refresh the token every time the App is opened, prompting the user to login again if so needed!
   static Future<void> refreshToken() async {
     final misc = getIt<Config>().misc;
+    misc.needsRelogin = false;
     if(getIt.isRegistered(type: Config)){
       final misc = getIt<Config>().misc;
       DateTime? lastBootUp = misc.lastBoot;
       lastBootUp ??= DateTime.now();
-      if(lastBootUp.difference(DateTime.now()).inDays >= 30){
+      if((lastBootUp.difference(DateTime.now()).inDays).abs() >= 30){
+          print("lastboot: $lastBootUp / Now: ${DateTime.now()}, relogin required");
           misc.needsRelogin = true;
           return;
       }
-      misc.needsRelogin = false;
     }
     if(getIt.isRegistered(type: ApiService)){
       if(kDebugMode) print("Refresh Token (boot)");
@@ -81,7 +82,7 @@ class SharedFunctions {
       try {
         await apiService.refreshToken();
       } on TimeoutException {
-        misc.needsRelogin = false;
+        return;
       } catch(e){
         // The exeception, if not a timeout, is most likely due to the fact that the refresh token expired but we didn't catch it above.
         // Just to be sure, we let the user login again.
@@ -89,7 +90,6 @@ class SharedFunctions {
         return;
       }
     }
-    misc.needsRelogin = false;
     misc.lastBoot = DateTime.now();
   }
 

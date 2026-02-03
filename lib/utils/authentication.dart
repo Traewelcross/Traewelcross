@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:pkce/pkce.dart';
+import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/utils/shared.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -160,6 +161,7 @@ class AuthService {
     try {
       final client = await _grant!.handleAuthorizationResponse(queryParameters);
       await saveCredentials(client.credentials);
+      getIt<Config>().misc.needsRelogin = false;
       return client;
     } catch (e) {
       getIt<Logger>().e('Error handling authorization response: $e');
