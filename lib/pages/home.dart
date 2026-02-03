@@ -6,12 +6,14 @@ import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart' as pkg;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:terminate_restart/terminate_restart.dart';
 import 'package:traewelcross/components/profile_link.dart';
 import 'package:traewelcross/components/ride_quick_view.dart';
+import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/checkin/select_connection.dart';
-import 'package:traewelcross/pages/preferences/account_preferences.dart';
+import 'package:traewelcross/pages/login/oauth_login.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:traewelcross/utils/custom_providers.dart';
@@ -274,6 +276,12 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if(!getIt<Config>().misc.needsRelogin) return;
+        if(!mounted) return;
+        Navigator.of(context).push(MaterialPageRoute(builder:(context) { return OauthLogin(onLoginSuccess: () => TerminateRestart.instance.restartApp(options: TerminateRestartOptions(terminate: true)), relogin: true,);}));
+
+      });
     _getHistory();
     _stationController.addListener(_typedText);
     _stationFocus.addListener(() {

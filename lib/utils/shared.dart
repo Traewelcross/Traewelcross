@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -61,12 +62,35 @@ class SharedFunctions {
     );
   }
 
+  /// Refresh the token every time the App is opened, prompting the user to login again if so needed!
   static Future<void> refreshToken() async {
+    final misc = getIt<Config>().misc;
+    if(getIt.isRegistered(type: Config)){
+      final misc = getIt<Config>().misc;
+      DateTime? lastBootUp = misc.lastBoot;
+      lastBootUp ??= DateTime.now();
+      if(lastBootUp.difference(DateTime.now()).inDays >= 30){
+          misc.needsRelogin = true;
+          return;
+      }
+      misc.needsRelogin = false;
+    }
     if(getIt.isRegistered(type: ApiService)){
       if(kDebugMode) print("Refresh Token (boot)");
       final apiService = getIt<ApiService>();
-      await apiService.refreshToken();
+      try {
+        await apiService.refreshToken();
+      } on TimeoutException {
+        misc.needsRelogin = false;
+      } catch(e){
+        // The exeception, if not a timeout, is most likely due to the fact that the refresh token expired but we didn't catch it above.
+        // Just to be sure, we let the user login again.
+        misc.needsRelogin = true;
+        return;
+      }
     }
+    misc.needsRelogin = false;
+    misc.lastBoot = DateTime.now();
   }
 
   static Future<void> launchURL(Uri url, {LaunchMode? launchMode}) async {

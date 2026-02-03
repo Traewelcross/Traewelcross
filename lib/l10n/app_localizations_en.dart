@@ -852,4 +852,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get volumeBtnCtrlNote =>
       'Use basic features using your volume buttons. I.e. when using gloves';
+
+  @override
+  String get reloginRequired =>
+      'You haven\'t used Träwelcross for 30 days or longer. Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.';
 }

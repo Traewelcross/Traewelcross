@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -61,6 +63,7 @@ class BehaviorConfig with ChangeNotifier {
     _defaultStatusText = value;
     notifyListeners();
   }
+
   static const _volChan = MethodChannel("volume");
   /// Can the user control the App via the volume buttons
   /// Experimental!
@@ -69,7 +72,8 @@ class BehaviorConfig with ChangeNotifier {
   bool get volumeBtnCtrl => _volumeBtnCtrl;
   set volumeBtnCtrl(bool val){
     _volumeBtnCtrl = val;
-    _volChan.invokeMethod("setOverrideStatus",val);
+    if(Platform.isAndroid) _volChan.invokeMethod("setOverrideStatus",val);
     notifyListeners();
   }
+
 }

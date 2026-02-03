@@ -28,4 +28,25 @@ class MiscConfig with ChangeNotifier {
     _showStats = val;
     notifyListeners();
   }
+
+  /// This option is (obivously) not exposed to the user, but used internally
+  /// Putting this is the Config is maybe not quite right, but since we have something to persist data,
+  /// might as well use it, eh?
+  /// This option is used for prompting the user to login in again, if needed
+  DateTime? _lastBoot;
+  @JsonKey(defaultValue: null)
+  DateTime? get lastBoot => _lastBoot;
+  set lastBoot(DateTime? dt){
+    _lastBoot = dt;
+    notifyListeners();
+  }
+
+  /// "Notifier" for option above
+  bool _needsRelogin = false;
+  @JsonKey(defaultValue: false)
+  bool get needsRelogin => _needsRelogin;
+  set needsRelogin(bool val){
+    _needsRelogin = val;
+    notifyListeners();
+  }
 }

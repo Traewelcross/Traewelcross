@@ -1585,6 +1585,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Use basic features using your volume buttons. I.e. when using gloves'**
   String get volumeBtnCtrlNote;
+
+  /// No description provided for @reloginRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t used Träwelcross for 30 days or longer. Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.'**
+  String get reloginRequired;
 }
 
 class _AppLocalizationsDelegate

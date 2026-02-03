@@ -858,4 +858,8 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get volumeBtnCtrlNote =>
       'Benutze Grundfeatures der App mit den Lautstärketasten, z.B. wenn du Handschuhe an hast.';
+
+  @override
+  String get reloginRequired =>
+      'Du hast Träwelcross länger als 30 Tage nicht mehr verwendet. Aufgrund der begrenzten Laufzeit der Tokens musst du dich jetzt neu anmelden. Wenn du das in Zukunft vermeiden willst, stelle bitte sicher, Träwelcross mindestens einmal alle 30 Tage zu starten';
 }
