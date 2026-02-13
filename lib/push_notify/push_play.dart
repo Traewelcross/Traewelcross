@@ -6,6 +6,7 @@ import 'package:logger/logger.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:traewelcross/push_notify/push_common.dart';
 import 'package:traewelcross/push_notify/push_interface.dart';
+// ignore: uri_does_not_exist
 import 'package:traewelcross/utils/firebase_options.dart';
 import 'package:traewelcross/utils/shared.dart';
 import "package:flutter_local_notifications/flutter_local_notifications.dart";
@@ -13,6 +14,7 @@ import "package:flutter_local_notifications/flutter_local_notifications.dart";
 @pragma('vm:entry-point')
 Future<void> _fmbBackgroundHandler(RemoteMessage msg) async {
   // Needs to be init, else the backend will fail with "Requested entity was not found."
+  // ignore: undefined_identifier
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   processAndShowNotification(msg.data);
 }
@@ -28,6 +30,7 @@ class PushPlay implements PushApi {
     }
 
     await Firebase.initializeApp(
+      // ignore: undefined_identifier
       options: DefaultFirebaseOptions.currentPlatform,
     );
     await initFirebaseMessaging();
