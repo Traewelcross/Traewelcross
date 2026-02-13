@@ -38,33 +38,7 @@ class _StatisticsState extends State<Statistics> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {
-          num maxValue = snapshot.data!.values.reduce((a, b) => a > b ? a : b);
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: snapshot.data!.entries.map((entry) {
-                  double ratio = entry.value / maxValue;
-                  return Column(
-                    children: [
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: FractionallySizedBox(
-                            heightFactor: ratio,
-                            child: Container(width: 40, color: Colors.blue),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(entry.key),
-                    ],
-                  );
-                }).toList(),
-              );
-            },
-          );
+          // TODO: Implement fl_chart
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
