@@ -59,6 +59,8 @@ class AuthService {
       key: _credentialsKey,
       value: json.encode(credentials.toJson()),
     );
+    // try to reset _client
+    _client = await getAuthenticatedClient(forceRenewal: true);
   }
 
   Future<oauth2.Credentials?> _loadCredentials() async {
@@ -86,22 +88,36 @@ class AuthService {
 
   Future<void> logout() async {
     await _deleteCredentials();
+    _client?.close();
+    _client = null;
   }
 
-  Future<oauth2.Client?> getAuthenticatedClient() async {
+  oauth2.Client? _client;
+  void dispose() {
+    if (_client != null) {
+      _client?.close();
+      _client = null;
+    }
+  }
+
+  Future<oauth2.Client?> getAuthenticatedClient({bool forceRenewal = false}) async {
     final credentials = await _loadCredentials();
     if (credentials == null) {
       return null;
     }
+    if(_client == null || forceRenewal){
+    _client = oauth2.Client(
+        credentials,
+        identifier: clientId,
+        secret: clientSecret,
+        onCredentialsRefreshed: (refreshedCredentials) async {
+          await saveCredentials(refreshedCredentials);
+        },
+      );
+    }
 
-    return oauth2.Client(
-      credentials,
-      identifier: clientId,
-      secret: clientSecret,
-      onCredentialsRefreshed: (refreshedCredentials) async {
-        await saveCredentials(refreshedCredentials);
-      },
-    );
+
+    return _client;
   }
 
   Future<void> loginWithPKCE() async {
@@ -131,7 +147,10 @@ class AuthService {
     webhookQuery.addAll(authUrl.queryParameters);
     authUrl = authUrl.replace(queryParameters: webhookQuery);
     // It would be nicer to use a In-App Browser View, but I can't get that to work atm and this works good enough.
-    SharedFunctions.launchURL(authUrl, launchMode: LaunchMode.externalApplication);
+    SharedFunctions.launchURL(
+      authUrl,
+      launchMode: LaunchMode.externalApplication,
+    );
   }
 
   Future<oauth2.Client?> handleAuthorizationResponse(
@@ -167,9 +186,7 @@ class AuthService {
       getIt<Logger>().e('Error handling authorization response: $e');
       return null;
     } finally {
-            await _secureStorage.delete(
-        key: _codeVerifierKey,
-      );
+      await _secureStorage.delete(key: _codeVerifierKey);
       _grant = null;
     }
   }

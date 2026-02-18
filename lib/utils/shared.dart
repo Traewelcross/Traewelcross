@@ -49,7 +49,9 @@ class SharedFunctions {
 
   static void configureGetIt() {
     getIt.registerSingleton<Config>(Config());
-    getIt.registerLazySingleton<AuthService>(() => AuthService());
+    getIt.registerLazySingleton<AuthService>(() => AuthService(), dispose: (auth) {
+      auth.dispose();
+    },);
     getIt.registerLazySingleton<ApiService>(
       () => ApiService(getIt<AuthService>()),
     );

@@ -16,6 +16,7 @@ class ApiService {
   static const int _timeoutDuration = 25;
   final AuthService _authService;
   int _requestCount = 0;
+  DateTime _lastRequest = DateTime.now();
 
   ApiService(this._authService);
 
@@ -41,6 +42,7 @@ class ApiService {
     Object? body,
     Encoding? encoding,
   }) async {
+    bool hasBeenRefreshed = false;
     // Token Lifetime has been drastically reduced: https://github.com/Traewelling/traewelling/pull/3869
     // The token will refresh on every 7th API request. This is to avoid potential ratelimits.
     _requestCount++;
@@ -48,20 +50,26 @@ class ApiService {
       _requestCount = 0;
       if (kDebugMode) print("Refresh Token (7th api request)");
       await refreshToken();
+      hasBeenRefreshed = true;
+    }
+    if(DateTime.now().difference(_lastRequest).inHours >= 1 && !hasBeenRefreshed){
+      if (kDebugMode) print("Refresh Token (stale)");
+      await refreshToken();
     }
     encoding ??= Encoding.getByName("UTF-8");
     final client = await getAuthenticatedClient();
     if (client == null) {
       throw Future.error("User is not authenticated.");
     }
-    try {
+      late http.Response res;
       switch (type) {
         case HttpRequestTypes.GET:
-          return client
+          res = await client
               .get(SharedFunctions.concatUri([_baseURL, url]))
               .timeout(Duration(seconds: _timeoutDuration));
+          break;
         case HttpRequestTypes.PUT:
-          return client
+          res = await client
               .put(
                 SharedFunctions.concatUri([_baseURL, url]),
                 headers: headers,
@@ -69,8 +77,9 @@ class ApiService {
                 encoding: encoding,
               )
               .timeout(Duration(seconds: _timeoutDuration));
+          break;
         case HttpRequestTypes.POST:
-          return client
+          res = await client
               .post(
                 SharedFunctions.concatUri([_baseURL, url]),
                 headers: headers,
@@ -78,8 +87,9 @@ class ApiService {
                 encoding: encoding,
               )
               .timeout(Duration(seconds: _timeoutDuration));
+          break;
         case HttpRequestTypes.DELETE:
-          return client
+          res = await client
               .delete(
                 SharedFunctions.concatUri([_baseURL, url]),
                 headers: headers,
@@ -87,10 +97,10 @@ class ApiService {
                 encoding: encoding,
               )
               .timeout(Duration(seconds: _timeoutDuration));
+          break;
       }
-    } finally {
-      client.close();
-    }
+      _lastRequest = DateTime.now();
+      return res;
   }
 
   Future<void> logOut() async {
@@ -103,7 +113,6 @@ class ApiService {
     } finally {
       SharedPreferencesAsync().clear();
       _authService.logout();
-      client?.close();
     }
   }
 
@@ -112,9 +121,6 @@ class ApiService {
     if (oAuthClient == null) {
       return false;
     }
-
-    // Outer try-finally for oAuthClient
-    try {
       oauth2.Credentials? creds;
       http.Response? res;
       final client = http.Client();
@@ -160,9 +166,6 @@ class ApiService {
       }
       await _authService.saveCredentials(creds);
       return true;
-    } finally {
-      oAuthClient.close(); // Close the oauth2.Client
-    }
   }
 
   Future<String?> fetchUserProfilePicture(String userName) async {
