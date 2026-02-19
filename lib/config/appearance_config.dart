@@ -58,4 +58,14 @@ class AppearanceConfig with ChangeNotifier {
     _mapType = value;
     notifyListeners();
   }
+
+  /// Custom font
+  /// If null, System font will be used
+  String _fontFam = "Outfit";
+  @JsonKey(defaultValue: "Outfit")
+  String get fontFam => _fontFam;
+  set fontFam(String val){
+    _fontFam = val;
+    notifyListeners();
+  }
 }

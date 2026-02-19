@@ -248,5 +248,14 @@
     "experimentalPrefrences": "Experimentell",
     "volumeBtnCtrl": "Lautstärketasten überschreiben",
     "volumeBtnCtrlNote": "Benutze Grundfeatures der App mit den Lautstärketasten, z.B. wenn du Handschuhe an hast.",
-    "reloginRequired": "Du hast Träwelcross länger als 30 Tage nicht mehr verwendet. Aufgrund der begrenzten Laufzeit der Tokens musst du dich jetzt neu anmelden. Wenn du das in Zukunft vermeiden willst, stelle bitte sicher, Träwelcross mindestens einmal alle 30 Tage zu starten"
+    "reloginRequired": "Du hast Träwelcross länger als 30 Tage nicht mehr verwendet. Aufgrund der begrenzten Laufzeit der Tokens musst du dich jetzt neu anmelden. Wenn du das in Zukunft vermeiden willst, stelle bitte sicher, Träwelcross mindestens einmal alle 30 Tage zu starten",
+    "fontFamilyChooser": "Schriftart",
+    "systemFont": "System/Standard",
+    "systemFontDesc": "Die Schriftart die dein System nutzt wenn verfügbar, sonst Roboto",
+    "outfitFontDesc": "Die Standard Träwelcross Schriftart",
+    "nunitoFontDesc": "Runde Buchstaben ✨",
+    "iomFontDesc": "Monospace",
+    "rubikFontDesc": "Moderne, etwas dickere Schrift",
+    "suseFontDesc": "Ein gesunder Mix aus Monospace und Sans Serif, Standard für die Titelleiste und den \"Träwelcross\"-Schriftzug (pun not intended)",
+    "linefontFontDesc": "Für Mediziner:innen aller Art"
 }

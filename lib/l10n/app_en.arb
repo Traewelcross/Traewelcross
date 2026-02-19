@@ -527,5 +527,14 @@
   "statisticsExperimentalNote": "The statistics tab is by no means feature complete or polished. If you still want to look at it, enable this option.",
   "volumeBtnCtrl": "Volume Button Control",
   "volumeBtnCtrlNote": "Use basic features using your volume buttons. I.e. when using gloves",
-  "reloginRequired": "You haven't used Träwelcross for 30 days or longer. Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days."
+  "reloginRequired": "You haven't used Träwelcross for 30 days or longer. Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.",
+  "fontFamilyChooser": "Which font to use?",
+  "systemFont": "System/Default",
+  "systemFontDesc": "The font your System uses if available, else Flutter Default (Roboto)",
+  "outfitFontDesc": "The default Träwelcross app font",
+  "nunitoFontDesc": "Rounded letters ✨",
+  "iomFontDesc": "Monospace",
+  "rubikFontDesc": "Modern font, a bit more heavy from the start",
+  "suseFontDesc": "A healthy mix of Sans Serif and Monospace, used for the titles and the Träwelcross icon",
+  "linefontFontDesc": "It's like the doctor gave you a prescription"
 }

@@ -862,4 +862,33 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get reloginRequired =>
       'Du hast Träwelcross länger als 30 Tage nicht mehr verwendet. Aufgrund der begrenzten Laufzeit der Tokens musst du dich jetzt neu anmelden. Wenn du das in Zukunft vermeiden willst, stelle bitte sicher, Träwelcross mindestens einmal alle 30 Tage zu starten';
+
+  @override
+  String get fontFamilyChooser => 'Schriftart';
+
+  @override
+  String get systemFont => 'System/Standard';
+
+  @override
+  String get systemFontDesc =>
+      'Die Schriftart die dein System nutzt wenn verfügbar, sonst Roboto';
+
+  @override
+  String get outfitFontDesc => 'Die Standard Träwelcross Schriftart';
+
+  @override
+  String get nunitoFontDesc => 'Runde Buchstaben ✨';
+
+  @override
+  String get iomFontDesc => 'Monospace';
+
+  @override
+  String get rubikFontDesc => 'Moderne, etwas dickere Schrift';
+
+  @override
+  String get suseFontDesc =>
+      'Ein gesunder Mix aus Monospace und Sans Serif, Standard für die Titelleiste und den \"Träwelcross\"-Schriftzug (pun not intended)';
+
+  @override
+  String get linefontFontDesc => 'Für Mediziner:innen aller Art';
 }

@@ -91,6 +91,7 @@ class App extends WatchingWidget {
       (Config c) => c.appearance.accentColor,
     );
     final themeMode = watchPropertyValue((Config c) => c.appearance.themeMode);
+    final fontFamily = watchPropertyValue((Config c) => c.appearance.fontFam);
     return ChangeNotifierProvider(
       create: (context) => AppState(),
       child: DynamicColorBuilder(
@@ -117,15 +118,15 @@ class App extends WatchingWidget {
             theme: ThemeData(
               useMaterial3: true,
               colorScheme: lightColorScheme,
-              fontFamily: "Outfit",
-              fontFamilyFallback: ["NotoEmoji", "SUSE"],
+              fontFamily: fontFamily == "system" ? null : fontFamily,
+              fontFamilyFallback: ["Outfit", "NotoEmoji", "SUSE"],
               cardColor: getCardColor(lightColorScheme),
             ),
             darkTheme: ThemeData(
               useMaterial3: true,
               colorScheme: darkColorScheme,
-              fontFamily: "Outfit",
-              fontFamilyFallback: ["NotoEmoji", "SUSE"],
+              fontFamily: fontFamily == "system" ? null : fontFamily,
+              fontFamilyFallback: ["Outfit", "NotoEmoji", "SUSE"],
               cardColor: getCardColor(darkColorScheme),
             ),
             themeMode: themeMode,

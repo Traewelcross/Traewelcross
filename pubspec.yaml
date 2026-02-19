@@ -97,4 +97,19 @@ flutter:
         - asset: fonts/SUSE/SUSE-Regular.ttf
         - asset: fonts/SUSE/SUSE-SemiBold.ttf
         - asset: fonts/SUSE/SUSE-Thin.ttf
+    - family: IntelOneMono
+      fonts:
+        - asset: fonts/Intel_One_Mono/IntelOneMono-VariableFont_wght.ttf
+        - asset: fonts/Intel_One_Mono/IntelOneMono-Italic-VariableFont_wght.ttf
+    - family: Rubik
+      fonts:
+        - asset: fonts/Rubik/Rubik-VariableFont_wght.ttf
+        - asset: fonts/Rubik/Rubik-Italic-VariableFont_wght.ttf    
+    - family: Nunito
+      fonts:
+        - asset: fonts/Nunito/Nunito-VariableFont_wght.ttf
+        - asset: fonts/Nunito/Nunito-Italic-VariableFont_wght.ttf
+    - family: Linefont
+      fonts:
+        - asset: fonts/Linefont/Linefont-VariableFont_wdth,wght.ttf
 

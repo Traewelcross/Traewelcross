@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,6 +26,8 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
   void initState() {
     super.initState();
     dynamicSupportFuture = SharedFunctions.dynamicColorSupport();
+        print(PlatformDispatcher.instance.systemFontFamily);
+
   }
 
   @override
@@ -100,6 +104,77 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                     ),
                   ],
                 ),
+              Divider(),
+              ExpansionTile(
+                title: Text(localize.fontFamilyChooser),
+                shape: Border.all(color: Colors.transparent),
+                children: [
+                  RadioGroup(
+                    groupValue: config.appearance.fontFam,
+                    onChanged: (value) => setState(() {
+                      config.appearance.fontFam = value!;
+                    }),
+                    child: Column(
+                      children: [
+                        // this doesn't work
+                        /*RadioListTile(
+                          value:"system",
+                          title: Text(localize.systemFont, style: TextStyle(fontFamily: PlatformDispatcher.instance.systemFontFamily),),
+                          subtitle: Text(localize.systemFontDesc),
+                        ),*/
+                        RadioListTile(
+                          value: "Outfit",
+                          title: Text(
+                            "Outfit",
+                            style: TextStyle(fontFamily: "Outfit"),
+                          ),
+                          subtitle: Text(localize.outfitFontDesc),
+                        ),
+                        RadioListTile(
+                          value: "Rubik",
+                          title: Text(
+                            "Rubik",
+                            style: TextStyle(fontFamily: "Rubik"),
+                          ),
+                          subtitle: Text(localize.rubikFontDesc),
+                        ),
+                        RadioListTile(
+                          value: "Nunito",
+                          title: Text(
+                            "Nunito",
+                            style: TextStyle(fontFamily: "Nunito"),
+                          ),
+                          subtitle: Text(localize.nunitoFontDesc),
+                        ),
+                        RadioListTile(
+                          value: "IntelOneMono",
+                          title: Text(
+                            "Intel One Mono",
+                            style: TextStyle(fontFamily: "IntelOneMono"),
+                          ),
+                          subtitle: Text(localize.iomFontDesc),
+                        ),
+                        RadioListTile(
+                          value: "SUSE",
+                          title: Text(
+                            "SUSE",
+                            style: TextStyle(fontFamily: "SUSE"),
+                          ),
+                          subtitle: Text(localize.suseFontDesc),
+                        ),
+                        RadioListTile(
+                          value: "Linefont",
+                          title: Text(
+                            "Linefont",
+                            style: TextStyle(fontFamily: "Linefont"),
+                          ),
+                          subtitle: Text(localize.linefontFontDesc),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
               Divider(),
               ListTile(
                 onTap: () => setState(() {

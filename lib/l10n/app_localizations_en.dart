@@ -856,4 +856,34 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get reloginRequired =>
       'You haven\'t used Träwelcross for 30 days or longer. Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.';
+
+  @override
+  String get fontFamilyChooser => 'Which font to use?';
+
+  @override
+  String get systemFont => 'System/Default';
+
+  @override
+  String get systemFontDesc =>
+      'The font your System uses if available, else Flutter Default (Roboto)';
+
+  @override
+  String get outfitFontDesc => 'The default Träwelcross app font';
+
+  @override
+  String get nunitoFontDesc => 'Rounded letters ✨';
+
+  @override
+  String get iomFontDesc => 'Monospace';
+
+  @override
+  String get rubikFontDesc => 'Modern font, a bit more heavy from the start';
+
+  @override
+  String get suseFontDesc =>
+      'A healthy mix of Sans Serif and Monospace, used for the titles and the Träwelcross icon';
+
+  @override
+  String get linefontFontDesc =>
+      'It\'s like the doctor gave you a prescription';
 }

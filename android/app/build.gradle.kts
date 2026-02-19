@@ -68,6 +68,9 @@ android {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
         }
+        debug {
+            applicationIdSuffix = ".debug"
+        }
     }
 }
 

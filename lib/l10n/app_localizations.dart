@@ -1591,6 +1591,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You haven\'t used Träwelcross for 30 days or longer. Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.'**
   String get reloginRequired;
+
+  /// No description provided for @fontFamilyChooser.
+  ///
+  /// In en, this message translates to:
+  /// **'Which font to use?'**
+  String get fontFamilyChooser;
+
+  /// No description provided for @systemFont.
+  ///
+  /// In en, this message translates to:
+  /// **'System/Default'**
+  String get systemFont;
+
+  /// No description provided for @systemFontDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'The font your System uses if available, else Flutter Default (Roboto)'**
+  String get systemFontDesc;
+
+  /// No description provided for @outfitFontDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'The default Träwelcross app font'**
+  String get outfitFontDesc;
+
+  /// No description provided for @nunitoFontDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Rounded letters ✨'**
+  String get nunitoFontDesc;
+
+  /// No description provided for @iomFontDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Monospace'**
+  String get iomFontDesc;
+
+  /// No description provided for @rubikFontDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Modern font, a bit more heavy from the start'**
+  String get rubikFontDesc;
+
+  /// No description provided for @suseFontDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'A healthy mix of Sans Serif and Monospace, used for the titles and the Träwelcross icon'**
+  String get suseFontDesc;
+
+  /// No description provided for @linefontFontDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s like the doctor gave you a prescription'**
+  String get linefontFontDesc;
 }
 
 class _AppLocalizationsDelegate

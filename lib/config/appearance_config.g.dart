@@ -19,7 +19,8 @@ AppearanceConfig _$AppearanceConfigFromJson(Map<String, dynamic> json) =>
       ..customLineIcons = json['customLineIcons'] as bool? ?? true
       ..mapType =
           $enumDecodeNullable(_$MapTypeEnumEnumMap, json['mapType']) ??
-          MapTypeEnum.standard;
+          MapTypeEnum.standard
+      ..fontFam = json['fontFam'] as String? ?? 'Outfit';
 
 Map<String, dynamic> _$AppearanceConfigToJson(AppearanceConfig instance) =>
     <String, dynamic>{
@@ -31,6 +32,7 @@ Map<String, dynamic> _$AppearanceConfigToJson(AppearanceConfig instance) =>
       'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
       'customLineIcons': instance.customLineIcons,
       'mapType': _$MapTypeEnumEnumMap[instance.mapType]!,
+      'fontFam': instance.fontFam,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(
