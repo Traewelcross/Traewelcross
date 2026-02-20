@@ -78,25 +78,12 @@ flutter:
         - asset: fonts/NotoColorEmoji.ttf
     - family: Outfit
       fonts:
-        - asset: fonts/Outfit/Outfit-Black.ttf
-        - asset: fonts/Outfit/Outfit-Bold.ttf
-        - asset: fonts/Outfit/Outfit-ExtraBold.ttf
-        - asset: fonts/Outfit/Outfit-ExtraLight.ttf
-        - asset: fonts/Outfit/Outfit-Light.ttf
-        - asset: fonts/Outfit/Outfit-Medium.ttf
-        - asset: fonts/Outfit/Outfit-Regular.ttf
-        - asset: fonts/Outfit/Outfit-SemiBold.ttf
-        - asset: fonts/Outfit/Outfit-Thin.ttf
+        - asset: fonts/Outfit/Outfit-VariableFont_wght.ttf
+
     - family: SUSE
       fonts:
-        - asset: fonts/SUSE/SUSE-Bold.ttf
-        - asset: fonts/SUSE/SUSE-ExtraBold.ttf
-        - asset: fonts/SUSE/SUSE-ExtraLight.ttf
-        - asset: fonts/SUSE/SUSE-Light.ttf
-        - asset: fonts/SUSE/SUSE-Medium.ttf
-        - asset: fonts/SUSE/SUSE-Regular.ttf
-        - asset: fonts/SUSE/SUSE-SemiBold.ttf
-        - asset: fonts/SUSE/SUSE-Thin.ttf
+        - asset: fonts/SUSE/SUSE-Italic-VariableFont_wght.ttf
+        - asset: fonts/SUSE/SUSE-VariableFont_wght.ttf
     - family: IntelOneMono
       fonts:
         - asset: fonts/Intel_One_Mono/IntelOneMono-VariableFont_wght.ttf

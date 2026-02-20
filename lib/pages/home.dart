@@ -617,7 +617,6 @@ class _AlertsState extends State<Alerts> {
     }
   }
 
-  static const _volChan = MethodChannel("volume");
   @override
   void initState() {
     super.initState();
