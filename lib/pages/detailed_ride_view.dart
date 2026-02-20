@@ -205,11 +205,14 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                 FutureBuilder(
                   future: SharedFunctions.getUserId(),
                   builder: (context, asyncSnapshot) {
-                    return RideQuickView(
-                      rideData: rideData,
-                      authUserId: asyncSnapshot.data ?? 0,
-                      detailedView: true,
-                      likeCallback: _likeCallback,
+                    return Hero(
+                      tag: "rqv-${rideData["id"]}",
+                      child: RideQuickView(
+                        rideData: rideData,
+                        authUserId: asyncSnapshot.data ?? 0,
+                        detailedView: true,
+                        likeCallback: _likeCallback,
+                      ),
                     );
                   },
                 ),

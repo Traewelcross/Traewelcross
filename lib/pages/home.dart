@@ -854,14 +854,17 @@ class _DashboardState extends State<Dashboard> {
           );
         }
         widgets.add(
-          RideQuickView(
-            rideData: ride,
-            authUserId: _userIdAuthUser,
-            onDelete: () {
-              setState(() {
-                _userRides.removeWhere((item) => item["id"] == ride["id"]);
-              });
-            },
+          Hero(
+            tag: "rqv-${ride["id"]}",
+            child: RideQuickView(
+              rideData: ride,
+              authUserId: _userIdAuthUser,
+              onDelete: () {
+                setState(() {
+                  _userRides.removeWhere((item) => item["id"] == ride["id"]);
+                });
+              },
+            ),
           ),
         );
         widgets.add(const SizedBox(height: 8));
