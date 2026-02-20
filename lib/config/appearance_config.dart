@@ -64,7 +64,7 @@ class AppearanceConfig with ChangeNotifier {
   String _fontFam = "Outfit";
   @JsonKey(defaultValue: "Outfit")
   String get fontFam => _fontFam;
-  set fontFam(String val){
+  set fontFam(String val) {
     _fontFam = val;
     notifyListeners();
   }

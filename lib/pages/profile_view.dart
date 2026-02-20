@@ -443,7 +443,9 @@ class ProfileStatsCard extends StatelessWidget {
 
   String _getDuration(int duration, BuildContext context) {
     final dur = Duration(minutes: duration);
-    return AppLocalizations.of(context)!.time_summary(dur.inDays, dur.inHours % 24, dur.inMinutes % 60);
+    return AppLocalizations.of(
+      context,
+    )!.time_summary(dur.inDays, dur.inHours % 24, dur.inMinutes % 60);
   }
 }
 

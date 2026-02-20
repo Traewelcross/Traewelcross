@@ -49,9 +49,12 @@ class SharedFunctions {
 
   static void configureGetIt() {
     getIt.registerSingleton<Config>(Config());
-    getIt.registerLazySingleton<AuthService>(() => AuthService(), dispose: (auth) {
-      auth.dispose();
-    },);
+    getIt.registerLazySingleton<AuthService>(
+      () => AuthService(),
+      dispose: (auth) {
+        auth.dispose();
+      },
+    );
     getIt.registerLazySingleton<ApiService>(
       () => ApiService(getIt<AuthService>()),
     );
@@ -68,24 +71,26 @@ class SharedFunctions {
   static Future<void> refreshToken() async {
     final misc = getIt<Config>().misc;
     misc.needsRelogin = false;
-    if(getIt.isRegistered(type: Config)){
+    if (getIt.isRegistered(type: Config)) {
       final misc = getIt<Config>().misc;
       DateTime? lastBootUp = misc.lastBoot;
       lastBootUp ??= DateTime.now();
-      if((lastBootUp.difference(DateTime.now()).inDays).abs() >= 30){
-          print("lastboot: $lastBootUp / Now: ${DateTime.now()}, relogin required");
-          misc.needsRelogin = true;
-          return;
+      if ((lastBootUp.difference(DateTime.now()).inDays).abs() >= 30) {
+        print(
+          "lastboot: $lastBootUp / Now: ${DateTime.now()}, relogin required",
+        );
+        misc.needsRelogin = true;
+        return;
       }
     }
-    if(getIt.isRegistered(type: ApiService)){
-      if(kDebugMode) print("Refresh Token (boot)");
+    if (getIt.isRegistered(type: ApiService)) {
+      if (kDebugMode) print("Refresh Token (boot)");
       final apiService = getIt<ApiService>();
       try {
         await apiService.refreshToken();
       } on TimeoutException {
         return;
-      } catch(e){
+      } catch (e) {
         // The exeception, if not a timeout, is most likely due to the fact that the refresh token expired but we didn't catch it above.
         // Just to be sure, we let the user login again.
         misc.needsRelogin = true;

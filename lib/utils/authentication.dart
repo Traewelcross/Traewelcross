@@ -100,13 +100,15 @@ class AuthService {
     }
   }
 
-  Future<oauth2.Client?> getAuthenticatedClient({bool forceRenewal = false}) async {
+  Future<oauth2.Client?> getAuthenticatedClient({
+    bool forceRenewal = false,
+  }) async {
     final credentials = await _loadCredentials();
     if (credentials == null) {
       return null;
     }
-    if(_client == null || forceRenewal){
-    _client = oauth2.Client(
+    if (_client == null || forceRenewal) {
+      _client = oauth2.Client(
         credentials,
         identifier: clientId,
         secret: clientSecret,
@@ -115,7 +117,6 @@ class AuthService {
         },
       );
     }
-
 
     return _client;
   }

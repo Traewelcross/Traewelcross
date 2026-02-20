@@ -88,10 +88,13 @@ class Preferences extends StatelessWidget {
             title: Text(localize.behavior),
           ),
           ListTile(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (ctx) => ExperimentalPreferences())),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (ctx) => ExperimentalPreferences()),
+            ),
             leading: const Icon(Icons.science),
-            title: Text(localize.experimentalPrefrences)
-          )
+            title: Text(localize.experimentalPrefrences),
+          ),
           // Nothing to configure here yet
           /*ListTile(
             onTap: () => Navigator.push(

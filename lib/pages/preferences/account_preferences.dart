@@ -215,9 +215,7 @@ class _AccountPreferencesState extends State<AccountPreferences> {
             }
 
             if (_userConfig == null) {
-              return const Center(
-                child: Icon(Icons.error),
-              );
+              return const Center(child: Icon(Icons.error));
             }
 
             return ListView(

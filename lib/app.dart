@@ -45,7 +45,6 @@ class App extends WatchingWidget {
     ColorScheme? dynamicColor,
     Brightness brightness,
   ) {
-
     if (useSystemAccent && dynamicColor != null) {
       // https://github.com/material-foundation/flutter-packages/issues/649
       return dynamicColor;
@@ -75,6 +74,7 @@ class App extends WatchingWidget {
       (scheme).surface,
     );
   }
+
   @override
   Widget build(BuildContext context) {
     /*final config = watchValue(
@@ -432,8 +432,11 @@ class _ChromeState extends State<Chrome> {
             icon: OwnProfilePicture(maxWidth: 42),
             label: AppLocalizations.of(context)!.navProfile,
           ),
-          if(watchIt<Config>().misc.showStats || kDebugMode)
-          NavigationDestination(icon: const Icon(Icons.bar_chart), label: AppLocalizations.of(context)!.stats)
+          if (watchIt<Config>().misc.showStats || kDebugMode)
+            NavigationDestination(
+              icon: const Icon(Icons.bar_chart),
+              label: AppLocalizations.of(context)!.stats,
+            ),
         ],
         selectedIndex: selectedPageIndex,
         onDestinationSelected: (value) {

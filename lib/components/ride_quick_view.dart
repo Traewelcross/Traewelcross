@@ -543,8 +543,10 @@ class _RideQuickViewState extends State<RideQuickView> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              DetailedRideView(rideData: _rideData),
+                          builder: (context) => DetailedRideView(
+                            rideData: _rideData,
+                            authUserId: widget.authUserId,
+                          ),
                         ),
                       );
                     },

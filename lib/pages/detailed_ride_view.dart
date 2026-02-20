@@ -60,9 +60,15 @@ Future<List<LatLng>> _fetchAndParsePolyline(
 }
 
 class DetailedRideView extends StatefulWidget {
-  const DetailedRideView({super.key, this.rideId, this.rideData});
+  const DetailedRideView({
+    super.key,
+    this.rideId,
+    this.rideData,
+    this.authUserId,
+  });
   final int? rideId;
   final dynamic rideData;
+  final int? authUserId;
 
   @override
   State<DetailedRideView> createState() => _DetailedRideViewState();
@@ -128,7 +134,6 @@ class _DetailedRideViewState extends State<DetailedRideView> {
         ? _getRideData()
         : Future.value(widget.rideData!);
     _likes = _getLikeData();
-
   }
 
   void _likeCallback() {
@@ -202,19 +207,14 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                   },
                 ),
                 const SizedBox(height: 12),
-                FutureBuilder(
-                  future: SharedFunctions.getUserId(),
-                  builder: (context, asyncSnapshot) {
-                    return Hero(
-                      tag: "rqv-${rideData["id"]}",
-                      child: RideQuickView(
-                        rideData: rideData,
-                        authUserId: asyncSnapshot.data ?? 0,
-                        detailedView: true,
-                        likeCallback: _likeCallback,
-                      ),
-                    );
-                  },
+                Hero(
+                  tag: "rqv-${rideData["id"]}",
+                  child: RideQuickView(
+                    rideData: rideData,
+                    authUserId: widget.authUserId ?? 0,
+                    detailedView: true,
+                    likeCallback: _likeCallback,
+                  ),
                 ),
                 FutureBuilder(
                   future: _likes,
@@ -347,10 +347,12 @@ class _MapDisplay extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       child: FlutterMap(
         options: MapOptions(
-          initialCameraFit: polylinePoints != null ?  CameraFit.bounds(
-            bounds: LatLngBounds.fromPoints(polylinePoints!),
-            padding: const EdgeInsets.all(50),
-          ) : null,
+          initialCameraFit: polylinePoints != null
+              ? CameraFit.bounds(
+                  bounds: LatLngBounds.fromPoints(polylinePoints!),
+                  padding: const EdgeInsets.all(50),
+                )
+              : null,
           minZoom: 5,
           initialZoom: 5,
           maxZoom: 18,
@@ -365,44 +367,37 @@ class _MapDisplay extends StatelessWidget {
                 "https://{s}.tiles.openrailwaymap.org/${getIt<Config>().appearance.mapType.value}/{z}/{x}/{y}.png",
             userAgentPackageName: "de.traewelcross",
           ),
-          if(polylinePoints != null)
-          PolylineLayer(
-            polylines: [
-              Polyline(
-                points: polylinePoints!,
-                color: Theme.of(context).colorScheme.primary,
-                strokeWidth: 5.0,
-              ),
-            ],
-          ),
-                    if(polylinePoints != null)
-
-          MarkerLayer(
-            markers: List<Marker>.generate(
-              polylinePoints!.length,
-              (int i) => Marker(
-                point: polylinePoints![i],
-                child: Builder(
-                  builder: (context) {
-                    if (i == polylinePoints!.length - 1) {
-                      return const Icon(
-                        Icons.flag,
-                        color: tcColorLight
-                      );
-                    }
-                    if (i == 0) {
-                      return const Icon(
-                        Icons.start,
-                        color: Colors.redAccent,
-                      );
-                    }
-                    return const SizedBox(height: 0);
-                  },
+          if (polylinePoints != null)
+            PolylineLayer(
+              polylines: [
+                Polyline(
+                  points: polylinePoints!,
+                  color: Theme.of(context).colorScheme.primary,
+                  strokeWidth: 5.0,
                 ),
-                alignment: const Alignment(0, -0.6),
+              ],
+            ),
+          if (polylinePoints != null)
+            MarkerLayer(
+              markers: List<Marker>.generate(
+                polylinePoints!.length,
+                (int i) => Marker(
+                  point: polylinePoints![i],
+                  child: Builder(
+                    builder: (context) {
+                      if (i == polylinePoints!.length - 1) {
+                        return const Icon(Icons.flag, color: tcColorLight);
+                      }
+                      if (i == 0) {
+                        return const Icon(Icons.start, color: Colors.redAccent);
+                      }
+                      return const SizedBox(height: 0);
+                    },
+                  ),
+                  alignment: const Alignment(0, -0.6),
+                ),
               ),
             ),
-          ),
           RichAttributionWidget(
             attributions: [
               TextSourceAttribution(

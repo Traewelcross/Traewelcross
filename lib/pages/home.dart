@@ -228,7 +228,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-
   // Irrelavant since we now renew automatically
   /*Future<void> _checkTokenExpire() async {
     final apiService = getIt<ApiService>();
@@ -272,16 +271,28 @@ class _HomeState extends State<Home> {
     ).setInt("buildNumber", currentBuildNumber);
     // TODO: Display Update SnackBar (give option to view changelog)
   }
+
   static const _volChan = MethodChannel("volume");
   @override
   void initState() {
     super.initState();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if(!mounted) return;
-        if(getIt<Config>().misc.needsRelogin) {
-          Navigator.of(context).push(MaterialPageRoute(builder:(context) { return OauthLogin(onLoginSuccess: () => TerminateRestart.instance.restartApp(options: TerminateRestartOptions(terminate: true)), relogin: true,);}));
-        }
-      });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (getIt<Config>().misc.needsRelogin) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return OauthLogin(
+                onLoginSuccess: () => TerminateRestart.instance.restartApp(
+                  options: TerminateRestartOptions(terminate: true),
+                ),
+                relogin: true,
+              );
+            },
+          ),
+        );
+      }
+    });
     _getHistory();
     _stationController.addListener(_typedText);
     _stationFocus.addListener(() {
@@ -295,7 +306,7 @@ class _HomeState extends State<Home> {
     });
     _isAppUpdate();
     _volChan.setMethodCallHandler((call) {
-      if(call.method == "volumePressed") {
+      if (call.method == "volumePressed") {
         _checkInGPSStation();
       }
       return Future.value(null);
@@ -605,12 +616,12 @@ class _AlertsState extends State<Alerts> {
       return Future.value([]);
     }
   }
+
   static const _volChan = MethodChannel("volume");
   @override
   void initState() {
     super.initState();
     _alerts = _getAlerts();
-
   }
 
   @override
@@ -665,7 +676,7 @@ class _AlertsState extends State<Alerts> {
                           ),
                         ],
                       ),
-                      Divider(height: 0,),
+                      Divider(height: 0),
                       Row(
                         children: [
                           Expanded(

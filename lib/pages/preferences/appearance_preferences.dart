@@ -26,8 +26,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
   void initState() {
     super.initState();
     dynamicSupportFuture = SharedFunctions.dynamicColorSupport();
-        print(PlatformDispatcher.instance.systemFontFamily);
-
+    print(PlatformDispatcher.instance.systemFontFamily);
   }
 
   @override

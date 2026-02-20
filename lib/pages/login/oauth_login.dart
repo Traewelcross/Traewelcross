@@ -9,7 +9,11 @@ import '../app_info.dart';
 class OauthLogin extends StatefulWidget {
   final VoidCallback onLoginSuccess;
   final bool relogin;
-  const OauthLogin({super.key, required this.onLoginSuccess, this.relogin = false});
+  const OauthLogin({
+    super.key,
+    required this.onLoginSuccess,
+    this.relogin = false,
+  });
 
   @override
   State<OauthLogin> createState() => _OauthLoginState();
@@ -57,7 +61,9 @@ class _OauthLoginState extends State<OauthLogin> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    widget.relogin ? localize.reloginRequired : localize.introText,
+                    widget.relogin
+                        ? localize.reloginRequired
+                        : localize.introText,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -74,21 +80,22 @@ class _OauthLoginState extends State<OauthLogin> {
                     label: Text(localize.addAccountBtn),
                     icon: const Icon(Icons.open_in_new),
                   ),
-                  if(getIt<Config>().notification.notificationsAvailable && !widget.relogin)
-                  Card(
-                    child: ListTile(
-                      leading: const Icon(Icons.notifications),
-                      title: Text(localize.activateNotifications),
-                      trailing: Switch(
-                        value:
-                            getIt<Config>().notification.notificationsEnabled,
-                        onChanged: (val) => setState(() {
-                          getIt<Config>().notification.notificationsEnabled =
-                              val;
-                        }),
+                  if (getIt<Config>().notification.notificationsAvailable &&
+                      !widget.relogin)
+                    Card(
+                      child: ListTile(
+                        leading: const Icon(Icons.notifications),
+                        title: Text(localize.activateNotifications),
+                        trailing: Switch(
+                          value:
+                              getIt<Config>().notification.notificationsEnabled,
+                          onChanged: (val) => setState(() {
+                            getIt<Config>().notification.notificationsEnabled =
+                                val;
+                          }),
+                        ),
                       ),
                     ),
-                  ),
                   if (_offerAlt)
                     Column(
                       children: [

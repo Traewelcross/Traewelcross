@@ -53,9 +53,7 @@ class AppInfo extends StatelessWidget {
                     width: double.infinity,
                     child: OutlinedButton.icon(
                       onPressed: () async {
-                        SharedFunctions.launchURL(
-                          SharedFunctions.repoURI,
-                        );
+                        SharedFunctions.launchURL(SharedFunctions.repoURI);
                       },
                       label: Text(localize.viewProjectBtn),
                       icon: const Icon(Symbols.code),

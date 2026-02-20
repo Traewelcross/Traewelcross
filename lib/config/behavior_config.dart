@@ -65,15 +65,16 @@ class BehaviorConfig with ChangeNotifier {
   }
 
   static const _volChan = MethodChannel("volume");
+
   /// Can the user control the App via the volume buttons
   /// Experimental!
   bool _volumeBtnCtrl = false;
   @JsonKey(defaultValue: false)
   bool get volumeBtnCtrl => _volumeBtnCtrl;
-  set volumeBtnCtrl(bool val){
+  set volumeBtnCtrl(bool val) {
     _volumeBtnCtrl = val;
-    if(Platform.isAndroid) _volChan.invokeMethod("setOverrideStatus",{"val": val});
+    if (Platform.isAndroid)
+      _volChan.invokeMethod("setOverrideStatus", {"val": val});
     notifyListeners();
   }
-
 }

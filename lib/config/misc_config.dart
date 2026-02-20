@@ -24,7 +24,7 @@ class MiscConfig with ChangeNotifier {
   bool _showStats = false;
   @JsonKey(defaultValue: false)
   bool get showStats => _showStats;
-  set showStats(bool val){
+  set showStats(bool val) {
     _showStats = val;
     notifyListeners();
   }
@@ -36,7 +36,7 @@ class MiscConfig with ChangeNotifier {
   DateTime? _lastBoot;
   @JsonKey(defaultValue: null)
   DateTime? get lastBoot => _lastBoot;
-  set lastBoot(DateTime? dt){
+  set lastBoot(DateTime? dt) {
     _lastBoot = dt;
     notifyListeners();
   }
@@ -45,7 +45,7 @@ class MiscConfig with ChangeNotifier {
   bool _needsRelogin = false;
   @JsonKey(defaultValue: false)
   bool get needsRelogin => _needsRelogin;
-  set needsRelogin(bool val){
+  set needsRelogin(bool val) {
     _needsRelogin = val;
     notifyListeners();
   }

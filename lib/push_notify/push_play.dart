@@ -130,11 +130,7 @@ class PushPlay implements PushApi {
       ]),
       encoding: Encoding.getByName("UTF-8"),
       headers: {"Content-type": "application/json"},
-      body: jsonEncode({
-        "fcm_token": fcm,
-        "user_id": uid,
-        "is_firebase": true,
-      }),
+      body: jsonEncode({"fcm_token": fcm, "user_id": uid, "is_firebase": true}),
     );
     if (response.statusCode == 201) {
       return true;

@@ -10,7 +10,8 @@ class ExperimentalPreferences extends StatefulWidget {
   const ExperimentalPreferences({super.key});
 
   @override
-  State<ExperimentalPreferences> createState() => _ExperimentalPreferencesState();
+  State<ExperimentalPreferences> createState() =>
+      _ExperimentalPreferencesState();
 }
 
 class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
@@ -22,18 +23,21 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
       title: Text(localize.behavior),
       body: ListView(
         children: [
-          if(Platform.isAndroid)
-          ListTile(
-            onTap: () => setState(() {
-              config.behavior.volumeBtnCtrl = !config.behavior.volumeBtnCtrl;
-            }),
-            leading: const Icon(Icons.music_note),
-            title: Text(localize.volumeBtnCtrl),
-            subtitle: Text(localize.volumeBtnCtrlNote),
-            trailing: Checkbox(value: config.behavior.volumeBtnCtrl, onChanged: (val) => setState(() {
-              config.behavior.volumeBtnCtrl = val!;
-            }))
-          ),
+          if (Platform.isAndroid)
+            ListTile(
+              onTap: () => setState(() {
+                config.behavior.volumeBtnCtrl = !config.behavior.volumeBtnCtrl;
+              }),
+              leading: const Icon(Icons.music_note),
+              title: Text(localize.volumeBtnCtrl),
+              subtitle: Text(localize.volumeBtnCtrlNote),
+              trailing: Checkbox(
+                value: config.behavior.volumeBtnCtrl,
+                onChanged: (val) => setState(() {
+                  config.behavior.volumeBtnCtrl = val!;
+                }),
+              ),
+            ),
           /*ListTile(
             onTap: () => setState(() {
               config.misc.showStats = !config.misc.showStats;

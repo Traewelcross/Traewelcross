@@ -52,7 +52,8 @@ class ApiService {
       await refreshToken();
       hasBeenRefreshed = true;
     }
-    if(DateTime.now().difference(_lastRequest).inHours >= 1 && !hasBeenRefreshed){
+    if (DateTime.now().difference(_lastRequest).inHours >= 1 &&
+        !hasBeenRefreshed) {
       if (kDebugMode) print("Refresh Token (stale)");
       await refreshToken();
     }
@@ -61,46 +62,46 @@ class ApiService {
     if (client == null) {
       throw Future.error("User is not authenticated.");
     }
-      late http.Response res;
-      switch (type) {
-        case HttpRequestTypes.GET:
-          res = await client
-              .get(SharedFunctions.concatUri([_baseURL, url]))
-              .timeout(Duration(seconds: _timeoutDuration));
-          break;
-        case HttpRequestTypes.PUT:
-          res = await client
-              .put(
-                SharedFunctions.concatUri([_baseURL, url]),
-                headers: headers,
-                body: body,
-                encoding: encoding,
-              )
-              .timeout(Duration(seconds: _timeoutDuration));
-          break;
-        case HttpRequestTypes.POST:
-          res = await client
-              .post(
-                SharedFunctions.concatUri([_baseURL, url]),
-                headers: headers,
-                body: body,
-                encoding: encoding,
-              )
-              .timeout(Duration(seconds: _timeoutDuration));
-          break;
-        case HttpRequestTypes.DELETE:
-          res = await client
-              .delete(
-                SharedFunctions.concatUri([_baseURL, url]),
-                headers: headers,
-                body: body,
-                encoding: encoding,
-              )
-              .timeout(Duration(seconds: _timeoutDuration));
-          break;
-      }
-      _lastRequest = DateTime.now();
-      return res;
+    late http.Response res;
+    switch (type) {
+      case HttpRequestTypes.GET:
+        res = await client
+            .get(SharedFunctions.concatUri([_baseURL, url]))
+            .timeout(Duration(seconds: _timeoutDuration));
+        break;
+      case HttpRequestTypes.PUT:
+        res = await client
+            .put(
+              SharedFunctions.concatUri([_baseURL, url]),
+              headers: headers,
+              body: body,
+              encoding: encoding,
+            )
+            .timeout(Duration(seconds: _timeoutDuration));
+        break;
+      case HttpRequestTypes.POST:
+        res = await client
+            .post(
+              SharedFunctions.concatUri([_baseURL, url]),
+              headers: headers,
+              body: body,
+              encoding: encoding,
+            )
+            .timeout(Duration(seconds: _timeoutDuration));
+        break;
+      case HttpRequestTypes.DELETE:
+        res = await client
+            .delete(
+              SharedFunctions.concatUri([_baseURL, url]),
+              headers: headers,
+              body: body,
+              encoding: encoding,
+            )
+            .timeout(Duration(seconds: _timeoutDuration));
+        break;
+    }
+    _lastRequest = DateTime.now();
+    return res;
   }
 
   Future<void> logOut() async {
@@ -121,51 +122,49 @@ class ApiService {
     if (oAuthClient == null) {
       return false;
     }
-      oauth2.Credentials? creds;
-      http.Response? res;
-      final client = http.Client();
+    oauth2.Credentials? creds;
+    http.Response? res;
+    final client = http.Client();
 
-      // Inner try-finally for the plain http.Client
-      try {
-        res = await client.post(
-          SharedFunctions.concatUri(["https://traewelling.de", "/oauth/token"]),
-          headers: {"Content-Type": "application/x-www-form-urlencoded"},
-          body: {
-            "refresh_token": oAuthClient.credentials.refreshToken ?? "",
-            "grant_type": "refresh_token",
-            "client_id": oAuthClient.identifier,
-          },
-          encoding: Encoding.getByName("UTF-8"),
-        );
-        if (res.statusCode == 200) {
-          final json = jsonDecode(res.body);
-          creds = oauth2.Credentials(
-            json["access_token"],
-            refreshToken: json["refresh_token"],
-            expiration: DateTime.now().add(
-              Duration(seconds: json["expires_in"]),
-            ),
-            tokenEndpoint: Uri.parse(AuthService.tokenEndpoint),
-          );
-        }
-      } catch (e) {
-        return Future.error(e);
-      } finally {
-        client.close();
-      }
-
-      if (creds == null) {
-        return Future.error(
-          ErrorInfo(
-            "Couldn't refresh token, response credentials were null",
-            type: ErrorType.httpError,
-            httpStatusCode: res.statusCode,
-            exception: res.body,
-          ),
+    // Inner try-finally for the plain http.Client
+    try {
+      res = await client.post(
+        SharedFunctions.concatUri(["https://traewelling.de", "/oauth/token"]),
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: {
+          "refresh_token": oAuthClient.credentials.refreshToken ?? "",
+          "grant_type": "refresh_token",
+          "client_id": oAuthClient.identifier,
+        },
+        encoding: Encoding.getByName("UTF-8"),
+      );
+      if (res.statusCode == 200) {
+        final json = jsonDecode(res.body);
+        creds = oauth2.Credentials(
+          json["access_token"],
+          refreshToken: json["refresh_token"],
+          expiration: DateTime.now().add(Duration(seconds: json["expires_in"])),
+          tokenEndpoint: Uri.parse(AuthService.tokenEndpoint),
         );
       }
-      await _authService.saveCredentials(creds);
-      return true;
+    } catch (e) {
+      return Future.error(e);
+    } finally {
+      client.close();
+    }
+
+    if (creds == null) {
+      return Future.error(
+        ErrorInfo(
+          "Couldn't refresh token, response credentials were null",
+          type: ErrorType.httpError,
+          httpStatusCode: res.statusCode,
+          exception: res.body,
+        ),
+      );
+    }
+    await _authService.saveCredentials(creds);
+    return true;
   }
 
   Future<String?> fetchUserProfilePicture(String userName) async {
