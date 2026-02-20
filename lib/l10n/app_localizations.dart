@@ -1645,6 +1645,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'It\'s like the doctor gave you a prescription'**
   String get linefontFontDesc;
+
+  /// No description provided for @showAltDepStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Show connections from other stops in close proximity to the selected one'**
+  String get showAltDepStation;
 }
 
 class _AppLocalizationsDelegate

@@ -44,11 +44,11 @@ class ApiService {
   }) async {
     bool hasBeenRefreshed = false;
     // Token Lifetime has been drastically reduced: https://github.com/Traewelling/traewelling/pull/3869
-    // The token will refresh on every 7th API request. This is to avoid potential ratelimits.
+    // The token will refresh on every 20th API request. This is to avoid potential ratelimits.
     _requestCount++;
-    if (_requestCount >= 7) {
+    if (_requestCount >= 20) {
       _requestCount = 0;
-      if (kDebugMode) print("Refresh Token (7th api request)");
+      if (kDebugMode) print("Refresh Token (20th api request)");
       await refreshToken();
       hasBeenRefreshed = true;
     }

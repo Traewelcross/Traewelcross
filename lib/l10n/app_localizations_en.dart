@@ -886,4 +886,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get linefontFontDesc =>
       'It\'s like the doctor gave you a prescription';
+
+  @override
+  String get showAltDepStation =>
+      'Show connections from other stops in close proximity to the selected one';
 }

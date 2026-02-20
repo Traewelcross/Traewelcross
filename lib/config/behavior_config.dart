@@ -73,8 +73,15 @@ class BehaviorConfig with ChangeNotifier {
   bool get volumeBtnCtrl => _volumeBtnCtrl;
   set volumeBtnCtrl(bool val) {
     _volumeBtnCtrl = val;
-    if (Platform.isAndroid)
-      _volChan.invokeMethod("setOverrideStatus", {"val": val});
+    if (Platform.isAndroid) _volChan.invokeMethod("setOverrideStatus", {"val": val});
+    notifyListeners();
+  }
+
+  bool _showAltDepartureStops = true;
+  @JsonKey(defaultValue: true)
+  bool get showAltDepartureStops => _showAltDepartureStops;
+  set showAltDepartureStops(bool val){
+    _showAltDepartureStops = val;
     notifyListeners();
   }
 }

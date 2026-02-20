@@ -7,6 +7,7 @@ import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/departure_time.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/ride_icon_tag.dart';
+import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/depart_types.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
@@ -246,6 +247,7 @@ class _SelectConnectionState extends State<SelectConnection> {
                 child: _DepartureList(
                   departuresFuture: _departuresFuture,
                   stationName: widget.stationName,
+                  retryTrigger: () => _departuresFuture = _fetchDepartures(),
                 ),
               ),
             ),
@@ -295,10 +297,12 @@ class _DepartureList extends StatelessWidget {
   const _DepartureList({
     required this.departuresFuture,
     required this.stationName,
+    required this.retryTrigger,
   });
 
   final Future<List<dynamic>> departuresFuture;
   final String stationName;
+  final Function() retryTrigger;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -314,6 +318,7 @@ class _DepartureList extends StatelessWidget {
               children: [
                 const Icon(Icons.error),
                 Text(asyncSnapshot.error.toString()),
+                OutlinedButton.icon(onPressed: () => retryTrigger.call(), label: Text(AppLocalizations.of(context)!.retry), icon: const Icon(Icons.refresh))
               ],
             ),
           );
@@ -332,10 +337,14 @@ class _DepartureList extends StatelessWidget {
               );
             }
             final departures = asyncSnapshot.data!;
+            final showOtherStations = getIt<Config>().behavior.showAltDepartureStops;
             return ListView.builder(
               itemCount: departures.length,
               itemBuilder: (BuildContext context, int i) {
                 final departure = departures[i];
+                if(!showOtherStations && departure["stop"]["name"] != stationName){
+                  return SizedBox(height: 0,);
+                }
                 return InkWell(
                   onTap: () {
                     Navigator.push(
@@ -387,7 +396,6 @@ class _DepartureList extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              if (departure["stop"]["name"] != stationName)
                                 Row(
                                   children: [
                                     Expanded(

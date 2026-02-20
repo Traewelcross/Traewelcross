@@ -257,5 +257,6 @@
     "iomFontDesc": "Monospace",
     "rubikFontDesc": "Moderne, etwas dickere Schrift",
     "suseFontDesc": "Ein gesunder Mix aus Monospace und Sans Serif, Standard für die Titelleiste und den \"Träwelcross\"-Schriftzug (pun not intended)",
-    "linefontFontDesc": "Für Mediziner:innen aller Art"
+    "linefontFontDesc": "Für Mediziner:innen aller Art",
+    "showAltDepStation": "Abfahrten für Stationen in der Nähe der ausgewählten anzeigen"
 }

@@ -891,4 +891,8 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get linefontFontDesc => 'Für Mediziner:innen aller Art';
+
+  @override
+  String get showAltDepStation =>
+      'Abfahrten für Stationen in der Nähe der ausgewählten anzeigen';
 }

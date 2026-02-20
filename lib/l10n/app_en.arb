@@ -536,5 +536,6 @@
   "iomFontDesc": "Monospace",
   "rubikFontDesc": "Modern font, a bit more heavy from the start",
   "suseFontDesc": "A healthy mix of Sans Serif and Monospace, used for the titles and the Träwelcross icon",
-  "linefontFontDesc": "It's like the doctor gave you a prescription"
+  "linefontFontDesc": "It's like the doctor gave you a prescription",
+  "showAltDepStation": "Show connections from other stops in close proximity to the selected one"
 }

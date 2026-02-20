@@ -86,6 +86,14 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             title: Text(localize.defaultTextPreferenceTitle),
             subtitle: Text(localize.defaultTextPreferenceSubtitle),
           ),
+          Divider(),
+          ListTile(
+            onTap: () => setState(() {
+              config.behavior.showAltDepartureStops = !config.behavior.showAltDepartureStops;
+            }),
+            title: Text(localize.showAltDepStation),
+            trailing: Checkbox(value: config.behavior.showAltDepartureStops, onChanged: (val) => setState(() {config.behavior.showAltDepartureStops = val!;})),
+          )
         ],
       ),
     );

@@ -20,7 +20,7 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
     final localize = AppLocalizations.of(context)!;
     Config config = getIt<Config>();
     return MainScaffold(
-      title: Text(localize.behavior),
+      title: Text(localize.experimentalPrefrences),
       body: ListView(
         children: [
           if (Platform.isAndroid)
