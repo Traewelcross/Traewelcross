@@ -272,7 +272,7 @@ class _HomeState extends State<Home> {
     ).setInt("buildNumber", currentBuildNumber);
     // TODO: Display Update SnackBar (give option to view changelog)
   }
-
+  static const _volChan = MethodChannel("volume");
   @override
   void initState() {
     super.initState();
@@ -294,6 +294,12 @@ class _HomeState extends State<Home> {
       }
     });
     _isAppUpdate();
+    _volChan.setMethodCallHandler((call) {
+      if(call.method == "volumePressed") {
+        _checkInGPSStation();
+      }
+      return Future.value(null);
+    });
   }
 
   @override
@@ -604,16 +610,7 @@ class _AlertsState extends State<Alerts> {
   void initState() {
     super.initState();
     _alerts = _getAlerts();
-    _volChan.setMethodCallHandler((call) {
-      if(call.method == "volumePressed") {
-        if(call.arguments == "down"){
-          print("down");
-        } else {
-          print("up");
-        }
-      }
-      return Future.value(null);
-    });
+
   }
 
   @override

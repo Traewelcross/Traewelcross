@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
@@ -46,11 +47,23 @@ class RideQuickView extends StatefulWidget {
 
 class _RideQuickViewState extends State<RideQuickView> {
   late Map<String, dynamic> _rideData;
-
+  static const _volChan = MethodChannel("volume");
   @override
   void initState() {
     super.initState();
     _rideData = widget.rideData;
+    if (widget.detailedView == true) {
+      _volChan.setMethodCallHandler((call) {
+        if (call.method == "volumePressed") {
+          if (call.arguments == "up") {
+            _updateTime(TimeOfDay.now(), false);
+          } else if (call.arguments == "down") {
+            _updateTime(TimeOfDay.now(), true);
+          }
+        }
+        return Future.value(null);
+      });
+    }
   }
 
   void _updateRideData(Map<String, dynamic> newRideData) {

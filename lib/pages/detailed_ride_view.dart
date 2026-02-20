@@ -113,6 +113,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
         );
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -127,6 +128,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
         ? _getRideData()
         : Future.value(widget.rideData!);
     _likes = _getLikeData();
+
   }
 
   void _likeCallback() {
