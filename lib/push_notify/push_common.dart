@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
-import 'package:traewelcross/app.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/detailed_ride_view.dart';
 import 'package:traewelcross/push_notify/push_interface.dart';
+import 'package:traewelcross/utils/shared.dart';
 
 class PushManager {
   final PushApi api;
@@ -66,7 +66,7 @@ void onDidReceiveNotificationResponse(
 ) {
   final json = jsonDecode(notificationResponse.payload ?? "{}");
   if (json["data"]["status"]?["id"] != null) {
-    navigatorKey.currentState?.push(
+    getIt<GlobalKey<NavigatorState>>().currentState?.push(
       MaterialPageRoute(
         builder: (context) =>
             DetailedRideView(rideId: json["data"]["status"]["id"]),

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'package:app_links/app_links.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,13 +27,12 @@ import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/custom_providers.dart';
 import 'package:traewelcross/utils/authentication.dart';
 import 'package:traewelcross/utils/color_scheme.dart';
+import 'package:traewelcross/utils/deeplink_service.dart';
 import 'package:traewelcross/utils/error_info.dart';
 import 'package:traewelcross/utils/shared.dart';
 import 'package:watch_it/watch_it.dart';
 import 'pages/app_info.dart';
 import 'l10n/app_localizations.dart';
-
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class App extends WatchingWidget {
   const App({super.key});
@@ -111,7 +109,7 @@ class App extends WatchingWidget {
             Brightness.dark,
           );
           return MaterialApp(
-            navigatorKey: navigatorKey,
+            navigatorKey: getIt<GlobalKey<NavigatorState>>(),
             title: "Träwelcross",
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
@@ -147,9 +145,6 @@ class AppHome extends StatefulWidget {
 }
 
 class _AppHomeState extends State<AppHome> {
-  late AppLinks _appLinks;
-  StreamSubscription<Uri>? _linkSubscription;
-
   void _coldNotificationBootHandler() async {
     final NotificationAppLaunchDetails? launchDetails =
         await FlutterLocalNotificationsPlugin()
@@ -169,10 +164,14 @@ class _AppHomeState extends State<AppHome> {
   @override
   void initState() {
     super.initState();
-    // Schedule the deep link initialization to run after the first frame.
+    // Schedule the deep link initialization to run after the first frame so we are logged in and can open a restricted status
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        _initDeepLinks();
+        getIt<DeepLinkService>().init(
+          onLoginSuccess: () {
+            if (mounted) setState(() {});
+          },
+        );
         if (Platform.isAndroid || Platform.isIOS) {
           _coldNotificationBootHandler();
         }
@@ -182,37 +181,7 @@ class _AppHomeState extends State<AppHome> {
 
   @override
   void dispose() {
-    _linkSubscription?.cancel();
     super.dispose();
-  }
-
-  Future<void> _initDeepLinks() async {
-    _appLinks = AppLinks();
-
-    // Handle initial link that launched the app
-    final initialUri = await _appLinks.getInitialLink();
-    if (initialUri != null) {
-      _handleOauthCallback(initialUri);
-    }
-
-    // Handle links received while the app is running
-    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
-      _handleOauthCallback(uri);
-      _linkSubscription?.cancel();
-    });
-  }
-
-  void _handleOauthCallback(Uri uri) {
-    final authService = getIt<AuthService>();
-    if (uri.host == 'oauth.traewelcross.de') {
-      authService.handleAuthorizationResponse(uri.queryParameters).then((
-        client,
-      ) {
-        if (client != null && mounted) {
-          setState(() {});
-        }
-      });
-    }
   }
 
   Future<void> _setupNotification() async {

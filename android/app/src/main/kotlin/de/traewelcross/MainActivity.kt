@@ -23,6 +23,6 @@ class MainActivity : FlutterActivity() {
             }
             return true
         }
-        return false
+        return super.onKeyDown(keyCode, event)
     }
 }

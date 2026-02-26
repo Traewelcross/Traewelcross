@@ -12,6 +12,7 @@ import 'package:traewelcross/push_notify/push_common.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/custom_providers.dart';
 import 'package:traewelcross/utils/authentication.dart';
+import 'package:traewelcross/utils/deeplink_service.dart';
 import 'package:traewelcross/utils/time_span.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/foundation.dart';
@@ -65,6 +66,11 @@ class SharedFunctions {
     getIt.registerLazySingleton<Logger>(
       () => Logger(printer: SimplePrinter(printTime: true, colors: true)),
     );
+    getIt.registerLazySingleton<DeepLinkService>(
+      () => DeepLinkService(),
+      dispose: (service) => service.dispose(),
+    );
+    getIt.registerSingleton<GlobalKey<NavigatorState>>(GlobalKey<NavigatorState>());
   }
 
   /// Refresh the token every time the App is opened, prompting the user to login again if so needed!
