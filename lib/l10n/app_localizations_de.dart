@@ -895,4 +895,11 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get showAltDepStation =>
       'Abfahrten für Stationen in der Nähe der ausgewählten anzeigen';
+
+  @override
+  String get openDysFontDesc => 'Kann bei Legasthenie helfen!';
+
+  @override
+  String get enableOpenDysAtLogin =>
+      'Legastheniefreundlichere Schrift aktivieren';
 }

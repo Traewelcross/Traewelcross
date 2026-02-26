@@ -162,6 +162,14 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                           subtitle: Text(localize.suseFontDesc),
                         ),
                         RadioListTile(
+                          value: "OpenDyslexic3",
+                          title: Text(
+                            "Open Dyslexic 3",
+                            style: TextStyle(fontFamily: "OpenDyslexic3"),
+                          ),
+                          subtitle: Text(localize.openDysFontDesc),
+                        ),
+                        RadioListTile(
                           value: "Linefont",
                           title: Text(
                             "Linefont",

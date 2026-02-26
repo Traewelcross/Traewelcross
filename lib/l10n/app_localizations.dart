@@ -1651,6 +1651,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show connections from other stops in close proximity to the selected one'**
   String get showAltDepStation;
+
+  /// No description provided for @openDysFontDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Aims to help with symptoms of dyslexia'**
+  String get openDysFontDesc;
+
+  /// No description provided for @enableOpenDysAtLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable a more dyslexia-friendly font'**
+  String get enableOpenDysAtLogin;
 }
 
 class _AppLocalizationsDelegate

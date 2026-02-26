@@ -60,7 +60,6 @@ class AppearanceConfig with ChangeNotifier {
   }
 
   /// Custom font
-  /// If null, System font will be used
   String _fontFam = "Outfit";
   @JsonKey(defaultValue: "Outfit")
   String get fontFam => _fontFam;

@@ -99,4 +99,8 @@ flutter:
     - family: Linefont
       fonts:
         - asset: fonts/Linefont/Linefont-VariableFont_wdth,wght.ttf
+    - family: OpenDyslexic3
+      fonts:
+        - asset: fonts/OpenDyslexic3/OpenDyslexic3-Bold.ttf
+        - asset: fonts/OpenDyslexic3/OpenDyslexic3-Regular.ttf
 

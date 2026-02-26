@@ -890,4 +890,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get showAltDepStation =>
       'Show connections from other stops in close proximity to the selected one';
+
+  @override
+  String get openDysFontDesc => 'Aims to help with symptoms of dyslexia';
+
+  @override
+  String get enableOpenDysAtLogin => 'Enable a more dyslexia-friendly font';
 }

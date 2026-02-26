@@ -96,6 +96,25 @@ class _OauthLoginState extends State<OauthLogin> {
                         ),
                       ),
                     ),
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.font_download),
+                      title: Text(localize.enableOpenDysAtLogin, style: TextStyle(fontFamily: "OpenDyslexic3"),),
+                      trailing: Switch(
+                        value:
+                            getIt<Config>().appearance.fontFam ==
+                            "OpenDyslexic3",
+                        onChanged: (val) => setState(() {
+                          if (val) {
+                            getIt<Config>().appearance.fontFam =
+                                "OpenDyslexic3";
+                          } else {
+                            getIt<Config>().appearance.fontFam = "Outfit";
+                          }
+                        }),
+                      ),
+                    ),
+                  ),
                   if (_offerAlt)
                     Column(
                       children: [
