@@ -207,14 +207,11 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                   },
                 ),
                 const SizedBox(height: 12),
-                Hero(
-                  tag: "rqv-${rideData["id"]}",
-                  child: RideQuickView(
-                    rideData: rideData,
-                    authUserId: widget.authUserId ?? 0,
-                    detailedView: true,
-                    likeCallback: _likeCallback,
-                  ),
+                RideQuickView(
+                  rideData: rideData,
+                  authUserId: widget.authUserId ?? 0,
+                  detailedView: true,
+                  likeCallback: _likeCallback,
                 ),
                 FutureBuilder(
                   future: _likes,

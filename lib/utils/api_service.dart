@@ -44,7 +44,7 @@ class ApiService {
   }) async {
     bool hasBeenRefreshed = false;
     // Token Lifetime has been drastically reduced: https://github.com/Traewelling/traewelling/pull/3869
-    // The token will refresh on every 20th API request. This is to avoid potential ratelimits.
+    // The token will only refresh on every 20th API request. This is to avoid potential ratelimits.
     _requestCount++;
     if (_requestCount >= 20) {
       _requestCount = 0;
@@ -100,6 +100,7 @@ class ApiService {
             .timeout(Duration(seconds: _timeoutDuration));
         break;
     }
+    //res.headers["x-ratelimit-remaining"]
     _lastRequest = DateTime.now();
     return res;
   }
