@@ -244,7 +244,7 @@
     "renew": "Erneuern",
     "openExternal": "Öffnen",
     "stats": "Statistiken",
-    "statisticsExperimentalNote": "Der Statistikentab ist noch nicht fertig und daher nicht vollfunktionsumfassend geschweige denn schön. Trotzdem kannst du hier den Tab aktivieren",
+    "statisticsExperimentalNote": "Der Statistikentab ist noch nicht fertig und könnte instabil sein oder du musst dich öfter neu anmelden. Anschalten auf eigene Gefahr, du verlässt die makierten Wege.",
     "experimentalPrefrences": "Experimentell",
     "volumeBtnCtrl": "Lautstärketasten überschreiben",
     "volumeBtnCtrlNote": "Benutze Grundfeatures der App mit den Lautstärketasten, z.B. wenn du Handschuhe an hast.",
@@ -255,10 +255,13 @@
     "outfitFontDesc": "Die Standard Träwelcross Schriftart",
     "nunitoFontDesc": "Runde Buchstaben ✨",
     "iomFontDesc": "Monospace",
-    "rubikFontDesc": "Moderne, etwas dickere Schrift",
+    "rubikFontDesc": "Moderne Schrift",
     "suseFontDesc": "Ein gesunder Mix aus Monospace und Sans Serif, Standard für die Titelleiste und den \"Träwelcross\"-Schriftzug (pun not intended)",
     "linefontFontDesc": "Für Mediziner:innen aller Art",
     "showAltDepStation": "Abfahrten für Stationen in der Nähe der ausgewählten anzeigen",
     "openDysFontDesc": "Kann bei Legasthenie helfen!",
-    "enableOpenDysAtLogin": "Legastheniefreundlichere Schrift aktivieren"
+    "enableOpenDysAtLogin": "Legastheniefreundlichere Schrift aktivieren",
+    "mapPageTitle": "Fahrten am {date}",
+    "dateSpan": "{date1} bis {date2}",
+    "waitForStatsMsg": "Statistik wird geladen.\nJe nach Zeitrahmen kann das etwas dauern. Wenn diese Anfrage fehlschlägt, versuche den Zeitrahmen enger zu stellen"
 }

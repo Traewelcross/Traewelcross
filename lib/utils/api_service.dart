@@ -100,7 +100,7 @@ class ApiService {
             .timeout(Duration(seconds: _timeoutDuration));
         break;
     }
-    //res.headers["x-ratelimit-remaining"]
+    print(res.headers["x-ratelimit-remaining"]);
     _lastRequest = DateTime.now();
     return res;
   }
@@ -127,7 +127,6 @@ class ApiService {
     http.Response? res;
     final client = http.Client();
 
-    // Inner try-finally for the plain http.Client
     try {
       res = await client.post(
         SharedFunctions.concatUri(["https://traewelling.de", "/oauth/token"]),

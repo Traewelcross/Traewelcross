@@ -6,7 +6,7 @@ class ColorCircle extends StatelessWidget {
   const ColorCircle({
     super.key,
     required this.color,
-    required this.icon,
+    this.icon,
     required this.width,
     required this.onTap,
   });

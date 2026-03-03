@@ -200,7 +200,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return SizedBox(
                         height: 512,
-                        child: _MapDisplay(polylinePoints: snapshot.data!),
+                        child: MapDisplay(polylinePoints: snapshot.data!),
                       );
                     }
                     return const SizedBox(height: 0);
@@ -333,8 +333,8 @@ class _DetailedRideViewState extends State<DetailedRideView> {
   }
 }
 
-class _MapDisplay extends StatelessWidget {
-  const _MapDisplay({this.polylinePoints});
+class MapDisplay extends StatelessWidget {
+  const MapDisplay({super.key, this.polylinePoints});
 
   final List<LatLng>? polylinePoints;
 

@@ -10,7 +10,7 @@ import 'package:traewelcross/utils/shared.dart';
 class DeepLinkService {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
-  
+
   Function? onLoginSuccess;
 
   void init({Function? onLoginSuccess}) {
@@ -46,8 +46,15 @@ class DeepLinkService {
         .getInt("userid")
         .then((val) => userId = val ?? 0);
     getIt<Logger>().i(uri.pathSegments);
-    if(uri.pathSegments[0] == "status"){
-      getIt<GlobalKey<NavigatorState>>().currentState?.push(MaterialPageRoute(builder: (context) => DetailedRideView(rideId: (int.parse(uri.pathSegments[1])), authUserId: userId,)));
+    if (uri.pathSegments[0] == "status") {
+      getIt<GlobalKey<NavigatorState>>().currentState?.push(
+        MaterialPageRoute(
+          builder: (context) => DetailedRideView(
+            rideId: (int.parse(uri.pathSegments[1])),
+            authUserId: userId,
+          ),
+        ),
+      );
     }
   }
 

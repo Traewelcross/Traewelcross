@@ -844,7 +844,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statisticsExperimentalNote =>
-      'The statistics tab is by no means feature complete or polished. If you still want to look at it, enable this option.';
+      'The statistics option is not done yet and might be unstable and require you to re-login more often. Enable at your own risk, for here be dragons.';
 
   @override
   String get volumeBtnCtrl => 'Volume Button Control';
@@ -877,7 +877,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get iomFontDesc => 'Monospace';
 
   @override
-  String get rubikFontDesc => 'Modern font, a bit more heavy from the start';
+  String get rubikFontDesc => 'Modern font';
 
   @override
   String get suseFontDesc =>
@@ -896,4 +896,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enableOpenDysAtLogin => 'Enable a more dyslexia-friendly font';
+
+  @override
+  String mapPageTitle(String date) {
+    return 'Rides on $date';
+  }
+
+  @override
+  String dateSpan(String date1, String date2) {
+    return '$date1 to $date2';
+  }
+
+  @override
+  String get waitForStatsMsg =>
+      'Stats are being loaded.\nNote that this may take some time, depending on the timeframe and numbers of journeys. If this request fails, try selecting a smaller timeframe.';
 }

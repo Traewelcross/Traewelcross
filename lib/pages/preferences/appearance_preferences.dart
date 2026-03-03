@@ -1,7 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -26,7 +24,6 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
   void initState() {
     super.initState();
     dynamicSupportFuture = SharedFunctions.dynamicColorSupport();
-    print(PlatformDispatcher.instance.systemFontFamily);
   }
 
   @override

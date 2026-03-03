@@ -38,7 +38,7 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
                 }),
               ),
             ),
-          /*ListTile(
+          ListTile(
             onTap: () => setState(() {
               config.misc.showStats = !config.misc.showStats;
             }),
@@ -51,7 +51,7 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
                 config.misc.showStats = val;
               }),
             ),
-          ),*/
+          ),
         ],
       ),
     );

@@ -5,8 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traewelcross/components/ride_quick_view.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
+import 'package:traewelcross/pages/stats/map_stat/map_stat_for_day_page.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import "package:http/http.dart" as http;
+import 'package:traewelcross/utils/ride_info.dart';
 import 'dart:convert';
 
 import 'package:traewelcross/utils/shared.dart';
@@ -126,14 +128,47 @@ class _OnTheMoveState extends State<OnTheMove> {
                   widgets.add(
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                      child: Text(
-                        DateFormat.yMMMMEEEEd(
-                          Localizations.localeOf(context).languageCode,
-                        ).format(currentRideDate),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                        ),
+                      child: Row(
+                        children: [
+                          Text(
+                            DateFormat.yMMMMEEEEd(
+                              Localizations.localeOf(context).languageCode,
+                            ).format(currentRideDate),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                            ),
+                          ),
+                          Spacer(),
+                          IconButton(
+                            onPressed: () {
+                              final rideDate = DateTime.parse(
+                                ride["train"]["manualDeparture"] ??
+                                    ride["train"]["origin"]["departure"],
+                              );
+                              final ridesOnThisDate = asyncSnapshot.data!.where(
+                                (ride) {
+                                  return rideDate.year ==
+                                          currentRideDate.year &&
+                                      rideDate.month == currentRideDate.month &&
+                                      rideDate.day == currentRideDate.day;
+                                },
+                              );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MapStatForDayPage(
+                                    rideInfo: ridesOnThisDate
+                                        .map((ride) => RideInfo.fromRides(ride))
+                                        .toList(),
+                                    date: rideDate,
+                                  ),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.map),
+                          ),
+                        ],
                       ),
                     ),
                   );

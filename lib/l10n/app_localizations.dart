@@ -1571,7 +1571,7 @@ abstract class AppLocalizations {
   /// No description provided for @statisticsExperimentalNote.
   ///
   /// In en, this message translates to:
-  /// **'The statistics tab is by no means feature complete or polished. If you still want to look at it, enable this option.'**
+  /// **'The statistics option is not done yet and might be unstable and require you to re-login more often. Enable at your own risk, for here be dragons.'**
   String get statisticsExperimentalNote;
 
   /// No description provided for @volumeBtnCtrl.
@@ -1631,7 +1631,7 @@ abstract class AppLocalizations {
   /// No description provided for @rubikFontDesc.
   ///
   /// In en, this message translates to:
-  /// **'Modern font, a bit more heavy from the start'**
+  /// **'Modern font'**
   String get rubikFontDesc;
 
   /// No description provided for @suseFontDesc.
@@ -1663,6 +1663,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enable a more dyslexia-friendly font'**
   String get enableOpenDysAtLogin;
+
+  /// No description provided for @mapPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rides on {date}'**
+  String mapPageTitle(String date);
+
+  /// No description provided for @dateSpan.
+  ///
+  /// In en, this message translates to:
+  /// **'{date1} to {date2}'**
+  String dateSpan(String date1, String date2);
+
+  /// No description provided for @waitForStatsMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Stats are being loaded.\nNote that this may take some time, depending on the timeframe and numbers of journeys. If this request fails, try selecting a smaller timeframe.'**
+  String get waitForStatsMsg;
 }
 
 class _AppLocalizationsDelegate

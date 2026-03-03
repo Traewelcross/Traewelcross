@@ -850,7 +850,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get statisticsExperimentalNote =>
-      'Der Statistikentab ist noch nicht fertig und daher nicht vollfunktionsumfassend geschweige denn schön. Trotzdem kannst du hier den Tab aktivieren';
+      'Der Statistikentab ist noch nicht fertig und könnte instabil sein oder du musst dich öfter neu anmelden. Anschalten auf eigene Gefahr, du verlässt die makierten Wege.';
 
   @override
   String get volumeBtnCtrl => 'Lautstärketasten überschreiben';
@@ -883,7 +883,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get iomFontDesc => 'Monospace';
 
   @override
-  String get rubikFontDesc => 'Moderne, etwas dickere Schrift';
+  String get rubikFontDesc => 'Moderne Schrift';
 
   @override
   String get suseFontDesc =>
@@ -902,4 +902,18 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get enableOpenDysAtLogin =>
       'Legastheniefreundlichere Schrift aktivieren';
+
+  @override
+  String mapPageTitle(String date) {
+    return 'Fahrten am $date';
+  }
+
+  @override
+  String dateSpan(String date1, String date2) {
+    return '$date1 bis $date2';
+  }
+
+  @override
+  String get waitForStatsMsg =>
+      'Statistik wird geladen.\nJe nach Zeitrahmen kann das etwas dauern. Wenn diese Anfrage fehlschlägt, versuche den Zeitrahmen enger zu stellen';
 }

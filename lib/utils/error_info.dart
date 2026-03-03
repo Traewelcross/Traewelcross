@@ -11,4 +11,8 @@ class ErrorInfo implements Exception {
     this.httpStatusCode,
     this.exception,
   });
+  @override
+  String toString() {
+    return "$message ($httpStatusCode)\n$exception";
+  }
 }

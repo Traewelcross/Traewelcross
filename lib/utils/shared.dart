@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
-import 'package:crypto/crypto.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -85,9 +85,11 @@ class SharedFunctions {
       DateTime? lastBootUp = misc.lastBoot;
       lastBootUp ??= DateTime.now();
       if ((lastBootUp.difference(DateTime.now()).inDays).abs() >= 30) {
-        print(
-          "lastboot: $lastBootUp / Now: ${DateTime.now()}, relogin required",
-        );
+        if (kDebugMode) {
+          print(
+            "lastboot: $lastBootUp / Now: ${DateTime.now()}, relogin required",
+          );
+        }
         misc.needsRelogin = true;
         return;
       }
@@ -206,20 +208,8 @@ class SharedFunctions {
     return true;
   }
 
-  /// Overengineered way of getting a color
   static Color getColorById({required int id}) {
-    final hash = sha256.convert(utf8.encode(id.toString()));
-    Uint8List hashUint = Uint8List.fromList(hash.bytes);
-    const max = 2 ^ 64 - 1;
-    final hue = (extractToDouble(hashUint, 0) / max) * 360;
-    final saturation = extractToDouble(hashUint, 8) / max;
-    final lightness = extractToDouble(hashUint, 0) / max;
-    return HSLColor.fromAHSL(1, hue, saturation, lightness).toColor();
-  }
-
-  static double extractToDouble(Uint8List hashBytes, int offset) {
-    final data = ByteData.sublistView(hashBytes);
-    int value = data.getUint64(offset);
-    return value / 0xFFFFFFFFFFFFFFFF;
+    final random = Random(id);
+    return Color((random.nextDouble() * 0xFFFFFF).toInt()).withValues(alpha: 1);
   }
 }

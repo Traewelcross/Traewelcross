@@ -342,6 +342,9 @@ class _ChromeState extends State<Chrome> {
         ];
         break;
       case 3:
+        selectedPage = Statistics();
+        break;
+      case 4:
         selectedPage = ProfileView(
           isOtherUser: false,
           scrollController: _scrollController,
@@ -367,9 +370,6 @@ class _ChromeState extends State<Chrome> {
             icon: const Icon(Icons.settings),
           ),
         ];
-        break;
-      case 4:
-        selectedPage = Statistics();
         break;
       default:
         selectedPage = const Placeholder();
@@ -397,15 +397,15 @@ class _ChromeState extends State<Chrome> {
                 : const Icon(Icons.notifications),
             label: AppLocalizations.of(context)!.navNotify,
           ),
-          NavigationDestination(
-            icon: OwnProfilePicture(maxWidth: 42),
-            label: AppLocalizations.of(context)!.navProfile,
-          ),
           if (watchIt<Config>().misc.showStats || kDebugMode)
             NavigationDestination(
               icon: const Icon(Icons.bar_chart),
               label: AppLocalizations.of(context)!.stats,
             ),
+          NavigationDestination(
+            icon: OwnProfilePicture(maxWidth: 42),
+            label: AppLocalizations.of(context)!.navProfile,
+          ),
         ],
         selectedIndex: selectedPageIndex,
         onDestinationSelected: (value) {

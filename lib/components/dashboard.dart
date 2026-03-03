@@ -26,17 +26,14 @@ class _DashboardState extends State<Dashboard> {
       RideQuickViewWrapperController();
 
   Future<void> refresh() async {
-    await Future.wait([
-      _countNotifications(),
-      _wrapperController.refresh(),
-    ]);
+    await Future.wait([_countNotifications(), _wrapperController.refresh()]);
   }
+
   @override
   void initState() {
     super.initState();
     widget.controller?._onRefresh = refresh;
   }
-
 
   Future<void> _countNotifications() async {
     final apiService = getIt<ApiService>();

@@ -318,7 +318,11 @@ class _DepartureList extends StatelessWidget {
               children: [
                 const Icon(Icons.error),
                 Text(asyncSnapshot.error.toString()),
-                OutlinedButton.icon(onPressed: () => retryTrigger.call(), label: Text(AppLocalizations.of(context)!.retry), icon: const Icon(Icons.refresh))
+                OutlinedButton.icon(
+                  onPressed: () => retryTrigger.call(),
+                  label: Text(AppLocalizations.of(context)!.retry),
+                  icon: const Icon(Icons.refresh),
+                ),
               ],
             ),
           );
@@ -337,13 +341,15 @@ class _DepartureList extends StatelessWidget {
               );
             }
             final departures = asyncSnapshot.data!;
-            final showOtherStations = getIt<Config>().behavior.showAltDepartureStops;
+            final showOtherStations =
+                getIt<Config>().behavior.showAltDepartureStops;
             return ListView.builder(
               itemCount: departures.length,
               itemBuilder: (BuildContext context, int i) {
                 final departure = departures[i];
-                if(!showOtherStations && departure["stop"]["name"] != stationName){
-                  return SizedBox(height: 0,);
+                if (!showOtherStations &&
+                    departure["stop"]["name"] != stationName) {
+                  return SizedBox(height: 0);
                 }
                 return InkWell(
                   onTap: () {
@@ -396,22 +402,23 @@ class _DepartureList extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        AppLocalizations.of(
-                                          context,
-                                        )!.startsAtDifferentStop(
-                                          departure["stop"]["name"],
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        softWrap: false,
+                              if (departure["stop"]["name"] != stationName)
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.startsAtDifferentStop(
+                                        departure["stop"]["name"],
                                       ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      softWrap: false,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),

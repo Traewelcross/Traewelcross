@@ -5,7 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traewelcross/components/ride_quick_view.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
+import 'package:traewelcross/pages/stats/map_stat/map_stat_for_day_page.dart';
 import 'package:traewelcross/utils/api_service.dart';
+import 'package:traewelcross/utils/ride_info.dart';
 
 import 'dart:convert';
 
@@ -158,8 +160,29 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
                   ),
                   Spacer(),
                   IconButton(
-                    onPressed: () => "",
-                    icon: const Icon(Icons.dining_sharp),
+                    onPressed: () {
+                      final ridesOnThisDate = _userRides.where((ride) {
+                        final rideDate = DateTime.parse(
+                          ride["train"]["manualDeparture"] ??
+                              ride["train"]["origin"]["departure"],
+                        );
+                        return rideDate.year == currentRideDate.year &&
+                            rideDate.month == currentRideDate.month &&
+                            rideDate.day == currentRideDate.day;
+                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MapStatForDayPage(
+                            rideInfo: ridesOnThisDate
+                                .map((ride) => RideInfo.fromRides(ride))
+                                .toList(),
+                            date: currentRideDate,
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.map),
                   ),
                 ],
               ),

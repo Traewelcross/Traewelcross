@@ -82,12 +82,11 @@ class _CheckInState extends State<CheckIn> {
     String? text = getIt<Config>().behavior.defaultStatusText;
     if (text == null) return;
     // TODO: Actually implement this
+    // ignore: unused_local_variable
     final Map<String, String> replacementMap = {
       "plannedDep": "",
       "plannedArr": "",
     };
-    // Disable warning replacementMap is unused :p
-    replacementMap;
     statusController.text = text;
   }
 

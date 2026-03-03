@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:traewelcross/enums/http_request_types.dart';
-import 'package:traewelcross/utils/api_service.dart';
-import 'package:traewelcross/utils/shared.dart';
+import 'package:traewelcross/pages/stats/map_stat/map_stat.dart';
+import 'package:traewelcross/pages/stats/map_stat/map_stat_for_user.dart';
 
 class Statistics extends StatefulWidget {
   const Statistics({super.key});
@@ -13,7 +10,7 @@ class Statistics extends StatefulWidget {
 }
 
 class _StatisticsState extends State<Statistics> {
-  late final Future<Map<String, dynamic>> _stats;
+  /*late final Future<Map<String, dynamic>> _stats;
   Future<Map<String, dynamic>> _getGlobalStats() async {
     final response = await getIt<ApiService>().request(
       "/statistics/global",
@@ -29,12 +26,12 @@ class _StatisticsState extends State<Statistics> {
   void initState() {
     super.initState();
     _stats = _getGlobalStats();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _stats,
+      future: Future.value(true),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {
@@ -43,7 +40,20 @@ class _StatisticsState extends State<Statistics> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         }
-        return Placeholder();
+        return DefaultTabController(
+          length: 1,
+          child: Column(
+            children: [
+              TabBar.secondary(tabs: [Tab(icon: const Icon(Icons.map))]),
+              SizedBox(height: 8,),
+              Expanded(
+                child: TabBarView(children: [
+                  MapStatForUser()
+                ]),
+              )
+            ],
+          ),
+        );
       },
     );
   }

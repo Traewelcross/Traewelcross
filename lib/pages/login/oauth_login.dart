@@ -99,7 +99,10 @@ class _OauthLoginState extends State<OauthLogin> {
                   Card(
                     child: ListTile(
                       leading: const Icon(Icons.font_download),
-                      title: Text(localize.enableOpenDysAtLogin, style: TextStyle(fontFamily: "OpenDyslexic3"),),
+                      title: Text(
+                        localize.enableOpenDysAtLogin,
+                        style: TextStyle(fontFamily: "OpenDyslexic3"),
+                      ),
                       trailing: Switch(
                         value:
                             getIt<Config>().appearance.fontFam ==

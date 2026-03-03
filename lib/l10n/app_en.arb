@@ -524,7 +524,7 @@
   "openExternal": "Open",
   "experimentalPrefrences": "Experimental",
   "stats": "Statistics",
-  "statisticsExperimentalNote": "The statistics tab is by no means feature complete or polished. If you still want to look at it, enable this option.",
+  "statisticsExperimentalNote": "The statistics option is not done yet and might be unstable and require you to re-login more often. Enable at your own risk, for here be dragons.",
   "volumeBtnCtrl": "Volume Button Control",
   "volumeBtnCtrlNote": "Use basic features using your volume buttons. I.e. when using gloves",
   "reloginRequired": "You haven't used Träwelcross for 30 days or longer. Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.",
@@ -534,10 +534,30 @@
   "outfitFontDesc": "The default Träwelcross app font",
   "nunitoFontDesc": "Rounded letters ✨",
   "iomFontDesc": "Monospace",
-  "rubikFontDesc": "Modern font, a bit more heavy from the start",
+  "rubikFontDesc": "Modern font",
   "suseFontDesc": "A healthy mix of Sans Serif and Monospace, used for the titles and the Träwelcross icon",
   "linefontFontDesc": "It's like the doctor gave you a prescription",
   "showAltDepStation": "Show connections from other stops in close proximity to the selected one",
   "openDysFontDesc": "Aims to help with symptoms of dyslexia",
-  "enableOpenDysAtLogin": "Enable a more dyslexia-friendly font"
+  "enableOpenDysAtLogin": "Enable a more dyslexia-friendly font",
+  "mapPageTitle": "Rides on {date}",
+  "@mapPageTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "dateSpan": "{date1} to {date2}",
+  "@dateSpan": {
+    "placeholders": {
+      "date1":{
+        "type": "String"
+      },
+      "date2":{
+        "type": "String"
+      }
+    }
+  },
+  "waitForStatsMsg": "Stats are being loaded.\nNote that this may take some time, depending on the timeframe and numbers of journeys. If this request fails, try selecting a smaller timeframe."
 }
