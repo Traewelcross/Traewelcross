@@ -11,15 +11,22 @@ import 'dart:convert';
 
 import 'package:traewelcross/utils/shared.dart';
 
+class RideQuickViewWrapperController {
+  Future<void> Function()? _onRefresh;
+  Future<void> refresh() async => await _onRefresh?.call();
+}
+
 class RideQuickViewWrapper extends StatefulWidget {
   const RideQuickViewWrapper({
     super.key,
-    required this.userName,
+    this.userName,
     required this.scrollController,
+    this.controller,
   });
 
-  final String userName;
+  final String? userName;
   final ScrollController? scrollController;
+  final RideQuickViewWrapperController? controller;
 
   @override
   State<RideQuickViewWrapper> createState() => _RideQuickViewWrapperState();
@@ -34,10 +41,11 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
   @override
   void initState() {
     super.initState();
+    widget.controller?._onRefresh = refresh;
     SharedPreferencesAsync()
         .getInt("userid")
         .then((val) => _userIdAuthUser = val ?? 0);
-    _fetchUserRides();
+    _fetchRides();
     widget.scrollController!.addListener(_onScroll);
   }
 
@@ -47,18 +55,29 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
     super.dispose();
   }
 
-  Future<void> _fetchUserRides() async {
+  Future<void> refresh() async {
+    if (!mounted) return;
+    setState(() {
+      _userRides.clear();
+      _page = 1;
+      _isLoading = false;
+    });
+    await _fetchRides();
+  }
+
+  Future<void> _fetchRides() async {
     if (_isLoading) return;
+    if (!mounted) return;
     setState(() {
       _isLoading = true;
     });
 
     final apiService = getIt<ApiService>();
     try {
-      final response = await apiService.request(
-        "/user/${widget.userName}/statuses?page=$_page",
-        HttpRequestTypes.GET,
-      );
+      final endpoint = widget.userName == null
+          ? "/dashboard?page=$_page"
+          : "/user/${widget.userName}/statuses?page=$_page";
+      final response = await apiService.request(endpoint, HttpRequestTypes.GET);
       if (response.statusCode == 200) {
         final newRides = jsonDecode(response.body)["data"];
         if (!mounted) return;
@@ -68,13 +87,14 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
           _isLoading = false;
         });
       } else {
-        return Future.error('Failed to load user info');
+        return Future.error('Failed to load rides');
       }
     } on TimeoutException {
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
       });
-      SharedFunctions.handleRequestTimeout(context, _fetchUserRides);
+      SharedFunctions.handleRequestTimeout(context, _fetchRides);
     }
   }
 
@@ -82,7 +102,7 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
     if (widget.scrollController!.position.pixels >=
             widget.scrollController!.position.maxScrollExtent * 0.9 &&
         !_isLoading) {
-      _fetchUserRides();
+      _fetchRides();
     }
   }
 
@@ -91,7 +111,6 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
     return SliverList.builder(
       itemCount: _userRides.length + (_isLoading ? 1 : 0),
       itemBuilder: (BuildContext context, int index) {
-        // Handle the loading indicator at the end of the list
         if (index == _userRides.length) {
           return const Center(
             child: Padding(
@@ -109,10 +128,8 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
 
         bool showDateHeader = false;
         if (index == 0) {
-          // Always show date header for the first item
           showDateHeader = true;
         } else {
-          // Compare with the previous ride's date
           final previousRide = _userRides[index - 1];
           final previousRideDate = DateTime.parse(
             previousRide["train"]["manualDeparture"] ??
@@ -131,26 +148,35 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
           widgets.add(
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-              child: Text(
-                DateFormat.yMMMMEEEEd(
-                  Localizations.localeOf(context).languageCode,
-                ).format(currentRideDate),
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+              child: Row(
+                children: [
+                  Text(
+                    DateFormat.yMMMMEEEEd(
+                      Localizations.localeOf(context).languageCode,
+                    ).format(currentRideDate),
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                  ),
+                  Spacer(),
+                  IconButton(
+                    onPressed: () => "",
+                    icon: const Icon(Icons.dining_sharp),
+                  ),
+                ],
               ),
             ),
           );
         }
-        widgets.add(
-          RideQuickView(
-            rideData: ride,
-            authUserId: _userIdAuthUser,
-            onDelete: () {
-              setState(() {
-                _userRides.removeWhere((item) => item["id"] == ride["id"]);
-              });
-            },
-          ),
+
+        Widget rideView = RideQuickView(
+          rideData: ride,
+          authUserId: _userIdAuthUser,
+          onDelete: () {
+            setState(() {
+              _userRides.removeWhere((item) => item["id"] == ride["id"]);
+            });
+          },
         );
+        widgets.add(rideView);
         widgets.add(const SizedBox(height: 8));
         return Column(
           key: ValueKey(ride["id"]),

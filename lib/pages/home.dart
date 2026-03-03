@@ -3,12 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
-import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart' as pkg;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:terminate_restart/terminate_restart.dart';
+import 'package:traewelcross/components/dashboard.dart';
 import 'package:traewelcross/components/profile_link.dart';
-import 'package:traewelcross/components/ride_quick_view.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
@@ -16,7 +15,6 @@ import 'package:traewelcross/pages/checkin/select_connection.dart';
 import 'package:traewelcross/pages/login/oauth_login.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:traewelcross/utils/custom_providers.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:convert';
@@ -34,7 +32,7 @@ class _HomeState extends State<Home> {
   final _scrollController = ScrollController();
   final _stationController = TextEditingController();
   final FocusNode _stationFocus = FocusNode();
-  final GlobalKey<_DashboardState> _dashboardKey = GlobalKey<_DashboardState>();
+  final DashboardController _dashboardController = DashboardController();
   List<dynamic> history = [];
 
   bool stationFocus = false;
@@ -415,10 +413,7 @@ class _HomeState extends State<Home> {
     final scrollController = ScrollController();
     return RefreshIndicator(
       onRefresh: () async {
-        await Future.wait([
-          _getHistory(),
-          _dashboardKey.currentState?.refresh() ?? Future.value(),
-        ]);
+        await Future.wait([_getHistory(), _dashboardController.refresh()]);
       },
       child: CustomScrollView(
         controller: widget.scrollController,
@@ -589,7 +584,7 @@ class _HomeState extends State<Home> {
           ),
           Alerts(),
           Dashboard(
-            key: _dashboardKey,
+            controller: _dashboardController,
             scrollController: widget.scrollController,
           ),
         ],
@@ -705,184 +700,6 @@ class _AlertsState extends State<Alerts> {
           );
         }
         return SliverToBoxAdapter(child: SizedBox(height: 0));
-      },
-    );
-  }
-}
-
-class Dashboard extends StatefulWidget {
-  const Dashboard({super.key, required this.scrollController});
-  final ScrollController scrollController;
-  @override
-  State<Dashboard> createState() => _DashboardState();
-}
-
-class _DashboardState extends State<Dashboard> {
-  final List<dynamic> _userRides = [];
-  int _page = 1;
-  bool _isLoading = false;
-  int _userIdAuthUser = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    SharedPreferencesAsync()
-        .getInt("userid")
-        .then((val) => _userIdAuthUser = val ?? 0);
-    _fetchUserRides();
-    widget.scrollController.addListener(_onScroll);
-  }
-
-  @override
-  void dispose() {
-    widget.scrollController.removeListener(_onScroll);
-    super.dispose();
-  }
-
-  Future<void> refresh() async {
-    setState(() {
-      _userRides.clear();
-      _page = 1;
-      _isLoading = false;
-    });
-    _countNotifications();
-    await _fetchUserRides();
-  }
-
-  Future<void> _countNotifications() async {
-    final apiService = getIt<ApiService>();
-    final res = await apiService.request(
-      "/notifications/unread/count",
-      HttpRequestTypes.GET,
-    );
-    if (res.statusCode == 200) {
-      getIt<UnreadCountProvider>().setCount(jsonDecode(res.body)["data"]);
-    }
-  }
-
-  Future<void> _fetchUserRides() async {
-    if (_isLoading) return;
-    setState(() {
-      _isLoading = true;
-    });
-
-    final apiService = getIt<ApiService>();
-    http.Response response;
-    try {
-      response = await apiService.request(
-        "/dashboard?page=$_page",
-        HttpRequestTypes.GET,
-      );
-    } on TimeoutException {
-      if (!mounted) return;
-      setState(() {
-        _isLoading = false;
-      });
-      SharedFunctions.handleRequestTimeout(context, _fetchUserRides);
-      return;
-    }
-    if (response.statusCode == 200) {
-      final newRides = jsonDecode(response.body)["data"];
-      if (!mounted) return;
-      setState(() {
-        _userRides.addAll(newRides);
-        _page++;
-        _isLoading = false;
-      });
-    } else {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-      return Future.error(
-        'Failed to load user dashboard: ${response.statusCode}',
-      );
-    }
-  }
-
-  void _onScroll() {
-    if (widget.scrollController.position.pixels >=
-            widget.scrollController.position.maxScrollExtent * 0.9 &&
-        !_isLoading) {
-      _fetchUserRides();
-    }
-  }
-
-  @override
-  //TODO: refactor ride_quick_view_wrapper.dart so we can reuse it here
-  Widget build(BuildContext context) {
-    return SliverList.builder(
-      itemCount: _userRides.length + (_isLoading ? 1 : 0),
-      itemBuilder: (BuildContext context, int index) {
-        // Handle the loading indicator at the end of the list
-        if (index == _userRides.length) {
-          return const Center(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-
-        final ride = _userRides[index];
-        final currentRideDate = DateTime.parse(
-          ride["train"]["manualDeparture"] ??
-              ride["train"]["origin"]["departure"],
-        );
-
-        bool showDateHeader = false;
-        if (index == 0) {
-          showDateHeader = true;
-        } else {
-          // Compare with the previous ride's date
-          final previousRide = _userRides[index - 1];
-          final previousRideDate = DateTime.parse(
-            previousRide["train"]["manualDeparture"] ??
-                previousRide["train"]["origin"]["departure"],
-          );
-          if (currentRideDate.day != previousRideDate.day ||
-              currentRideDate.month != previousRideDate.month ||
-              currentRideDate.year != previousRideDate.year) {
-            showDateHeader = true;
-          }
-        }
-
-        List<Widget> widgets = [];
-        if (showDateHeader) {
-          widgets.add(const SizedBox(height: 16));
-          widgets.add(
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-              child: Text(
-                DateFormat.yMMMMEEEEd(
-                  Localizations.localeOf(context).languageCode,
-                ).format(currentRideDate),
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-              ),
-            ),
-          );
-        }
-        widgets.add(
-          Hero(
-            tag: "rqv-${ride["id"]}",
-            child: RideQuickView(
-              rideData: ride,
-              authUserId: _userIdAuthUser,
-              onDelete: () {
-                setState(() {
-                  _userRides.removeWhere((item) => item["id"] == ride["id"]);
-                });
-              },
-            ),
-          ),
-        );
-        widgets.add(const SizedBox(height: 8));
-        return Column(
-          key: ValueKey(ride["id"]),
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: widgets,
-        );
       },
     );
   }
