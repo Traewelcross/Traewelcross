@@ -288,6 +288,20 @@ class _AppHomeState extends State<AppHome> {
   }
 }
 
+class _Tab {
+  final Widget page;
+  final NavigationDestination destination;
+  final Widget title;
+  final List<Widget>? actions;
+
+  const _Tab({
+    required this.page,
+    required this.destination,
+    required this.title,
+    this.actions,
+  });
+}
+
 class Chrome extends WatchingStatefulWidget {
   const Chrome({super.key});
   @override
@@ -316,18 +330,39 @@ class _ChromeState extends State<Chrome> {
 
   @override
   Widget build(BuildContext context) {
-    Widget selectedPage;
-    List<Widget>? actions;
-    switch (selectedPageIndex) {
-      case 0:
-        selectedPage = Home(scrollController: _scrollController);
-        break;
-      case 1:
-        selectedPage = OnTheMove(scrollController: _scrollController);
-        break;
-      case 2:
-        selectedPage = NotificationsView(scrollController: _scrollController);
-        actions = [
+    final l10n = AppLocalizations.of(context)!;
+    final notifyCount = watchIt<UnreadCountProvider>().unreadCount;
+
+    final tabs = [
+      _Tab(
+        page: Home(scrollController: _scrollController),
+        title: const HomeTitle(),
+        destination: NavigationDestination(
+          icon: const Icon(Icons.home),
+          label: l10n.navHome,
+        ),
+      ),
+      _Tab(
+        page: OnTheMove(scrollController: _scrollController),
+        title: AppBarTitle(l10n.navOTM),
+        destination: NavigationDestination(
+          icon: const Icon(Icons.commute),
+          label: l10n.navOTM,
+        ),
+      ),
+      _Tab(
+        page: NotificationsView(scrollController: _scrollController),
+        title: AppBarTitle(l10n.navNotify),
+        destination: NavigationDestination(
+          icon: notifyCount > 0
+              ? Badge.count(
+                  count: notifyCount,
+                  child: const Icon(Icons.notifications),
+                )
+              : const Icon(Icons.notifications),
+          label: l10n.navNotify,
+        ),
+        actions: [
           IconButton(
             onPressed: () async {
               await getIt<ApiService>().request(
@@ -339,18 +374,29 @@ class _ChromeState extends State<Chrome> {
             },
             icon: const Icon(Icons.done_all),
           ),
-        ];
-        break;
-      case 3:
-        selectedPage = Statistics();
-        break;
-      case 4:
-        selectedPage = ProfileView(
+        ],
+      ),
+      if (watchIt<Config>().misc.showStats || kDebugMode)
+        _Tab(
+          page: const Statistics(),
+          title: AppBarTitle(l10n.stats),
+          destination: NavigationDestination(
+            icon: const Icon(Icons.bar_chart),
+            label: l10n.stats,
+          ),
+        ),
+      _Tab(
+        page: ProfileView(
           isOtherUser: false,
           scrollController: _scrollController,
           tempScrollController: false,
-        );
-        actions = [
+        ),
+        title: AppBarTitle(l10n.navProfile),
+        destination: NavigationDestination(
+          icon: OwnProfilePicture(maxWidth: 42),
+          label: l10n.navProfile,
+        ),
+        actions: [
           IconButton(
             onPressed: () {
               Navigator.push(
@@ -369,44 +415,21 @@ class _ChromeState extends State<Chrome> {
             },
             icon: const Icon(Icons.settings),
           ),
-        ];
-        break;
-      default:
-        selectedPage = const Placeholder();
+        ],
+      ),
+    ];
+
+    if (selectedPageIndex >= tabs.length) {
+      selectedPageIndex = tabs.length - 1;
     }
-    final notifyCount = watchIt<UnreadCountProvider>().unreadCount;
+
+    final selectedTab = tabs[selectedPageIndex];
+
     return MainScaffold(
-      title: _getTitleForIndex(selectedPageIndex, null, context),
+      title: selectedTab.title,
       bottomNavigationBar: NavigationBar(
         backgroundColor: Theme.of(context).navigationBarTheme.backgroundColor,
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.home),
-            label: AppLocalizations.of(context)!.navHome,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.commute),
-            label: AppLocalizations.of(context)!.navOTM,
-          ),
-          NavigationDestination(
-            icon: notifyCount > 0
-                ? Badge.count(
-                    count: notifyCount,
-                    child: const Icon(Icons.notifications),
-                  )
-                : const Icon(Icons.notifications),
-            label: AppLocalizations.of(context)!.navNotify,
-          ),
-          if (watchIt<Config>().misc.showStats || kDebugMode)
-            NavigationDestination(
-              icon: const Icon(Icons.bar_chart),
-              label: AppLocalizations.of(context)!.stats,
-            ),
-          NavigationDestination(
-            icon: OwnProfilePicture(maxWidth: 42),
-            label: AppLocalizations.of(context)!.navProfile,
-          ),
-        ],
+        destinations: tabs.map((t) => t.destination).toList(),
         selectedIndex: selectedPageIndex,
         onDestinationSelected: (value) {
           if (value == selectedPageIndex) {
@@ -435,27 +458,9 @@ class _ChromeState extends State<Chrome> {
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         surfaceTintColor: Theme.of(context).colorScheme.secondary,
       ),
-      actions: actions,
-      body: selectedPage,
+      actions: selectedTab.actions,
+      body: selectedTab.page,
     );
-  }
-}
-
-Widget _getTitleForIndex(int index, String? title, BuildContext context) {
-  final l10n = AppLocalizations.of(context)!;
-  switch (index) {
-    case 0:
-      return const HomeTitle();
-    case 1:
-      return AppBarTitle(l10n.navOTM);
-    case 2:
-      return AppBarTitle(l10n.navNotify);
-    case 3:
-      return AppBarTitle(l10n.navProfile);
-    case 4:
-      return AppBarTitle(l10n.stats);
-    default:
-      return AppBarTitle('');
   }
 }
 

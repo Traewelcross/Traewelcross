@@ -29,20 +29,25 @@ class _MapStatForUserState extends State<MapStatForUser> {
     super.initState();
     rides = _getRidesForUser();
   }
+
   Future<List<DateTime>> _getRiddenDays() async {
     // We could also go of prevDate in /statistics/daily, but I only see that after doing this, and also this way we get all available dates in one request
     final api = getIt<ApiService>();
-    final req = await api.request("/statistics?from=${statRange.start.toIso8601String()}&until=${statRange.end.toIso8601String()}", HttpRequestTypes.GET);
+    final req = await api.request(
+      "/statistics?from=${statRange.start.toIso8601String()}&until=${statRange.end.toIso8601String()}",
+      HttpRequestTypes.GET,
+    );
     final times = jsonDecode(req.body)["data"]["time"] as List<dynamic>;
     List<DateTime> riddenDays = [];
-    for(var date in times){
-      if(date["count"]> 0){
+    for (var date in times) {
+      if (date["count"] > 0) {
         riddenDays.add(DateTime.parse(date["date"]));
       }
     }
     print(riddenDays);
     return riddenDays;
   }
+
   Future<List<RideInfo>> _getRidesForUser() async {
     final api = getIt<ApiService>();
     final List<List<LatLng>> coords = [];
@@ -82,14 +87,20 @@ class _MapStatForUserState extends State<MapStatForUser> {
       future: rides,
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.hasError) {
-          return SingleChildScrollView(child: Text(asyncSnapshot.error!.toString()));
+          return SingleChildScrollView(
+            child: Text(asyncSnapshot.error!.toString()),
+          );
         }
-        if (asyncSnapshot.connectionState == .waiting){
-          return Expanded(child: Center(child: Column(
-            children: [
-              CircularProgressIndicator(),
-            ],
-          ),));
+        if (asyncSnapshot.connectionState == .waiting) {
+          return Center(
+            child: Column(
+              mainAxisSize: .min,
+              children: [
+                CircularProgressIndicator(),
+                Text(localize.waitForStatsMsg, textAlign: .center,),
+              ],
+            ),
+          );
         }
         if (asyncSnapshot.connectionState == .done) {
           return Column(
