@@ -406,7 +406,14 @@ class _HomeState extends State<Home> {
     }
     return " — $defaultString, $areaString";
   }
-
+  String _getRIL(dynamic station){
+    if(station["identifiers"] == null){
+      return "";
+    }
+    final identList = station["identifiers"] as List<dynamic>;
+    final ril100 = identList.where((ident) => ident["type"] == "de_db_ril100");
+    return ril100.isEmpty ? "" : " [${ril100.first["identifier"] ?? ""}]";
+  }
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
@@ -535,7 +542,7 @@ class _HomeState extends State<Home> {
                                                       children: [
                                                         TextSpan(
                                                           text:
-                                                              "${results[i]["name"]}${(results[i]["rilIdentifier"] == null ? "" : (" [${results[i]["rilIdentifier"]}]"))}",
+                                                              "${results[i]["name"]}${_getRIL(results[i])}",
                                                           style:
                                                               Theme.of(context)
                                                                   .textTheme
