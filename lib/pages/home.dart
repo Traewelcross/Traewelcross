@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -13,6 +14,7 @@ import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/checkin/select_connection.dart';
 import 'package:traewelcross/pages/login/oauth_login.dart';
+import 'package:traewelcross/pages/testpad.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -166,7 +168,9 @@ class _HomeState extends State<Home> {
       }
 
       if (!mounted) return;
-
+      if(kDebugMode && searchTerm == "testpad"){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Testpad()));
+      }
       if (searchTerm == _stationController.text.trim()) {
         if (response.statusCode == 200) {
           final newResults = jsonDecode(response.body)["data"];

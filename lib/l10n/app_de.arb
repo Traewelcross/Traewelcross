@@ -263,5 +263,7 @@
     "enableOpenDysAtLogin": "Legastheniefreundlichere Schrift aktivieren",
     "mapPageTitle": "Fahrten am {date}",
     "dateSpan": "{date1} bis {date2}",
-    "waitForStatsMsg": "Statistik wird geladen.\nJe nach Zeitrahmen kann das etwas dauern. Wenn diese Anfrage fehlschlägt, versuche den Zeitrahmen enger zu stellen"
+    "waitForStatsMsg": "Statistik wird geladen.\nJe nach Zeitrahmen kann das etwas dauern. Wenn diese Anfrage fehlschlägt, versuche den Zeitrahmen enger zu stellen",
+    "alwaysUsePride": "Immer Pridefarbakzente verwenden",
+    "alwaysUsePrideSub": "Weil queere Menschen Ende Juni nicht verschwinden"
 }

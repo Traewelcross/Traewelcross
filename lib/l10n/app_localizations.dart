@@ -1681,6 +1681,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stats are being loaded.\nNote that this may take some time, depending on the timeframe and numbers of journeys. If this request fails, try selecting a smaller timeframe.'**
   String get waitForStatsMsg;
+
+  /// No description provided for @alwaysUsePride.
+  ///
+  /// In en, this message translates to:
+  /// **'Always use pride-themed accents'**
+  String get alwaysUsePride;
+
+  /// No description provided for @alwaysUsePrideSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Because queer people don\'t disappear at the end of June'**
+  String get alwaysUsePrideSub;
 }
 
 class _AppLocalizationsDelegate

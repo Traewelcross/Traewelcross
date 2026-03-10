@@ -916,4 +916,11 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get waitForStatsMsg =>
       'Statistik wird geladen.\nJe nach Zeitrahmen kann das etwas dauern. Wenn diese Anfrage fehlschlägt, versuche den Zeitrahmen enger zu stellen';
+
+  @override
+  String get alwaysUsePride => 'Immer Pridefarbakzente verwenden';
+
+  @override
+  String get alwaysUsePrideSub =>
+      'Weil queere Menschen nicht Ende Juni verschwinden';
 }

@@ -5,7 +5,9 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
+import 'package:traewelcross/components/pride_gradient.dart';
 import 'package:traewelcross/components/profile_picture.dart';
+import 'package:traewelcross/components/progress_bar.dart';
 import 'package:traewelcross/components/ride_icon_tag.dart';
 import 'package:traewelcross/components/status_tags.dart';
 import 'package:traewelcross/config/config.dart';
@@ -991,34 +993,68 @@ class _LikeButtonState extends State<LikeButton> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        TextButton.icon(
-          style: ButtonStyle(
-            padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
-            minimumSize: WidgetStatePropertyAll(Size.zero),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            visualDensity: VisualDensity.compact,
+        if (getIt<Config>().appearance.isPrideActive) ...[
+          TextButton.icon(
+            style: ButtonStyle(
+              padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
+              minimumSize: WidgetStatePropertyAll(Size.zero),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              visualDensity: VisualDensity.compact,
+            ),
+            onPressed: () => widget.rideData["isLikable"] ?? true
+                ? widget.onUpdateLikes()
+                : null,
+            icon: PrideGradient(
+              rotation: 90,
+              child: (widget.rideData["liked"]
+                  ? const Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                      opticalSize: 24,
+                      size: 24,
+                    )
+                  : const Icon(
+                      Icons.favorite_outline_outlined,
+                      color: Colors.red,
+                      opticalSize: 24,
+                      size: 24,
+                    )),
+            ),
+            label: Text(
+              widget.rideData["likes"].toString(),
+              style: TextStyle(fontSize: 16),
+            ),
           ),
-          onPressed: () => widget.rideData["isLikable"] ?? true
-              ? widget.onUpdateLikes()
-              : null,
-          icon: widget.rideData["liked"]
-              ? const Icon(
-                  Icons.favorite,
-                  color: Colors.red,
-                  opticalSize: 24,
-                  size: 24,
-                )
-              : const Icon(
-                  Icons.favorite_outline_outlined,
-                  color: Colors.red,
-                  opticalSize: 24,
-                  size: 24,
-                ),
-          label: Text(
-            widget.rideData["likes"].toString(),
-            style: TextStyle(fontSize: 16),
+        ] else ...[
+          TextButton.icon(
+            style: ButtonStyle(
+              padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
+              minimumSize: WidgetStatePropertyAll(Size.zero),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              visualDensity: VisualDensity.compact,
+            ),
+            onPressed: () => widget.rideData["isLikable"] ?? true
+                ? widget.onUpdateLikes()
+                : null,
+            icon: widget.rideData["liked"]
+                ? const Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                    opticalSize: 24,
+                    size: 24,
+                  )
+                : const Icon(
+                    Icons.favorite_outline_outlined,
+                    color: Colors.red,
+                    opticalSize: 24,
+                    size: 24,
+                  ),
+            label: Text(
+              widget.rideData["likes"].toString(),
+              style: TextStyle(fontSize: 16),
+            ),
           ),
-        ),
+        ],
       ],
     );
   }
@@ -1095,7 +1131,7 @@ class _TimeProgressState extends State<TimeProgress> {
   @override
   Widget build(BuildContext context) {
     if (progress >= 1.0) {
-      return LinearProgressIndicator(
+      return ProgressBar(
         value: 1.0,
         borderRadius: BorderRadius.circular(99999999),
       );
@@ -1104,7 +1140,7 @@ class _TimeProgressState extends State<TimeProgress> {
         tween: Tween<double>(begin: 0.0, end: progress),
         duration: Duration(seconds: 1),
         builder: (context, value, child) {
-          return LinearProgressIndicator(
+          return ProgressBar(
             value: value,
             borderRadius: BorderRadius.circular(99999999),
           );

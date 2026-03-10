@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:traewelcross/pages/stats/map_stat/map_stat.dart';
 import 'package:traewelcross/pages/stats/map_stat/map_stat_for_user.dart';
 
 class Statistics extends StatefulWidget {

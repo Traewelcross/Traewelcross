@@ -15,7 +15,8 @@ BehaviorConfig _$BehaviorConfigFromJson(Map<String, dynamic> json) =>
       ..hideManualOnTimeOverride =
           json['hideManualOnTimeOverride'] as bool? ?? true
       ..defaultStatusText = json['defaultStatusText'] as String?
-      ..volumeBtnCtrl = json['volumeBtnCtrl'] as bool? ?? false;
+      ..volumeBtnCtrl = json['volumeBtnCtrl'] as bool? ?? false
+      ..showAltDepartureStops = json['showAltDepartureStops'] as bool? ?? true;
 
 Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
     <String, dynamic>{
@@ -25,4 +26,5 @@ Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
       'hideManualOnTimeOverride': instance.hideManualOnTimeOverride,
       'defaultStatusText': instance.defaultStatusText,
       'volumeBtnCtrl': instance.volumeBtnCtrl,
+      'showAltDepartureStops': instance.showAltDepartureStops,
     };

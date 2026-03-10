@@ -100,6 +100,24 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                     ),
                   ],
                 ),
+              ListTile(
+                title: Text(localize.alwaysUsePride),
+                subtitle: Text(localize.alwaysUsePrideSub),
+                onTap: () => DateTime.now().month != 6
+                    ? setState(() {
+                        config.appearance.prideModePreference =
+                            !config.appearance.prideModePreference;
+                      })
+                    : null,
+                trailing: Checkbox(
+                  value: config.appearance.isPrideActive,
+                  onChanged: DateTime.now().month != 6
+                      ? (val) => setState(() {
+                          config.appearance.prideModePreference = val!;
+                        })
+                      : null,
+                ),
+              ),
               Divider(),
               ExpansionTile(
                 title: Text(localize.fontFamilyChooser),

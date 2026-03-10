@@ -559,5 +559,7 @@
       }
     }
   },
-  "waitForStatsMsg": "Stats are being loaded.\nNote that this may take some time, depending on the timeframe and numbers of journeys. If this request fails, try selecting a smaller timeframe."
+  "waitForStatsMsg": "Stats are being loaded.\nNote that this may take some time, depending on the timeframe and numbers of journeys. If this request fails, try selecting a smaller timeframe.",
+  "alwaysUsePride": "Always use pride-themed accents",
+  "alwaysUsePrideSub": "Because queer people don't disappear at the end of June"
 }

@@ -910,4 +910,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get waitForStatsMsg =>
       'Stats are being loaded.\nNote that this may take some time, depending on the timeframe and numbers of journeys. If this request fails, try selecting a smaller timeframe.';
+
+  @override
+  String get alwaysUsePride => 'Always use pride-themed accents';
+
+  @override
+  String get alwaysUsePrideSub =>
+      'Because queer people don\'t disappear at the end of June';
 }
