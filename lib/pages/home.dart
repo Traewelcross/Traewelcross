@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:terminate_restart/terminate_restart.dart';
 import 'package:traewelcross/components/dashboard.dart';
 import 'package:traewelcross/components/profile_link.dart';
+import 'package:traewelcross/components/progress_bar.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
@@ -485,7 +486,7 @@ class _HomeState extends State<Home> {
                     child: ClipRRect(
                       child: Column(
                         children: [
-                          if (!gotResults) const LinearProgressIndicator(),
+                          if (!gotResults) const ProgressBar(),
                           Expanded(
                             child: Scrollbar(
                               controller: scrollController,

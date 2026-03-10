@@ -232,7 +232,7 @@ class StopoverList extends StatelessWidget {
               },
             );
           }
-          return const Center(child: LinearProgressIndicator());
+          return const SizedBox(height: 0,);
         },
       ),
     );

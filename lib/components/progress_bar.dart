@@ -4,8 +4,8 @@ import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/utils/shared.dart';
 
 class ProgressBar extends StatelessWidget {
-  const ProgressBar({super.key, required this.value, this.borderRadius});
-  final double value;
+  const ProgressBar({super.key, this.value, this.borderRadius});
+  final double? value;
   final BorderRadius? borderRadius;
   @override
   Widget build(BuildContext context) {
