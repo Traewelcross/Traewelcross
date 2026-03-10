@@ -247,7 +247,7 @@ class _SelectConnectionState extends State<SelectConnection> {
                 child: _DepartureList(
                   departuresFuture: _departuresFuture,
                   stationName: widget.stationName,
-                  retryTrigger: () => _departuresFuture = _fetchDepartures(),
+                  retryTrigger: () => setState((){ _departuresFuture = _fetchDepartures();}),
                 ),
               ),
             ),

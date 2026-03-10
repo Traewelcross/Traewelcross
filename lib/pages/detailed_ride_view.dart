@@ -318,8 +318,8 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        "Debug\nID: ${rideData["id"].toString()}\n\n${rideData.toString()}",
+                      child: SelectableText(
+                        "Debug\nID: ${rideData["id"].toString()}\n\n${jsonEncode(rideData)}",
                       ),
                     ),
                   ),
