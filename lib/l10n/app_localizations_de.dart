@@ -922,5 +922,5 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get alwaysUsePrideSub =>
-      'Weil queere Menschen nicht Ende Juni verschwinden';
+      'Weil queere Menschen Ende Juni nicht verschwinden';
 }

@@ -78,6 +78,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
   late final Future<List<LatLng>> _polylineFuture;
   late Future<List<dynamic>> _likes;
   late Future<Map<String, dynamic>> _rideData;
+  late final String _evaIdentOrigin;
   late final int _rideId;
   bool isFound = true;
 
@@ -120,6 +121,35 @@ class _DetailedRideViewState extends State<DetailedRideView> {
     }
   }
 
+  // Workaround for Traewelling/traewelling/discussions/4511 until identifiers are provided in check in again
+  Future<String> _getEvaIdent() async {
+    final apiService = getIt<ApiService>();
+    http.Response res;
+    try {
+      res = await apiService.request(
+        "/station/${widget.rideData["checkin"]["destination"]["id"]}?withIdentifiers=true",
+        HttpRequestTypes.GET,
+      );
+    } on TimeoutException {
+      if (!mounted) return "";
+      SharedFunctions.handleRequestTimeout(context, _getRideData);
+      return "";
+    }
+
+    switch (res.statusCode) {
+      case 200:
+        final json = jsonDecode(res.body)["data"];
+        if (json["identifiers"] == null) {
+          return "";
+        }
+        final identList = json["identifiers"] as List<dynamic>;
+        final ibnr = identList.where((ident) => ident["type"] == "de_db_ibnr");
+        return ibnr.isEmpty ? "" : "${ibnr.first["identifier"] ?? ""}";
+      default:
+        return "";
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -134,6 +164,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
         ? _getRideData()
         : Future.value(widget.rideData!);
     _likes = _getLikeData();
+    _getEvaIdent().then((val) => _evaIdentOrigin = val);
   }
 
   void _likeCallback() {
@@ -301,9 +332,10 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                       Expanded(
                         child: FilledButton.icon(
                           onPressed: () {
+                            print(_evaIdentOrigin);
                             SharedFunctions.launchURL(
                               Uri.parse(
-                                "https://bahn.expert/details/${rideData["train"]["journeyNumber"]}/${rideData["train"]["origin"]["departurePlanned"]}?evaNumberAlongRoute=${rideData["train"]["origin"]["evaIdentifier"]}",
+                                "https://bahn.expert/details/${rideData["train"]["journeyNumber"]}/${rideData["train"]["origin"]["departurePlanned"]}?evaNumberAlongRoute=$_evaIdentOrigin",
                               ),
                             );
                           },
