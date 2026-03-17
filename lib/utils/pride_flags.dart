@@ -51,7 +51,20 @@ class PrideFlags {
     Color.fromRGBO(155, 79, 150, 1),
     Color.fromRGBO(0, 56, 168, 1),
   ];
+  static const List<Color> asex = [
+    Colors.black,
+    Color.fromRGBO(163,163,163,1),
+    Colors.white,
+    Color.fromRGBO(128,0,128,1)
+  ];
+  static const List<Color> arom = [
+    Color.fromRGBO(61,165,66,1),
+    Color.fromRGBO(167,211,121,1),
+    Colors.white,
+    Color.fromRGBO(169,169,169,1),
+    Colors.black,
+  ];
   static List<List<Color>> getFlags() {
-    return const [trans, rainbow, inter, lesbian, gay, nonbinary, pan, bi];
+    return const [trans, rainbow, inter, lesbian, gay, nonbinary, pan, bi, asex, arom];
   }
 }
