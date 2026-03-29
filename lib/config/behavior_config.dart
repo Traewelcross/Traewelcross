@@ -87,11 +87,11 @@ class BehaviorConfig with ChangeNotifier {
     notifyListeners();
   }
 
-  bool _renewTimeBasedOnly = false;
+  bool _renewLegacy = false;
   @JsonKey(defaultValue: false)
-  bool get renewTimeBasedOnly => _renewTimeBasedOnly;
-  set renewTimeBasedOnly(bool val){
-    _renewTimeBasedOnly = val;
+  bool get renewLegacy => _renewLegacy;
+  set renewLegacy(bool val){
+    _renewLegacy = val;
     notifyListeners();
   }
 }

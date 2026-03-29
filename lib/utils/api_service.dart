@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/error_type.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/utils/authentication.dart';
@@ -41,24 +42,26 @@ class ApiService {
     Map<String, String>? headers = const {"Content-Type": "application/json"},
     Object? body,
     Encoding? encoding,
+    bool isRetrial = false
   }) async {
     bool hasBeenRefreshed = false;
+    oauth2.Client? client = await getAuthenticatedClient();
     // Token Lifetime has been drastically reduced: https://github.com/Traewelling/traewelling/pull/3869
     // The token will only refresh on every 20th API request. This is to avoid potential ratelimits.
     _requestCount++;
-    if (_requestCount >= 20) {
+    if (_requestCount >= 20 && getIt<Config>().behavior.renewLegacy) {
       _requestCount = 0;
       if (kDebugMode) print("Refresh Token (20th api request)");
       await refreshToken();
       hasBeenRefreshed = true;
     }
-    if (DateTime.now().difference(_lastRequest).inHours >= 1 &&
+    if ((DateTime.now().difference(_lastRequest).inHours >= 1 || client?.credentials.isExpired == true) &&
         !hasBeenRefreshed) {
       if (kDebugMode) print("Refresh Token (stale)");
       await refreshToken();
     }
     encoding ??= Encoding.getByName("UTF-8");
-    final client = await getAuthenticatedClient();
+    client = await getAuthenticatedClient();
     if (client == null) {
       throw Future.error("User is not authenticated.");
     }
@@ -100,7 +103,6 @@ class ApiService {
             .timeout(Duration(seconds: _timeoutDuration));
         break;
     }
-    print(res.headers["x-ratelimit-remaining"]);
     _lastRequest = DateTime.now();
     return res;
   }
