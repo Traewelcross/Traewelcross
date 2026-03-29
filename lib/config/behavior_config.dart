@@ -86,4 +86,12 @@ class BehaviorConfig with ChangeNotifier {
     _showAltDepartureStops = val;
     notifyListeners();
   }
+
+  bool _renewTimeBasedOnly = false;
+  @JsonKey(defaultValue: false)
+  bool get renewTimeBasedOnly => _renewTimeBasedOnly;
+  set renewTimeBasedOnly(bool val){
+    _renewTimeBasedOnly = val;
+    notifyListeners();
+  }
 }

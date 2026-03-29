@@ -36,17 +36,13 @@ class _PrideGradientState extends State<PrideGradient> {
         return LinearGradient(
           transform: GradientRotation((widget.rotation ?? 0)*(math.pi/180)),
           // double the colors to get hard transitions
-          colors: _selectedFlag.expand((c) => [c,c]).toList(),
-          stops: [
-            for (int i = 0; i < _selectedFlag.length; i++) ...[
-              i / _selectedFlag.length,
-              (i + 1) / _selectedFlag.length,
-            ],
-          ],
+          colors: PrideFlags.getColors(_selectedFlag).toList(),
+          stops: PrideFlags.getStops(_selectedFlag),
         ).createShader(Rect.fromLTWH(0, 0, activeWidth, bounds.height));
       },
       blendMode: .srcIn,
       child: widget.child,
     );
   }
+
 }

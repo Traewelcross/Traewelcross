@@ -144,7 +144,6 @@ class _CheckInState extends State<CheckIn> {
       waitForRes = true;
     });
     final apiService = getIt<ApiService>();
-    print("forcing checkin: ${force}");
     final body = {
       "body": statusController.text,
       "business": tripType.value,

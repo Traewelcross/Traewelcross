@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
+import 'package:traewelcross/components/pride_gradient.dart';
 import "package:traewelcross/components/profile_link.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -15,6 +17,7 @@ import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/color_scheme.dart';
+import 'package:traewelcross/utils/pride_flags.dart';
 import 'package:traewelcross/utils/shared.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -366,12 +369,18 @@ class _DetailedRideViewState extends State<DetailedRideView> {
 }
 
 class MapDisplay extends StatelessWidget {
-  const MapDisplay({super.key, this.polylinePoints});
+  MapDisplay({super.key, this.polylinePoints});
 
   final List<LatLng>? polylinePoints;
+  List<Color> _randomFlag() {
+    final random = math.Random();
+    final flagList = PrideFlags.getFlags();
+    return flagList[random.nextInt(flagList.length)];
+  }
 
   @override
   Widget build(BuildContext context) {
+    final pFlag = _randomFlag();
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: FlutterMap(
@@ -397,15 +406,29 @@ class MapDisplay extends StatelessWidget {
             userAgentPackageName: "de.traewelcross",
           ),
           if (polylinePoints != null)
-            PolylineLayer(
-              polylines: [
-                Polyline(
-                  points: polylinePoints!,
-                  color: Theme.of(context).colorScheme.primary,
-                  strokeWidth: 5.0,
-                ),
-              ],
-            ),
+            if (getIt<Config>().appearance.isPrideActive) ...[
+              PolylineLayer(
+                polylines: [
+                  Polyline(
+                    gradientColors: PrideFlags.getColors(pFlag).toList(),
+                    colorsStop: PrideFlags.getStops(pFlag),
+                    points: polylinePoints!,
+                    color: Theme.of(context).colorScheme.primary,
+                    strokeWidth: 5.0,
+                  ),
+                ],
+              ),
+            ] else ...[
+              PolylineLayer(
+                polylines: [
+                  Polyline(
+                    points: polylinePoints!,
+                    color: Theme.of(context).colorScheme.primary,
+                    strokeWidth: 5.0,
+                  ),
+                ],
+              ),
+            ],
           if (polylinePoints != null)
             MarkerLayer(
               markers: List<Marker>.generate(
