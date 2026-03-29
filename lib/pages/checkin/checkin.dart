@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:traewelcross/config/config.dart';
+import 'package:traewelcross/dialogs/checkin_conflict.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/pages/checkin/checkin_success.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
@@ -137,12 +138,13 @@ class _CheckInState extends State<CheckIn> {
     }
   }
 
-  Future<void> _checkIn() async {
+  Future<void> _checkIn({bool? force}) async {
     if (waitForRes) return;
     setState(() {
       waitForRes = true;
     });
     final apiService = getIt<ApiService>();
+    print("forcing checkin: ${force}");
     final body = {
       "body": statusController.text,
       "business": tripType.value,
@@ -159,6 +161,7 @@ class _CheckInState extends State<CheckIn> {
           : null,
       "departure": checkInInfo.departureTime,
       "arrival": checkInInfo.arrivalTime,
+      "force": force ?? false
     };
     try {
       final response = await apiService.request(
@@ -176,7 +179,22 @@ class _CheckInState extends State<CheckIn> {
                 CheckinSuccess(statusInfo: jsonDecode(response.body)["data"]),
           ),
         );
-      } else {
+      }
+      else if(response.statusCode == 409){
+        setState(() {
+          waitForRes = false;
+        });
+        final errorinfo = jsonDecode(response.body)?["message"];
+        if(!mounted){
+          return;
+        }
+        showDialog(context: context, builder:(context) => CheckinConflict(
+          lineName: errorinfo?["lineName"],
+          statusID: errorinfo?["status_id"]?.toString(),
+          forceCallback: ()=>_checkIn(force: true)),);
+          return;
+      }
+       else {
         setState(() {
           waitForRes = false;
         });
@@ -188,8 +206,13 @@ class _CheckInState extends State<CheckIn> {
             ),
             actions: [
               IconButton(
-                onPressed: () =>
-                    ScaffoldMessenger.of(context).clearMaterialBanners(),
+                onPressed: () {
+                  if(!mounted){
+                    return;
+                  }
+                  ScaffoldMessenger.of(context).clearMaterialBanners();
+                  },
+                    
                 icon: const Icon(Icons.close),
               ),
             ],

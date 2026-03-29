@@ -265,5 +265,8 @@
     "dateSpan": "{date1} bis {date2}",
     "waitForStatsMsg": "Statistik wird geladen.\nJe nach Zeitrahmen kann das etwas dauern. Wenn diese Anfrage fehlschlägt, versuche den Zeitrahmen enger zu stellen",
     "alwaysUsePride": "Immer Pridefarbakzente verwenden",
-    "alwaysUsePrideSub": "Weil queere Menschen Ende Juni nicht verschwinden"
+    "alwaysUsePrideSub": "Weil queere Menschen Ende Juni nicht verschwinden",
+    "checkinConflictTitle": "Konflikt",
+    "checkinConflictBody": "Entschuldige, aber während dem Versuch dich einzuchecken, kam es zu einem Konflikt. Es ist sehr wahrscheinlich, dass du bereits in diese Verbindung eingecheckt bist. Der Konfliktauslöser war eine Fahrt mit dem {lineName} (ID: {statusID}). Möchtest du einen Check-In erzwingen?",
+    "unknown": "Unbekannt"
 }

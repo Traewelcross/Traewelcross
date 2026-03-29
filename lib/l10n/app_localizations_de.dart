@@ -923,4 +923,15 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get alwaysUsePrideSub =>
       'Weil queere Menschen Ende Juni nicht verschwinden';
+
+  @override
+  String get checkinConflictTitle => 'Konflikt';
+
+  @override
+  String checkinConflictBody(String lineName, String statusID) {
+    return 'Entschuldige, aber während dem Versuch dich einzuchecken, kam es zu einem Konflikt. Es ist sehr wahrscheinlich, dass du bereits in diese Verbindung eingecheckt bist. Der Konfliktauslöser war eine Fahrt mit dem $lineName (ID: $statusID). Möchtest du einen Check-In erzwingen?';
+  }
+
+  @override
+  String get unknown => 'Unbekannt';
 }

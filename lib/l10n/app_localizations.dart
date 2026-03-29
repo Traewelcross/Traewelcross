@@ -278,7 +278,7 @@ abstract class AppLocalizations {
   /// **'You are too fast. Slow down'**
   String get rateLimit;
 
-  /// Snackbar text to display when error is unkown
+  /// Snackbar text to display when error is unknown
   ///
   /// In en, this message translates to:
   /// **'Oops! That didn\'t work:'**
@@ -1693,6 +1693,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Because queer people don\'t disappear at the end of June'**
   String get alwaysUsePrideSub;
+
+  /// No description provided for @checkinConflictTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-In Conflict'**
+  String get checkinConflictTitle;
+
+  /// No description provided for @checkinConflictBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, but while trying to check you in, a conflict occured. It\'s highly likely that you already checked into this connection. The conflicting status is a ride with {lineName} (ID: {statusID}). Would you like to force a Check-In?'**
+  String checkinConflictBody(String lineName, String statusID);
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
 }
 
 class _AppLocalizationsDelegate
