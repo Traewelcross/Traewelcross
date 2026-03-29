@@ -45,7 +45,7 @@ class PushPlay implements PushApi {
     );
 
     await flutterLocalNotificationsPlugin.initialize(
-      initSettings,
+      settings: initSettings,
       onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
     );
     _isInit = true;

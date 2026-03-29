@@ -97,10 +97,10 @@ Future<void> processAndShowNotification(Map<String, dynamic> data) async {
   final androidDetails = AndroidNotificationDetails(channel, channelName);
   final notificationDetails = NotificationDetails(android: androidDetails);
   notificationsPlugin.show(
-    data.hashCode,
-    notification["lead"],
-    notification["notice"],
-    notificationDetails,
+    id: data.hashCode,
+    title:notification["lead"],
+    body: notification["notice"],
+    notificationDetails: notificationDetails,
     payload: jsonEncode(notification),
   );
 }
