@@ -20,6 +20,7 @@ class MainActivity : FlutterActivity() {
             when (keyCode) {
                 KeyEvent.KEYCODE_VOLUME_DOWN -> channel.invokeMethod("volumePressed", "down")
                 KeyEvent.KEYCODE_VOLUME_UP -> channel.invokeMethod("volumePressed", "up")
+                else -> super.onKeyDown(keyCode, event)
             }
             return true
         }

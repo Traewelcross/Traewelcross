@@ -368,7 +368,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
 }
 
 class MapDisplay extends StatelessWidget {
-  MapDisplay({super.key, this.polylinePoints});
+  const MapDisplay({super.key, this.polylinePoints});
 
   final List<LatLng>? polylinePoints;
   List<Color> _randomFlag() {
