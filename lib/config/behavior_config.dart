@@ -94,4 +94,11 @@ class BehaviorConfig with ChangeNotifier {
     _renewLegacy = val;
     notifyListeners();
   }
+    bool _showActiveRideCard = true;
+  @JsonKey(defaultValue: true)
+  bool get showActiveRideCard => _showActiveRideCard;
+  set showActiveRideCard(bool val){
+    _showActiveRideCard = val;
+    notifyListeners();
+  }
 }

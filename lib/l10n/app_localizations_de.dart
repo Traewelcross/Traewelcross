@@ -939,4 +939,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String arrivalIn(String h, String min) {
     return 'Ankunft in $h Std. und $min Min.';
   }
+
+  @override
+  String get showActiveRideCard => 'Aktive Fahrt anpinnen';
+
+  @override
+  String get showActiveRideCardDesc =>
+      'Deine aktuell stattfindene Fahrt wird an die Navigationsleiste angepinnt';
 }

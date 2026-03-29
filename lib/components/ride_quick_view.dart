@@ -7,7 +7,6 @@ import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/pride_gradient.dart';
 import 'package:traewelcross/components/profile_picture.dart';
-import 'package:traewelcross/components/progress_bar.dart';
 import 'package:traewelcross/components/ride_icon_tag.dart';
 import 'package:traewelcross/components/status_tags.dart';
 import 'package:traewelcross/components/time_progress.dart';

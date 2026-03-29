@@ -432,12 +432,11 @@ class _ChromeState extends State<Chrome> {
     final selectedTab = tabs[selectedPageIndex];
 
     return MainScaffold(
-      extendBody: true,
       title: selectedTab.title,
       bottomNavigationBar: Column(
         mainAxisSize: .min,
         children: [
-          //TODO: Add Padding so this can be cleared in Home, OTM, etc.
+          if(getIt<Config>().behavior.showActiveRideCard)
           ActiveRideCard(),
           NavigationBar(
             backgroundColor: Theme.of(
@@ -515,7 +514,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.connectionState == .done) {
           if (!asyncSnapshot.hasData) {
-            return SizedBox();
+            return SizedBox.shrink();
           }
           final ride = asyncSnapshot.data as Map<String, dynamic>;
           final startDate = DateTime.parse(
@@ -526,86 +525,104 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
             (ride["train"]["manualArrival"] ??
                 ride["train"]["destination"]["arrival"]),
           ).toLocal();
-          return GestureDetector(
-            onTap: (){Navigator.push(context, MaterialPageRoute(builder: (ctx) => DetailedRideView(rideId:ride["id"], rideData: ride,)));},
-            child: Card.filled(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadiusGeometry.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                ),
-              ),
-              margin: .zero,
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Row(
+          return StreamBuilder(
+            stream: Stream.periodic(Duration(seconds: 30)),
+            builder: (context, _) {
+              Duration untilArrival = endDate.difference(DateTime.now());
+              if (untilArrival.isNegative && untilArrival.inSeconds < -15) {
+                return SizedBox.shrink();
+              }
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) =>
+                          DetailedRideView(rideId: ride["id"], rideData: ride),
+                    ),
+                  );
+                },
+                child: Card.filled(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.only(
+                      topLeft: Radius.circular(24),
+                      topRight: Radius.circular(24),
+                    ),
+                  ),
+                  margin: .zero,
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: .start,
-                            children: [
-                              Row(
-                                mainAxisSize: .min,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: .start,
                                 children: [
-                                  Text(ride["checkin"]["origin"]["name"]),
-                                  const Icon(Icons.arrow_right),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      ride["checkin"]["destination"]["name"],
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.headlineSmall,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                  Row(
+                                    mainAxisSize: .min,
+                                    children: [
+                                      Text(ride["checkin"]["origin"]["name"]),
+                                      const Icon(Icons.arrow_right),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          ride["checkin"]["destination"]["name"],
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.headlineSmall,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                            RideIconTag(
+                              iconInfo: RideIconTagInfo(
+                                showCategoryIcon: false,
+                                width: 24,
+                                category: ride["train"]["category"],
+                                lineName: ride["train"]["lineName"],
+                                operatorIdentifier:
+                                    ride["train"]["operator"]["identifier"],
+                              ),
+                            ),
+                          ],
                         ),
-                        RideIconTag(
-                          iconInfo: RideIconTagInfo(
-                            showCategoryIcon: false,
-                            width: 24,
-                            category: ride["train"]["category"],
-                            lineName: ride["train"]["lineName"],
-                            operatorIdentifier:
-                                ride["train"]["operator"]["identifier"],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: .end,
-                      children: [
-                        StreamBuilder(
-                          stream: Stream.periodic(const Duration(seconds: 30)),
-                          builder: (context, _) {
-                            final untilArrival = endDate.difference(DateTime.now());
-                            return Text(
+                        Row(
+                          mainAxisAlignment: .end,
+                          children: [
+                            Text(
                               AppLocalizations.of(context)!.arrivalIn(
                                 (untilArrival.inHours % 24).toString(),
-                                (untilArrival.inMinutes % 60).toString(),
+                                ((untilArrival.inMinutes % 60) < 1
+                                        ? "<1"
+                                        : (untilArrival.inMinutes % 60))
+                                    .toString(),
                               ),
-                            );
-                          }
+                            ),
+                          ],
+                        ),
+                        TimeProgress(
+                          startDate: startDate,
+                          endDate: endDate,
+                          rideId: ride["id"],
                         ),
                       ],
                     ),
-                    TimeProgress(startDate: startDate, endDate: endDate, rideId: ride["id"],),
-                  ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         }
-        return SizedBox();
+        return SizedBox.shrink();
       },
     );
   }

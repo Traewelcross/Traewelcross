@@ -244,6 +244,21 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                   ],
                 ),
               ),
+              Divider(),
+              ListTile(
+                onTap: () => setState(() {
+                  config.behavior.showActiveRideCard =
+                      !config.behavior.showActiveRideCard;
+                }),
+                title: Text(localize.showActiveRideCard),
+                subtitle: Text(localize.showActiveRideCardDesc),
+                trailing: Checkbox(
+                  value: config.behavior.showActiveRideCard,
+                  onChanged: (val) => setState(() {
+                    config.behavior.showActiveRideCard = val!;
+                  }),
+                ),
+              ),
               const SizedBox(height: 48),
             ],
           );

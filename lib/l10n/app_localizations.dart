@@ -1717,6 +1717,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Arrival in {h} h and {min} min'**
   String arrivalIn(String h, String min);
+
+  /// No description provided for @showActiveRideCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin active ride'**
+  String get showActiveRideCard;
+
+  /// No description provided for @showActiveRideCardDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin your active ride to the navigation bar'**
+  String get showActiveRideCardDesc;
 }
 
 class _AppLocalizationsDelegate

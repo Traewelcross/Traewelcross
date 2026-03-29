@@ -583,5 +583,7 @@
       },
       "min":{"type": "String"}
     }
-  }
+  },
+  "showActiveRideCard": "Pin active ride",
+  "showActiveRideCardDesc": "Pin your active ride to the navigation bar"
 }

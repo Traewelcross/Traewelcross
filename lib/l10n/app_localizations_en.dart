@@ -933,4 +933,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String arrivalIn(String h, String min) {
     return 'Arrival in $h h and $min min';
   }
+
+  @override
+  String get showActiveRideCard => 'Pin active ride';
+
+  @override
+  String get showActiveRideCardDesc =>
+      'Pin your active ride to the navigation bar';
 }

@@ -79,4 +79,5 @@ class AppearanceConfig with ChangeNotifier {
   bool get isPrideActive {
     return DateTime.now().month == 6 || _prideMode;
   }
+  
 }
