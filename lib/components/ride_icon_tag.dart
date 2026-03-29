@@ -20,7 +20,7 @@ class _RideIconTagState extends State<RideIconTag> {
   @override
   void initState() {
     super.initState();
-    if (widget.iconInfo.hafasId != null) {
+    if (widget.iconInfo.operatorIdentifier != null) {
       _lineDataFuture = _getLine();
     }
   }
@@ -32,6 +32,7 @@ class _RideIconTagState extends State<RideIconTag> {
     );
     return Row(
       children: [
+        if(widget.iconInfo.showCategoryIcon ?? true)
         switch (widget.iconInfo.category) {
           final category
               when category == "tram" ||
@@ -126,7 +127,7 @@ class _RideIconTagState extends State<RideIconTag> {
   Future<dynamic> _getLine() async {
     return jsonDecode(
       await rootBundle.loadString("assets/line_colors/line_colors.json"),
-    )[widget.iconInfo.hafasId][widget.iconInfo.lineName?.replaceAll(" ", "")];
+    )[widget.iconInfo.operatorIdentifier][widget.iconInfo.lineName?.replaceAll(" ", "")];
   }
 
   BorderRadius _getRadius(String shape) {

@@ -9,16 +9,19 @@ class MainScaffold extends StatelessWidget {
     required this.body,
     this.backButton,
     this.floatingActionButton,
+    this.extendBody = false
   });
   final Widget title;
   final List<Widget>? actions;
   final Widget? bottomNavigationBar;
   final Widget body;
   final bool? backButton;
+  final bool extendBody;
   final Widget? floatingActionButton;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: extendBody,
       appBar: AppBar(
         title: title,
         actions: actions,
@@ -42,6 +45,7 @@ class MainScaffold extends StatelessWidget {
       ),
       bottomNavigationBar: bottomNavigationBar,
       body: SafeArea(
+        bottom: !extendBody,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: body,

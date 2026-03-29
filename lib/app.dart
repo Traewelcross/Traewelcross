@@ -11,9 +11,14 @@ import 'package:provider/provider.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/own_profile_picture.dart';
+import 'package:traewelcross/components/progress_bar.dart';
+import 'package:traewelcross/components/ride_icon_tag.dart';
+import 'package:traewelcross/components/ride_quick_view.dart';
+import 'package:traewelcross/components/time_progress.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/error_type.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
+import 'package:traewelcross/pages/detailed_ride_view.dart';
 import 'package:traewelcross/pages/error_page.dart';
 import 'package:traewelcross/pages/home.dart';
 import 'package:traewelcross/pages/notifications.dart';
@@ -29,6 +34,7 @@ import 'package:traewelcross/utils/authentication.dart';
 import 'package:traewelcross/utils/color_scheme.dart';
 import 'package:traewelcross/utils/deeplink_service.dart';
 import 'package:traewelcross/utils/error_info.dart';
+import 'package:traewelcross/utils/ride_icon_tag_info.dart';
 import 'package:traewelcross/utils/shared.dart';
 import 'package:watch_it/watch_it.dart';
 import 'pages/app_info.dart';
@@ -426,40 +432,181 @@ class _ChromeState extends State<Chrome> {
     final selectedTab = tabs[selectedPageIndex];
 
     return MainScaffold(
+      extendBody: true,
       title: selectedTab.title,
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: Theme.of(context).navigationBarTheme.backgroundColor,
-        destinations: tabs.map((t) => t.destination).toList(),
-        selectedIndex: selectedPageIndex,
-        onDestinationSelected: (value) {
-          if (value == selectedPageIndex) {
-            if (_scrollController.hasClients) {
-              _scrollController.animateTo(
-                0,
-                duration: Duration(
-                  milliseconds: min(
-                    ((_scrollController.offset / 3).floor()),
-                    1500,
-                  ),
-                ),
-                curve: Curves.easeOut,
-              );
-            }
-          } else {
-            getIt<AppBarState>().setScrolled(false);
-          }
-          setState(() {
-            selectedPageIndex = value;
-          });
-        },
-        labelTextStyle: const WidgetStatePropertyAll(
-          TextStyle(overflow: TextOverflow.ellipsis),
-        ),
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        surfaceTintColor: Theme.of(context).colorScheme.secondary,
+      bottomNavigationBar: Column(
+        mainAxisSize: .min,
+        children: [
+          //TODO: Add Padding so this can be cleared in Home, OTM, etc.
+          ActiveRideCard(),
+          NavigationBar(
+            backgroundColor: Theme.of(
+              context,
+            ).navigationBarTheme.backgroundColor,
+            destinations: tabs.map((t) => t.destination).toList(),
+            selectedIndex: selectedPageIndex,
+            onDestinationSelected: (value) {
+              if (value == selectedPageIndex) {
+                if (_scrollController.hasClients) {
+                  _scrollController.animateTo(
+                    0,
+                    duration: Duration(
+                      milliseconds: min(
+                        ((_scrollController.offset / 3).floor()),
+                        1500,
+                      ),
+                    ),
+                    curve: Curves.easeOut,
+                  );
+                }
+              } else {
+                getIt<AppBarState>().setScrolled(false);
+              }
+              setState(() {
+                selectedPageIndex = value;
+              });
+            },
+            labelTextStyle: const WidgetStatePropertyAll(
+              TextStyle(overflow: TextOverflow.ellipsis),
+            ),
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+            surfaceTintColor: Theme.of(context).colorScheme.secondary,
+          ),
+        ],
       ),
       actions: selectedTab.actions,
       body: selectedTab.page,
+    );
+  }
+}
+
+class ActiveRideCard extends StatefulWidget {
+  const ActiveRideCard({super.key});
+
+  @override
+  State<ActiveRideCard> createState() => _ActiveRideCardState();
+}
+
+class _ActiveRideCardState extends State<ActiveRideCard> {
+  late Future<dynamic>? activeRide;
+  Future<dynamic>? _getActiveRide() async {
+    final api = getIt<ApiService>();
+    final res = await api.request(
+      "/user/statuses/active",
+      HttpRequestTypes.GET,
+    );
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body)["data"];
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    activeRide = _getActiveRide();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: activeRide,
+      builder: (context, asyncSnapshot) {
+        if (asyncSnapshot.connectionState == .done) {
+          if (!asyncSnapshot.hasData) {
+            return SizedBox();
+          }
+          final ride = asyncSnapshot.data as Map<String, dynamic>;
+          final startDate = DateTime.parse(
+            (ride["train"]["manualDeparture"] ??
+                ride["train"]["origin"]["departure"]),
+          ).toLocal();
+          final endDate = DateTime.parse(
+            (ride["train"]["manualArrival"] ??
+                ride["train"]["destination"]["arrival"]),
+          ).toLocal();
+          return GestureDetector(
+            onTap: (){Navigator.push(context, MaterialPageRoute(builder: (ctx) => DetailedRideView(rideId:ride["id"], rideData: ride,)));},
+            child: Card.filled(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.only(
+                  topLeft: Radius.circular(24),
+                  topRight: Radius.circular(24),
+                ),
+              ),
+              margin: .zero,
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: .start,
+                            children: [
+                              Row(
+                                mainAxisSize: .min,
+                                children: [
+                                  Text(ride["checkin"]["origin"]["name"]),
+                                  const Icon(Icons.arrow_right),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      ride["checkin"]["destination"]["name"],
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.headlineSmall,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        RideIconTag(
+                          iconInfo: RideIconTagInfo(
+                            showCategoryIcon: false,
+                            width: 24,
+                            category: ride["train"]["category"],
+                            lineName: ride["train"]["lineName"],
+                            operatorIdentifier:
+                                ride["train"]["operator"]["identifier"],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: .end,
+                      children: [
+                        StreamBuilder(
+                          stream: Stream.periodic(const Duration(seconds: 30)),
+                          builder: (context, _) {
+                            final untilArrival = endDate.difference(DateTime.now());
+                            return Text(
+                              AppLocalizations.of(context)!.arrivalIn(
+                                (untilArrival.inHours % 24).toString(),
+                                (untilArrival.inMinutes % 60).toString(),
+                              ),
+                            );
+                          }
+                        ),
+                      ],
+                    ),
+                    TimeProgress(startDate: startDate, endDate: endDate, rideId: ride["id"],),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+        return SizedBox();
+      },
     );
   }
 }

@@ -4,7 +4,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
-import 'package:traewelcross/components/pride_gradient.dart';
 import "package:traewelcross/components/profile_link.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';

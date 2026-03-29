@@ -929,9 +929,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String checkinConflictBody(String lineName, String statusID) {
-    return 'Entschuldige, aber während dem Versuch dich einzuchecken, kam es zu einem Konflikt. Es ist sehr wahrscheinlich, dass du bereits in diese Verbindung eingecheckt bist. Der Konfliktauslöser war eine Fahrt mit dem $lineName (ID: $statusID). Möchtest du einen Check-In erzwingen?';
+    return 'Entschuldige, aber während dem Versuch dich einzuchecken, kam es zu einem Konflikt. Es ist sehr wahrscheinlich, dass du bereits in diese oder eine andere Verbindung eingecheckt bist. Der Konfliktauslöser war eine Fahrt mit der Linie $lineName (ID: $statusID). Möchtest du einen Check-In erzwingen? (Du wirst keine Punkte erhalten, allerdings wird die Fahrt mit in die Statistik eingehen)';
   }
 
   @override
   String get unknown => 'Unbekannt';
+
+  @override
+  String arrivalIn(String h, String min) {
+    return 'Ankunft in $h Std. und $min Min.';
+  }
 }

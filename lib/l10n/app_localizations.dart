@@ -1703,7 +1703,7 @@ abstract class AppLocalizations {
   /// No description provided for @checkinConflictBody.
   ///
   /// In en, this message translates to:
-  /// **'Sorry, but while trying to check you in, a conflict occured. It\'s highly likely that you already checked into this connection. The conflicting status is a ride with {lineName} (ID: {statusID}). Would you like to force a Check-In?'**
+  /// **'Sorry, but while trying to check you in, a conflict occured. It\'s highly likely that you already checked into this or another connection. The conflicting status is a ride with {lineName} (ID: {statusID}). Would you like to force a Check-In? (This won\'t give you any points, but will contribute to your statistics anyway.)'**
   String checkinConflictBody(String lineName, String statusID);
 
   /// No description provided for @unknown.
@@ -1711,6 +1711,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown'**
   String get unknown;
+
+  /// No description provided for @arrivalIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrival in {h} h and {min} min'**
+  String arrivalIn(String h, String min);
 }
 
 class _AppLocalizationsDelegate

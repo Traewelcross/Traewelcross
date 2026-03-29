@@ -4,9 +4,10 @@ import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/utils/shared.dart';
 
 class ProgressBar extends StatelessWidget {
-  const ProgressBar({super.key, this.value, this.borderRadius});
+  const ProgressBar({super.key, this.value, this.borderRadius, this.seed});
   final double? value;
   final BorderRadius? borderRadius;
+  final int? seed;
   @override
   Widget build(BuildContext context) {
     final prideMode = getIt<Config>().appearance.isPrideActive;
@@ -14,6 +15,7 @@ class ProgressBar extends StatelessWidget {
     return PrideGradient(
       rotation: 0,
       progress: value,
+      seed: seed,
       child: LinearProgressIndicator(
         value: value,
         backgroundColor: Colors.white24,

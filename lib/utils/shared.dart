@@ -48,7 +48,7 @@ class SharedFunctions {
       ),
     );
   }
-
+  static final stableSeed =Random().nextInt(1<<32);
   static void configureGetIt() {
     getIt.registerSingleton<Config>(Config());
     getIt.registerLazySingleton<AuthService>(

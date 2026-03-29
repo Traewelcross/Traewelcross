@@ -2,15 +2,17 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:traewelcross/utils/pride_flags.dart';
+import 'package:traewelcross/utils/shared.dart';
 
 /// Will use a randomly selected (or user defined) pride flag (presentent as gradient) to act as a Color replacement through ShaderMask
 /// the backgroundColor (or equivalent) should be transparent, the actual color something else (like white) at full alpha
 class PrideGradient extends StatefulWidget {
-  const PrideGradient({super.key, required this.child, this.progress, this.rotation});
+  const PrideGradient({super.key, required this.child, this.progress, this.rotation, this.seed});
   final Widget child;
   final double? progress;
   /// In degrees
   final double? rotation;
+  final int? seed;
 
   @override
   State<PrideGradient> createState() => _PrideGradientState();
@@ -19,7 +21,7 @@ class PrideGradient extends StatefulWidget {
 class _PrideGradientState extends State<PrideGradient> {
   late List<Color> _selectedFlag;
   List<Color> _randomFlag() {
-    final random = math.Random();
+    final random = math.Random(widget.seed);
     final flagList = PrideFlags.getFlags();
     return flagList[random.nextInt(flagList.length)];
   }

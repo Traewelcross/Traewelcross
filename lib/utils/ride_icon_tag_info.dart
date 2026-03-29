@@ -1,12 +1,14 @@
 class RideIconTagInfo {
   String? category;
   double width = 24;
-  String? hafasId;
+  bool? showCategoryIcon;
+  String? operatorIdentifier;
   String? lineName;
   RideIconTagInfo({
     this.category,
     required this.width,
-    this.hafasId,
+    this.operatorIdentifier,
+    this.showCategoryIcon,
     this.lineName,
   });
 }
