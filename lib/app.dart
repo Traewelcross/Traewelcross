@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/own_profile_picture.dart';
@@ -486,8 +487,12 @@ class ActiveRideCard extends StatefulWidget {
 
 class _ActiveRideCardState extends State<ActiveRideCard> {
   late Future<dynamic>? activeRide;
+  late int userId = 0;
   Future<dynamic>? _getActiveRide() async {
     final api = getIt<ApiService>();
+    await SharedPreferencesAsync()
+        .getInt("userid")
+        .then((val) => userId = val ?? 0);
     final res = await api.request(
       "/user/statuses/active",
       HttpRequestTypes.GET,
@@ -497,6 +502,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
     } else {
       return null;
     }
+        
   }
 
   @override
@@ -504,7 +510,6 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
     super.initState();
     activeRide = _getActiveRide();
   }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -536,7 +541,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                     context,
                     MaterialPageRoute(
                       builder: (ctx) =>
-                          DetailedRideView(rideId: ride["id"], rideData: ride),
+                          DetailedRideView(rideId: ride["id"], rideData: ride, authUserId: userId,),
                     ),
                   );
                 },
