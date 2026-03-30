@@ -210,6 +210,11 @@ class SharedFunctions {
 
   static Color getColorById({required int id}) {
     final random = Random(id);
-    return Color((random.nextDouble() * 0xFFFFFF).toInt()).withValues(alpha: 1);
+    final color = Color((random.nextDouble() * 0xFFFFFF).toInt()).withValues(alpha: 1);
+    HSLColor hslColor = HSLColor.fromColor(color);
+    if(hslColor.lightness > 0.5){
+      hslColor = hslColor.withLightness(0.5);
+    }
+    return hslColor.toColor();
   }
 }
