@@ -63,7 +63,7 @@ class _MapStatForUserState extends State<MapStatForUser> {
           data["polylines"] == null) {
         continue;
       }
-      userDetails ??= (data["statuses"] as List<dynamic>).first["userDetails"];
+      userDetails ??= (data["statuses"] as List<dynamic>).first["user"];
       final polyFeatures = data["polylines"]["features"] as List<dynamic>;
       for (var feat in polyFeatures) {
         var lineCoords = feat["geometry"]["coordinates"] as List<dynamic>;

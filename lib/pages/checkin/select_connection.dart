@@ -358,7 +358,7 @@ class _DepartureList extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (BuildContext context) => SelectStop(
                           tripId: departure["tripId"],
-                          destination: departure["destination"]["name"],
+                          destination: departure["direction"],
                           lineName: departure["line"]["name"],
                           startStopId: departure["stop"]["id"],
                           category: departure["line"]["product"],
@@ -394,7 +394,7 @@ class _DepartureList extends StatelessWidget {
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
-                                      departure["destination"]["name"],
+                                      departure["direction"],
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       softWrap: false,

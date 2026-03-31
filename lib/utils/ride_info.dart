@@ -7,7 +7,7 @@ class RideInfo {
 
   RideInfo();
   RideInfo.fromRides(Map<String, dynamic> data)
-    : userInfo = data["userDetails"],
+    : userInfo = data["user"],
       rideId = data["id"];
   RideInfo.fromCoords(Map<String, dynamic> uI, List<LatLng> coords){
     userInfo = uI;

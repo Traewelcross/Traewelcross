@@ -30,13 +30,13 @@ class CheckinSuccess extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  statusInfo["status"]["train"]["origin"]["name"],
+                  statusInfo["status"]["checkin"]["origin"]["name"],
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
                 const Icon(Icons.arrow_downward),
                 Text(
-                  statusInfo["status"]["train"]["destination"]["name"],
+                  statusInfo["status"]["checkin"]["destination"]["name"],
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
@@ -105,9 +105,9 @@ class CheckinSuccess extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
                             child: ProfileLink(
-                              userData: user["userDetails"],
+                              userData: user["user"],
                               subTitle:
-                                  "${user["train"]["origin"]["name"]} -> ${user["train"]["destination"]["name"]}",
+                                  "${user["checkin"]["origin"]["name"]} -> ${user["checkin"]["destination"]["name"]}",
                             ),
                           ),
                       ],

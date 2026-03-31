@@ -521,12 +521,12 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
           }
           final ride = asyncSnapshot.data as Map<String, dynamic>;
           final startDate = DateTime.parse(
-            (ride["train"]["manualDeparture"] ??
-                ride["train"]["origin"]["departure"]),
+            (ride["checkin"]["manualDeparture"] ??
+                ride["checkin"]["origin"]["departureReal"]??ride["checkin"]["origin"]["departurePlanned"]),
           ).toLocal();
           final endDate = DateTime.parse(
-            (ride["train"]["manualArrival"] ??
-                ride["train"]["destination"]["arrival"]),
+            (ride["checkin"]["manualArrival"] ??
+                ride["checkin"]["destination"]["arrivalReal"]??ride["checkin"]["destination"]["arrivalPlanned"]),
           ).toLocal();
           return StreamBuilder(
             stream: Stream.periodic(Duration(seconds: 30)),
@@ -590,10 +590,10 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                               iconInfo: RideIconTagInfo(
                                 showCategoryIcon: false,
                                 width: 24,
-                                category: ride["train"]["category"],
-                                lineName: ride["train"]["lineName"],
+                                category: ride["checkin"]["category"],
+                                lineName: ride["checkin"]["lineName"],
                                 operatorIdentifier:
-                                    ride["train"]["operator"]["identifier"],
+                                    ride["checkin"]["operator"]["identifier"],
                               ),
                             ),
                           ],

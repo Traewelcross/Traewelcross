@@ -203,9 +203,9 @@ class _DetailedRideViewState extends State<DetailedRideView> {
 
         final rideData = rideSnapshot.data!;
         final originName =
-            rideData["train"]?["origin"]?["name"] ?? "Unknown Origin";
+            rideData["checkin"]?["origin"]?["name"] ?? "Unknown Origin";
         final destinationName =
-            rideData["train"]?["destination"]?["name"] ?? "Unknown Destination";
+            rideData["checkin"]?["destination"]?["name"] ?? "Unknown Destination";
         final title = "$originName -> $destinationName";
 
         return MainScaffold(
@@ -288,7 +288,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
                             localize.operatedBy(
-                              rideData["train"]["operator"]?["name"] ?? "N/A",
+                              rideData["checkin"]["operator"]?["name"] ?? "N/A",
                             ),
                           ),
                         ),
@@ -315,7 +315,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
-                            rideData["train"]["dataSource"]?["attribution"] ??
+                            rideData["checkin"]["dataSource"]?["attribution"] ??
                                 "N/A",
                             style: TextStyle(fontStyle: FontStyle.italic),
                           ),
@@ -337,7 +337,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                             print(_evaIdentOrigin);
                             SharedFunctions.launchURL(
                               Uri.parse(
-                                "https://bahn.expert/details/${rideData["train"]["journeyNumber"]}/${rideData["train"]["origin"]["departurePlanned"]}?evaNumberAlongRoute=$_evaIdentOrigin",
+                                "https://bahn.expert/details/${rideData["checkin"]["journeyNumber"]}/${rideData["checkin"]["origin"]["departurePlanned"]}?evaNumberAlongRoute=$_evaIdentOrigin",
                               ),
                             );
                           },

@@ -22,11 +22,13 @@ class RideQuickViewWrapper extends StatefulWidget {
   const RideQuickViewWrapper({
     super.key,
     this.userName,
+    this.isOTM,
     required this.scrollController,
     this.controller,
   });
 
   final String? userName;
+  final bool? isOTM;
   final ScrollController? scrollController;
   final RideQuickViewWrapperController? controller;
 
@@ -76,9 +78,12 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
 
     final apiService = getIt<ApiService>();
     try {
-      final endpoint = widget.userName == null
+      String endpoint = widget.userName == null
           ? "/dashboard?page=$_page"
           : "/user/${widget.userName}/statuses?page=$_page";
+      if(widget.isOTM == true){
+        endpoint = "/statuses";
+      }
       final response = await apiService.request(endpoint, HttpRequestTypes.GET);
       if (response.statusCode == 200) {
         final newRides = jsonDecode(response.body)["data"];
@@ -124,8 +129,8 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
 
         final ride = _userRides[index];
         final currentRideDate = DateTime.parse(
-          ride["train"]["manualDeparture"] ??
-              ride["train"]["origin"]["departure"],
+          ride["checkin"]["manualDeparture"] ??
+              ride["checkin"]["origin"]["departureReal"] ?? ride["checkin"]["origin"]["departurePlanned"],
         );
 
         bool showDateHeader = false;
@@ -134,8 +139,8 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
         } else {
           final previousRide = _userRides[index - 1];
           final previousRideDate = DateTime.parse(
-            previousRide["train"]["manualDeparture"] ??
-                previousRide["train"]["origin"]["departure"],
+            previousRide["checkin"]["manualDeparture"] ??
+                previousRide["checkin"]["origin"]["departureReal"] ?? previousRide["checkin"]["origin"]["departurePlanned"],
           );
           if (currentRideDate.day != previousRideDate.day ||
               currentRideDate.month != previousRideDate.month ||
@@ -163,8 +168,8 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
                     onPressed: () {
                       final ridesOnThisDate = _userRides.where((ride) {
                         final rideDate = DateTime.parse(
-                          ride["train"]["manualDeparture"] ??
-                              ride["train"]["origin"]["departure"],
+                          ride["checkin"]["manualDeparture"] ??
+                              ride["checkin"]["origin"]["departureReal"] ?? ride["checkin"]["origin"]["departurePlanned"],
                         );
                         return rideDate.year == currentRideDate.year &&
                             rideDate.month == currentRideDate.month &&

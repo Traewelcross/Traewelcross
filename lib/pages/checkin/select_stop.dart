@@ -58,7 +58,6 @@ class _SelectStopState extends State<SelectStop> {
       SharedFunctions.handleRequestTimeout(context, _fetchStops);
       return [];
     }
-
     if (response.statusCode == 200) {
       List<dynamic> stopovers = jsonDecode(response.body)["data"]["stopovers"];
       stopovers = stopovers.reversed.toList();
