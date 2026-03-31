@@ -106,7 +106,7 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
   }
 
   void _onScroll() {
-    if (widget.scrollController!.position.pixels >=
+    if (widget.isOTM != true && widget.scrollController!.position.pixels >=
             widget.scrollController!.position.maxScrollExtent * 0.9 &&
         !_isLoading) {
       _fetchRides();
