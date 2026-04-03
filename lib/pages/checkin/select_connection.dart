@@ -348,7 +348,7 @@ class _DepartureList extends StatelessWidget {
               itemBuilder: (BuildContext context, int i) {
                 final departure = departures[i];
                 if (!showOtherStations &&
-                    departure["stop"]["name"] != stationName) {
+                    departure["station"]["name"] != stationName) {
                   return SizedBox(height: 0);
                 }
                 return InkWell(
@@ -360,7 +360,7 @@ class _DepartureList extends StatelessWidget {
                           tripId: departure["tripId"],
                           destination: departure["direction"],
                           lineName: departure["line"]["name"],
-                          startStopId: departure["stop"]["id"],
+                          startStopId: departure["station"]["id"],
                           category: departure["line"]["product"],
                           departureTime: departure["plannedWhen"],
                         ),
@@ -402,7 +402,7 @@ class _DepartureList extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              if (departure["stop"]["name"] != stationName)
+                              if (departure["station"]["name"] != stationName)
                               Row(
                                 children: [
                                   Expanded(
@@ -410,7 +410,7 @@ class _DepartureList extends StatelessWidget {
                                       AppLocalizations.of(
                                         context,
                                       )!.startsAtDifferentStop(
-                                        departure["stop"]["name"],
+                                        departure["station"]["name"],
                                       ),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
