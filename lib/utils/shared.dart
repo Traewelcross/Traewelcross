@@ -48,7 +48,8 @@ class SharedFunctions {
       ),
     );
   }
-  static final stableSeed =Random().nextInt(1<<32);
+
+  static final stableSeed = Random().nextInt(1 << 32);
   static void configureGetIt() {
     getIt.registerSingleton<Config>(Config());
     getIt.registerLazySingleton<AuthService>(
@@ -73,6 +74,9 @@ class SharedFunctions {
     );
     getIt.registerSingleton<GlobalKey<NavigatorState>>(
       GlobalKey<NavigatorState>(),
+    );
+    getIt.registerSingleton<GlobalKey<ScaffoldMessengerState>>(
+      GlobalKey<ScaffoldMessengerState>(),
     );
   }
 
@@ -210,11 +214,23 @@ class SharedFunctions {
 
   static Color getColorById({required int id}) {
     final random = Random(id);
-    final color = Color((random.nextDouble() * 0xFFFFFF).toInt()).withValues(alpha: 1);
+    final color = Color(
+      (random.nextDouble() * 0xFFFFFF).toInt(),
+    ).withValues(alpha: 1);
     HSLColor hslColor = HSLColor.fromColor(color);
-    if(hslColor.lightness > 0.5){
+    if (hslColor.lightness > 0.5) {
       hslColor = hslColor.withLightness(0.5);
     }
     return hslColor.toColor();
+  }
+
+  static void sendSnackBar(String text) {
+    final messenger = getIt<GlobalKey<ScaffoldMessengerState>>().currentState;
+    if (messenger == null) {
+      return;
+    }
+    ScaffoldMessenger.of(
+      messenger.context,
+    ).showSnackBar(SnackBar(content: Text(text)));
   }
 }

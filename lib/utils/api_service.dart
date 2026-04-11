@@ -11,6 +11,7 @@ import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/utils/authentication.dart';
 import 'package:traewelcross/utils/error_info.dart';
 import 'package:traewelcross/utils/shared.dart';
+import 'package:traewelcross/utils/status_provider.dart';
 
 class ApiService {
   static const String _baseURL = "https://traewelling.de/api/v1";
@@ -18,6 +19,8 @@ class ApiService {
   final AuthService _authService;
   int _requestCount = 0;
   DateTime _lastRequest = DateTime.now();
+
+  late final status = StatusProvider(this);
 
   ApiService(this._authService);
 

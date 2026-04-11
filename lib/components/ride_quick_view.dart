@@ -11,7 +11,6 @@ import 'package:traewelcross/components/ride_icon_tag.dart';
 import 'package:traewelcross/components/status_tags.dart';
 import 'package:traewelcross/components/time_progress.dart';
 import 'package:traewelcross/config/config.dart';
-import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/pages/detailed_ride_view.dart';
 import 'package:traewelcross/pages/checkin/checkin.dart';
 import 'package:traewelcross/enums/trip_type.dart';
@@ -24,7 +23,7 @@ import 'package:traewelcross/utils/ride_icon_tag_info.dart';
 import 'package:traewelcross/utils/shared.dart';
 import 'package:intl/intl.dart';
 import 'package:traewelcross/utils/api_service.dart';
-import 'dart:convert';
+import 'package:traewelcross/utils/status_provider.dart';
 import 'dart:async';
 
 import 'package:traewelcross/utils/time_span.dart';
@@ -76,112 +75,36 @@ class _RideQuickViewState extends State<RideQuickView> {
 
   Future<void> _updateLikes() async {
     final apiService = getIt<ApiService>();
-    if (!_rideData["liked"]) {
-      if (_rideData["isLikable"] != null && !_rideData["isLikable"]) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.notLikeable)),
-        );
-        return;
-      }
-      try {
-        final response = await apiService.request(
-          "/status/${_rideData["id"]}/like",
-          HttpRequestTypes.POST,
-        );
-        if (!mounted) return;
-
-        if (response.statusCode == 201) {
-          _rideData["liked"] = true;
-          _rideData["likes"] = jsonDecode(response.body)["data"]["count"];
-          widget.likeCallback?.call();
-          _updateRideData(_rideData);
-        } else {
-          switch (response.statusCode) {
-            case 409:
-              _rideData["liked"] = true;
-              _rideData["likes"] = _rideData["likes"] + 1;
-              widget.likeCallback?.call();
-              _updateRideData(_rideData);
-              return;
-            case 403:
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    AppLocalizations.of(context)!.noModifcationAllowedGeneric,
-                  ),
-                ),
-              );
-              return;
-            case 404:
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(AppLocalizations.of(context)!.statusNotFound),
-                ),
-              );
-              return;
-            case 429:
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(AppLocalizations.of(context)!.rateLimit),
-                ),
-              );
-              return;
-            default:
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    '${AppLocalizations.of(context)!.genericErrorSnackBar} ${response.statusCode}',
-                  ),
-                ),
-              );
-          }
-        }
-      } catch (e) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              '${AppLocalizations.of(context)!.genericErrorSnackBar} $e',
-            ),
-          ),
-        );
-      }
-    } else {
-      try {
-        final response = await apiService.request(
-          "/status/${_rideData["id"]}/like",
-          HttpRequestTypes.DELETE,
-        );
-        if (!mounted) return;
-
-        if (response.statusCode == 200) {
-          _rideData["liked"] = false;
-          _rideData["likes"] = jsonDecode(response.body)["data"]["count"];
-          widget.likeCallback?.call();
-          _updateRideData(_rideData);
-        } else if (response.statusCode == 404) {
+    try {
+      final LikeResponse res;
+      if (!_rideData["liked"]) {
+        if (_rideData["isLikable"] != null && !_rideData["isLikable"]) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.statusNotFound),
-            ),
+            SnackBar(content: Text(AppLocalizations.of(context)!.notLikeable)),
           );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.genericErrorSnackBar),
-            ),
-          );
+          return;
         }
-      } catch (e) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              '${AppLocalizations.of(context)!.genericErrorSnackBar} $e',
-            ),
-          ),
+        res = await apiService.status.like(_rideData["id"], _rideData["likes"]);
+      } else {
+        res = await apiService.status.unlike(
+          _rideData["id"],
+          _rideData["likes"],
         );
       }
+      if (!mounted) return;
+      _rideData["liked"] = res.wasSuccess;
+      _rideData["likes"] = res.newCount;
+      widget.likeCallback?.call();
+      _updateRideData(_rideData);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '${AppLocalizations.of(context)!.genericErrorSnackBar} $e',
+          ),
+        ),
+      );
     }
   }
 
@@ -197,7 +120,6 @@ class _RideQuickViewState extends State<RideQuickView> {
       );
 
       final apiService = getIt<ApiService>();
-      final int rideId = _rideData["id"];
       final Map<String, dynamic> payload;
 
       if (isDestination) {
@@ -217,44 +139,12 @@ class _RideQuickViewState extends State<RideQuickView> {
       }
 
       try {
-        final response = await apiService.request(
-          "/status/$rideId",
-          HttpRequestTypes.PUT,
-          body: jsonEncode(payload),
+        final updatedRideData = await apiService.status.update(
+          _rideData["id"],
+          payload,
         );
-
-        if (!mounted) return;
-
-        if (response.statusCode == 200) {
-          final updatedRideData = jsonDecode(response.body)["data"];
+        if (updatedRideData != null && mounted) {
           _updateRideData(updatedRideData);
-        } else {
-          switch (response.statusCode) {
-            case 403:
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    AppLocalizations.of(context)!.noModifcationAllowed,
-                  ),
-                ),
-              );
-              return;
-            case 404:
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(AppLocalizations.of(context)!.statusNotFound),
-                ),
-              );
-              return;
-            default:
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    "${AppLocalizations.of(context)!.genericErrorSnackBar} ${(jsonDecode(response.body)["message"]?.toString() ?? response.statusCode)}",
-                  ),
-                ),
-              );
-          }
         }
       } catch (e) {
         if (!mounted) return;
@@ -271,51 +161,13 @@ class _RideQuickViewState extends State<RideQuickView> {
 
   Future<void> _deleteStatus() async {
     final apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/status/${widget.rideData["id"]}",
-      HttpRequestTypes.DELETE,
-    );
-    switch (response.statusCode) {
-      case 204:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.statusDeletedSuccessful,
-            ),
-          ),
-        );
-        if (widget.detailedView ?? false) {
-          Navigator.pop(context);
-        } else {
-          widget.onDelete?.call();
-        }
-        break;
-      case 403:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.noModifcationAllowedGeneric,
-            ),
-          ),
-        );
-        break;
-      case 404:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.statusNotFound)),
-        );
-        break;
-      default:
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "${AppLocalizations.of(context)!.genericErrorSnackBar} ${response.statusCode}",
-            ),
-          ),
-        );
-        break;
+    final success = await apiService.status.delete(widget.rideData["id"]);
+    if (success && mounted) {
+      if (widget.detailedView ?? false) {
+        Navigator.pop(context);
+      } else {
+        widget.onDelete?.call();
+      }
     }
   }
 
@@ -479,32 +331,11 @@ class _RideQuickViewState extends State<RideQuickView> {
       ),
     );
     final apiService = getIt<ApiService>();
-    final res = await apiService.request(
-      "/reports",
-      HttpRequestTypes.POST,
-      body: jsonEncode({
-        "subjectType": "Status",
-        "subjectId": _rideData["id"],
-        "reason": reason,
-        "description": desc,
-      }),
+    await apiService.status.report(
+      id: _rideData["id"],
+      reason: reason,
+      description: desc,
     );
-    if (res.statusCode == 201) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.reportSuccess)),
-      );
-    } else {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)!.genericErrorSnackBar +
-                res.statusCode.toString(),
-          ),
-        ),
-      );
-    }
   }
 
   void _copyCheckIn(Map<String, dynamic> status) {
@@ -680,7 +511,8 @@ class _RideQuickViewState extends State<RideQuickView> {
                       ).toLocal(),
                       endDate: DateTime.parse(
                         (_rideData["checkin"]["manualArrival"] ??
-                            _rideData["checkin"]["destination"]["arrivalReal"] ??_rideData["checkin"]["destination"]["arrivalPlanned"]),
+                            _rideData["checkin"]["destination"]["arrivalReal"] ??
+                            _rideData["checkin"]["destination"]["arrivalPlanned"]),
                       ).toLocal(),
                       rideId: _rideData["id"],
                     ),
@@ -1094,12 +926,18 @@ class _StationText extends StatelessWidget {
     if (isDestination) {
       manualTimeStr = rideData["manualArrival"];
       plannedTimeStr = rideData["destination"]["arrivalPlanned"];
-      isDelayed = rideData["destination"]["arrivalPlanned"] != (rideData["destination"]["arrivalReal"] ?? rideData["destination"]["arrivalPlanned"]);//rideData["destination"]["isArrivalDelayed"];
+      isDelayed =
+          rideData["destination"]["arrivalPlanned"] !=
+          (rideData["destination"]["arrivalReal"] ??
+              rideData["destination"]["arrivalPlanned"]); //rideData["destination"]["isArrivalDelayed"];
       realTimeStr = rideData["destination"]["arrivalReal"];
     } else {
       manualTimeStr = rideData["manualDeparture"];
       plannedTimeStr = rideData["origin"]["departurePlanned"];
-      isDelayed = rideData["origin"]["departurePlanned"] !=( rideData["origin"]["departureReal"] ?? rideData["origin"]["departurePlanned"]);//rideData["origin"]["isDepartureDelayed"];
+      isDelayed =
+          rideData["origin"]["departurePlanned"] !=
+          (rideData["origin"]["departureReal"] ??
+              rideData["origin"]["departurePlanned"]); //rideData["origin"]["isDepartureDelayed"];
       realTimeStr = rideData["origin"]["departureReal"];
     }
     time = DateTime.parse(manualTimeStr ?? realTimeStr ?? plannedTimeStr);
