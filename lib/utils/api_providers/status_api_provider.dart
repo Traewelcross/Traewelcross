@@ -6,10 +6,10 @@ import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/shared.dart';
 
-class StatusProvider {
+class StatusApiProvider {
   final ApiService _api;
 
-  StatusProvider(this._api);
+  StatusApiProvider(this._api);
   final navKeyContext =
       getIt<GlobalKey<NavigatorState>>().currentState?.context;
   Future<LikeResponse> like(int id, int currentCount) async {
@@ -179,6 +179,17 @@ class StatusProvider {
         );
       }
       return false;
+    }
+  }
+  Future<Map<String, dynamic>?> getActiveRide() async {
+    final res = await _api.request(
+      "/user/statuses/active",
+      HttpRequestTypes.GET,
+    );
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body)["data"];
+    } else {
+      return null;
     }
   }
 }

@@ -23,7 +23,7 @@ import 'package:traewelcross/utils/ride_icon_tag_info.dart';
 import 'package:traewelcross/utils/shared.dart';
 import 'package:intl/intl.dart';
 import 'package:traewelcross/utils/api_service.dart';
-import 'package:traewelcross/utils/status_provider.dart';
+import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
 import 'dart:async';
 
 import 'package:traewelcross/utils/time_span.dart';
@@ -423,7 +423,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                                         lineName:
                                             _rideData["checkin"]["lineName"],
                                         operatorIdentifier:
-                                            _rideData["checkin"]["operator"]?["identifier"],
+                                            SharedFunctions.getOperatorHAFASIdent(_rideData["checkin"]["operator"]?["identifiers"]),
                                       ),
                                     ),
                                     const SizedBox(

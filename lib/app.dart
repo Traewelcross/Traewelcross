@@ -219,14 +219,8 @@ class _AppHomeState extends State<AppHome> {
       try {
         final apiService = getIt<ApiService>();
         await apiService.getUserFull(withId: true);
-        final res = await apiService.request(
-          "/notifications/unread/count",
-          HttpRequestTypes.GET,
-        );
-        if (res.statusCode == 200) {
-          if (!mounted) return true;
-          getIt<UnreadCountProvider>().setCount(jsonDecode(res.body)["data"]);
-        }
+        final res = await apiService.notification.getNotificationCount();
+        getIt<UnreadCountProvider>().setCount(res);
         _setupNotification();
         return true;
       } on TimeoutException {
@@ -371,10 +365,7 @@ class _ChromeState extends State<Chrome> {
         actions: [
           IconButton(
             onPressed: () async {
-              await getIt<ApiService>().request(
-                "/notifications/read/all",
-                HttpRequestTypes.PUT,
-              );
+              await getIt<ApiService>().notification.markAllRead();
               if (!context.mounted) return;
               getIt<UnreadCountProvider>().reset();
             },
@@ -436,8 +427,7 @@ class _ChromeState extends State<Chrome> {
       bottomNavigationBar: Column(
         mainAxisSize: .min,
         children: [
-          if(getIt<Config>().behavior.showActiveRideCard)
-          ActiveRideCard(),
+          if (getIt<Config>().behavior.showActiveRideCard) ActiveRideCard(),
           NavigationBar(
             backgroundColor: Theme.of(
               context,
@@ -494,16 +484,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
     await SharedPreferencesAsync()
         .getInt("userid")
         .then((val) => userId = val ?? 0);
-    final res = await api.request(
-      "/user/statuses/active",
-      HttpRequestTypes.GET,
-    );
-    if (res.statusCode == 200) {
-      return jsonDecode(res.body)["data"];
-    } else {
-      return null;
-    }
-        
+    return await api.status.getActiveRide();
   }
 
   @override
@@ -511,6 +492,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
     super.initState();
     activeRide = _getActiveRide();
   }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -523,11 +505,13 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
           final ride = asyncSnapshot.data as Map<String, dynamic>;
           final startDate = DateTime.parse(
             (ride["checkin"]["manualDeparture"] ??
-                ride["checkin"]["origin"]["departureReal"]??ride["checkin"]["origin"]["departurePlanned"]),
+                ride["checkin"]["origin"]["departureReal"] ??
+                ride["checkin"]["origin"]["departurePlanned"]),
           ).toLocal();
           final endDate = DateTime.parse(
             (ride["checkin"]["manualArrival"] ??
-                ride["checkin"]["destination"]["arrivalReal"]??ride["checkin"]["destination"]["arrivalPlanned"]),
+                ride["checkin"]["destination"]["arrivalReal"] ??
+                ride["checkin"]["destination"]["arrivalPlanned"]),
           ).toLocal();
           return StreamBuilder(
             stream: Stream.periodic(Duration(seconds: 30)),
@@ -541,8 +525,11 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (ctx) =>
-                          DetailedRideView(rideId: ride["id"], rideData: ride, authUserId: userId,),
+                      builder: (ctx) => DetailedRideView(
+                        rideId: ride["id"],
+                        rideData: ride,
+                        authUserId: userId,
+                      ),
                     ),
                   );
                 },
@@ -594,7 +581,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                 category: ride["checkin"]["category"],
                                 lineName: ride["checkin"]["lineName"],
                                 operatorIdentifier:
-                                    ride["checkin"]["operator"]["identifier"],
+                                    SharedFunctions.getOperatorHAFASIdent(ride["checkin"]["operator"]["identifiers"]),
                               ),
                             ),
                           ],

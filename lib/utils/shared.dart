@@ -233,4 +233,11 @@ class SharedFunctions {
       messenger.context,
     ).showSnackBar(SnackBar(content: Text(text)));
   }
+  static String? getOperatorHAFASIdent(List<dynamic>? identifiers){
+    if(identifiers == null){
+      return "";
+    }
+    final hafasIdent = identifiers.where((ident) => ident["type"] == "hafas");
+    return hafasIdent.isEmpty ? "" : hafasIdent.first["identifier"];
+  }
 }

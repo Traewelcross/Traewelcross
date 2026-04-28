@@ -37,13 +37,9 @@ class _DashboardState extends State<Dashboard> {
 
   Future<void> _countNotifications() async {
     final apiService = getIt<ApiService>();
-    final res = await apiService.request(
-      "/notifications/unread/count",
-      HttpRequestTypes.GET,
-    );
-    if (res.statusCode == 200) {
-      getIt<UnreadCountProvider>().setCount(jsonDecode(res.body)["data"]);
-    }
+    final res = await apiService.notification.getNotificationCount();
+    getIt<UnreadCountProvider>().setCount(res);
+
   }
 
   @override
