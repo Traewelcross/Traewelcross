@@ -576,7 +576,7 @@ class _HomeState extends State<Home> {
                                         ),
                                       ] else ...[
                                         ProfileLink(
-                                          userData: results[i],
+                                          user: results[i],
                                           appendUsername: true,
                                         ),
                                       ],

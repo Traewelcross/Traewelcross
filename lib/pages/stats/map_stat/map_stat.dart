@@ -5,6 +5,7 @@ import 'package:traewelcross/components/color_circle.dart';
 import 'package:traewelcross/components/profile_link.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart' as models;
 import 'package:traewelcross/utils/ride_info.dart';
 import 'package:traewelcross/utils/shared.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -98,7 +99,7 @@ class MapStat extends StatelessWidget {
             children: uniqueUsers
                 .map(
                   (user) => ProfileLink(
-                    userData: user,
+                    user: models.User.fromJson(user),
                     enableNavigateToProfile: false,
                     action: ColorCircle(
                       color: SharedFunctions.getColorById(id: user["id"]),

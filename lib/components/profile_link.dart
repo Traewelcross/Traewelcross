@@ -3,17 +3,18 @@ import "package:traewelcross/components/app_bar_title.dart";
 import "package:traewelcross/components/main_scaffold.dart";
 import "package:traewelcross/components/profile_picture.dart";
 import "package:traewelcross/pages/profile_view.dart";
+import "package:traewelcross/utils/api_providers/api_models.dart";
 
 class ProfileLink extends StatelessWidget {
   const ProfileLink({
     super.key,
-    required this.userData,
+    required this.user,
     this.enableNavigateToProfile,
     this.appendUsername,
     this.subTitle,
     this.action,
   });
-  final Map<String, dynamic> userData;
+  final User user;
   final bool? enableNavigateToProfile;
   final bool? appendUsername;
   final String? subTitle;
@@ -28,11 +29,11 @@ class ProfileLink extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => MainScaffold(
-                    title: AppBarTitle(userData["displayName"]),
+                    title: AppBarTitle(user.displayName),
                     body: ProfileView(
                       isOtherUser: true,
-                      username: userData["username"],
-                      userId: userData["id"],
+                      username: user.username,
+                      userId: user.id,
                       scrollController: ScrollController(),
                       tempScrollController: true,
                     ),
@@ -45,7 +46,7 @@ class ProfileLink extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            ProfilePicture(imageUrl: userData["profilePicture"], maxWidth: 64),
+            ProfilePicture(imageUrl: user.profilePicture, maxWidth: 64),
             const SizedBox(width: 8),
             Expanded(
               child: Row(
@@ -55,7 +56,7 @@ class ProfileLink extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${userData["displayName"]}${(appendUsername ?? false) ? " (@${userData["username"]})" : ""}",
+                          "${user.displayName}${(appendUsername ?? false) ? " (@${user.username})" : ""}",
                           maxLines: 1,
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
@@ -73,8 +74,8 @@ class ProfileLink extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if ((userData["userInvisibleToMe"] ?? false) &&
-                      (userData["privateProfile"] ?? false)) ...[
+                  if ((user.userInvisibleToMe) &&
+                      (user.privateProfile)) ...[
                     const SizedBox(width: 4),
                     const Icon(Icons.lock, size: 16),
                   ],

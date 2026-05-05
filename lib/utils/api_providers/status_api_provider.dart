@@ -5,10 +5,10 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/enums/trip_visibility.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/shared.dart';
 
-part 'status_api_provider.g.dart';
 
 class StatusApiProvider {
   final ApiService _api;
@@ -325,25 +325,4 @@ class LikeResponse {
   final bool wasSuccess;
   final int newCount;
   LikeResponse({required this.wasSuccess, required this.newCount});
-}
-
-@JsonSerializable()
-class Tag {
-  @JsonKey(name: "key")
-  final String? key;
-
-  @JsonKey(name: "value")
-  final String? value;
-
-  @JsonKey(name: "visibility")
-  final TripVisibilityEnum? visibility;
-  const Tag({required this.key, required this.value, required this.visibility});
-  factory Tag.fromJson(Map<String, dynamic> json) => _$TagFromJson(json);
-  Map<String, dynamic> toJson() => _$TagToJson(this);
-}
-
-class GenericStatusResponse {
-  final bool wasSuccess;
-  final String? body;
-  const GenericStatusResponse({required this.wasSuccess, this.body});
 }

@@ -18,6 +18,7 @@ import 'package:traewelcross/enums/trip_visibility.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/profile_view.dart';
 import 'package:traewelcross/pages/checkin/select_connection.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/check_in_info.dart';
 import 'package:traewelcross/utils/ride_icon_tag_info.dart';
 import 'package:traewelcross/utils/shared.dart';

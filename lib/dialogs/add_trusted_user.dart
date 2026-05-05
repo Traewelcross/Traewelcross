@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:traewelcross/components/profile_link.dart';
-import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart' as models;
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/shared.dart';
 
@@ -68,23 +67,17 @@ class _AddTrustedUserState extends State<AddTrustedUser> {
       }
 
       final apiService = getIt<ApiService>();
-      final response = await apiService.request(
-        "/user/search/${Uri.encodeComponent(searchTerm)}",
-        HttpRequestTypes.GET,
-      );
-
+      List<models.User> users;
+      try {
+        users = await apiService.user.searchUser(searchTerm);
+      } catch (e){
+        users = [];
+      }
       if (mounted && searchTerm == _userSearchController.text.trim()) {
-        if (response.statusCode == 200) {
-          setState(() {
-            _results = jsonDecode(response.body)["data"];
+        setState(() {
+            _results = users;
             _isLoading = false;
           });
-        } else {
-          setState(() {
-            _results = [];
-            _isLoading = false;
-          });
-        }
       }
     });
   }
@@ -121,17 +114,17 @@ class _AddTrustedUserState extends State<AddTrustedUser> {
                     : ListView.builder(
                         itemCount: _results.length,
                         itemBuilder: (context, index) {
-                          final user = _results[index];
+                          final user = _results[index] as models.User;
                           return InkWell(
                             onTap: () {
                               setState(() {
                                 _selectedUser = user;
-                                _userSearchController.text = user['username'];
+                                _userSearchController.text = user.username;
                                 FocusManager.instance.primaryFocus?.unfocus();
                               });
                             },
                             child: ProfileLink(
-                              userData: user,
+                              user: user,
                               appendUsername: true,
                               enableNavigateToProfile: false,
                             ),

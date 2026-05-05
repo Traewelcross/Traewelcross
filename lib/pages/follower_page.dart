@@ -320,7 +320,7 @@ class _SocialUserListState extends State<_SocialUserList> {
           itemBuilder: (context, index) {
             if (widget.isFollower ?? false) {
               return ProfileLink(
-                userData: asyncSnapshot.data![index],
+                user: asyncSnapshot.data![index],
                 action: IconButton(
                   onPressed: () {
                     _removeFollow(asyncSnapshot.data![index]["id"]);
@@ -332,7 +332,7 @@ class _SocialUserListState extends State<_SocialUserList> {
             }
             if (widget.following ?? false) {
               return ProfileLink(
-                userData: asyncSnapshot.data![index],
+                user: asyncSnapshot.data![index],
                 action: IconButton(
                   onPressed: () {
                     _unfollow(asyncSnapshot.data![index]["id"]);
@@ -344,7 +344,7 @@ class _SocialUserListState extends State<_SocialUserList> {
             }
             if (widget.request ?? false) {
               return ProfileLink(
-                userData: asyncSnapshot.data![index],
+                user: asyncSnapshot.data![index],
                 action: Row(
                   children: [
                     IconButton(
@@ -365,7 +365,7 @@ class _SocialUserListState extends State<_SocialUserList> {
                 ),
               );
             }
-            return ProfileLink(userData: asyncSnapshot.data![index]);
+            return ProfileLink(user: asyncSnapshot.data![index]);
           },
         );
       },

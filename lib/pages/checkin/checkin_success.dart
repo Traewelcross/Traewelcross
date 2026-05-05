@@ -105,7 +105,7 @@ class CheckinSuccess extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
                             child: ProfileLink(
-                              userData: user["user"],
+                              user: user["user"],
                               subTitle:
                                   "${user["checkin"]["origin"]["name"]} -> ${user["checkin"]["destination"]["name"]}",
                             ),

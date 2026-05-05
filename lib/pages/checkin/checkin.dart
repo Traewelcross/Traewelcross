@@ -626,7 +626,7 @@ class TrustedCheckInButton extends StatelessWidget {
                                             });
                                           },
                                           title: ProfileLink(
-                                            userData: user,
+                                            user: user,
                                             enableNavigateToProfile: false,
                                           ),
                                         );

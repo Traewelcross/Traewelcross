@@ -118,7 +118,7 @@ class _ModifyTrustedUsersState extends State<ModifyTrustedUsers> {
               itemBuilder: (context, index) {
                 Map<String, dynamic> user = asyncSnapshot.data![index];
                 return ProfileLink(
-                  userData: user["user"],
+                  user: user["user"],
                   subTitle: user["expiresAt"] != null
                       ? localize.expiresAt(
                           DateFormat.yMMMMEEEEd(

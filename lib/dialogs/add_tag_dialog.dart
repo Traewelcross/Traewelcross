@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:traewelcross/components/status_tags.dart';
 import 'package:traewelcross/components/tag_icon.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/shared.dart';

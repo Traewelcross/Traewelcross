@@ -262,7 +262,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                           children: List.generate(
                             asyncSnapshot.data!.length,
                             (int i) =>
-                                ProfileLink(userData: asyncSnapshot.data![i]),
+                                ProfileLink(user: asyncSnapshot.data![i]),
                           ),
                         ),
                       );

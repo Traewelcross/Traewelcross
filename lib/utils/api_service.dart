@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/error_type.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
+import 'package:traewelcross/utils/api_providers/user_api_provider.dart';
 import 'package:traewelcross/utils/authentication.dart';
 import 'package:traewelcross/utils/error_info.dart';
 import 'package:traewelcross/utils/api_providers/notification_api_provider.dart';
@@ -24,6 +25,7 @@ class ApiService {
   //TODO: provider wide check for common status code like 200, 404, 401, ...
   late final status = StatusApiProvider(this);
   late final notification = NotificationApiProvider(this);
+  late final user = UserApiProvider(this);
 
   ApiService(this._authService);
 
