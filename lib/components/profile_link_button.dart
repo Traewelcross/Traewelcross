@@ -5,8 +5,8 @@ import "package:traewelcross/components/profile_picture.dart";
 import "package:traewelcross/pages/profile_view.dart";
 import "package:traewelcross/utils/api_providers/api_models.dart";
 
-class ProfileLink extends StatelessWidget {
-  const ProfileLink({
+class ProfileLinkButton extends StatelessWidget {
+  const ProfileLinkButton({
     super.key,
     required this.user,
     this.enableNavigateToProfile,
@@ -74,8 +74,7 @@ class ProfileLink extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if ((user.userInvisibleToMe) &&
-                      (user.privateProfile)) ...[
+                  if ((user.userInvisibleToMe) && (user.privateProfile)) ...[
                     const SizedBox(width: 4),
                     const Icon(Icons.lock, size: 16),
                   ],

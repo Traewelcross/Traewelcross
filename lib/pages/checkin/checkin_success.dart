@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
-import 'package:traewelcross/components/profile_link.dart';
+import 'package:traewelcross/components/profile_link_button.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/app.dart';
 
@@ -104,7 +104,7 @@ class CheckinSuccess extends StatelessWidget {
                             in (statusInfo["alsoOnThisConnection"] as List))
                           Padding(
                             padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
-                            child: ProfileLink(
+                            child: ProfileLinkButton(
                               user: user["user"],
                               subTitle:
                                   "${user["checkin"]["origin"]["name"]} -> ${user["checkin"]["destination"]["name"]}",

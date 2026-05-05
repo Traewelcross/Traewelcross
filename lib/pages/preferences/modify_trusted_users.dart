@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
-import 'package:traewelcross/components/profile_link.dart';
+import 'package:traewelcross/components/profile_link_button.dart';
 import 'package:traewelcross/dialogs/add_trusted_user.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/shared.dart';
 
@@ -117,8 +118,8 @@ class _ModifyTrustedUsersState extends State<ModifyTrustedUsers> {
               itemCount: asyncSnapshot.data!.length,
               itemBuilder: (context, index) {
                 Map<String, dynamic> user = asyncSnapshot.data![index];
-                return ProfileLink(
-                  user: user["user"],
+                return ProfileLinkButton(
+                  user: LightUser.fromJson(user["user"]).promoteToUser(),
                   subTitle: user["expiresAt"] != null
                       ? localize.expiresAt(
                           DateFormat.yMMMMEEEEd(

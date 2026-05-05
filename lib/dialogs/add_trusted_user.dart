@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:traewelcross/components/profile_link.dart';
+import 'package:traewelcross/components/profile_link_button.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart' as models;
 import 'package:traewelcross/utils/api_service.dart';
@@ -21,7 +21,7 @@ class _AddTrustedUserState extends State<AddTrustedUser> {
   Timer? _debounce;
   List<dynamic> _results = [];
   bool _isLoading = false;
-  dynamic _selectedUser;
+  models.User? _selectedUser;
   bool _trustExpire = false;
   DateTime? _trustExpireDate;
 
@@ -40,7 +40,7 @@ class _AddTrustedUserState extends State<AddTrustedUser> {
 
   void _searchUser() {
     if (_selectedUser != null &&
-        _userSearchController.text != _selectedUser['username']) {
+        _userSearchController.text != _selectedUser!.username) {
       setState(() {
         _selectedUser = null;
       });
@@ -68,16 +68,18 @@ class _AddTrustedUserState extends State<AddTrustedUser> {
 
       final apiService = getIt<ApiService>();
       List<models.User> users;
+      users = await apiService.user.searchUser(searchTerm);
       try {
-        users = await apiService.user.searchUser(searchTerm);
-      } catch (e){
+        
+      } catch (e) {
         users = [];
+        print(e);
       }
       if (mounted && searchTerm == _userSearchController.text.trim()) {
         setState(() {
-            _results = users;
-            _isLoading = false;
-          });
+          _results = users;
+          _isLoading = false;
+        });
       }
     });
   }
@@ -123,7 +125,7 @@ class _AddTrustedUserState extends State<AddTrustedUser> {
                                 FocusManager.instance.primaryFocus?.unfocus();
                               });
                             },
-                            child: ProfileLink(
+                            child: ProfileLinkButton(
                               user: user,
                               appendUsername: true,
                               enableNavigateToProfile: false,
@@ -193,7 +195,7 @@ class _AddTrustedUserState extends State<AddTrustedUser> {
                         ? null
                         : () {
                             widget.addCallback(
-                              _selectedUser['id'],
+                              _selectedUser!.id,
                               _trustExpireDate,
                             );
                             Navigator.of(context).pop();

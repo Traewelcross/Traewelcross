@@ -231,7 +231,7 @@ class StopoverList extends StatelessWidget {
               },
             );
           }
-          return const SizedBox(height: 0,);
+          return const SizedBox(height: 0);
         },
       ),
     );

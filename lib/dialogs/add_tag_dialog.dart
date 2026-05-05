@@ -207,7 +207,10 @@ class _TagBoxState extends State<TagBox> {
 
   void _deleteTag() async {
     final apiService = getIt<ApiService>();
-    final response = await apiService.status.deleteTag(tag: widget.tag!, rideId: widget.rideId);
+    final response = await apiService.status.deleteTag(
+      tag: widget.tag!,
+      rideId: widget.rideId,
+    );
     if (!mounted) return;
     if (response.wasSuccess) {
       widget.deleteCallback?.call(widget.tag!.key!);

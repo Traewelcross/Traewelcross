@@ -25,6 +25,7 @@ import 'package:traewelcross/pages/preferences/preferences.dart';
 import 'package:traewelcross/pages/profile_view.dart';
 import 'package:traewelcross/pages/stats/statistics.dart';
 import 'package:traewelcross/push_notify/push_common.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/custom_providers.dart';
 import 'package:traewelcross/utils/authentication.dart';
@@ -475,14 +476,15 @@ class ActiveRideCard extends StatefulWidget {
 }
 
 class _ActiveRideCardState extends State<ActiveRideCard> {
-  late Future<dynamic>? activeRide;
+  late Future<Status?> activeRide;
   late int userId = 0;
-  Future<dynamic>? _getActiveRide() async {
+  Future<Status?> _getActiveRide() async {
     final api = getIt<ApiService>();
     await SharedPreferencesAsync()
         .getInt("userid")
         .then((val) => userId = val ?? 0);
-    return await api.status.getActiveRide();
+    final activeRide = await api.status.getActiveRide();
+    return activeRide;
   }
 
   @override
@@ -493,23 +495,25 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<Status?>(
       future: activeRide,
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.connectionState == .done) {
           if (!asyncSnapshot.hasData) {
             return SizedBox.shrink();
           }
-          final ride = asyncSnapshot.data as Map<String, dynamic>;
+          final ride = asyncSnapshot.data!;
           final startDate = DateTime.parse(
-            (ride["checkin"]["manualDeparture"] ??
-                ride["checkin"]["origin"]["departureReal"] ??
-                ride["checkin"]["origin"]["departurePlanned"]),
+            (ride.checkin.manualDeparture ??
+                ride.checkin.origin.departureReal ??
+                ride.checkin.origin.departurePlanned ??
+                "1970-01-01"),
           ).toLocal();
           final endDate = DateTime.parse(
-            (ride["checkin"]["manualArrival"] ??
-                ride["checkin"]["destination"]["arrivalReal"] ??
-                ride["checkin"]["destination"]["arrivalPlanned"]),
+            (ride.checkin.manualArrival ??
+                ride.checkin.destination.arrivalReal ??
+                ride.checkin.destination.arrivalPlanned ??
+                "1970-01-01"),
           ).toLocal();
           return StreamBuilder(
             stream: Stream.periodic(Duration(seconds: 30)),
@@ -524,7 +528,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                     context,
                     MaterialPageRoute(
                       builder: (ctx) => DetailedRideView(
-                        rideId: ride["id"],
+                        rideId: ride.id,
                         rideData: ride,
                         authUserId: userId,
                       ),
@@ -552,7 +556,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                   Row(
                                     mainAxisSize: .min,
                                     children: [
-                                      Text(ride["checkin"]["origin"]["name"]),
+                                      Text(ride.checkin.origin.name),
                                       const Icon(Icons.arrow_right),
                                     ],
                                   ),
@@ -560,7 +564,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          ride["checkin"]["destination"]["name"],
+                                          ride.checkin.destination.name,
                                           style: Theme.of(
                                             context,
                                           ).textTheme.headlineSmall,
@@ -576,10 +580,12 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                               iconInfo: RideIconTagInfo(
                                 showCategoryIcon: false,
                                 width: 24,
-                                category: ride["checkin"]["category"],
-                                lineName: ride["checkin"]["lineName"],
+                                category: ride.checkin.category,
+                                lineName: ride.checkin.lineName,
                                 operatorIdentifier:
-                                    SharedFunctions.getOperatorHAFASIdent(ride["checkin"]["operator"]["identifiers"]),
+                                    SharedFunctions.getOperatorHAFASIdent(
+                                      ride.checkin.operator?.identifiers,
+                                    ),
                               ),
                             ),
                           ],
@@ -601,7 +607,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                         TimeProgress(
                           startDate: startDate,
                           endDate: endDate,
-                          rideId: ride["id"],
+                          rideId: ride.id,
                         ),
                       ],
                     ),

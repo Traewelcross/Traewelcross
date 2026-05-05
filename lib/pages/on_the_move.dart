@@ -8,8 +8,11 @@ class OnTheMove extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(controller: scrollController, slivers: [
-      RideQuickViewWrapper(scrollController: scrollController, isOTM: true,)
-    ],);
+    return CustomScrollView(
+      controller: scrollController,
+      slivers: [
+        RideQuickViewWrapper(scrollController: scrollController, isOTM: true),
+      ],
+    );
   }
 }

@@ -38,7 +38,7 @@ class RideQuickView extends StatefulWidget {
     this.likeCallback,
     this.onDelete,
   });
-  final Map<String, dynamic> rideData;
+  final Status rideData;
   final int authUserId;
   final bool? detailedView;
   final Function()? likeCallback;
@@ -48,7 +48,7 @@ class RideQuickView extends StatefulWidget {
 }
 
 class _RideQuickViewState extends State<RideQuickView> {
-  late Map<String, dynamic> _rideData;
+  late Status _rideData;
   static const _volChan = MethodChannel("volume");
   @override
   void initState() {
@@ -68,7 +68,7 @@ class _RideQuickViewState extends State<RideQuickView> {
     }
   }
 
-  void _updateRideData(Map<String, dynamic> newRideData) {
+  void _updateRideData(Status newRideData) {
     setState(() {
       _rideData = newRideData;
     });
@@ -78,23 +78,20 @@ class _RideQuickViewState extends State<RideQuickView> {
     final apiService = getIt<ApiService>();
     try {
       final LikeResponse res;
-      if (!_rideData["liked"]) {
-        if (_rideData["isLikable"] != null && !_rideData["isLikable"]) {
+      if (!_rideData.liked) {
+        if (!_rideData.isLikable) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(AppLocalizations.of(context)!.notLikeable)),
           );
           return;
         }
-        res = await apiService.status.like(_rideData["id"], _rideData["likes"]);
+        res = await apiService.status.like(_rideData.id, _rideData.likes);
       } else {
-        res = await apiService.status.unlike(
-          _rideData["id"],
-          _rideData["likes"],
-        );
+        res = await apiService.status.unlike(_rideData.id, _rideData.likes);
       }
       if (!mounted) return;
-      _rideData["liked"] = res.wasSuccess;
-      _rideData["likes"] = res.newCount;
+      _rideData.liked = res.wasSuccess;
+      _rideData.likes = res.newCount;
       widget.likeCallback?.call();
       _updateRideData(_rideData);
     } catch (e) {
@@ -126,22 +123,22 @@ class _RideQuickViewState extends State<RideQuickView> {
       if (isDestination) {
         payload = {
           "manualArrival": updatedDateTime.toUtc().toIso8601String(),
-          "visibility": _rideData["visibility"],
-          "business": _rideData["business"],
-          "body": _rideData["body"],
+          "visibility": _rideData.visibility,
+          "business": _rideData.business,
+          "body": _rideData.body,
         };
       } else {
         payload = {
           "manualDeparture": updatedDateTime.toUtc().toIso8601String(),
-          "visibility": _rideData["visibility"],
-          "business": _rideData["business"],
-          "body": _rideData["body"],
+          "visibility": _rideData.visibility,
+          "business": _rideData.business,
+          "body": _rideData.body,
         };
       }
 
       try {
         final updatedRideData = await apiService.status.update(
-          _rideData["id"],
+          _rideData.id,
           payload,
         );
         if (updatedRideData != null && mounted) {
@@ -162,7 +159,7 @@ class _RideQuickViewState extends State<RideQuickView> {
 
   Future<void> _deleteStatus() async {
     final apiService = getIt<ApiService>();
-    final success = await apiService.status.delete(widget.rideData["id"]);
+    final success = await apiService.status.delete(widget.rideData.id);
     if (success && mounted) {
       if (widget.detailedView ?? false) {
         Navigator.pop(context);
@@ -175,13 +172,12 @@ class _RideQuickViewState extends State<RideQuickView> {
   Future<void> _shareRide() async {
     SharePlus.instance.share(
       ShareParams(
-        text:
-            "https://traewelling.de/status/${widget.rideData["id"]} #Träwelling",
+        text: "https://traewelling.de/status/${widget.rideData.id} #Träwelling",
       ),
     );
   }
 
-  Widget _parseBodyText(String body, dynamic bodyMentions) {
+  Widget _parseBodyText(String body, List<Mention> bodyMentions) {
     // This works for now, can't for the life of me figure out how to use API provided Info, so manual detection it is
     RegExp regExp = RegExp(r'@\w+');
     List<TextSpan> result = [];
@@ -333,27 +329,27 @@ class _RideQuickViewState extends State<RideQuickView> {
     );
     final apiService = getIt<ApiService>();
     await apiService.status.report(
-      id: _rideData["id"],
+      id: _rideData.id,
       reason: reason,
       description: desc,
     );
   }
 
-  void _copyCheckIn(Map<String, dynamic> status) {
+  void _copyCheckIn(Status status) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (BuildContext context) => CheckIn(
           checkInInfo: CheckInInfo(
-            destination: status["checkin"]["destination"]["name"],
-            destinationId: status["checkin"]["destination"]["id"],
-            departureId: status["checkin"]["origin"]["id"],
-            tripId: status["checkin"]["hafasId"],
-            lineName: status["checkin"]["lineName"],
-            category: status["checkin"]["category"],
-            departureTime: status["checkin"]["origin"]["departurePlanned"],
-            arrivalTime: status["checkin"]["destination"]["arrivalPlanned"],
-            event: status["event"],
+            destination: status.checkin.destination.name,
+            destinationId: status.checkin.destination.id,
+            departureId: status.checkin.origin.id,
+            tripId: status.checkin.hafasId,
+            lineName: status.checkin.lineName,
+            category: status.checkin.category,
+            departureTime: status.checkin.origin.departurePlanned,
+            arrivalTime: status.checkin.destination.arrivalPlanned,
+            event: status.event,
           ),
           isEdit: false,
         ),
@@ -391,7 +387,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _StationText(
-                      rideData: _rideData["checkin"],
+                      transportData: _rideData.checkin,
                       isDestination: false,
                       onUpdateTime: _updateTime,
                       isAuthUser: _isAuthUser(),
@@ -417,14 +413,16 @@ class _RideQuickViewState extends State<RideQuickView> {
                                     ),
                                     RideIconTag(
                                       iconInfo: RideIconTagInfo(
-                                        category:
-                                            _rideData["checkin"]["category"]
-                                                ?.toString(),
+                                        category: _rideData.checkin.category,
                                         width: 24,
-                                        lineName:
-                                            _rideData["checkin"]["lineName"],
+                                        lineName: _rideData.checkin.lineName,
                                         operatorIdentifier:
-                                            SharedFunctions.getOperatorHAFASIdent(_rideData["checkin"]["operator"]?["identifiers"]),
+                                            SharedFunctions.getOperatorHAFASIdent(
+                                              _rideData
+                                                  .checkin
+                                                  .operator
+                                                  ?.identifiers,
+                                            ),
                                       ),
                                     ),
                                     const SizedBox(
@@ -435,7 +433,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                                     const SizedBox(width: 4),
                                     Text(
                                       _getNeededTime(
-                                        _rideData["checkin"]["duration"],
+                                        _rideData.checkin.duration,
                                       ),
                                     ),
                                     const SizedBox(
@@ -445,30 +443,29 @@ class _RideQuickViewState extends State<RideQuickView> {
                                     const Icon(Symbols.distance),
                                     const SizedBox(width: 4),
                                     Text(
-                                      ((_rideData["checkin"]["distance"] / 1000)
+                                      ((_rideData.checkin.distance / 1000)
                                                   .toStringAsFixed(0) ==
                                               "0")
-                                          ? "${_rideData["checkin"]["distance"]} m"
-                                          : "${(_rideData["checkin"]["distance"] / 1000).toStringAsFixed(0)} km",
+                                          ? "${_rideData.checkin.distance} m"
+                                          : "${(_rideData.checkin.distance / 1000).toStringAsFixed(0)} km",
                                     ),
                                     const SizedBox(
                                       height: 20,
                                       child: VerticalDivider(),
                                     ),
-                                    switch (_rideData["business"]) {
-                                      0 => const Icon(Icons.home),
-                                      1 => const Icon(Icons.work),
-                                      2 => const Icon(Icons.home_work),
-                                      _ => const Icon(Icons.question_mark),
+                                    switch (_rideData.business) {
+                                      .private => const Icon(Icons.home),
+                                      .business => const Icon(Icons.work),
+                                      .commute => const Icon(Icons.home_work),
                                     },
-                                    if (_rideData["event"] != null) ...[
+                                    if (_rideData.event != null) ...[
                                       const SizedBox(
                                         height: 20,
                                         child: VerticalDivider(),
                                       ),
                                       const Icon(Icons.calendar_month),
                                       const SizedBox(width: 4),
-                                      Text(_rideData["event"]["name"]),
+                                      Text(_rideData.event!.name),
                                     ],
                                   ],
                                 ),
@@ -478,7 +475,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                         },
                       ),
                     ),
-                    if (_rideData["body"] != "" && _rideData["body"] != null)
+                    if (_rideData.body != "")
                       Card(
                         color: SharedFunctions.secondCard(context),
                         child: Padding(
@@ -489,8 +486,8 @@ class _RideQuickViewState extends State<RideQuickView> {
                               const SizedBox(width: 8),
                               Expanded(
                                 child: _parseBodyText(
-                                  _rideData["body"],
-                                  _rideData["bodyMentions"],
+                                  _rideData.body,
+                                  _rideData.bodyMentions,
                                 ),
                               ),
                             ],
@@ -498,7 +495,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                         ),
                       ),
                     _StationText(
-                      rideData: _rideData["checkin"],
+                      transportData: _rideData.checkin,
                       isDestination: true,
                       onUpdateTime: _updateTime,
                       isAuthUser: _isAuthUser(),
@@ -506,22 +503,24 @@ class _RideQuickViewState extends State<RideQuickView> {
                     const SizedBox(height: 4),
                     TimeProgress(
                       startDate: DateTime.parse(
-                        (_rideData["checkin"]["manualDeparture"] ??
-                            _rideData["checkin"]["origin"]["departureReal"] ??
-                            _rideData["checkin"]["origin"]["departurePlanned"]),
+                        (_rideData.checkin.manualDeparture ??
+                            _rideData.checkin.origin.departureReal ??
+                            _rideData.checkin.origin.departurePlanned ??
+                            "1970-01-01"),
                       ).toLocal(),
                       endDate: DateTime.parse(
-                        (_rideData["checkin"]["manualArrival"] ??
-                            _rideData["checkin"]["destination"]["arrivalReal"] ??
-                            _rideData["checkin"]["destination"]["arrivalPlanned"]),
+                        (_rideData.checkin.manualArrival ??
+                            _rideData.checkin.destination.arrivalReal ??
+                            _rideData.checkin.destination.departurePlanned ??
+                            "1970-01-01"),
                       ).toLocal(),
-                      rideId: _rideData["id"],
+                      rideId: _rideData.id,
                     ),
                     const SizedBox(height: 8),
                     StatusTags(
-                      tags: _rideData["tags"],
+                      tags: _rideData.tags,
                       canAdd: _isAuthUser(),
-                      rideId: _rideData["id"],
+                      rideId: _rideData.id,
                       onAddTag: _addTag,
                       onDeleteTag: _deleteTag,
                     ),
@@ -538,7 +537,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               ProfilePicture(
-                                imageUrl: _rideData["user"]["profilePicture"],
+                                imageUrl: _rideData.user.profilePicture,
                                 maxWidth: 42,
                               ),
                               const SizedBox(width: 4),
@@ -565,12 +564,11 @@ class _RideQuickViewState extends State<RideQuickView> {
                                       MaterialPageRoute(
                                         builder: (context) => MainScaffold(
                                           title: AppBarTitle(
-                                            _rideData["user"]["displayName"],
+                                            _rideData.user.displayName,
                                           ),
                                           body: ProfileView(
                                             isOtherUser: true,
-                                            username:
-                                                _rideData["user"]["username"],
+                                            username: _rideData.user.username,
                                             tempScrollController: true,
                                             scrollController:
                                                 ScrollController(),
@@ -580,7 +578,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                                     );
                                   },
                                   child: Text(
-                                    "${_rideData["user"]["displayName"]}, ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(DateTime.parse(_rideData["createdAt"]).toLocal())}",
+                                    "${_rideData.user.displayName}, ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(DateTime.parse(_rideData.createdAt).toLocal())}",
                                     overflow: TextOverflow.fade,
                                     maxLines: 1,
                                     softWrap: false,
@@ -596,13 +594,14 @@ class _RideQuickViewState extends State<RideQuickView> {
                                 height: 20,
                                 child: VerticalDivider(),
                               ),
-                              switch (_rideData["visibility"]) {
-                                0 => const Icon(Icons.public),
-                                1 => const Icon(Icons.link),
-                                2 => const Icon(Icons.group),
-                                3 => const Icon(Icons.lock),
-                                4 => const Icon(Symbols.shield_person),
-                                _ => const Icon(Icons.question_mark),
+                              switch (_rideData.visibility) {
+                                .public => const Icon(Icons.public),
+                                .notListed => const Icon(Icons.link),
+                                .followerOnly => const Icon(Icons.group),
+                                .private => const Icon(Icons.lock),
+                                .loggedInUser => const Icon(
+                                  Symbols.shield_person,
+                                ),
                               },
                               const SizedBox(
                                 height: 24,
@@ -641,44 +640,57 @@ class _RideQuickViewState extends State<RideQuickView> {
                                       onTap: () => Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (BuildContext context) => CheckIn(
-                                            checkInInfo: CheckInInfo(
-                                              departureId:
-                                                  _rideData["checkin"]["origin"]["id"],
-                                              destination:
-                                                  _rideData["checkin"]["destination"]["name"],
-                                              destinationId:
-                                                  _rideData["checkin"]["destination"]["id"],
-                                              rideId: _rideData["id"],
-                                              body: _rideData["body"],
-                                              visibility:
-                                                  TripVisibilityEnum.fromValue(
-                                                    _rideData["visibility"],
-                                                  ),
-                                              tripType: TripType.fromValue(
-                                                _rideData["business"],
+                                          builder: (BuildContext context) =>
+                                              CheckIn(
+                                                checkInInfo: CheckInInfo(
+                                                  departureId: _rideData
+                                                      .checkin
+                                                      .origin
+                                                      .id,
+                                                  destination: _rideData
+                                                      .checkin
+                                                      .destination
+                                                      .name,
+                                                  destinationId: _rideData
+                                                      .checkin
+                                                      .destination
+                                                      .id,
+                                                  rideId: _rideData.id,
+                                                  body: _rideData.body,
+                                                  visibility:
+                                                      _rideData.visibility,
+                                                  tripType: _rideData.business,
+                                                  tripId:
+                                                      _rideData.checkin.hafasId,
+                                                  category: _rideData
+                                                      .checkin
+                                                      .category,
+                                                  lineName: _rideData
+                                                      .checkin
+                                                      .lineName,
+                                                  event: _rideData.event,
+                                                  manualArrive: _rideData
+                                                      .checkin
+                                                      .manualArrival,
+                                                  manualDepart: _rideData
+                                                      .checkin
+                                                      .manualDeparture,
+                                                  departureTime: _rideData
+                                                      .checkin
+                                                      .origin
+                                                      .departurePlanned,
+                                                  arrivalTime: _rideData
+                                                      .checkin
+                                                      .destination
+                                                      .arrivalPlanned,
+                                                  rideDataCallback:
+                                                      (rideData) =>
+                                                          _updateRideData(
+                                                            rideData,
+                                                          ),
+                                                ),
+                                                isEdit: true,
                                               ),
-                                              tripId:
-                                                  _rideData["checkin"]["hafasId"],
-                                              category:
-                                                  _rideData["checkin"]["category"],
-                                              lineName:
-                                                  _rideData["checkin"]["lineName"],
-                                              event:
-                                                  _rideData["checkin"]["event"],
-                                              manualArrive:
-                                                  _rideData["checkin"]["manualArrival"],
-                                              manualDepart:
-                                                  _rideData["checkin"]["manualDeparture"],
-                                              departureTime:
-                                                  _rideData["checkin"]["origin"]["departurePlanned"],
-                                              arrivalTime:
-                                                  _rideData["checkin"]["destination"]["arrivalPlanned"],
-                                              rideDataCallback: (rideData) =>
-                                                  _updateRideData(rideData),
-                                            ),
-                                            isEdit: true,
-                                          ),
                                         ),
                                       ),
                                       child: Row(
@@ -747,7 +759,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                                       ),
                                     ),
                                     PopupMenuItem(
-                                      onTap: () => _openReport(_rideData["id"]),
+                                      onTap: () => _openReport(_rideData.id),
                                       child: Row(
                                         children: [
                                           const Icon(Icons.report),
@@ -776,20 +788,18 @@ class _RideQuickViewState extends State<RideQuickView> {
 
   /// Status is by logged in User
   bool _isAuthUser() {
-    return _rideData["user"]["id"] == widget.authUserId;
+    return _rideData.user.id == widget.authUserId;
   }
 
   void _addTag(Tag newTag) {
     setState(() {
-      (_rideData['tags'] as List<dynamic>).add(newTag.toJson());
+      _rideData.tags.add(newTag);
     });
   }
 
   void _deleteTag(String key) {
     setState(() {
-      (_rideData['tags'] as List<dynamic>).removeWhere(
-        (tag) => tag['key'] == key,
-      );
+      _rideData.tags.removeWhere((tag) => tag.key == key);
     });
   }
 
@@ -816,7 +826,7 @@ class LikeButton extends StatefulWidget {
     required this.rideData,
     required this.onUpdateLikes,
   });
-  final Map<String, dynamic> rideData;
+  final Status rideData;
   final Function() onUpdateLikes;
   @override
   State<StatefulWidget> createState() => _LikeButtonState();
@@ -836,12 +846,11 @@ class _LikeButtonState extends State<LikeButton> {
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               visualDensity: VisualDensity.compact,
             ),
-            onPressed: () => widget.rideData["isLikable"] ?? true
-                ? widget.onUpdateLikes()
-                : null,
+            onPressed: () =>
+                widget.rideData.isLikable ? widget.onUpdateLikes() : null,
             icon: PrideGradient(
               rotation: 90,
-              child: (widget.rideData["liked"]
+              child: (widget.rideData.liked
                   ? const Icon(
                       Icons.favorite,
                       color: Colors.red,
@@ -856,7 +865,7 @@ class _LikeButtonState extends State<LikeButton> {
                     )),
             ),
             label: Text(
-              widget.rideData["likes"].toString(),
+              widget.rideData.likes.toString(),
               style: TextStyle(fontSize: 16),
             ),
           ),
@@ -868,10 +877,9 @@ class _LikeButtonState extends State<LikeButton> {
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               visualDensity: VisualDensity.compact,
             ),
-            onPressed: () => widget.rideData["isLikable"] ?? true
-                ? widget.onUpdateLikes()
-                : null,
-            icon: widget.rideData["liked"]
+            onPressed: () =>
+                widget.rideData.isLikable ? widget.onUpdateLikes() : null,
+            icon: widget.rideData.liked
                 ? const Icon(
                     Icons.favorite,
                     color: Colors.red,
@@ -885,7 +893,7 @@ class _LikeButtonState extends State<LikeButton> {
                     size: 24,
                   ),
             label: Text(
-              widget.rideData["likes"].toString(),
+              widget.rideData.likes.toString(),
               style: TextStyle(fontSize: 16),
             ),
           ),
@@ -897,13 +905,13 @@ class _LikeButtonState extends State<LikeButton> {
 
 class _StationText extends StatelessWidget {
   const _StationText({
-    required this.rideData,
+    required this.transportData,
     required this.isDestination,
     required this.onUpdateTime,
     required this.isAuthUser,
   });
 
-  final Map<String, dynamic> rideData;
+  final Transport transportData;
   final bool isDestination;
   final Function(TimeOfDay?, bool) onUpdateTime;
   final bool isAuthUser;
@@ -925,21 +933,19 @@ class _StationText extends StatelessWidget {
       fontWeight: FontWeight.w600,
     );
     if (isDestination) {
-      manualTimeStr = rideData["manualArrival"];
-      plannedTimeStr = rideData["destination"]["arrivalPlanned"];
-      isDelayed =
-          rideData["destination"]["arrivalPlanned"] !=
-          (rideData["destination"]["arrivalReal"] ??
-              rideData["destination"]["arrivalPlanned"]); //rideData["destination"]["isArrivalDelayed"];
-      realTimeStr = rideData["destination"]["arrivalReal"];
+      manualTimeStr = transportData.manualArrival;
+      plannedTimeStr = transportData.destination.arrivalPlanned!;
+      isDelayed = transportData
+          .destination
+          .isArrivalDelayed; //rideData["destination"]["isArrivalDelayed"];
+      realTimeStr = transportData.destination.arrivalReal;
     } else {
-      manualTimeStr = rideData["manualDeparture"];
-      plannedTimeStr = rideData["origin"]["departurePlanned"];
-      isDelayed =
-          rideData["origin"]["departurePlanned"] !=
-          (rideData["origin"]["departureReal"] ??
-              rideData["origin"]["departurePlanned"]); //rideData["origin"]["isDepartureDelayed"];
-      realTimeStr = rideData["origin"]["departureReal"];
+      manualTimeStr = transportData.manualDeparture;
+      plannedTimeStr = transportData.origin.departurePlanned!;
+      isDelayed = transportData
+          .origin
+          .isDepartureDelayed; //rideData["origin"]["isDepartureDelayed"];
+      realTimeStr = transportData.origin.departureReal;
     }
     time = DateTime.parse(manualTimeStr ?? realTimeStr ?? plannedTimeStr);
 
@@ -968,13 +974,13 @@ class _StationText extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => SelectConnection(
-                      stationId: rideData["destination"]["id"],
-                      stationName: rideData["destination"]["name"],
+                      stationId: transportData.destination.id,
+                      stationName: transportData.destination.name,
                     ),
                   ),
                 );
               },
-              child: Text(rideData["destination"]["name"], style: stationText),
+              child: Text(transportData.destination.name, style: stationText),
             ),
           ),
         if (!isDestination)
@@ -985,13 +991,13 @@ class _StationText extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => SelectConnection(
-                      stationId: rideData["origin"]["id"],
-                      stationName: rideData["origin"]["name"],
+                      stationId: transportData.origin.id,
+                      stationName: transportData.origin.name,
                     ),
                   ),
                 );
               },
-              child: Text(rideData["origin"]["name"], style: stationText),
+              child: Text(transportData.origin.name, style: stationText),
             ),
           ),
         Column(
@@ -1016,8 +1022,8 @@ class _StationText extends StatelessWidget {
                   if (config.behavior.delaySystemTimeOverride >= 0) {
                     final plannedDateTime = DateTime.parse(
                       isDestination
-                          ? rideData["destination"]["arrivalPlanned"]
-                          : rideData["origin"]["departurePlanned"],
+                          ? transportData.destination.arrivalPlanned!
+                          : transportData.origin.departurePlanned!,
                     ).toLocal();
 
                     final thresholdDateTime = plannedDateTime.add(
@@ -1030,14 +1036,14 @@ class _StationText extends StatelessWidget {
                       initTime = TimeOfDay.fromDateTime(plannedDateTime);
                     }
                   }
-                  if (rideData["manualArrival"] != null && isDestination) {
+                  if (transportData.manualArrival != null && isDestination) {
                     initTime = TimeOfDay.fromDateTime(
-                      DateTime.parse(rideData["manualArrival"]!).toLocal(),
+                      DateTime.parse(transportData.manualArrival!).toLocal(),
                     );
                   }
-                  if (rideData["manualDeparture"] != null && !isDestination) {
+                  if (transportData.manualDeparture != null && !isDestination) {
                     initTime = TimeOfDay.fromDateTime(
-                      DateTime.parse(rideData["manualDeparture"]!).toLocal(),
+                      DateTime.parse(transportData.manualDeparture!).toLocal(),
                     );
                   }
                   showTimePicker(
@@ -1050,8 +1056,8 @@ class _StationText extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => SelectConnection(
-                          stationId: rideData["destination"]["id"],
-                          stationName: rideData["destination"]["name"],
+                          stationId: transportData.destination.id,
+                          stationName: transportData.destination.name,
                         ),
                       ),
                     );
@@ -1060,8 +1066,8 @@ class _StationText extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => SelectConnection(
-                          stationId: rideData["origin"]["id"],
-                          stationName: rideData["origin"]["name"],
+                          stationId: transportData.origin.id,
+                          stationName: transportData.origin.name,
                         ),
                       ),
                     );

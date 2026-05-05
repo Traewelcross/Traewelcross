@@ -52,13 +52,15 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
               }),
             ),
           ),
-                    ListTile(
+          ListTile(
             onTap: () => setState(() {
               config.behavior.renewLegacy = !config.behavior.renewLegacy;
             }),
             leading: const Icon(Icons.bar_chart),
             title: Text("Legacy Token renewal"),
-            subtitle: Text("Re-enable token renewal after every 20th request instead of relying only on time"),
+            subtitle: Text(
+              "Re-enable token renewal after every 20th request instead of relying only on time",
+            ),
             trailing: Switch(
               value: config.behavior.renewLegacy,
               onChanged: (val) => setState(() {

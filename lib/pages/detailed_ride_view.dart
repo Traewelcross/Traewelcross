@@ -4,7 +4,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
-import "package:traewelcross/components/profile_link.dart";
+import "package:traewelcross/components/profile_link_button.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -14,6 +14,7 @@ import 'package:traewelcross/components/ride_quick_view.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/color_scheme.dart';
 import 'package:traewelcross/utils/pride_flags.dart';
@@ -69,7 +70,7 @@ class DetailedRideView extends StatefulWidget {
     this.authUserId,
   });
   final int? rideId;
-  final dynamic rideData;
+  final Status? rideData;
   final int? authUserId;
 
   @override
@@ -79,7 +80,7 @@ class DetailedRideView extends StatefulWidget {
 class _DetailedRideViewState extends State<DetailedRideView> {
   late final Future<List<LatLng>> _polylineFuture;
   late Future<List<dynamic>> _likes;
-  late Future<Map<String, dynamic>> _rideData;
+  late Future<Status> _rideData;
   late final String _evaIdentOrigin;
   late final int _rideId;
   bool isFound = true;
@@ -98,29 +99,9 @@ class _DetailedRideViewState extends State<DetailedRideView> {
     }
   }
 
-  Future<Map<String, dynamic>> _getRideData() async {
+  Future<Status> _getRideData() async {
     final apiService = getIt<ApiService>();
-    http.Response res;
-    try {
-      res = await apiService.request("/status/$_rideId", HttpRequestTypes.GET);
-    } on TimeoutException {
-      if (!mounted) return {};
-      SharedFunctions.handleRequestTimeout(context, _getRideData);
-      return {};
-    }
-
-    switch (res.statusCode) {
-      case 200:
-        final json = jsonDecode(res.body);
-        return json["data"] as Map<String, dynamic>;
-      case 404:
-        if (!mounted) throw Exception("Not found");
-        throw Exception(AppLocalizations.of(context)!.statusNotFound);
-      default:
-        throw Exception(
-          "${AppLocalizations.of(context)!.genericErrorSnackBar} ${res.statusCode}",
-        );
-    }
+    return (await apiService.status.getStatus(_rideId));
   }
 
   // Workaround for Traewelling/traewelling/discussions/4511 until identifiers are provided in check in again
@@ -129,7 +110,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
     http.Response res;
     try {
       res = await apiService.request(
-        "/station/${widget.rideData["checkin"]["destination"]["id"]}?withIdentifiers=true",
+        "/station/${widget.rideData!.checkin.destination.id}?withIdentifiers=true",
         HttpRequestTypes.GET,
       );
     } on TimeoutException {
@@ -157,7 +138,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
     super.initState();
     final apiService = getIt<ApiService>();
     if (widget.rideId == null) {
-      _rideId = widget.rideData["id"];
+      _rideId = widget.rideData!.id;
     } else {
       _rideId = widget.rideId!;
     }
@@ -179,7 +160,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
 
-    return FutureBuilder<Map<String, dynamic>>(
+    return FutureBuilder<Status>(
       future: _rideData,
       builder: (context, rideSnapshot) {
         if (rideSnapshot.connectionState == ConnectionState.waiting) {
@@ -194,7 +175,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
             body: Center(child: Text("Error: ${rideSnapshot.error}")),
           );
         }
-        if (!rideSnapshot.hasData || rideSnapshot.data!.isEmpty) {
+        if (!rideSnapshot.hasData) {
           return MainScaffold(
             title: AppBarTitle(localize.rideNotFound),
             body: const Center(child: Text("Could not load ride details.")),
@@ -202,10 +183,8 @@ class _DetailedRideViewState extends State<DetailedRideView> {
         }
 
         final rideData = rideSnapshot.data!;
-        final originName =
-            rideData["checkin"]?["origin"]?["name"] ?? "Unknown Origin";
-        final destinationName =
-            rideData["checkin"]?["destination"]?["name"] ?? "Unknown Destination";
+        final originName = rideData.checkin.origin.name;
+        final destinationName = rideData.checkin.destination.name;
         final title = "$originName -> $destinationName";
 
         return MainScaffold(
@@ -261,8 +240,9 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                           enabled: asyncSnapshot.data!.isEmpty ? false : true,
                           children: List.generate(
                             asyncSnapshot.data!.length,
-                            (int i) =>
-                                ProfileLink(user: asyncSnapshot.data![i]),
+                            (int i) => ProfileLinkButton(
+                              user: User.fromJson(asyncSnapshot.data![i]),
+                            ),
                           ),
                         ),
                       );
@@ -288,7 +268,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
                             localize.operatedBy(
-                              rideData["checkin"]["operator"]?["name"] ?? "N/A",
+                              rideData.checkin.operator?.name ?? "N/A",
                             ),
                           ),
                         ),
@@ -300,7 +280,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
                             localize.checkedInWith(
-                              rideData["client"]?["name"] ?? "Träwelling",
+                              rideData.client?.name ?? "Träwelling",
                             ),
                           ),
                         ),
@@ -315,8 +295,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
-                            rideData["checkin"]["dataSource"]?["attribution"] ??
-                                "N/A",
+                            rideData.checkin.dataSource?.attribution ?? "N/A",
                             style: TextStyle(fontStyle: FontStyle.italic),
                           ),
                         ),
@@ -337,7 +316,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                             print(_evaIdentOrigin);
                             SharedFunctions.launchURL(
                               Uri.parse(
-                                "https://bahn.expert/details/${rideData["checkin"]["journeyNumber"]}/${rideData["checkin"]["origin"]["departurePlanned"]}?evaNumberAlongRoute=$_evaIdentOrigin",
+                                "https://bahn.expert/details/${rideData.checkin.journeyNumber}/${rideData.checkin.origin.departurePlanned}?evaNumberAlongRoute=$_evaIdentOrigin",
                               ),
                             );
                           },
@@ -353,7 +332,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: SelectableText(
-                        "Debug\nID: ${rideData["id"].toString()}\n\n${jsonEncode(rideData)}",
+                        "Debug\nID: ${rideData.id.toString()}\n\n${jsonEncode(rideData)}",
                       ),
                     ),
                   ),

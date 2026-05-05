@@ -15,7 +15,7 @@ class StatusTags extends StatelessWidget {
     required this.onAddTag,
     required this.onDeleteTag,
   });
-  final List<dynamic> tags;
+  final List<Tag> tags;
   final bool canAdd;
   final int rideId;
   final Function(Tag data) onAddTag;
@@ -41,9 +41,9 @@ class StatusTags extends StatelessWidget {
         ),
       ...tags.map((tag) {
         return StatusTag(
-          tag: Tag.fromJson(tag),
+          tag: tag,
           rideId: rideId,
-          key: ValueKey(tag["key"]),
+          key: ValueKey(tag.key),
           deleteCallback: (key) {
             onDeleteTag(key);
           },

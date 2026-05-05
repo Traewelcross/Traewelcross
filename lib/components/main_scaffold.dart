@@ -9,7 +9,7 @@ class MainScaffold extends StatelessWidget {
     required this.body,
     this.backButton,
     this.floatingActionButton,
-    this.extendBody = false
+    this.extendBody = false,
   });
   final Widget title;
   final List<Widget>? actions;

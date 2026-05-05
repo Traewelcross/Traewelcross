@@ -21,10 +21,8 @@ class NotificationApiProvider {
     }
     return Future.value(0);
   }
+
   Future<void> markAllRead() async {
-     await _api.request(
-                "/notifications/read/all",
-                HttpRequestTypes.PUT,
-              );
+    await _api.request("/notifications/read/all", HttpRequestTypes.PUT);
   }
 }

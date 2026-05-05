@@ -11,7 +11,7 @@ import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/pages/checkin/checkin_success.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
-import 'package:traewelcross/components/profile_link.dart';
+import 'package:traewelcross/components/profile_link_button.dart';
 import 'package:traewelcross/components/ride_icon_tag.dart';
 import 'package:traewelcross/components/time_override_field.dart';
 import 'package:traewelcross/enums/trip_type.dart';
@@ -72,8 +72,8 @@ class _CheckInState extends State<CheckIn> {
       if (checkInInfo.event != null) {
         event = {
           "isSelected": false,
-          "eventName": checkInInfo.event!["name"],
-          "eventId": checkInInfo.event!["id"],
+          "eventName": checkInInfo.event!.name,
+          "eventId": checkInInfo.event!.id,
         };
       }
     }
@@ -160,7 +160,7 @@ class _CheckInState extends State<CheckIn> {
           : null,
       "departure": checkInInfo.departureTime,
       "arrival": checkInInfo.arrivalTime,
-      "force": force ?? false
+      "force": force ?? false,
     };
     try {
       final response = await apiService.request(
@@ -178,22 +178,24 @@ class _CheckInState extends State<CheckIn> {
                 CheckinSuccess(statusInfo: jsonDecode(response.body)["data"]),
           ),
         );
-      }
-      else if(response.statusCode == 409){
+      } else if (response.statusCode == 409) {
         setState(() {
           waitForRes = false;
         });
         final errorinfo = jsonDecode(response.body)?["message"];
-        if(!mounted){
+        if (!mounted) {
           return;
         }
-        showDialog(context: context, builder:(context) => CheckinConflict(
-          lineName: errorinfo?["lineName"],
-          statusID: errorinfo?["status_id"]?.toString(),
-          forceCallback: ()=>_checkIn(force: true)),);
-          return;
-      }
-       else {
+        showDialog(
+          context: context,
+          builder: (context) => CheckinConflict(
+            lineName: errorinfo?["lineName"],
+            statusID: errorinfo?["status_id"]?.toString(),
+            forceCallback: () => _checkIn(force: true),
+          ),
+        );
+        return;
+      } else {
         setState(() {
           waitForRes = false;
         });
@@ -206,12 +208,12 @@ class _CheckInState extends State<CheckIn> {
             actions: [
               IconButton(
                 onPressed: () {
-                  if(!mounted){
+                  if (!mounted) {
                     return;
                   }
                   ScaffoldMessenger.of(context).clearMaterialBanners();
-                  },
-                    
+                },
+
                 icon: const Icon(Icons.close),
               ),
             ],
@@ -625,7 +627,7 @@ class TrustedCheckInButton extends StatelessWidget {
                                               }
                                             });
                                           },
-                                          title: ProfileLink(
+                                          title: ProfileLinkButton(
                                             user: user,
                                             enableNavigateToProfile: false,
                                           ),

@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/push_notify/push_common.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/custom_providers.dart';
 import 'package:traewelcross/utils/authentication.dart';
@@ -233,11 +234,12 @@ class SharedFunctions {
       messenger.context,
     ).showSnackBar(SnackBar(content: Text(text)));
   }
-  static String? getOperatorHAFASIdent(List<dynamic>? identifiers){
-    if(identifiers == null){
+
+  static String? getOperatorHAFASIdent(List<OperatorIdentifier>? identifiers) {
+    if (identifiers == null) {
       return "";
     }
-    final hafasIdent = identifiers.where((ident) => ident["type"] == "hafas");
-    return hafasIdent.isEmpty ? "" : hafasIdent.first["identifier"];
+    final hafasIdent = identifiers.where((ident) => ident.type == "hafas");
+    return hafasIdent.isEmpty ? "" : hafasIdent.first.identifier;
   }
 }

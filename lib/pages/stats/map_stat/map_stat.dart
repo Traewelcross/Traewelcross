@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:traewelcross/components/color_circle.dart';
-import 'package:traewelcross/components/profile_link.dart';
+import 'package:traewelcross/components/profile_link_button.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart' as models;
@@ -23,8 +23,8 @@ class MapStat extends StatelessWidget {
 
     final uniqueUsers = rides
         .map((r) => r.userInfo)
-        .fold<Map<int, Map<String, dynamic>>>({}, (map, userInfo) {
-          map[userInfo["id"]] = userInfo;
+        .fold<Map<int, models.LightUser>>({}, (map, userInfo) {
+          map[userInfo.id] = userInfo;
           return map;
         })
         .values
@@ -38,7 +38,12 @@ class MapStat extends StatelessWidget {
             child: FlutterMap(
               options: MapOptions(
                 initialCameraFit: CameraFit.bounds(
-                  bounds: allPoints.isNotEmpty ? LatLngBounds.fromPoints(allPoints) : LatLngBounds(const LatLng(53.879,7.671), const LatLng(47.680,13.002)),
+                  bounds: allPoints.isNotEmpty
+                      ? LatLngBounds.fromPoints(allPoints)
+                      : LatLngBounds(
+                          const LatLng(53.879, 7.671),
+                          const LatLng(47.680, 13.002),
+                        ),
                   padding: const EdgeInsets.all(50),
                 ),
                 minZoom: 2,
@@ -55,18 +60,18 @@ class MapStat extends StatelessWidget {
                       "https://{s}.tiles.openrailwaymap.org/${getIt<Config>().appearance.mapType.value}/{z}/{x}/{y}.png",
                   userAgentPackageName: "de.traewelcross",
                 ),
-                if(rides.isNotEmpty)
-                PolylineLayer(
-                  polylines: rides.map((ride) {
-                    return Polyline(
-                      points: ride.coordinates!,
-                      color: SharedFunctions.getColorById(
-                        id: ride.userInfo["id"],
-                      ),
-                      strokeWidth: 5.0,
-                    );
-                  }).toList(),
-                ),
+                if (rides.isNotEmpty)
+                  PolylineLayer(
+                    polylines: rides.map((ride) {
+                      return Polyline(
+                        points: ride.coordinates!,
+                        color: SharedFunctions.getColorById(
+                          id: ride.userInfo.id,
+                        ),
+                        strokeWidth: 5.0,
+                      );
+                    }).toList(),
+                  ),
                 RichAttributionWidget(
                   attributions: [
                     TextSourceAttribution(
@@ -88,29 +93,29 @@ class MapStat extends StatelessWidget {
             ),
           ),
         ),
-        if(uniqueUsers.isNotEmpty)
-        Card(
-          clipBehavior: Clip.hardEdge,
-          child: ExpansionTile(
-            shape: Border.all(color: Colors.transparent),
+        if (uniqueUsers.isNotEmpty)
+          Card(
             clipBehavior: Clip.hardEdge,
-            title: Text("${uniqueUsers.length} ${localize.users}"),
-            enabled: true,
-            children: uniqueUsers
-                .map(
-                  (user) => ProfileLink(
-                    user: models.User.fromJson(user),
-                    enableNavigateToProfile: false,
-                    action: ColorCircle(
-                      color: SharedFunctions.getColorById(id: user["id"]),
-                      width: 24,
-                      onTap: (_) => "",
+            child: ExpansionTile(
+              shape: Border.all(color: Colors.transparent),
+              clipBehavior: Clip.hardEdge,
+              title: Text("${uniqueUsers.length} ${localize.users}"),
+              enabled: true,
+              children: uniqueUsers
+                  .map(
+                    (user) => ProfileLinkButton(
+                      user: user.promoteToUser(),
+                      enableNavigateToProfile: false,
+                      action: ColorCircle(
+                        color: SharedFunctions.getColorById(id: user.id),
+                        width: 24,
+                        onTap: (_) => "",
+                      ),
                     ),
-                  ),
-                )
-                .toList(),
+                  )
+                  .toList(),
+            ),
           ),
-        ),
       ],
     );
   }

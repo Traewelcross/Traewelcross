@@ -50,7 +50,7 @@ class ApiService {
     Map<String, String>? headers = const {"Content-Type": "application/json"},
     Object? body,
     Encoding? encoding,
-    bool isRetrial = false
+    bool isRetrial = false,
   }) async {
     bool hasBeenRefreshed = false;
     oauth2.Client? client = await getAuthenticatedClient();
@@ -63,7 +63,8 @@ class ApiService {
       await refreshToken();
       hasBeenRefreshed = true;
     }
-    if ((DateTime.now().difference(_lastRequest).inHours >= 1 || client?.credentials.isExpired == true) &&
+    if ((DateTime.now().difference(_lastRequest).inHours >= 1 ||
+            client?.credentials.isExpired == true) &&
         !hasBeenRefreshed) {
       if (kDebugMode) print("Refresh Token (stale)");
       await refreshToken();

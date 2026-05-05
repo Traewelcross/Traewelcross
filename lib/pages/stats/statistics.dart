@@ -44,12 +44,8 @@ class _StatisticsState extends State<Statistics> {
           child: Column(
             children: [
               TabBar.secondary(tabs: [Tab(icon: const Icon(Icons.map))]),
-              SizedBox(height: 8,),
-              Expanded(
-                child: TabBarView(children: [
-                  MapStatForUser()
-                ]),
-              )
+              SizedBox(height: 8),
+              Expanded(child: TabBarView(children: [MapStatForUser()])),
             ],
           ),
         );

@@ -16,6 +16,7 @@ class TimeProgress extends StatefulWidget {
   @override
   State<TimeProgress> createState() => _TimeProgressState();
 }
+
 class _TimeProgressState extends State<TimeProgress> {
   DateTime? _startDate;
   DateTime? _endDate;

@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traewelcross/components/ride_quick_view.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/pages/stats/map_stat/map_stat_for_day_page.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/ride_info.dart';
@@ -38,7 +39,7 @@ class RideQuickViewWrapper extends StatefulWidget {
 }
 
 class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
-  final List<dynamic> _userRides = [];
+  final List<Status> _userRides = [];
   int _page = 1;
   bool _isLoading = false;
   int _userIdAuthUser = 0;
@@ -79,31 +80,34 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
 
     final apiService = getIt<ApiService>();
     try {
-   StatusListType type = widget.userName == null
-          ? .dashboard
-          : .user;
-      if(widget.isOTM == true){
+      StatusListType type = widget.userName == null ? .dashboard : .user;
+      if (widget.isOTM == true) {
         type = .onTheMove;
       }
-      final newRides = await apiService.status.fetchRides(type: type, username: widget.userName, page: _page);
+      final newRides = await apiService.status.fetchRides(
+        type: type,
+        username: widget.userName,
+        page: _page,
+      );
       setState(() {
-          _userRides.addAll(newRides);
-          _page++;
-          _isLoading = false;
-        });
+        _userRides.addAll(newRides);
+        _page++;
+        _isLoading = false;
+      });
     } on TimeoutException {
       if (!mounted) return;
       setState(() {
         _isLoading = false;
       });
       SharedFunctions.handleRequestTimeout(context, _fetchRides);
-    } catch (e){
+    } catch (e) {
       return Future.error(e);
     }
   }
 
   void _onScroll() {
-    if (widget.isOTM != true && widget.scrollController!.position.pixels >=
+    if (widget.isOTM != true &&
+        widget.scrollController!.position.pixels >=
             widget.scrollController!.position.maxScrollExtent * 0.9 &&
         !_isLoading) {
       _fetchRides();
@@ -126,8 +130,10 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
 
         final ride = _userRides[index];
         final currentRideDate = DateTime.parse(
-          ride["checkin"]["manualDeparture"] ??
-              ride["checkin"]["origin"]["departureReal"] ?? ride["checkin"]["origin"]["departurePlanned"],
+          ride.checkin.manualDeparture ??
+              ride.checkin.origin.departureReal ??
+              ride.checkin.origin.departurePlanned ??
+              "1970-01-01",
         );
 
         bool showDateHeader = false;
@@ -136,8 +142,10 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
         } else {
           final previousRide = _userRides[index - 1];
           final previousRideDate = DateTime.parse(
-            previousRide["checkin"]["manualDeparture"] ??
-                previousRide["checkin"]["origin"]["departureReal"] ?? previousRide["checkin"]["origin"]["departurePlanned"],
+            previousRide.checkin.manualDeparture ??
+                previousRide.checkin.origin.departureReal ??
+                previousRide.checkin.origin.departurePlanned ??
+                "1970=01-01",
           );
           if (currentRideDate.day != previousRideDate.day ||
               currentRideDate.month != previousRideDate.month ||
@@ -165,8 +173,10 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
                     onPressed: () {
                       final ridesOnThisDate = _userRides.where((ride) {
                         final rideDate = DateTime.parse(
-                          ride["checkin"]["manualDeparture"] ??
-                              ride["checkin"]["origin"]["departureReal"] ?? ride["checkin"]["origin"]["departurePlanned"],
+                          ride.checkin.manualDeparture ??
+                              ride.checkin.origin.departureReal ??
+                              ride.checkin.origin.departurePlanned ??
+                              "1970-01-01",
                         );
                         return rideDate.year == currentRideDate.year &&
                             rideDate.month == currentRideDate.month &&
@@ -197,14 +207,14 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
           authUserId: _userIdAuthUser,
           onDelete: () {
             setState(() {
-              _userRides.removeWhere((item) => item["id"] == ride["id"]);
+              _userRides.removeWhere((item) => item.id == ride.id);
             });
           },
         );
         widgets.add(rideView);
         widgets.add(const SizedBox(height: 8));
         return Column(
-          key: ValueKey(ride["id"]),
+          key: ValueKey(ride.id),
           crossAxisAlignment: CrossAxisAlignment.start,
           children: widgets,
         );

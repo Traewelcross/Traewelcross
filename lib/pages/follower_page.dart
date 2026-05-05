@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
-import 'package:traewelcross/components/profile_link.dart';
+import 'package:traewelcross/components/profile_link_button.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/api_service.dart';
@@ -319,7 +319,7 @@ class _SocialUserListState extends State<_SocialUserList> {
           itemCount: asyncSnapshot.data!.length,
           itemBuilder: (context, index) {
             if (widget.isFollower ?? false) {
-              return ProfileLink(
+              return ProfileLinkButton(
                 user: asyncSnapshot.data![index],
                 action: IconButton(
                   onPressed: () {
@@ -331,7 +331,7 @@ class _SocialUserListState extends State<_SocialUserList> {
               );
             }
             if (widget.following ?? false) {
-              return ProfileLink(
+              return ProfileLinkButton(
                 user: asyncSnapshot.data![index],
                 action: IconButton(
                   onPressed: () {
@@ -343,7 +343,7 @@ class _SocialUserListState extends State<_SocialUserList> {
               );
             }
             if (widget.request ?? false) {
-              return ProfileLink(
+              return ProfileLinkButton(
                 user: asyncSnapshot.data![index],
                 action: Row(
                   children: [
@@ -365,7 +365,7 @@ class _SocialUserListState extends State<_SocialUserList> {
                 ),
               );
             }
-            return ProfileLink(user: asyncSnapshot.data![index]);
+            return ProfileLinkButton(user: asyncSnapshot.data![index]);
           },
         );
       },

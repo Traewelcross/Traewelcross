@@ -11,23 +11,20 @@ class ProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final prideMode = getIt<Config>().appearance.isPrideActive;
-    if(prideMode){
-    return PrideGradient(
-      rotation: 0,
-      progress: value,
-      seed: seed,
-      child: LinearProgressIndicator(
-        value: value,
-        backgroundColor: Colors.white24,
-        borderRadius: borderRadius,
-        valueColor: AlwaysStoppedAnimation(Colors.white)),
-    );
-    } else {
-      return LinearProgressIndicator(
-        value: value,
-        borderRadius: borderRadius,
+    if (prideMode) {
+      return PrideGradient(
+        rotation: 0,
+        progress: value,
+        seed: seed,
+        child: LinearProgressIndicator(
+          value: value,
+          backgroundColor: Colors.white24,
+          borderRadius: borderRadius,
+          valueColor: AlwaysStoppedAnimation(Colors.white),
+        ),
       );
+    } else {
+      return LinearProgressIndicator(value: value, borderRadius: borderRadius);
     }
-
   }
 }

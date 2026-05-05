@@ -90,14 +90,15 @@ class BehaviorConfig with ChangeNotifier {
   bool _renewLegacy = false;
   @JsonKey(defaultValue: false)
   bool get renewLegacy => _renewLegacy;
-  set renewLegacy(bool val){
+  set renewLegacy(bool val) {
     _renewLegacy = val;
     notifyListeners();
   }
-    bool _showActiveRideCard = true;
+
+  bool _showActiveRideCard = true;
   @JsonKey(defaultValue: true)
   bool get showActiveRideCard => _showActiveRideCard;
-  set showActiveRideCard(bool val){
+  set showActiveRideCard(bool val) {
     _showActiveRideCard = val;
     notifyListeners();
   }

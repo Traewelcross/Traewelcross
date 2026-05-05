@@ -39,7 +39,6 @@ class _DashboardState extends State<Dashboard> {
     final apiService = getIt<ApiService>();
     final res = await apiService.notification.getNotificationCount();
     getIt<UnreadCountProvider>().setCount(res);
-
   }
 
   @override

@@ -72,12 +72,12 @@ class AppearanceConfig with ChangeNotifier {
   bool _prideMode = false;
   @JsonKey(defaultValue: false)
   bool get prideModePreference => _prideMode;
-  set prideModePreference(bool val){
+  set prideModePreference(bool val) {
     _prideMode = val;
     notifyListeners();
   }
+
   bool get isPrideActive {
     return DateTime.now().month == 6 || _prideMode;
   }
-  
 }

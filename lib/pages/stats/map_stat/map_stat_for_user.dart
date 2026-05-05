@@ -6,6 +6,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/stats/map_stat/map_stat.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/ride_info.dart';
 import 'package:traewelcross/utils/shared.dart';
@@ -51,7 +52,7 @@ class _MapStatForUserState extends State<MapStatForUser> {
   Future<List<RideInfo>> _getRidesForUser() async {
     final api = getIt<ApiService>();
     final List<List<LatLng>> coords = [];
-    Map<String, dynamic>? userDetails;
+    LightUser? userDetails;
     List<DateTime> riddenDays = await _getRiddenDays();
     for (DateTime date in riddenDays) {
       final req = await api.request(
@@ -97,7 +98,7 @@ class _MapStatForUserState extends State<MapStatForUser> {
               mainAxisSize: .min,
               children: [
                 CircularProgressIndicator(),
-                Text(localize.waitForStatsMsg, textAlign: .center,),
+                Text(localize.waitForStatsMsg, textAlign: .center),
               ],
             ),
           );

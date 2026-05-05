@@ -247,7 +247,9 @@ class _SelectConnectionState extends State<SelectConnection> {
                 child: _DepartureList(
                   departuresFuture: _departuresFuture,
                   stationName: widget.stationName,
-                  retryTrigger: () => setState((){ _departuresFuture = _fetchDepartures();}),
+                  retryTrigger: () => setState(() {
+                    _departuresFuture = _fetchDepartures();
+                  }),
                 ),
               ),
             ),
@@ -403,22 +405,22 @@ class _DepartureList extends StatelessWidget {
                                 ],
                               ),
                               if (departure["station"]["name"] != stationName)
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!.startsAtDifferentStop(
-                                        departure["station"]["name"],
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.startsAtDifferentStop(
+                                          departure["station"]["name"],
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        softWrap: false,
                                       ),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      softWrap: false,
                                     ),
-                                  ),
-                                ],
-                              ),
+                                  ],
+                                ),
                             ],
                           ),
                         ),

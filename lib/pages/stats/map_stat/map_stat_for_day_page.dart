@@ -13,7 +13,11 @@ import 'package:traewelcross/utils/ride_info.dart';
 import 'package:traewelcross/utils/shared.dart';
 
 class MapStatForDayPage extends StatefulWidget {
-  const MapStatForDayPage({super.key, required this.rideInfo, required this.date});
+  const MapStatForDayPage({
+    super.key,
+    required this.rideInfo,
+    required this.date,
+  });
   @override
   State<MapStatForDayPage> createState() => _MapStatForDayPageState();
   final List<RideInfo> rideInfo;
@@ -39,8 +43,9 @@ class _MapStatForDayPageState extends State<MapStatForDayPage> {
     final allRides = widget.rideInfo;
     try {
       for (int i = 0; i < allRides.length; i += chunkSize) {
-        int end =
-            (i + chunkSize < allRides.length) ? i + chunkSize : allRides.length;
+        int end = (i + chunkSize < allRides.length)
+            ? i + chunkSize
+            : allRides.length;
         var chunk = allRides.sublist(i, end);
         String ids = chunk.map((ride) => ride.rideId).join(',');
         final response = await api.request(
@@ -52,10 +57,9 @@ class _MapStatForDayPageState extends State<MapStatForDayPage> {
           int rideId = feat["properties"]["statusId"];
           final ride = allRides.firstWhere((r) => r.rideId == rideId);
           final List<dynamic> coords = feat["geometry"]["coordinates"];
-          ride.coordinates =
-              coords.map((c) {
-                return LatLng(c[1] as double, c[0] as double);
-              }).toList();
+          ride.coordinates = coords.map((c) {
+            return LatLng(c[1] as double, c[0] as double);
+          }).toList();
         }
       }
       return allRides;

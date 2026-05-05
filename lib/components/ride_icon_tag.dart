@@ -32,33 +32,33 @@ class _RideIconTagState extends State<RideIconTag> {
     );
     return Row(
       children: [
-        if(widget.iconInfo.showCategoryIcon ?? true)
-        switch (widget.iconInfo.category) {
-          final category
-              when category == "tram" ||
-                  category == "bus" ||
-                  category == "suburban" ||
-                  category == "subway" =>
-            Row(
-              children: [
-                SvgPicture.asset(
-                  "icons/ic_$category.svg",
-                  width: widget.iconInfo.width,
-                ),
-              ],
-            ),
+        if (widget.iconInfo.showCategoryIcon ?? true)
+          switch (widget.iconInfo.category) {
+            final category
+                when category == "tram" ||
+                    category == "bus" ||
+                    category == "suburban" ||
+                    category == "subway" =>
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    "icons/ic_$category.svg",
+                    width: widget.iconInfo.width,
+                  ),
+                ],
+              ),
 
-          "ferry" => const Icon(Icons.directions_ferry),
-          "taxi" => const Icon(Icons.local_taxi),
-          "plane" => const Icon(Icons.airplanemode_active),
-          final category? when category.isNotEmpty => Icon(
-            Icons.train,
-            size: widget.iconInfo.width,
-            opticalSize: widget.iconInfo.width,
-            applyTextScaling: true,
-          ),
-          _ => const Icon(Icons.train),
-        },
+            "ferry" => const Icon(Icons.directions_ferry),
+            "taxi" => const Icon(Icons.local_taxi),
+            "plane" => const Icon(Icons.airplanemode_active),
+            final category? when category.isNotEmpty => Icon(
+              Icons.train,
+              size: widget.iconInfo.width,
+              opticalSize: widget.iconInfo.width,
+              applyTextScaling: true,
+            ),
+            _ => const Icon(Icons.train),
+          },
         const SizedBox(width: 6),
         if (customLineIcons) ...[
           FutureBuilder(
@@ -127,7 +127,10 @@ class _RideIconTagState extends State<RideIconTag> {
   Future<dynamic> _getLine() async {
     return jsonDecode(
       await rootBundle.loadString("assets/line_colors/line_colors.json"),
-    )[widget.iconInfo.operatorIdentifier][widget.iconInfo.lineName?.replaceAll(" ", "")];
+    )[widget.iconInfo.operatorIdentifier][widget.iconInfo.lineName?.replaceAll(
+      " ",
+      "",
+    )];
   }
 
   BorderRadius _getRadius(String shape) {

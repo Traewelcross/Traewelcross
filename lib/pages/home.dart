@@ -8,7 +8,7 @@ import 'package:package_info_plus/package_info_plus.dart' as pkg;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:terminate_restart/terminate_restart.dart';
 import 'package:traewelcross/components/dashboard.dart';
-import 'package:traewelcross/components/profile_link.dart';
+import 'package:traewelcross/components/profile_link_button.dart';
 import 'package:traewelcross/components/progress_bar.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
@@ -169,8 +169,11 @@ class _HomeState extends State<Home> {
       }
 
       if (!mounted) return;
-      if(kDebugMode && searchTerm == "testpad"){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Testpad()));
+      if (kDebugMode && searchTerm == "testpad") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Testpad()),
+        );
       }
       if (searchTerm == _stationController.text.trim()) {
         if (response.statusCode == 200) {
@@ -411,14 +414,16 @@ class _HomeState extends State<Home> {
     }
     return " — $defaultString, $areaString";
   }
-  String _getRIL(dynamic station){
-    if(station["identifiers"] == null){
+
+  String _getRIL(dynamic station) {
+    if (station["identifiers"] == null) {
       return "";
     }
     final identList = station["identifiers"] as List<dynamic>;
     final ril100 = identList.where((ident) => ident["type"] == "de_db_ril100");
     return ril100.isEmpty ? "" : " [${ril100.first["identifier"] ?? ""}]";
   }
+
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
@@ -575,7 +580,7 @@ class _HomeState extends State<Home> {
                                           ),
                                         ),
                                       ] else ...[
-                                        ProfileLink(
+                                        ProfileLinkButton(
                                           user: results[i],
                                           appendUsername: true,
                                         ),

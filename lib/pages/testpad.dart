@@ -32,7 +32,7 @@ class Testpad extends StatelessWidget {
                   0.66, // Start Green (Hard transition at 66%)
                   1.0, // End Green
                 ],
-              ).createShader(Rect.fromLTWH(0,0, activeWidth, bounds.height));
+              ).createShader(Rect.fromLTWH(0, 0, activeWidth, bounds.height));
             },
             blendMode: BlendMode.srcIn,
             child: LinearProgressIndicator(
@@ -42,7 +42,7 @@ class Testpad extends StatelessWidget {
             ),
           ),
           Divider(),
-          ProgressBar(value: progress)
+          ProgressBar(value: progress),
         ],
       ),
     );

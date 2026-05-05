@@ -1,5 +1,6 @@
 import 'package:traewelcross/enums/trip_visibility.dart';
 import 'package:traewelcross/enums/trip_type.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 
 class CheckInInfo {
   /// Träwelling Ride Id
@@ -51,7 +52,7 @@ class CheckInInfo {
   int departureId = 0;
 
   /// Event
-  Map<String, dynamic>? event;
+  Event? event;
 
   /// Trip type (private, commute, business)
   TripType? tripType = TripType.private;
@@ -62,7 +63,7 @@ class CheckInInfo {
   /// Attach to last toot
   bool? attachToLastToot;
 
-  Function(Map<String, dynamic> rideData)? rideDataCallback;
+  Function(Status rideData)? rideDataCallback;
 
   CheckInInfo({
     this.rideId,
