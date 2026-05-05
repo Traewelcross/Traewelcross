@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traewelcross/components/ride_quick_view.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/pages/stats/map_stat/map_stat_for_day_page.dart';
+import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/ride_info.dart';
 
@@ -78,30 +79,26 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
 
     final apiService = getIt<ApiService>();
     try {
-      String endpoint = widget.userName == null
-          ? "/dashboard?page=$_page"
-          : "/user/${widget.userName}/statuses?page=$_page";
+   StatusListType type = widget.userName == null
+          ? .dashboard
+          : .user;
       if(widget.isOTM == true){
-        endpoint = "/statuses";
+        type = .onTheMove;
       }
-      final response = await apiService.request(endpoint, HttpRequestTypes.GET);
-      if (response.statusCode == 200) {
-        final newRides = jsonDecode(response.body)["data"];
-        if (!mounted) return;
-        setState(() {
+      final newRides = await apiService.status.fetchRides(type: type, username: widget.userName, page: _page);
+      setState(() {
           _userRides.addAll(newRides);
           _page++;
           _isLoading = false;
         });
-      } else {
-        return Future.error('Failed to load rides');
-      }
     } on TimeoutException {
       if (!mounted) return;
       setState(() {
         _isLoading = false;
       });
       SharedFunctions.handleRequestTimeout(context, _fetchRides);
+    } catch (e){
+      return Future.error(e);
     }
   }
 

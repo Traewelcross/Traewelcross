@@ -778,9 +778,9 @@ class _RideQuickViewState extends State<RideQuickView> {
     return _rideData["user"]["id"] == widget.authUserId;
   }
 
-  void _addTag(Map<String, dynamic> newTag) {
+  void _addTag(Tag newTag) {
     setState(() {
-      (_rideData['tags'] as List<dynamic>).add(newTag);
+      (_rideData['tags'] as List<dynamic>).add(newTag.toJson());
     });
   }
 

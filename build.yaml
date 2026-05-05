@@ -4,3 +4,4 @@ targets:
       json_serializable:
         generate_for:
           - lib/config/**
+          - lib/utils/api_providers/**

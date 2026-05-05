@@ -3,6 +3,7 @@ import 'package:traewelcross/dialogs/add_tag_dialog.dart';
 import 'package:traewelcross/components/status_tag.dart';
 import 'package:traewelcross/components/tag_icon.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
+import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
 
 class StatusTags extends StatelessWidget {
   const StatusTags({
@@ -16,7 +17,7 @@ class StatusTags extends StatelessWidget {
   final List<dynamic> tags;
   final bool canAdd;
   final int rideId;
-  final Function(Map<String, dynamic> data) onAddTag;
+  final Function(Tag data) onAddTag;
   final Function(String key) onDeleteTag;
 
   @override
@@ -39,7 +40,7 @@ class StatusTags extends StatelessWidget {
         ),
       ...tags.map((tag) {
         return StatusTag(
-          tag: tag,
+          tag: Tag.fromJson(tag),
           rideId: rideId,
           key: ValueKey(tag["key"]),
           deleteCallback: (key) {
@@ -68,7 +69,7 @@ class AddTag extends StatelessWidget {
   });
   final List<dynamic> tags;
   final int rideId;
-  final Function(Map<String, dynamic> data) addCallback;
+  final Function(Tag data) addCallback;
   @override
   Widget build(BuildContext context) {
     return AddTagDialog(

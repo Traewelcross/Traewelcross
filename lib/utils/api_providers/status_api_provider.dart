@@ -1,10 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
+import 'package:traewelcross/enums/trip_visibility.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/shared.dart';
+
+part 'status_api_provider.g.dart';
 
 class StatusApiProvider {
   final ApiService _api;
@@ -181,6 +185,7 @@ class StatusApiProvider {
       return false;
     }
   }
+
   Future<Map<String, dynamic>?> getActiveRide() async {
     final res = await _api.request(
       "/user/statuses/active",
@@ -192,10 +197,153 @@ class StatusApiProvider {
       return null;
     }
   }
+
+  Future<List<dynamic>> fetchRides({
+    required StatusListType type,
+    String? username,
+    int? page,
+  }) async {
+    String endpoint;
+    switch (type) {
+      case .dashboard:
+        endpoint = "/dashboard?page=$page";
+        break;
+      case .onTheMove:
+        endpoint = "/statuses";
+        break;
+      case .user:
+        endpoint = "/user/$username/statuses?page=$page";
+        break;
+    }
+    final res = await _api.request(endpoint, .GET);
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body)["data"];
+    }
+    return Future.error(Exception("${res.statusCode} / ${res.body}"));
+  }
+
+  Future<Tag?> submitTag({required Tag tag, required int rideId}) async {
+    final res = await _api.request(
+      "/status/$rideId/tags",
+      .POST,
+      encoding: Encoding.getByName("UTF-8"),
+      body: jsonEncode(tag),
+    );
+    if (res.statusCode == 200) {
+      final data = jsonDecode(res.body)["data"];
+      return Tag(
+        key: data["key"],
+        value: data["value"],
+        visibility: TripVisibilityEnum.fromValue(data["visibility"]),
+      );
+    }
+    switch (res.statusCode) {
+      case 401 || 403:
+        SharedFunctions.sendSnackBar(
+          AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
+        );
+        break;
+      case 404:
+        SharedFunctions.sendSnackBar(
+          AppLocalizations.of(navKeyContext!)!.statusNotFound,
+        );
+        break;
+      default:
+        SharedFunctions.sendSnackBar(
+          AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar +
+              res.statusCode.toString(),
+        );
+        break;
+    }
+    return null;
+  }
+  Future<Tag?> editTag({required Tag oldTag, required Tag newTag, required int rideId}) async{
+        final res = await _api.request(
+      "/status/$rideId/tags/${oldTag.key}",
+      .PUT,
+      encoding: Encoding.getByName("UTF-8"),
+      body: jsonEncode(newTag),
+    );
+    if (res.statusCode == 200) {
+      final data = jsonDecode(res.body)["data"];
+      return Tag(
+        key: data["key"],
+        value: data["value"],
+        visibility: TripVisibilityEnum.fromValue(data["visibility"]),
+      );
+    }
+    switch (res.statusCode) {
+      case 401 || 403:
+        SharedFunctions.sendSnackBar(
+          AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
+        );
+        break;
+      case 404:
+        SharedFunctions.sendSnackBar(
+          AppLocalizations.of(navKeyContext!)!.statusNotFound,
+        );
+        break;
+      default:
+        SharedFunctions.sendSnackBar(
+          AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar +
+              res.statusCode.toString(),
+        );
+        break;
+    }
+    return null;
+  }
+  Future<GenericStatusResponse> deleteTag({required Tag tag, required int rideId})async{
+    final res = await _api.request("/status/$rideId/tags/${tag.key}", .DELETE);
+    if(res.statusCode == 200){
+      return GenericStatusResponse(wasSuccess: true);
+    }
+    switch (res.statusCode) {
+      case 401 || 403:
+        SharedFunctions.sendSnackBar(
+          AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
+        );
+        break;
+      case 404:
+        SharedFunctions.sendSnackBar(
+          AppLocalizations.of(navKeyContext!)!.statusNotFound,
+        );
+        break;
+      default:
+        SharedFunctions.sendSnackBar(
+          AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar +
+              res.statusCode.toString(),
+        );
+        break;
+    }
+    return GenericStatusResponse(wasSuccess: false);
+  }
 }
+
+enum StatusListType { dashboard(), onTheMove(), user() }
 
 class LikeResponse {
   final bool wasSuccess;
   final int newCount;
   LikeResponse({required this.wasSuccess, required this.newCount});
+}
+
+@JsonSerializable()
+class Tag {
+  @JsonKey(name: "key")
+  final String? key;
+
+  @JsonKey(name: "value")
+  final String? value;
+
+  @JsonKey(name: "visibility")
+  final TripVisibilityEnum? visibility;
+  const Tag({required this.key, required this.value, required this.visibility});
+  factory Tag.fromJson(Map<String, dynamic> json) => _$TagFromJson(json);
+  Map<String, dynamic> toJson() => _$TagToJson(this);
+}
+
+class GenericStatusResponse {
+  final bool wasSuccess;
+  final String? body;
+  const GenericStatusResponse({required this.wasSuccess, this.body});
 }

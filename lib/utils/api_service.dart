@@ -21,6 +21,7 @@ class ApiService {
   int _requestCount = 0;
   DateTime _lastRequest = DateTime.now();
 
+  //TODO: provider wide check for common status code like 200, 404, 401, ...
   late final status = StatusApiProvider(this);
   late final notification = NotificationApiProvider(this);
 

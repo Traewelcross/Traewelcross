@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:traewelcross/components/status_tags.dart';
 import 'package:traewelcross/components/tag_icon.dart';
+import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/shared.dart';
 
@@ -15,9 +16,7 @@ class AddTagDialog extends StatelessWidget {
     required this.tags,
     required this.rideId,
     required this.tagCanChange,
-    this.tagType,
-    this.tagValue,
-    this.tagVisibility,
+    this.tag,
     this.deleteCallback,
     this.addCallback,
   });
@@ -25,11 +24,12 @@ class AddTagDialog extends StatelessWidget {
   final List tags;
   final int rideId;
   final bool tagCanChange;
-  final String? tagType;
-  final String? tagValue;
-  final TripVisibilityEnum? tagVisibility;
+  //final String? tagType;
+  //final String? tagValue;
+  //final TripVisibilityEnum? tagVisibility;
+  final Tag? tag;
   final void Function(String key)? deleteCallback;
-  final void Function(Map<String, dynamic> data)? addCallback;
+  final void Function(Tag tag)? addCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +47,7 @@ class AddTagDialog extends StatelessWidget {
               tagCanChange: tagCanChange,
               setTags: tags,
               rideId: rideId,
-              tagType: tagType,
-              tagValue: tagValue,
-              tagVisibility: tagVisibility,
+              tag: tag,
               deleteCallback: deleteCallback,
               addCallback: addCallback,
             ),
@@ -65,9 +63,7 @@ class TagBox extends StatefulWidget {
     super.key,
     required this.tagCanChange,
     required this.setTags,
-    this.tagValue,
-    this.tagType,
-    this.tagVisibility,
+    this.tag,
     this.deleteCallback,
     this.addCallback,
     this.editCallback,
@@ -75,14 +71,15 @@ class TagBox extends StatefulWidget {
   });
   final bool tagCanChange;
   final List<dynamic> setTags;
-  final String? tagValue;
-  final String? tagType;
   final int rideId;
-  final TripVisibilityEnum? tagVisibility;
+  //final String? tagValue;
+  //final String? tagType;
+  //final TripVisibilityEnum? tagVisibility;
+  final Tag? tag;
   final void Function(String key)? deleteCallback;
   final void Function(String value)? editCallback;
 
-  final void Function(Map<String, dynamic>)? addCallback;
+  final void Function(Tag)? addCallback;
   @override
   State<TagBox> createState() => _TagBoxState();
 }
@@ -115,14 +112,17 @@ class _TagBoxState extends State<TagBox> {
     if (_availableTags.isNotEmpty) {
       _selected = _availableTags[0];
     }
-    if (widget.tagType != null) {
-      _selected = widget.tagType!;
+    if (widget.tag == null) {
+      return;
     }
-    if (widget.tagValue != null) {
-      tagText.text = widget.tagValue!;
+    if (widget.tag!.key != null) {
+      _selected = widget.tag!.key!;
     }
-    if (widget.tagVisibility != null) {
-      _visibility = widget.tagVisibility!;
+    if (widget.tag!.value != null) {
+      tagText.text = widget.tag!.value!;
+    }
+    if (widget.tag!.visibility != null) {
+      _visibility = widget.tag!.visibility!;
     }
   }
 
@@ -178,140 +178,39 @@ class _TagBoxState extends State<TagBox> {
 
   void _submitTag() async {
     final apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/status/${widget.rideId}/tags",
-      HttpRequestTypes.POST,
-      body: jsonEncode({
-        "key": _selected,
-        "value": tagText.text,
-        "visibility": _visibility.value,
-      }),
-      encoding: Encoding.getByName("UTF-8"),
-      headers: {"Content-type": "application/json"},
+    final response = await apiService.status.submitTag(
+      tag: Tag(key: _selected, visibility: _visibility, value: tagText.text),
+      rideId: widget.rideId,
     );
     if (!mounted) return;
-    if (response.statusCode == 200) {
-      widget.addCallback?.call(jsonDecode(response.body)["data"]);
+    if (response != null) {
+      widget.addCallback?.call(response);
       Navigator.pop(context);
-    } else {
-      switch (response.statusCode) {
-        case 401 || 403:
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.noModifcationAllowedGeneric,
-              ),
-            ),
-          );
-          break;
-        case 404:
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.statusNotFound),
-            ),
-          );
-          break;
-        default:
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.genericErrorSnackBar +
-                    response.statusCode.toString(),
-              ),
-            ),
-          );
-          break;
-      }
     }
   }
 
   void _editTag() async {
     final apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/status/${widget.rideId}/tags/${widget.tagType!}",
-      HttpRequestTypes.PUT,
-      body: jsonEncode({
-        "key": _selected,
-        "value": tagText.text,
-        "visibility": _visibility.value,
-      }),
+    final response = await apiService.status.editTag(
+      newTag: Tag(key: _selected, visibility: _visibility, value: tagText.text),
+      oldTag: widget.tag!,
+      rideId: widget.rideId,
     );
     if (!mounted) return;
-    if (response.statusCode == 200) {
-      widget.deleteCallback?.call(widget.tagType!);
-      widget.addCallback?.call(jsonDecode(response.body)["data"]);
+    if (response != null) {
+      widget.deleteCallback?.call(widget.tag!.key!);
+      widget.addCallback?.call(response);
       Navigator.pop(context);
-    } else {
-      switch (response.statusCode) {
-        case 401 || 403:
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.noModifcationAllowedGeneric,
-              ),
-            ),
-          );
-          break;
-        case 404:
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.statusNotFound),
-            ),
-          );
-          break;
-        default:
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.genericErrorSnackBar +
-                    response.statusCode.toString(),
-              ),
-            ),
-          );
-          break;
-      }
     }
   }
 
   void _deleteTag() async {
     final apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/status/${widget.rideId}/tags/${widget.tagType!}",
-      HttpRequestTypes.DELETE,
-    );
+    final response = await apiService.status.deleteTag(tag: widget.tag!, rideId: widget.rideId);
     if (!mounted) return;
-    if (response.statusCode == 200) {
-      widget.deleteCallback?.call(widget.tagType!);
+    if (response.wasSuccess) {
+      widget.deleteCallback?.call(widget.tag!.key!);
       Navigator.pop(context);
-    } else {
-      switch (response.statusCode) {
-        case 401 || 403:
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.noModifcationAllowedGeneric,
-              ),
-            ),
-          );
-          break;
-        case 404:
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.statusNotFound),
-            ),
-          );
-          break;
-        default:
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.genericErrorSnackBar +
-                    response.statusCode.toString(),
-              ),
-            ),
-          );
-          break;
-      }
     }
   }
 

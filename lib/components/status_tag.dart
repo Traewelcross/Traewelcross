@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:traewelcross/dialogs/add_tag_dialog.dart';
 import 'package:traewelcross/components/tag_icon.dart';
-import 'package:traewelcross/enums/trip_visibility.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
+import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
 
 class StatusTag extends StatelessWidget {
   const StatusTag({
@@ -13,17 +13,17 @@ class StatusTag extends StatelessWidget {
     this.addCallback,
     required this.canEdit,
   });
-  final Map<String, dynamic> tag;
+  final Tag tag;
   final int rideId;
   final void Function(String key) deleteCallback;
-  final void Function(Map<String, dynamic> data)? addCallback;
+  final void Function(Tag data)? addCallback;
   final bool canEdit;
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
     return Tooltip(
       triggerMode: TooltipTriggerMode.tap,
-      message: switch (tag["key"]) {
+      message: switch (tag.key) {
         final key when key == "trwl:journey_number" =>
           localize.tagTipJourneyNumber,
         "trwl:locomotive_class" => localize.tagTipLocomotiveClass,
@@ -36,7 +36,7 @@ class StatusTag extends StatelessWidget {
         "trwl:vehicle_number" => localize.tagTipVehicleNumber,
         "trwl:wagon" => localize.tagTipWagon,
         "trwl:wagon_class" => localize.tagTipWagonClass,
-        _ => localize.tagUnknownTip(tag["key"]),
+        _ => localize.tagUnknownTip(tag.key!),
       },
       child: GestureDetector(
         onTap: canEdit
@@ -47,11 +47,7 @@ class StatusTag extends StatelessWidget {
                     tags: [],
                     rideId: rideId,
                     tagCanChange: false,
-                    tagType: tag["key"],
-                    tagValue: tag["value"],
-                    tagVisibility: TripVisibilityEnum.fromValue(
-                      tag["visibility"],
-                    ),
+                    tag: tag,
                     deleteCallback: deleteCallback,
                     addCallback: addCallback,
                   ),
@@ -59,10 +55,10 @@ class StatusTag extends StatelessWidget {
               }
             : null,
         child: Chip(
-          avatar: TagIcon(tag: tag["key"]),
+          avatar: TagIcon(tag: tag.key ?? ""),
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           labelPadding: const EdgeInsets.symmetric(horizontal: 2),
-          label: Text(tag["value"]),
+          label: Text(tag.value ?? ""),
         ),
       ),
     );

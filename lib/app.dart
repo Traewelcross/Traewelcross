@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:dynamic_color/dynamic_color.dart';
@@ -16,7 +15,6 @@ import 'package:traewelcross/components/ride_icon_tag.dart';
 import 'package:traewelcross/components/time_progress.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/error_type.dart';
-import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/pages/detailed_ride_view.dart';
 import 'package:traewelcross/pages/error_page.dart';
 import 'package:traewelcross/pages/home.dart';
