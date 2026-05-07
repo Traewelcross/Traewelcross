@@ -77,7 +77,7 @@ class _RideQuickViewState extends State<RideQuickView> {
   Future<void> _updateLikes() async {
     final apiService = getIt<ApiService>();
     try {
-      final LikeResponse res;
+      final LikeCountResponse res;
       if (!_rideData.liked) {
         if (!_rideData.isLikable) {
           ScaffoldMessenger.of(context).showSnackBar(

@@ -79,58 +79,33 @@ class DetailedRideView extends StatefulWidget {
 
 class _DetailedRideViewState extends State<DetailedRideView> {
   late final Future<List<LatLng>> _polylineFuture;
-  late Future<List<dynamic>> _likes;
+  late Future<List<User>> _likes;
   late Future<Status> _rideData;
   late final String _evaIdentOrigin;
   late final int _rideId;
   bool isFound = true;
 
-  Future<List<dynamic>> _getLikeData() async {
+  Future<List<User>> _getLikeData() async {
     final apiService = getIt<ApiService>();
-    final request = await apiService.request(
-      "/status/$_rideId/likes",
-      HttpRequestTypes.GET,
-    );
-    if (request.statusCode == 200) {
-      final json = jsonDecode(request.body);
-      return json["data"] as List<dynamic>;
-    } else {
-      return [];
-    }
+    final request = await apiService.status.getLikes(_rideId);
+    return request;
   }
 
   Future<Status> _getRideData() async {
     final apiService = getIt<ApiService>();
-    return (await apiService.status.getStatus(_rideId));
+    return (await apiService.status.fetchRide(_rideId));
   }
 
   // Workaround for Traewelling/traewelling/discussions/4511 until identifiers are provided in check in again
   Future<String> _getEvaIdent() async {
     final apiService = getIt<ApiService>();
-    http.Response res;
-    try {
-      res = await apiService.request(
-        "/station/${widget.rideData!.checkin.destination.id}?withIdentifiers=true",
-        HttpRequestTypes.GET,
-      );
-    } on TimeoutException {
-      if (!mounted) return "";
-      SharedFunctions.handleRequestTimeout(context, _getRideData);
+    final res = await apiService.status.getStationData(stationId: widget.rideData!.checkin.destination.id, withIdentifiers: true);
+    if(res.identifiers == null){
       return "";
     }
-
-    switch (res.statusCode) {
-      case 200:
-        final json = jsonDecode(res.body)["data"];
-        if (json["identifiers"] == null) {
-          return "";
-        }
-        final identList = json["identifiers"] as List<dynamic>;
-        final ibnr = identList.where((ident) => ident["type"] == "de_db_ibnr");
-        return ibnr.isEmpty ? "" : "${ibnr.first["identifier"] ?? ""}";
-      default:
-        return "";
-    }
+    final identList = res.identifiers!;
+    final ibnr = identList.where((ident) => ident.type == "de_db_ibnr");
+    return ibnr.isEmpty ? "" : ibnr.first.identifier;
   }
 
   @override
@@ -241,7 +216,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                           children: List.generate(
                             asyncSnapshot.data!.length,
                             (int i) => ProfileLinkButton(
-                              user: User.fromJson(asyncSnapshot.data![i]),
+                              user: asyncSnapshot.data![i],
                             ),
                           ),
                         ),

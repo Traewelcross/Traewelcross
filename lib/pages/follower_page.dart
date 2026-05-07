@@ -7,6 +7,7 @@ import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/profile_link_button.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/shared.dart';
 import 'package:http/http.dart' as http;
@@ -19,68 +20,27 @@ class FollowerPage extends StatefulWidget {
 }
 
 class _FollowerPageState extends State<FollowerPage> {
-  Future<List<dynamic>> _getFollower() async {
+  Future<List<User>> _getFollower() async {
     final apiService = getIt<ApiService>();
-    http.Response response;
-    try {
-      response = await apiService.request(
-        "/user/self/followers",
-        HttpRequestTypes.GET,
-      );
-    } on TimeoutException {
-      throw TimeoutException;
-    }
-    switch (response.statusCode) {
-      case 200:
-        return jsonDecode(response.body)["data"] as List<dynamic>;
-      default:
-        return Future.error(response.statusCode);
-    }
+    final response = await apiService.user.getFollowers(page: 1);
+    return response;
   }
 
-  Future<List<dynamic>> _getFollowing() async {
+  Future<List<User>> _getFollowing() async {
     final apiService = getIt<ApiService>();
-    http.Response response;
-
-    try {
-      response = await apiService.request(
-        "/user/self/followings",
-        HttpRequestTypes.GET,
-      );
-    } on TimeoutException {
-      throw TimeoutException;
-    }
-    switch (response.statusCode) {
-      case 200:
-        return jsonDecode(response.body)["data"] as List<dynamic>;
-      default:
-        return Future.error(response.statusCode);
-    }
+    final response = await apiService.user.getFollowing(page: 1);
+    return response;
   }
 
-  Future<List<dynamic>> _getFollowRequests() async {
+  Future<List<User>> _getFollowRequests() async {
     final apiService = getIt<ApiService>();
-    http.Response response;
-    try {
-      response = await apiService.request(
-        "/user/self/follow-requests",
-        HttpRequestTypes.GET,
-      );
-    } on TimeoutException {
-      throw TimeoutException;
-    }
-
-    switch (response.statusCode) {
-      case 200:
-        return jsonDecode(response.body)["data"] as List<dynamic>;
-      default:
-        return Future.error(response.statusCode);
-    }
+    final response = await apiService.user.getFollowRequests(page: 1);
+    return response;
   }
 
-  late Future<List<dynamic>> _follower;
-  late Future<List<dynamic>> _following;
-  late Future<List<dynamic>> _followRequests;
+  late Future<List<User>> _follower;
+  late Future<List<User>> _following;
+  late Future<List<User>> _followRequests;
 
   @override
   void initState() {
@@ -186,14 +146,14 @@ class _FollowerPageState extends State<FollowerPage> {
 
 class _SocialUserList extends StatefulWidget {
   const _SocialUserList({
-    required Future<List> userlist,
+    required this.userlist,
     this.request,
     this.following,
     this.isFollower,
     required this.callback,
-  }) : _follower = userlist;
+  });
 
-  final Future<List> _follower;
+  final Future<List<User>> userlist;
   final bool? following;
   final bool? isFollower;
   final bool? request;
@@ -206,93 +166,33 @@ class _SocialUserList extends StatefulWidget {
 class _SocialUserListState extends State<_SocialUserList> {
   void _acceptFollowRequest(int id) async {
     final ApiService apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/user/self/follow-requests/$id",
-      HttpRequestTypes.PUT,
-    );
-    switch (response.statusCode) {
-      case 200:
-        widget.callback.call(null);
-        return;
-      case 404:
-        if (!mounted) return;
-        widget.callback.call(AppLocalizations.of(context)!.requestNotFound);
-        break;
-      default:
-        if (!mounted) return;
-        widget.callback.call(
-          "${AppLocalizations.of(context)!.genericErrorSnackBar} ${response.statusCode}",
-        );
-        break;
+    final response = await apiService.user.acceptFollowRequest(id);
+    if(response.wasSuccess){
+      widget.callback.call(null);
     }
   }
 
   void _denyFollowRequest(int id) async {
     final ApiService apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/user/self/follow-requests/$id",
-      HttpRequestTypes.DELETE,
-    );
-    switch (response.statusCode) {
-      case 200:
-        widget.callback.call(null);
-        return;
-      case 404:
-        if (!mounted) return;
-        widget.callback.call(AppLocalizations.of(context)!.requestNotFound);
-        break;
-      default:
-        if (!mounted) return;
-        widget.callback.call(
-          "${AppLocalizations.of(context)!.genericErrorSnackBar} ${response.statusCode}",
-        );
-        break;
+    final response = await apiService.user.denyFollowRequest(id);
+    if(response.wasSuccess){
+      widget.callback.call(null);
     }
   }
 
   void _unfollow(int id) async {
     final ApiService apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/user/$id/follow",
-      HttpRequestTypes.DELETE,
-    );
-    switch (response.statusCode) {
-      case 200:
-        widget.callback.call(null);
-        return;
-      case 404:
-        if (!mounted) return;
-        widget.callback.call(AppLocalizations.of(context)!.userNotFoundSnack);
-        break;
-      default:
-        if (!mounted) return;
-        widget.callback.call(
-          "${AppLocalizations.of(context)!.genericErrorSnackBar} ${response.statusCode}",
-        );
-        break;
+    final response = await apiService.user.unfollow(id);
+    if(response.wasSuccess){
+      widget.callback.call(null);
     }
   }
 
   void _removeFollow(int id) async {
     final ApiService apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/user/self/followers/$id",
-      HttpRequestTypes.DELETE,
-    );
-    switch (response.statusCode) {
-      case 200:
-        widget.callback.call(null);
-        return;
-      case 404:
-        if (!mounted) return;
-        widget.callback.call(AppLocalizations.of(context)!.userNotFoundSnack);
-        break;
-      default:
-        if (!mounted) return;
-        widget.callback.call(
-          "${AppLocalizations.of(context)!.genericErrorSnackBar} ${response.statusCode}",
-        );
-        break;
+    final response = await apiService.user.removeFollower(id);
+    if(response.wasSuccess){
+      widget.callback.call(null);
     }
   }
 
@@ -300,7 +200,7 @@ class _SocialUserListState extends State<_SocialUserList> {
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
     return FutureBuilder(
-      future: widget._follower,
+      future: widget.userlist,
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.connectionState == ConnectionState.waiting) {
           return const SliverToBoxAdapter(
@@ -323,7 +223,7 @@ class _SocialUserListState extends State<_SocialUserList> {
                 user: asyncSnapshot.data![index],
                 action: IconButton(
                   onPressed: () {
-                    _removeFollow(asyncSnapshot.data![index]["id"]);
+                    _removeFollow(asyncSnapshot.data![index].id);
                   },
                   icon: const Icon(Icons.person_remove),
                   tooltip: localize.remove,
@@ -335,7 +235,7 @@ class _SocialUserListState extends State<_SocialUserList> {
                 user: asyncSnapshot.data![index],
                 action: IconButton(
                   onPressed: () {
-                    _unfollow(asyncSnapshot.data![index]["id"]);
+                    _unfollow(asyncSnapshot.data![index].id);
                   },
                   icon: const Icon(Icons.person_remove),
                   tooltip: localize.remove,
@@ -349,14 +249,14 @@ class _SocialUserListState extends State<_SocialUserList> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        _acceptFollowRequest(asyncSnapshot.data![index]["id"]);
+                        _acceptFollowRequest(asyncSnapshot.data![index].id);
                       },
                       icon: const Icon(Icons.how_to_reg),
                       tooltip: localize.acceptFollowTooltip,
                     ),
                     IconButton(
                       onPressed: () {
-                        _denyFollowRequest(asyncSnapshot.data![index]["id"]);
+                        _denyFollowRequest(asyncSnapshot.data![index].id);
                       },
                       icon: const Icon(Icons.person_off),
                       tooltip: localize.denyFollowTooltip,

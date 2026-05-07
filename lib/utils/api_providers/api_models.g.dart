@@ -260,11 +260,11 @@ Station _$StationFromJson(Map<String, dynamic> json) => Station(
   name: json['name'] as String,
   latitude: json['latitude'] as num,
   longitude: json['longitude'] as num,
-  areas: (json['areas'] as List<dynamic>)
-      .map((e) => Area.fromJson(e as Map<String, dynamic>))
+  areas: (json['areas'] as List<dynamic>?)
+      ?.map((e) => Area.fromJson(e as Map<String, dynamic>))
       .toList(),
-  identifiers: (json['identifiers'] as List<dynamic>)
-      .map((e) => StationIdentifier.fromJson(e as Map<String, dynamic>))
+  identifiers: (json['identifiers'] as List<dynamic>?)
+      ?.map((e) => StationIdentifier.fromJson(e as Map<String, dynamic>))
       .toList(),
   timeOffset: (json['time_offset'] as num?)?.toInt(),
   createdAt: json['created_at'] as String?,

@@ -54,15 +54,6 @@ class ApiService {
   }) async {
     bool hasBeenRefreshed = false;
     oauth2.Client? client = await getAuthenticatedClient();
-    // Token Lifetime has been drastically reduced: https://github.com/Traewelling/traewelling/pull/3869
-    // The token will only refresh on every 20th API request. This is to avoid potential ratelimits.
-    _requestCount++;
-    if (_requestCount >= 20 && getIt<Config>().behavior.renewLegacy) {
-      _requestCount = 0;
-      if (kDebugMode) print("Refresh Token (20th api request)");
-      await refreshToken();
-      hasBeenRefreshed = true;
-    }
     if ((DateTime.now().difference(_lastRequest).inHours >= 1 ||
             client?.credentials.isExpired == true) &&
         !hasBeenRefreshed) {

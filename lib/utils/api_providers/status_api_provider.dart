@@ -15,72 +15,81 @@ class StatusApiProvider {
   StatusApiProvider(this._api);
   final navKeyContext =
       getIt<GlobalKey<NavigatorState>>().currentState?.context;
-  Future<LikeResponse> like(int id, int currentCount) async {
+  Future<LikeCountResponse> like(int id, int currentCount) async {
     final res = await _api.request("/status/$id/like", HttpRequestTypes.POST);
     final json = jsonDecode(res.body);
     if (res.statusCode == 201) {
-      return LikeResponse(wasSuccess: true, newCount: json["data"]["count"]);
+      return LikeCountResponse(
+        wasSuccess: true,
+        newCount: json["data"]["count"],
+      );
     } else {
       if (navKeyContext == null) {
-        return LikeResponse(wasSuccess: false, newCount: currentCount);
+        return LikeCountResponse(wasSuccess: false, newCount: currentCount);
       }
       switch (res.statusCode) {
         case 409:
-          return LikeResponse(wasSuccess: true, newCount: currentCount + 1);
+          return LikeCountResponse(
+            wasSuccess: true,
+            newCount: currentCount + 1,
+          );
         case 403:
           SharedFunctions.sendSnackBar(
             AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
           );
-          return LikeResponse(wasSuccess: false, newCount: currentCount);
+          return LikeCountResponse(wasSuccess: false, newCount: currentCount);
         case 404:
           SharedFunctions.sendSnackBar(
             AppLocalizations.of(navKeyContext!)!.statusNotFound,
           );
-          return LikeResponse(wasSuccess: false, newCount: currentCount);
+          return LikeCountResponse(wasSuccess: false, newCount: currentCount);
         case 429:
           SharedFunctions.sendSnackBar(
             AppLocalizations.of(navKeyContext!)!.rateLimit,
           );
-          return LikeResponse(wasSuccess: false, newCount: currentCount);
+          return LikeCountResponse(wasSuccess: false, newCount: currentCount);
         default:
           SharedFunctions.sendSnackBar(
             '${AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar} ${res.statusCode}',
           );
-          return LikeResponse(wasSuccess: false, newCount: currentCount);
+          return LikeCountResponse(wasSuccess: false, newCount: currentCount);
       }
     }
   }
 
-  Future<LikeResponse> unlike(int id, int currentCount) async {
+  Future<LikeCountResponse> unlike(int id, int currentCount) async {
     final res = await _api.request("/status/$id/like", HttpRequestTypes.DELETE);
     final json = jsonDecode(res.body);
     if (res.statusCode == 200) {
-      return LikeResponse(wasSuccess: true, newCount: json["data"]["count"]);
+      return LikeCountResponse(
+        wasSuccess: true,
+        newCount: json["data"]["count"],
+      );
     } else {
       if (navKeyContext == null) {
-        return LikeResponse(wasSuccess: false, newCount: currentCount);
+        return LikeCountResponse(wasSuccess: false, newCount: currentCount);
       }
       switch (res.statusCode) {
         case 403:
           SharedFunctions.sendSnackBar(
             AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
           );
-          return LikeResponse(wasSuccess: false, newCount: currentCount);
+          return LikeCountResponse(wasSuccess: false, newCount: currentCount);
         case 404:
           SharedFunctions.sendSnackBar(
             AppLocalizations.of(navKeyContext!)!.statusNotFound,
           );
-          return LikeResponse(wasSuccess: false, newCount: currentCount);
+          return LikeCountResponse(wasSuccess: false, newCount: currentCount);
         case 429:
           SharedFunctions.sendSnackBar(
             AppLocalizations.of(navKeyContext!)!.rateLimit,
           );
-          return LikeResponse(wasSuccess: false, newCount: currentCount);
+          return LikeCountResponse(wasSuccess: false, newCount: currentCount);
         default:
           SharedFunctions.sendSnackBar(
             '${AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar} ${res.statusCode}',
           );
-          return LikeResponse(wasSuccess: false, newCount: currentCount);
+          return LikeCountResponse(wasSuccess: false, newCount: currentCount);
       }
     }
   }
@@ -327,7 +336,7 @@ class StatusApiProvider {
     return GenericStatusResponse(wasSuccess: false);
   }
 
-  Future<Status> getStatus(int rideId) async {
+  Future<Status> fetchRide(int rideId) async {
     final res = await _api.request("/status/$rideId", .GET);
     if (res.statusCode == 200) {
       return Status.fromJson(jsonDecode(res.body)["data"]);
@@ -352,12 +361,49 @@ class StatusApiProvider {
     }
     return Future.error("${res.statusCode} / ${res.body}");
   }
+
+  Future<List<User>> getLikes(int rideId) async {
+    final res = await _api.request("/status/$rideId/likes", .GET);
+    if (res.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(res.body)["data"];
+      final List<User> likes = jsonData
+          .map((u) => User.fromJson(u as Map<String, dynamic>))
+          .toList();
+      return likes;
+    }
+    switch (res.statusCode) {
+      case 401 || 403:
+        SharedFunctions.sendSnackBar(
+          AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
+        );
+        break;
+      case 404:
+        SharedFunctions.sendSnackBar(
+          AppLocalizations.of(navKeyContext!)!.statusNotFound,
+        );
+        break;
+      default:
+        SharedFunctions.sendSnackBar(
+          AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar +
+              res.statusCode.toString(),
+        );
+        break;
+    }
+    return Future.error("${res.statusCode} / ${res.body}");
+  }
+  Future<Station> getStationData({required int stationId, required bool withIdentifiers}) async {
+    final res = await _api.request("/station/$stationId?withIdentifiers=${withIdentifiers.toString()}", .GET);
+    if (res.statusCode == 200){
+      return Station.fromJson(jsonDecode(res.body)["data"]);
+    }
+    return Future.error("${res.statusCode} / ${res.body}");
+  }
 }
 
 enum StatusListType { dashboard(), onTheMove(), user() }
 
-class LikeResponse {
+class LikeCountResponse {
   final bool wasSuccess;
   final int newCount;
-  LikeResponse({required this.wasSuccess, required this.newCount});
+  LikeCountResponse({required this.wasSuccess, required this.newCount});
 }

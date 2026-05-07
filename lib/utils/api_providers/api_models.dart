@@ -266,8 +266,8 @@ class Station {
   final String name;
   final num latitude;
   final num longitude;
-  final List<Area> areas;
-  final List<StationIdentifier> identifiers;
+  final List<Area>? areas;
+  final List<StationIdentifier>? identifiers;
   @JsonKey(name: "time_offset")
   final int? timeOffset;
   @JsonKey(name: "created_at")
