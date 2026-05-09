@@ -19,6 +19,7 @@ class ApiService {
   static const int _timeoutDuration = 25;
   final AuthService _authService;
   DateTime _lastRequest = DateTime.now();
+  Future<dynamic>? _refreshFuture;
 
   //TODO: provider wide check for common status code like 200, 404, 401, ...
   late final status = StatusApiProvider(this);
@@ -50,12 +51,10 @@ class ApiService {
     Encoding? encoding,
     bool isRetrial = false,
   }) async {
-    bool hasBeenRefreshed = false;
     oauth2.Client? client = await getAuthenticatedClient();
-    if ((DateTime.now().difference(_lastRequest).inHours >= 1 ||
-            client?.credentials.isExpired == true) &&
-        !hasBeenRefreshed) {
-      if (kDebugMode) print("Refresh Token (stale)");
+    if (DateTime.now().difference(_lastRequest).inMinutes >= 55 ||
+        client?.credentials.isExpired == true) {
+      if (kDebugMode) print("Refresh Token (stale or expired)");
       await refreshToken();
     }
     encoding ??= Encoding.getByName("UTF-8");
@@ -119,6 +118,19 @@ class ApiService {
   }
 
   Future<dynamic> refreshToken({bool secondTry = false}) async {
+    if (_refreshFuture != null) {
+      return _refreshFuture;
+    }
+
+    _refreshFuture = _doRefreshToken(secondTry: secondTry);
+    try {
+      return await _refreshFuture;
+    } finally {
+      _refreshFuture = null;
+    }
+  }
+
+  Future<dynamic> _doRefreshToken({bool secondTry = false}) async {
     final oAuthClient = await getAuthenticatedClient();
     if (oAuthClient == null) {
       return false;
@@ -138,6 +150,7 @@ class ApiService {
         },
         encoding: Encoding.getByName("UTF-8"),
       );
+
       if (res.statusCode == 200) {
         final json = jsonDecode(res.body);
         creds = oauth2.Credentials(
@@ -146,12 +159,22 @@ class ApiService {
           expiration: DateTime.now().add(Duration(seconds: json["expires_in"])),
           tokenEndpoint: Uri.parse(AuthService.tokenEndpoint),
         );
-      } else if (res.statusCode == 429){
-        if(!oAuthClient.credentials.isExpired){
-          return true; // rate limited, but token is valid
+      } else if (res.statusCode == 429) {
+        if (!oAuthClient.credentials.isExpired) {
+          if (kDebugMode) print("Refresh Rate Limited, but token still valid");
+          return true;
         }
-        if (secondTry) return ErrorInfo("rate limit", type: .httpError, httpStatusCode: 429, exception: res.body);
-        await Future.delayed(Duration(seconds: 10)); // Wait and hope for the best
+        if (secondTry) {
+          return Future.error(
+            ErrorInfo(
+              "rate limit",
+              type: ErrorType.httpError,
+              httpStatusCode: 429,
+              exception: res.body,
+            ),
+          );
+        }
+        await Future.delayed(const Duration(seconds: 10));
         return refreshToken(secondTry: true);
       }
     } catch (e) {
