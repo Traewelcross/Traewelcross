@@ -118,7 +118,7 @@ class ApiService {
     }
   }
 
-  Future<dynamic> refreshToken() async {
+  Future<dynamic> refreshToken({bool secondTry = false}) async {
     final oAuthClient = await getAuthenticatedClient();
     if (oAuthClient == null) {
       return false;
@@ -146,6 +146,13 @@ class ApiService {
           expiration: DateTime.now().add(Duration(seconds: json["expires_in"])),
           tokenEndpoint: Uri.parse(AuthService.tokenEndpoint),
         );
+      } else if (res.statusCode == 429){
+        if(!oAuthClient.credentials.isExpired){
+          return true; // rate limited, but token is valid
+        }
+        if (secondTry) return ErrorInfo("rate limit", type: .httpError, httpStatusCode: 429, exception: res.body);
+        await Future.delayed(Duration(seconds: 10)); // Wait and hope for the best
+        return refreshToken(secondTry: true);
       }
     } catch (e) {
       return Future.error(e);
