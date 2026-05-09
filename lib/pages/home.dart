@@ -145,40 +145,47 @@ class _HomeState extends State<Home> {
     }
 
     debounce = Timer(const Duration(milliseconds: 10), () async {
-      // If the search term has changed since the timer was started, a new
-      // search is already scheduled, so we can ignore this one.
       if (searchTerm != _stationController.text.trim()) {
         return;
       }
 
-      Response response;
       final apiService = getIt<ApiService>();
+      List<dynamic> newResults = [];
+      String? error;
 
-      // Use the updated isUserSearch state variable to determine the endpoint.
-      if (!isUserSearch) {
-        response = await apiService.request(
-          "/trains/station/autocomplete/${Uri.encodeComponent(searchTerm.replaceAll("/", " "))}",
-          HttpRequestTypes.GET,
-        );
-      } else {
-        // For user search, remove the '@' from the search term for the API call.
-        final userQuery = searchTerm.substring(1);
-        response = await apiService.request(
-          "/user/search/$userQuery",
-          HttpRequestTypes.GET,
-        );
+      try {
+        if (!isUserSearch) {
+          final response = await apiService.request(
+            "/trains/station/autocomplete/${Uri.encodeComponent(searchTerm.replaceAll("/", " "))}",
+            HttpRequestTypes.GET,
+          );
+          if (response.statusCode == 200) {
+            newResults = jsonDecode(response.body)["data"];
+          } else {
+            error = response.statusCode.toString();
+          }
+        } else {
+          if(searchTerm.length == 1){
+            return;
+          }
+          final userQuery = searchTerm.substring(1);
+          newResults = await apiService.user.searchUser(userQuery);
+        }
+      } catch (e) {
+        error = e.toString();
       }
 
       if (!mounted) return;
+
       if (kDebugMode && searchTerm == "testpad") {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Testpad()),
         );
       }
+
       if (searchTerm == _stationController.text.trim()) {
-        if (response.statusCode == 200) {
-          final newResults = jsonDecode(response.body)["data"];
+        if (error == null) {
           setState(() {
             gotResults = true;
             results = newResults;
@@ -187,14 +194,12 @@ class _HomeState extends State<Home> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                AppLocalizations.of(context)!.genericErrorSnackBar +
-                    response.statusCode.toString(),
+                AppLocalizations.of(context)!.genericErrorSnackBar + error,
               ),
             ),
           );
           setState(() {
             gotResults = true;
-            results = results;
           });
         }
       }
@@ -231,6 +236,7 @@ class _HomeState extends State<Home> {
     setState(() {
       typedText = true;
       gotResults = true;
+      isUserSearch = false;
       results = history;
     });
   }
@@ -305,7 +311,13 @@ class _HomeState extends State<Home> {
     _stationController.addListener(_typedText);
     _stationFocus.addListener(() {
       if (_stationFocus.hasFocus) {
-        _loadHistory();
+        if (_stationController.text.isEmpty) {
+          _loadHistory();
+        } else {
+          setState(() {
+            typedText = true;
+          });
+        }
       } else {
         setState(() {
           typedText = false;
@@ -583,7 +595,7 @@ class _HomeState extends State<Home> {
                                         ),
                                       ] else ...[
                                         ProfileLinkButton(
-                                          user: User.fromJson(results[i]),
+                                          user: results[i],
                                           appendUsername: true,
                                         ),
                                       ],
