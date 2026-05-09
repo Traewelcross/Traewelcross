@@ -13,7 +13,7 @@ class StatusApiProvider {
   final ApiService _api;
 
   StatusApiProvider(this._api);
-  final navKeyContext =
+  BuildContext? get _context =>
       getIt<GlobalKey<NavigatorState>>().currentState?.context;
   Future<LikeCountResponse> like(int id, int currentCount) async {
     final res = await _api.request("/status/$id/like", HttpRequestTypes.POST);
@@ -24,7 +24,7 @@ class StatusApiProvider {
         newCount: json["data"]["count"],
       );
     } else {
-      if (navKeyContext == null) {
+      if (_context == null) {
         return LikeCountResponse(wasSuccess: false, newCount: currentCount);
       }
       switch (res.statusCode) {
@@ -35,22 +35,22 @@ class StatusApiProvider {
           );
         case 403:
           SharedFunctions.sendSnackBar(
-            AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
+            AppLocalizations.of(_context!)!.noModifcationAllowedGeneric,
           );
           return LikeCountResponse(wasSuccess: false, newCount: currentCount);
         case 404:
           SharedFunctions.sendSnackBar(
-            AppLocalizations.of(navKeyContext!)!.statusNotFound,
+            AppLocalizations.of(_context!)!.statusNotFound,
           );
           return LikeCountResponse(wasSuccess: false, newCount: currentCount);
         case 429:
           SharedFunctions.sendSnackBar(
-            AppLocalizations.of(navKeyContext!)!.rateLimit,
+            AppLocalizations.of(_context!)!.rateLimit,
           );
           return LikeCountResponse(wasSuccess: false, newCount: currentCount);
         default:
           SharedFunctions.sendSnackBar(
-            '${AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar} ${res.statusCode}',
+            '${AppLocalizations.of(_context!)!.genericErrorSnackBar} ${res.statusCode}',
           );
           return LikeCountResponse(wasSuccess: false, newCount: currentCount);
       }
@@ -66,28 +66,28 @@ class StatusApiProvider {
         newCount: json["data"]["count"],
       );
     } else {
-      if (navKeyContext == null) {
+      if (_context == null) {
         return LikeCountResponse(wasSuccess: false, newCount: currentCount);
       }
       switch (res.statusCode) {
         case 403:
           SharedFunctions.sendSnackBar(
-            AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
+            AppLocalizations.of(_context!)!.noModifcationAllowedGeneric,
           );
           return LikeCountResponse(wasSuccess: false, newCount: currentCount);
         case 404:
           SharedFunctions.sendSnackBar(
-            AppLocalizations.of(navKeyContext!)!.statusNotFound,
+            AppLocalizations.of(_context!)!.statusNotFound,
           );
           return LikeCountResponse(wasSuccess: false, newCount: currentCount);
         case 429:
           SharedFunctions.sendSnackBar(
-            AppLocalizations.of(navKeyContext!)!.rateLimit,
+            AppLocalizations.of(_context!)!.rateLimit,
           );
           return LikeCountResponse(wasSuccess: false, newCount: currentCount);
         default:
           SharedFunctions.sendSnackBar(
-            '${AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar} ${res.statusCode}',
+            '${AppLocalizations.of(_context!)!.genericErrorSnackBar} ${res.statusCode}',
           );
           return LikeCountResponse(wasSuccess: false, newCount: currentCount);
       }
@@ -104,16 +104,16 @@ class StatusApiProvider {
     if (res.statusCode == 200) {
       return Status.fromJson(jsonDecode(res.body)["data"]);
     } else {
-      if (navKeyContext == null) return null;
+      if (_context == null) return null;
       switch (res.statusCode) {
         case 403:
           SharedFunctions.sendSnackBar(
-            AppLocalizations.of(navKeyContext!)!.noModifcationAllowed,
+            AppLocalizations.of(_context!)!.noModifcationAllowed,
           );
           break;
         case 404:
           SharedFunctions.sendSnackBar(
-            AppLocalizations.of(navKeyContext!)!.statusNotFound,
+            AppLocalizations.of(_context!)!.statusNotFound,
           );
           break;
         default:
@@ -121,7 +121,7 @@ class StatusApiProvider {
               jsonDecode(res.body)["message"]?.toString() ??
               res.statusCode.toString();
           SharedFunctions.sendSnackBar(
-            '${AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar} $message',
+            '${AppLocalizations.of(_context!)!.genericErrorSnackBar} $message',
           );
       }
       return null;
@@ -131,28 +131,28 @@ class StatusApiProvider {
   Future<bool> delete(int id) async {
     final res = await _api.request("/status/$id", HttpRequestTypes.DELETE);
     if (res.statusCode == 204) {
-      if (navKeyContext != null) {
+      if (_context != null) {
         SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.statusDeletedSuccessful,
+          AppLocalizations.of(_context!)!.statusDeletedSuccessful,
         );
       }
       return true;
     } else {
-      if (navKeyContext == null) return false;
+      if (_context == null) return false;
       switch (res.statusCode) {
         case 403:
           SharedFunctions.sendSnackBar(
-            AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
+            AppLocalizations.of(_context!)!.noModifcationAllowedGeneric,
           );
           break;
         case 404:
           SharedFunctions.sendSnackBar(
-            AppLocalizations.of(navKeyContext!)!.statusNotFound,
+            AppLocalizations.of(_context!)!.statusNotFound,
           );
           break;
         default:
           SharedFunctions.sendSnackBar(
-            '${AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar} ${res.statusCode}',
+            '${AppLocalizations.of(_context!)!.genericErrorSnackBar} ${res.statusCode}',
           );
       }
       return false;
@@ -175,16 +175,16 @@ class StatusApiProvider {
       }),
     );
     if (res.statusCode == 201) {
-      if (navKeyContext != null) {
+      if (_context != null) {
         SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.reportSuccess,
+          AppLocalizations.of(_context!)!.reportSuccess,
         );
       }
       return true;
     } else {
-      if (navKeyContext != null) {
+      if (_context != null) {
         SharedFunctions.sendSnackBar(
-          '${AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar} ${res.statusCode}',
+          '${AppLocalizations.of(_context!)!.genericErrorSnackBar} ${res.statusCode}',
         );
       }
       return false;
@@ -248,20 +248,26 @@ class StatusApiProvider {
     }
     switch (res.statusCode) {
       case 401 || 403:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.noModifcationAllowedGeneric,
+          );
+        }
         break;
       case 404:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.statusNotFound,
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.statusNotFound,
+          );
+        }
         break;
       default:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar +
-              res.statusCode.toString(),
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.genericErrorSnackBar +
+                res.statusCode.toString(),
+          );
+        }
         break;
     }
     return null;
@@ -288,20 +294,26 @@ class StatusApiProvider {
     }
     switch (res.statusCode) {
       case 401 || 403:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.noModifcationAllowedGeneric,
+          );
+        }
         break;
       case 404:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.statusNotFound,
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.statusNotFound,
+          );
+        }
         break;
       default:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar +
-              res.statusCode.toString(),
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.genericErrorSnackBar +
+                res.statusCode.toString(),
+          );
+        }
         break;
     }
     return null;
@@ -317,20 +329,26 @@ class StatusApiProvider {
     }
     switch (res.statusCode) {
       case 401 || 403:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.noModifcationAllowedGeneric,
+          );
+        }
         break;
       case 404:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.statusNotFound,
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.statusNotFound,
+          );
+        }
         break;
       default:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar +
-              res.statusCode.toString(),
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.genericErrorSnackBar +
+                res.statusCode.toString(),
+          );
+        }
         break;
     }
     return GenericStatusResponse(wasSuccess: false);
@@ -343,20 +361,26 @@ class StatusApiProvider {
     }
     switch (res.statusCode) {
       case 401 || 403:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.noModifcationAllowedGeneric,
+          );
+        }
         break;
       case 404:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.statusNotFound,
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.statusNotFound,
+          );
+        }
         break;
       default:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar +
-              res.statusCode.toString(),
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.genericErrorSnackBar +
+                res.statusCode.toString(),
+          );
+        }
         break;
     }
     return Future.error("${res.statusCode} / ${res.body}");
@@ -373,20 +397,26 @@ class StatusApiProvider {
     }
     switch (res.statusCode) {
       case 401 || 403:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.noModifcationAllowedGeneric,
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.noModifcationAllowedGeneric,
+          );
+        }
         break;
       case 404:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.statusNotFound,
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.statusNotFound,
+          );
+        }
         break;
       default:
-        SharedFunctions.sendSnackBar(
-          AppLocalizations.of(navKeyContext!)!.genericErrorSnackBar +
-              res.statusCode.toString(),
-        );
+        if (_context != null) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(_context!)!.genericErrorSnackBar +
+                res.statusCode.toString(),
+          );
+        }
         break;
     }
     return Future.error("${res.statusCode} / ${res.body}");

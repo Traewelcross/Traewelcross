@@ -182,8 +182,8 @@ class _SocialUserListState extends State<_SocialUserList> {
 
   void _unfollow(int id) async {
     final ApiService apiService = getIt<ApiService>();
-    final response = await apiService.user.unfollow(id);
-    if(response.wasSuccess){
+    final response = await apiService.user.unfollow(id: id);
+    if(response != null){
       widget.callback.call(null);
     }
   }

@@ -171,6 +171,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get followRequestSent => 'Follow request sent!';
 
   @override
+  String get followRequestPending => 'Follow request pending';
+
+  @override
   String followingSnack(String username) {
     return 'You are now following @$username!';
   }
@@ -236,6 +239,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unmuteUser => 'Unmute';
+
+  @override
+  String get unblockUser => 'Unblock';
 
   @override
   String get loading => 'Loading...';

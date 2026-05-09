@@ -350,6 +350,12 @@ abstract class AppLocalizations {
   /// **'Follow request sent!'**
   String get followRequestSent;
 
+  /// No description provided for @followRequestPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow request pending'**
+  String get followRequestPending;
+
   /// No description provided for @followingSnack.
   ///
   /// In en, this message translates to:
@@ -475,6 +481,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unmute'**
   String get unmuteUser;
+
+  /// No description provided for @unblockUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock'**
+  String get unblockUser;
 
   /// No description provided for @loading.
   ///

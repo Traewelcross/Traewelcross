@@ -187,6 +187,7 @@
   "@followRequestSent": {
     "description": ""
   },
+  "followRequestPending": "Follow request pending",
   "followingSnack": "You are now following @{username}!",
   "@followingSnack": {
     "placeholders": {
@@ -218,6 +219,7 @@
   "yes": "Yes",
   "no": "No",
   "unmuteUser": "Unmute",
+  "unblockUser": "Unblock",
   "loading": "Loading...",
   "rideNotFound": "Ride not found",
   "statusDeletedSuccessful": "Status successfully deleted!",

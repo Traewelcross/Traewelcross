@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:terminate_restart/terminate_restart.dart';
 import 'package:traewelcross/enums/error_type.dart';
@@ -95,6 +96,17 @@ class ErrorDisplayWidget extends StatelessWidget {
               },
               label: Text(localize.errorTroubleshootButtonLogout),
               icon: const Icon(Icons.delete),
+            ),
+            OutlinedButton.icon(
+              onPressed: () {
+                FlutterSecureStorage().deleteAll();
+                getIt<ApiService>().logOut();
+                TerminateRestart.instance.restartApp(
+                  options: TerminateRestartOptions(clearData: true),
+                );
+              },
+              label: Text(localize.logOut),
+              icon: const Icon(Icons.logout),
             ),
             SizedBox(height: 8),
             TextButton.icon(

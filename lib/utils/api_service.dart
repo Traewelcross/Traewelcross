@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/error_type.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/utils/api_providers/user_api_provider.dart';
@@ -19,7 +18,6 @@ class ApiService {
   static const String _baseURL = "https://traewelling.de/api/v1";
   static const int _timeoutDuration = 25;
   final AuthService _authService;
-  int _requestCount = 0;
   DateTime _lastRequest = DateTime.now();
 
   //TODO: provider wide check for common status code like 200, 404, 401, ...

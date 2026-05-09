@@ -16,6 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../l10n/app_localizations.dart';
 import "package:traewelcross/components/profile_picture.dart";
+import "package:traewelcross/utils/api_providers/api_models.dart" as models;
 
 class ProfileView extends StatefulWidget {
   const ProfileView({
@@ -37,7 +38,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  late Future<dynamic> _userInfo;
+  late Future<models.User> _userInfo;
   late String? errorMsg;
 
   @override
@@ -52,188 +53,23 @@ class _ProfileViewState extends State<ProfileView> {
     _userInfo = _fetchUserInfo();
   }
 
-  Future<dynamic> _fetchUserInfo() async {
+  Future<models.User> _fetchUserInfo() async {
     final apiService = getIt<ApiService>();
-    late Response response;
-    late Response extended;
-    late dynamic jsonRes;
-    try {
-      if (!widget.isOtherUser) {
-        response = await apiService.request("/auth/user", HttpRequestTypes.GET);
-      } else {
-        response = await apiService.request(
-          "/user/${widget.username!}",
-          HttpRequestTypes.GET,
-        );
-      }
-      if (response.statusCode == 200) {
-        jsonRes = jsonDecode(response.body);
-        if (!widget.isOtherUser) {
-          // We need to request the Bio in another request, as it isn't included in /auth/user
-          extended = await apiService.request(
-            "/user/${jsonRes["data"]["username"]}",
-            HttpRequestTypes.GET,
-          );
-          if (extended.statusCode == 200) {
-            jsonRes["data"]["bio"] = jsonDecode(extended.body)["data"]["bio"];
-          }
-        }
-        return jsonRes;
-      }
-      if (response.statusCode == 403) {
-        jsonRes = jsonDecode(response.body);
-        errorMsg = jsonRes["message"];
-        if (errorMsg == "Benutzer stummgeschaltet") {
-          return Future.error(UserError.userMuted);
-        }
-        if (errorMsg == "Dieses Profil ist privat.") {
-          return Future.error(UserError.userBlockedOrPrivate);
-        }
-      } else {
-        return Future.error(
-          Exception('Failed to load user info: ${response.body}'),
-        );
-      }
-    } on TimeoutException {
-      if (!mounted) return;
-      SharedFunctions.handleRequestTimeout(context, _fetchUserInfo);
-      return;
-    }
-  }
-
-  Future<void> follow({required bool isRequest, String? username}) async {
-    final apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/user/${widget.userId}/follow",
-      HttpRequestTypes.POST,
+    final res = apiService.user.fetchUserInfo(
+      username: widget.isOtherUser ? widget.username! : null,
     );
-    switch (response.statusCode) {
-      case 201:
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                isRequest
-                    ? AppLocalizations.of(context)!.followRequestSent
-                    : AppLocalizations.of(context)!.followingSnack(username!),
-              ),
-            ),
-          );
-        }
-        break;
-      case 403:
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.followFailBlocked),
-            ),
-          );
-        }
-        break;
-      case 409:
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.alreadyFollowRequest),
-            ),
-          );
-        }
-        break;
-      default:
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                "${AppLocalizations.of(context)!.genericErrorSnackBar} ${response.statusCode}",
-              ),
-            ),
-          );
-        }
-        break;
-    }
-  }
-
-  Future<void> _unmute() async {
-    final ApiService apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/user/${widget.userId}/mute",
-      HttpRequestTypes.DELETE,
-    );
-    switch (response.statusCode) {
-      case 200:
-        setState(() {
-          //Although the API returns user info, the code doesn't play nice with it. Using this as workaround, might fix at some point
-          _userInfo = _fetchUserInfo();
-        });
-        return;
-      case 404:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.userNotFoundSnack),
-          ),
-        );
-        break;
-      default:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "${AppLocalizations.of(context)!.genericErrorSnackBar} ${response.statusCode}",
-            ),
-          ),
-        );
-        break;
-    }
+    return res;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<dynamic>(
+    return FutureBuilder<models.User>(
       future: _userInfo,
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
         if (asyncSnapshot.hasError) {
-          if (asyncSnapshot.error == UserError.userBlockedOrPrivate) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    AppLocalizations.of(
-                      context,
-                    )!.privateOrBlocked(widget.username!),
-                  ),
-                  FilledButton.icon(
-                    icon: const Icon(Icons.person_add_alt),
-                    onPressed: () => follow(isRequest: true),
-                    label: Text(AppLocalizations.of(context)!.followRequest),
-                  ),
-                ],
-              ),
-            );
-          }
-          if (asyncSnapshot.error == UserError.userMuted) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.userMuted(widget.username!),
-                  ),
-                  FilledButton.icon(
-                    icon: const Icon(Icons.volume_up),
-                    onPressed: () => _unmute(),
-                    label: Text(AppLocalizations.of(context)!.unmuteUser),
-                  ),
-                ],
-              ),
-            );
-          }
           return Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -246,11 +82,11 @@ class _ProfileViewState extends State<ProfileView> {
           );
         }
         if (asyncSnapshot.hasData && asyncSnapshot.data != null) {
-          final userInfo = asyncSnapshot.data!["data"];
+          final userInfo = asyncSnapshot.data!;
           return RefreshIndicator(
             onRefresh: () async {
               // Evict the old image from the cache before fetching new data.
-              CachedNetworkImage.evictFromCache(userInfo["profilePicture"]);
+              CachedNetworkImage.evictFromCache(userInfo.profilePicture);
               setState(() {
                 _userInfo = _fetchUserInfo();
               });
@@ -260,16 +96,21 @@ class _ProfileViewState extends State<ProfileView> {
               controller: widget.scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
-                if ((asyncSnapshot.data["message"] as String?) == null) ...[
-                  SliverToBoxAdapter(
-                    child: ProfileStatsCard(
-                      userInfo: userInfo,
-                      isOtherUser: widget.isOtherUser,
-                    ),
+                SliverToBoxAdapter(
+                  child: ProfileStatsCard(
+                    userInfo: userInfo,
+                    isOtherUser: widget.isOtherUser,
                   ),
+                ),
+                if (widget.isOtherUser &&
+                    ((userInfo.privateProfile && !userInfo.following) ||
+                        userInfo.blocked))
+                  ...[
+                  
+                ] else ...[
                   const SliverToBoxAdapter(child: SizedBox(height: 8)),
                   RideQuickViewWrapper(
-                    userName: userInfo["username"],
+                    userName: userInfo.username,
                     scrollController: widget.scrollController,
                   ),
                 ],
@@ -291,12 +132,12 @@ class ProfileStatsCard extends StatelessWidget {
     required this.isOtherUser,
   });
 
-  final dynamic userInfo;
+  final models.User userInfo;
   final bool isOtherUser;
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = userInfo["profilePicture"];
+    final imageUrl = userInfo.profilePicture;
 
     return Row(
       children: [
@@ -317,22 +158,22 @@ class ProfileStatsCard extends StatelessWidget {
                       Column(
                         children: [
                           Text(
-                            userInfo["displayName"],
+                            userInfo.displayName,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           Text(
-                            "@${userInfo["username"]}",
+                            "@${userInfo.username}",
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ],
                       ),
-                      if (userInfo["mastodonUrl"] != null &&
-                          userInfo["mastodonUrl"].toString().isNotEmpty) ...[
+                      if (userInfo.mastodonUrl != null &&
+                          userInfo.mastodonUrl!.isNotEmpty) ...[
                         const SizedBox(width: 16),
                         IconButton.filledTonal(
                           onPressed: () {
                             SharedFunctions.launchURL(
-                              Uri.parse(userInfo["mastodonUrl"].toString()),
+                              Uri.parse(userInfo.mastodonUrl!),
                               launchMode: LaunchMode.externalApplication,
                             );
                           },
@@ -360,7 +201,7 @@ class ProfileStatsCard extends StatelessWidget {
                             children: [
                               const Icon(Symbols.distance),
                               Text(
-                                "${(userInfo["totalDistance"] / 1000).toStringAsFixed(0)} km",
+                                "${(userInfo.totalDistance / 1000).toStringAsFixed(0)} km",
                               ),
                             ],
                           ),
@@ -370,10 +211,7 @@ class ProfileStatsCard extends StatelessWidget {
                             children: [
                               const Icon(Icons.timer_outlined),
                               Text(
-                                _getDuration(
-                                  userInfo["totalDuration"],
-                                  context,
-                                ),
+                                _getDuration(userInfo.totalDuration, context),
                               ),
                             ],
                           ),
@@ -384,8 +222,8 @@ class ProfileStatsCard extends StatelessWidget {
                               const Icon(Symbols.kid_star),
                               Text(
                                 AppLocalizations.of(context)!.points(
-                                  userInfo["points"].toString(),
-                                  userInfo["points"],
+                                  userInfo.points.toString(),
+                                  userInfo.points,
                                 ),
                               ),
                             ],
@@ -396,7 +234,7 @@ class ProfileStatsCard extends StatelessWidget {
                             children: [
                               const Icon(Icons.speed),
                               Text(
-                                "${((userInfo["totalDistance"] / 1000.0) / (userInfo["totalDuration"] / 60.0)).toStringAsFixed(2)} km/h",
+                                "${((userInfo.totalDistance / 1000.0) / (userInfo.totalDuration / 60.0)).toStringAsFixed(2)} km/h",
                               ),
                             ],
                           ),
@@ -404,8 +242,7 @@ class ProfileStatsCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (userInfo["bio"] != null &&
-                      (userInfo["bio"] as String).isNotEmpty)
+                  if (userInfo.bio != null && userInfo.bio!.isNotEmpty)
                     Card(
                       color: SharedFunctions.secondCard(context),
                       child: Padding(
@@ -414,7 +251,7 @@ class ProfileStatsCard extends StatelessWidget {
                           children: [
                             const Icon(Icons.format_quote),
                             const SizedBox(width: 8),
-                            Expanded(child: Text(userInfo["bio"])),
+                            Expanded(child: Text(userInfo.bio!)),
                           ],
                         ),
                       ),
@@ -423,7 +260,7 @@ class ProfileStatsCard extends StatelessWidget {
                     future: SharedFunctions.getUserId(),
                     builder: (context, asyncSnapshot) {
                       if (asyncSnapshot.hasData &&
-                          (userInfo["id"].toString() ==
+                          (userInfo.id.toString() ==
                               asyncSnapshot.data!.toString())) {
                         return _AuthUserCtrl();
                       } else if (asyncSnapshot.hasData) {
@@ -476,214 +313,92 @@ class _AuthUserCtrl extends StatelessWidget {
 
 class _OtherUserCtrl extends StatefulWidget {
   const _OtherUserCtrl({required this.userInfo});
-  final dynamic userInfo;
+  final models.User userInfo;
   @override
   State<_OtherUserCtrl> createState() => _OtherUserCtrlState();
 }
 
 class _OtherUserCtrlState extends State<_OtherUserCtrl> {
-  late dynamic _userInfo = widget.userInfo;
+  late models.User _userInfo = widget.userInfo;
 
   Future<void> _follow() async {
     final ApiService apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/user/${_userInfo["id"]}/follow",
-      HttpRequestTypes.POST,
-    );
-    switch (response.statusCode) {
-      case 201:
-        setState(() {
-          _userInfo = jsonDecode(response.body)["data"];
-        });
-        return;
-      case 404:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.userNotFoundSnack),
-          ),
-        );
-        break;
-      default:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "${AppLocalizations.of(context)!.genericErrorSnackBar} ${response.statusCode}",
-            ),
-          ),
-        );
-        break;
+    final response = await apiService.user.follow(id: _userInfo.id);
+    ;
+    if (!mounted) return;
+    if (response == null) {
+      return;
     }
+    setState(() => _userInfo = response);
   }
 
   Future<void> _unfollow() async {
     final ApiService apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/user/${_userInfo["id"]}/follow",
-      HttpRequestTypes.DELETE,
-    );
-    switch (response.statusCode) {
-      case 200:
-        setState(() {
-          _userInfo = jsonDecode(response.body)["data"];
-        });
-        return;
-      case 404:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.userNotFoundSnack),
-          ),
-        );
-        break;
-      default:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "${AppLocalizations.of(context)!.genericErrorSnackBar} ${response.statusCode}",
-            ),
-          ),
-        );
-        break;
+    final response = await apiService.user.unfollow(id: _userInfo.id);
+    if (!mounted) return;
+    if (response == null) {
+      return;
     }
+    setState(() => _userInfo = response);
   }
 
   Future<void> _block() async {
     final ApiService apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/user/${_userInfo["id"]}/block",
-      HttpRequestTypes.POST,
-    );
-    switch (response.statusCode) {
-      case 201:
-        if (!mounted) return;
-        setState(() {
-          _userInfo = jsonDecode(response.body)["data"];
-        });
-        Navigator.pop(context, true);
-        return;
-      case 404:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.userNotFoundSnack),
-          ),
-        );
-        Navigator.pop(context, true);
-        break;
-      default:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "${AppLocalizations.of(context)!.genericErrorSnackBar} ${response.statusCode}",
-            ),
-          ),
-        );
-        Navigator.pop(context, true);
-
-        break;
+    final response = await apiService.user.block(id: _userInfo.id);
+    if (!mounted) return;
+    Navigator.pop(context);
+    if (response == null) {
+      return;
     }
+    setState(() => _userInfo = response);
+  }
+
+  Future<void> _unblock() async {
+    final ApiService apiService = getIt<ApiService>();
+    final response = await apiService.user.unblock(id: _userInfo.id);
+    if (!mounted) return;
+    if (response == null) {
+      return;
+    }
+    setState(() => _userInfo = response);
   }
 
   void _blockConfirm() async {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.areYouSure),
-          content: Text(AppLocalizations.of(context)!.blockFinalConfirm),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(AppLocalizations.of(context)!.no),
-            ),
-            TextButton(
-              onPressed: () {
-                _block();
-                Navigator.pop(context);
-              },
-              child: Text(AppLocalizations.of(context)!.yes),
-            ),
-          ],
-        );
-      },
-    );
+    _block();
   }
 
   Future<void> _mute() async {
     final ApiService apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/user/${_userInfo["id"]}/mute",
-      HttpRequestTypes.POST,
-    );
-    switch (response.statusCode) {
-      case 201:
-        if (!mounted) return;
-        setState(() {
-          _userInfo = jsonDecode(response.body)["data"];
-        });
-        Navigator.pop(context);
-        return;
-      case 404:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.userNotFoundSnack),
-          ),
-        );
-        Navigator.pop(context);
-        break;
-      default:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "${AppLocalizations.of(context)!.genericErrorSnackBar} ${response.statusCode}",
-            ),
-          ),
-        );
-        Navigator.pop(context);
-        break;
+    final response = await apiService.user.mute(id: _userInfo.id);
+    if (!mounted) return;
+    Navigator.pop(context);
+    if (response == null) {
+      return;
     }
+    setState(() => _userInfo = response);
   }
 
   Future<void> _unmute() async {
     final ApiService apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/user/${_userInfo["id"]}/mute",
-      HttpRequestTypes.DELETE,
-    );
-    switch (response.statusCode) {
-      case 200:
-        setState(() {
-          _userInfo = jsonDecode(response.body)["data"];
-        });
-        return;
-      case 404:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.userNotFoundSnack),
-          ),
-        );
-        break;
-      default:
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "${AppLocalizations.of(context)!.genericErrorSnackBar} ${response.statusCode}",
-            ),
-          ),
-        );
-        break;
+    final response = await apiService.user.unmute(id: _userInfo.id);
+    if (!mounted) return;
+    if (response == null) {
+      return;
     }
+    setState(() => _userInfo = response);
+  }
+
+  String _getFollowButtonText() {
+    final localize = AppLocalizations.of(context)!;
+    if (widget.userInfo.followPending) {
+      return localize.followRequestPending;
+    }
+    if (widget.userInfo.privateProfile &&
+        !widget.userInfo.following &&
+        !widget.userInfo.blocked) {
+      return localize.followRequest;
+    }
+    return localize.followUser;
   }
 
   @override
@@ -694,7 +409,7 @@ class _OtherUserCtrlState extends State<_OtherUserCtrl> {
         return Row(
           mainAxisSize: MainAxisSize.max,
           children: [
-            if (_userInfo["following"]) ...[
+            if (_userInfo.following) ...[
               Expanded(
                 child: FilledButton.icon(
                   icon: const Icon(Icons.person_remove),
@@ -706,13 +421,15 @@ class _OtherUserCtrlState extends State<_OtherUserCtrl> {
               Expanded(
                 child: FilledButton.icon(
                   icon: const Icon(Icons.person_add),
-                  onPressed: _follow,
-                  label: Text(localize.followUser),
+                  onPressed: _userInfo.followPending || _userInfo.blocked
+                      ? null
+                      : _follow,
+                  label: Text(_getFollowButtonText(), overflow: .ellipsis),
                 ),
               ),
             ],
             const SizedBox(width: 4),
-            if (!_userInfo["muted"])
+            if (!_userInfo.muted && !_userInfo.blocked)
               OutlinedButton.icon(
                 icon: const Icon(Icons.volume_off),
                 onPressed: () {
@@ -813,11 +530,17 @@ class _OtherUserCtrlState extends State<_OtherUserCtrl> {
                 },
                 label: Text(localize.muteOrBlockUser),
               )
-            else
+            else if (_userInfo.muted)
               OutlinedButton.icon(
                 icon: const Icon(Icons.volume_up),
                 onPressed: _unmute,
                 label: Text(localize.unmuteUser),
+              )
+            else if (_userInfo.blocked)
+              OutlinedButton.icon(
+                icon: const Icon(Icons.block),
+                onPressed: _unblock,
+                label: Text(localize.unblockUser),
               ),
           ],
         );

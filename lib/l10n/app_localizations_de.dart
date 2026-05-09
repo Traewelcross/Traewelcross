@@ -173,6 +173,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get followRequestSent => 'Folgeanfrage gestellt!';
 
   @override
+  String get followRequestPending => 'Folgeanfrage ausstehend';
+
+  @override
   String followingSnack(String username) {
     return 'Du folgst nun @$username!';
   }
@@ -239,6 +242,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get unmuteUser => 'Laut schalten';
+
+  @override
+  String get unblockUser => 'Blockierung aufheben';
 
   @override
   String get loading => 'Laden...';

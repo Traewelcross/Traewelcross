@@ -102,6 +102,11 @@ class SharedFunctions {
     if (getIt.isRegistered(type: ApiService)) {
       if (kDebugMode) print("Refresh Token (boot)");
       final apiService = getIt<ApiService>();
+      final client = await apiService.getAuthenticatedClient();
+      if(client?.credentials.isExpired == true){
+        misc.needsRelogin = true;
+        return;
+      }
       try {
         await apiService.refreshToken();
       } on TimeoutException {
@@ -227,12 +232,10 @@ class SharedFunctions {
 
   static void sendSnackBar(String text) {
     final messenger = getIt<GlobalKey<ScaffoldMessengerState>>().currentState;
-    if (messenger == null) {
-      return;
+    if (messenger != null) {
+      messenger.showSnackBar(SnackBar(content: Text(text)));
     }
-    ScaffoldMessenger.of(
-      messenger.context,
-    ).showSnackBar(SnackBar(content: Text(text)));
+    
   }
 
   static String? getOperatorHAFASIdent(List<OperatorIdentifier>? identifiers) {

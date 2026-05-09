@@ -29,6 +29,72 @@ const _$TripVisibilityEnumEnumMap = {
   TripVisibilityEnum.private: 3,
 };
 
+UserAuth _$UserAuthFromJson(Map<String, dynamic> json) => UserAuth(
+  id: (json['id'] as num).toInt(),
+  uuid: json['uuid'] as String,
+  displayName: json['displayName'] as String,
+  username: json['username'] as String,
+  profilePicture: json['profilePicture'] as String,
+  totalDistance: (json['totalDistance'] as num).toInt(),
+  totalDuration: (json['totalDuration'] as num).toInt(),
+  points: (json['points'] as num).toInt(),
+  privateProfile: json['privateProfile'] as bool,
+  pointsEnabled: json['pointsEnabled'] as bool,
+  userInvisibleToMe: json['userInvisibleToMe'] as bool? ?? false,
+  muted: json['muted'] as bool? ?? false,
+  blocked: json['blocked'] as bool? ?? false,
+  following: json['following'] as bool? ?? false,
+  followPending: json['followPending'] as bool? ?? false,
+  followedBy: json['followedBy'] as bool? ?? false,
+  preventIndex: json['preventIndex'] as bool,
+  bio: json['bio'] as String?,
+  profileLinks: (json['profileLinks'] as List<dynamic>?)
+      ?.map((e) => ProfileLink.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  mastodonUrl: json['mastodonUrl'] as String?,
+  likesEnabled: json['likes_enabled'] as bool?,
+  mapProvider: json['mapProvider'] as String,
+  home: json['home'] == null
+      ? null
+      : Station.fromJson(json['home'] as Map<String, dynamic>),
+  defaultStatusVisibility: $enumDecode(
+    _$TripVisibilityEnumEnumMap,
+    json['defaultStatusVisibility'],
+  ),
+  roles: (json['roles'] as List<dynamic>?)?.map((e) => e as String).toList(),
+  language: json['language'] as String?,
+);
+
+Map<String, dynamic> _$UserAuthToJson(UserAuth instance) => <String, dynamic>{
+  'id': instance.id,
+  'uuid': instance.uuid,
+  'displayName': instance.displayName,
+  'username': instance.username,
+  'profilePicture': instance.profilePicture,
+  'totalDistance': instance.totalDistance,
+  'totalDuration': instance.totalDuration,
+  'points': instance.points,
+  'mastodonUrl': instance.mastodonUrl,
+  'privateProfile': instance.privateProfile,
+  'pointsEnabled': instance.pointsEnabled,
+  'userInvisibleToMe': instance.userInvisibleToMe,
+  'muted': instance.muted,
+  'blocked': instance.blocked,
+  'following': instance.following,
+  'followPending': instance.followPending,
+  'followedBy': instance.followedBy,
+  'preventIndex': instance.preventIndex,
+  'bio': instance.bio,
+  'profileLinks': instance.profileLinks,
+  'likes_enabled': instance.likesEnabled,
+  'mapProvider': instance.mapProvider,
+  'home': instance.home,
+  'language': instance.language,
+  'defaultStatusVisibility':
+      _$TripVisibilityEnumEnumMap[instance.defaultStatusVisibility]!,
+  'roles': instance.roles,
+};
+
 User _$UserFromJson(Map<String, dynamic> json) => User(
   id: (json['id'] as num).toInt(),
   uuid: json['uuid'] as String,
@@ -49,8 +115,8 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
   followedBy: json['followedBy'] as bool,
   preventIndex: json['preventIndex'] as bool,
   bio: json['bio'] as String?,
-  profileLinks: (json['profileLinks'] as List<dynamic>)
-      .map((e) => ProfileLink.fromJson(e as Map<String, dynamic>))
+  profileLinks: (json['profileLinks'] as List<dynamic>?)
+      ?.map((e) => ProfileLink.fromJson(e as Map<String, dynamic>))
       .toList(),
 );
 

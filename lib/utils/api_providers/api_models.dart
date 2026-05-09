@@ -16,6 +16,50 @@ class Tag {
 }
 
 @JsonSerializable(fieldRename: .none)
+class UserAuth extends User {
+  @JsonKey(name: "likes_enabled")
+  final bool? likesEnabled; // null for now, so when it get's renamed to likesEnabled, we don't throw an error because we can't find the field
+  final String mapProvider;
+  final Station? home;
+  final String? language;
+  final TripVisibilityEnum defaultStatusVisibility;
+  final List<String>? roles;
+
+  UserAuth({
+    required super.id,
+    required super.uuid,
+    required super.displayName,
+    required super.username,
+    required super.profilePicture,
+    required super.totalDistance,
+    required super.totalDuration,
+    required super.points,
+    required super.privateProfile,
+    required super.pointsEnabled,
+    super.userInvisibleToMe = false,
+    super.muted = false,
+    super.blocked = false,
+    super.following = false,
+    super.followPending = false,
+    super.followedBy = false,
+    required super.preventIndex,
+    super.bio,
+    super.profileLinks,
+    super.mastodonUrl,
+    this.likesEnabled,
+    required this.mapProvider,
+    this.home,
+    required this.defaultStatusVisibility,
+    this.roles,
+    this.language,
+  }) : super();
+  factory UserAuth.fromJson(Map<String, dynamic> json) =>
+      _$UserAuthFromJson(json);
+      @override
+  Map<String, dynamic> toJson() => _$UserAuthToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
 class User {
   final int id;
   final String uuid;
@@ -36,7 +80,7 @@ class User {
   final bool followedBy;
   final bool preventIndex;
   final String? bio;
-  final List<ProfileLink> profileLinks;
+  final List<ProfileLink>? profileLinks;
   User({
     required this.id,
     required this.uuid,
@@ -416,4 +460,10 @@ class GenericStatusResponse {
   final bool wasSuccess;
   final String? body;
   const GenericStatusResponse({required this.wasSuccess, this.body});
+}
+
+class GenericStatusResponseWithObject extends GenericStatusResponse {
+  final dynamic object;
+
+  GenericStatusResponseWithObject({required super.wasSuccess, required this.object});
 }
