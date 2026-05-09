@@ -334,6 +334,8 @@ Station _$StationFromJson(Map<String, dynamic> json) => Station(
       .toList(),
   timeOffset: (json['time_offset'] as num?)?.toInt(),
   createdAt: json['created_at'] as String?,
+  history: json['history'] as bool?,
+  home: json['home'] as bool?,
 );
 
 Map<String, dynamic> _$StationToJson(Station instance) => <String, dynamic>{
@@ -345,6 +347,8 @@ Map<String, dynamic> _$StationToJson(Station instance) => <String, dynamic>{
   'identifiers': instance.identifiers,
   'time_offset': instance.timeOffset,
   'created_at': instance.createdAt,
+  'history': instance.history,
+  'home': instance.home,
 };
 
 Event _$EventFromJson(Map<String, dynamic> json) => Event(

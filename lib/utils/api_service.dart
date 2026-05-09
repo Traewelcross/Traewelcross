@@ -13,6 +13,7 @@ import 'package:traewelcross/utils/error_info.dart';
 import 'package:traewelcross/utils/api_providers/notification_api_provider.dart';
 import 'package:traewelcross/utils/shared.dart';
 import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
+import 'package:traewelcross/utils/api_providers/station_api_provider.dart';
 
 class ApiService {
   static const String _baseURL = "https://traewelling.de/api/v1";
@@ -25,6 +26,7 @@ class ApiService {
   late final status = StatusApiProvider(this);
   late final notification = NotificationApiProvider(this);
   late final user = UserApiProvider(this);
+  late final station = StationApiProvider(this);
 
   ApiService(this._authService);
 

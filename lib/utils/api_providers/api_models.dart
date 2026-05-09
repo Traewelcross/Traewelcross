@@ -316,6 +316,8 @@ class Station {
   final int? timeOffset;
   @JsonKey(name: "created_at")
   final String? createdAt;
+  final bool? history;
+  final bool? home;
   const Station({
     required this.id,
     required this.name,
@@ -325,6 +327,8 @@ class Station {
     required this.identifiers,
     this.timeOffset,
     this.createdAt,
+    this.history,
+    this.home
   });
   factory Station.fromJson(Map<String, dynamic> json) =>
       _$StationFromJson(json);

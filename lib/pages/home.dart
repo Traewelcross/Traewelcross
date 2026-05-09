@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
   final _stationController = TextEditingController();
   final FocusNode _stationFocus = FocusNode();
   final DashboardController _dashboardController = DashboardController();
-  List<dynamic> history = [];
+  List<Station> history = [];
 
   bool stationFocus = false;
   bool typedText = false;
@@ -155,15 +155,8 @@ class _HomeState extends State<Home> {
 
       try {
         if (!isUserSearch) {
-          final response = await apiService.request(
-            "/trains/station/autocomplete/${Uri.encodeComponent(searchTerm.replaceAll("/", " "))}",
-            HttpRequestTypes.GET,
-          );
-          if (response.statusCode == 200) {
-            newResults = jsonDecode(response.body)["data"];
-          } else {
-            error = response.statusCode.toString();
-          }
+          final response = await apiService.station.autocomplete(query: searchTerm);
+          newResults = response;
         } else {
           if(searchTerm.length == 1){
             return;
@@ -216,18 +209,19 @@ class _HomeState extends State<Home> {
       "/trains/station/history",
       HttpRequestTypes.GET,
     );
-    history = List<dynamic>.empty(growable: true);
+    history = List<Station>.empty(growable: true);
     if (userInfo["home"] != null) {
       userInfo["home"]["home"] = true;
-      history.add(userInfo["home"]);
+      history.add(Station.fromJson(userInfo["home"]));
     }
     if (response.statusCode == 200) {
-      List<dynamic> res = jsonDecode(response.body)["data"];
-      for (var item in res) {
+      final List<dynamic> jsonData = jsonDecode(response.body)["data"];
+      for (var item in jsonData) {
         item["history"] = true;
       }
+      final List<Station> stations = jsonData.map((s) => Station.fromJson(s as Map<String, dynamic>)).toList();
       setState(() {
-        history.addAll(res);
+        history.addAll(stations);
       });
     }
   }
@@ -404,17 +398,17 @@ class _HomeState extends State<Home> {
     return pos;
   }
 
-  String _getArea(List<dynamic>? areas) {
+  String _getArea(List<Area>? areas) {
     String areaString = "";
     String defaultString = "";
     if (areas == null) {
       return "";
     }
     for (var area in areas) {
-      if (area["default"]) {
-        defaultString = area["name"];
+      if (area.standard) {
+        defaultString = area.name;
       } else {
-        areaString += area["name"];
+        areaString += area.name;
       }
     }
     if (defaultString.isEmpty && areaString.isEmpty) {
@@ -429,13 +423,13 @@ class _HomeState extends State<Home> {
     return " — $defaultString, $areaString";
   }
 
-  String _getRIL(dynamic station) {
-    if (station["identifiers"] == null) {
+  String _getRIL(Station station) {
+    if (station.identifiers == null) {
       return "";
     }
-    final identList = station["identifiers"] as List<dynamic>;
-    final ril100 = identList.where((ident) => ident["type"] == "de_db_ril100");
-    return ril100.isEmpty ? "" : " [${ril100.first["identifier"] ?? ""}]";
+    final identList = station.identifiers!;
+    final ril100 = identList.where((ident) => ident.type == "de_db_ril100");
+    return ril100.isEmpty ? "" : " [${ril100.first.identifier}]";
   }
 
   @override
@@ -537,8 +531,8 @@ class _HomeState extends State<Home> {
                                         InkWell(
                                           onTap: () {
                                             _checkInAtStation(
-                                              results[i]["id"],
-                                              results[i]["name"],
+                                              (results[i] as Station).id,
+                                              (results[i] as Station).name,
                                             );
                                           },
                                           child: Padding(
@@ -548,11 +542,11 @@ class _HomeState extends State<Home> {
                                             ),
                                             child: Row(
                                               children: [
-                                                if (results[i]["home"] ??
+                                                if ((results[i] as Station).home ??
                                                     false) ...[
                                                   const Icon(Icons.home),
                                                 ] else ...[
-                                                  if (results[i]["history"] ??
+                                                  if ((results[i] as Station).history ??
                                                       false) ...[
                                                     const Icon(Icons.history),
                                                   ] else ...[
@@ -566,7 +560,7 @@ class _HomeState extends State<Home> {
                                                       children: [
                                                         TextSpan(
                                                           text:
-                                                              "${results[i]["name"]}${_getRIL(results[i])}",
+                                                              "${(results[i] as Station).name}${_getRIL(results[i])}",
                                                           style:
                                                               Theme.of(context)
                                                                   .textTheme
@@ -574,7 +568,7 @@ class _HomeState extends State<Home> {
                                                         ),
                                                         TextSpan(
                                                           text: _getArea(
-                                                            results[i]?["areas"],
+                                                            (results[i] as Station).areas,
                                                           ),
                                                           style:
                                                               Theme.of(context)
@@ -595,7 +589,7 @@ class _HomeState extends State<Home> {
                                         ),
                                       ] else ...[
                                         ProfileLinkButton(
-                                          user: results[i],
+                                          user: results[i] as User,
                                           appendUsername: true,
                                         ),
                                       ],

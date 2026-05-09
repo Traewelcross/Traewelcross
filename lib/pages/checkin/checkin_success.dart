@@ -5,6 +5,7 @@ import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/profile_link_button.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/app.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 
 class CheckinSuccess extends StatelessWidget {
   const CheckinSuccess({super.key, required this.statusInfo});
@@ -105,7 +106,7 @@ class CheckinSuccess extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
                             child: ProfileLinkButton(
-                              user: user["user"],
+                              user: User.fromJson(user["user"]),
                               subTitle:
                                   "${user["checkin"]["origin"]["name"]} -> ${user["checkin"]["destination"]["name"]}",
                             ),
