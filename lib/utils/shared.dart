@@ -89,7 +89,7 @@ class SharedFunctions {
       final misc = getIt<Config>().misc;
       DateTime? lastBootUp = misc.lastBoot;
       lastBootUp ??= DateTime.now();
-      if ((lastBootUp.difference(DateTime.now()).inDays).abs() >= 30) {
+      if ((lastBootUp.difference(DateTime.now()).inDays).abs() >= 29) {
         if (kDebugMode) {
           print(
             "lastboot: $lastBootUp / Now: ${DateTime.now()}, relogin required",
@@ -102,11 +102,6 @@ class SharedFunctions {
     if (getIt.isRegistered(type: ApiService)) {
       if (kDebugMode) print("Refresh Token (boot)");
       final apiService = getIt<ApiService>();
-      final client = await apiService.getAuthenticatedClient();
-      if(client?.credentials.isExpired == true){
-        misc.needsRelogin = true;
-        return;
-      }
       try {
         await apiService.refreshToken();
       } on TimeoutException {
