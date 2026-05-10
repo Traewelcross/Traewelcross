@@ -1,18 +1,17 @@
 import 'dart:async';
-import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/detailed_ride_view.dart';
 import 'package:traewelcross/pages/follower_page.dart';
 import 'package:traewelcross/utils/api_service.dart';
 
-import 'dart:convert';
 
 import 'package:traewelcross/utils/custom_providers.dart';
+import "package:traewelcross/utils/api_providers/api_models.dart" as models;
+
 import 'package:traewelcross/utils/shared.dart';
 
 class NotificationsView extends StatefulWidget {
@@ -25,7 +24,7 @@ class NotificationsView extends StatefulWidget {
 }
 
 class _NotificationsViewState extends State<NotificationsView> {
-  final List<dynamic> _notifications = [];
+  final List<models.Notification> _notifications = [];
   int _page = 1;
   bool _isLoading = false;
   late ScrollController _scrollController;
@@ -46,27 +45,13 @@ class _NotificationsViewState extends State<NotificationsView> {
   }
 
   Future<void> _markAsRead(String id) async {
-    await getIt<ApiService>().request(
-      "/notifications/read/$id",
-      HttpRequestTypes.PUT,
-    );
+    await getIt<ApiService>().notification.markAllRead();
+    _fetchNotifications();
   }
 
   Future<void> _getUnread() async {
     final apiService = getIt<ApiService>();
-    http.Response res;
-    try {
-      res = await apiService.request(
-        "/notifications/unread/count",
-        HttpRequestTypes.GET,
-      );
-    } catch (e) {
-      return;
-    }
-    if (res.statusCode == 200) {
-      if (!mounted) return;
-      getIt<UnreadCountProvider>().setCount(jsonDecode(res.body)["data"]);
-    }
+    getIt<UnreadCountProvider>().setCount(await apiService.notification.getNotificationCount());
   }
 
   Future<void> _fetchNotifications() async {
@@ -76,34 +61,13 @@ class _NotificationsViewState extends State<NotificationsView> {
     });
 
     final apiService = getIt<ApiService>();
-    http.Response response;
-    try {
-      response = await apiService.request(
-        "/notifications?page=$_page",
-        HttpRequestTypes.GET,
-      );
-    } on TimeoutException {
-      if (!mounted) return;
-      setState(() {
-        _isLoading = false;
-      });
-      SharedFunctions.handleRequestTimeout(context, _fetchNotifications);
-      return;
-    }
+    final response = await apiService.notification.fetchNotifications(page: _page);
 
-    if (response.statusCode == 200) {
-      final newNotifications = jsonDecode(response.body)["data"];
-      if (!mounted) return;
-      setState(() {
-        _notifications.addAll(newNotifications);
-        _page++;
-        _isLoading = false;
-      });
-    } else {
-      return Future.error(
-        'Failed to load user notifications: ${response.statusCode}',
-      );
-    }
+    setState(() {
+      _notifications.addAll(response);
+      _page++;
+      _isLoading = false;
+    });
   }
 
   void _onScroll() {
@@ -143,10 +107,10 @@ class _NotificationsViewState extends State<NotificationsView> {
                   );
                 }
 
-                final notification = _notifications[index];
+                final models.Notification notification = _notifications[index];
                 IconData notificationIcon;
 
-                switch (notification['type'] as String?) {
+                switch (notification.type) {
                   case 'UserFollowed':
                     notificationIcon = Icons.person_add;
                     break;
@@ -169,11 +133,11 @@ class _NotificationsViewState extends State<NotificationsView> {
                 return Card(
                   clipBehavior: Clip.hardEdge,
                   child: ListTile(
-                    tileColor: notification["readAt"] == null
+                    tileColor: notification.readAt== null
                         ? null
                         : Theme.of(context).splashColor,
                     onTap: () {
-                      switch (notification['type'] as String?) {
+                      switch (notification.type) {
                         case 'UserFollowed':
                           Navigator.push(
                             context,
@@ -189,7 +153,7 @@ class _NotificationsViewState extends State<NotificationsView> {
                               builder: (BuildContext context) =>
                                   DetailedRideView(
                                     rideId:
-                                        notification["data"]["status"]["id"],
+                                        notification.data["status"]["id"],
                                   ),
                             ),
                           );
@@ -218,7 +182,7 @@ class _NotificationsViewState extends State<NotificationsView> {
                               builder: (BuildContext context) =>
                                   DetailedRideView(
                                     rideId:
-                                        notification["data"]["status"]["id"],
+                                        notification.data["status"]["id"],
                                   ),
                             ),
                           );
@@ -228,10 +192,10 @@ class _NotificationsViewState extends State<NotificationsView> {
                       }
                     },
                     leading: Icon(notificationIcon),
-                    title: Text(notification['lead'] ?? ''),
-                    subtitle: notification['notice'].toString().isEmpty
+                    title: Text(notification.lead),
+                    subtitle: notification.notice.toString().isEmpty
                         ? null
-                        : Text(notification['notice']),
+                        : Text(notification.notice),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -239,18 +203,18 @@ class _NotificationsViewState extends State<NotificationsView> {
                           DateFormat.yMd(
                             Localizations.localeOf(context).languageCode,
                           ).add_Hm().format(
-                            (DateTime.tryParse(notification["createdAt"]) ??
+                            (DateTime.tryParse(notification.createdAt) ??
                                     DateTime.parse("19700101"))
                                 .toLocal(),
                           ),
                         ),
-                        if (notification["readAt"] == null) ...[
+                        if (notification.readAt == null) ...[
                           const SizedBox(width: 8),
                           IconButton.filledTonal(
                             onPressed: () {
-                              _markAsRead(notification["id"]);
+                              _markAsRead(notification.id);
                               setState(() {
-                                notification["readAt"] = "";
+                                notification.readAt = "";
                                 getIt<UnreadCountProvider>().decrement();
                               });
                             },

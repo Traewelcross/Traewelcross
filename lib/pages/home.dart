@@ -155,10 +155,12 @@ class _HomeState extends State<Home> {
 
       try {
         if (!isUserSearch) {
-          final response = await apiService.station.autocomplete(query: searchTerm);
+          final response = await apiService.station.autocomplete(
+            query: searchTerm,
+          );
           newResults = response;
         } else {
-          if(searchTerm.length == 1){
+          if (searchTerm.length == 1) {
             return;
           }
           final userQuery = searchTerm.substring(1);
@@ -200,30 +202,12 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> _getHistory() async {
-    Response response;
     final apiService = getIt<ApiService>();
+    final response = await apiService.user.getHistory();
     // Refresh User Info to potentially update
-    await apiService.getUserFull(withId: false);
-    final userInfo = await SharedFunctions.getUserInfoFromCache();
-    response = await apiService.request(
-      "/trains/station/history",
-      HttpRequestTypes.GET,
-    );
-    history = List<Station>.empty(growable: true);
-    if (userInfo["home"] != null) {
-      userInfo["home"]["home"] = true;
-      history.add(Station.fromJson(userInfo["home"]));
-    }
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body)["data"];
-      for (var item in jsonData) {
-        item["history"] = true;
-      }
-      final List<Station> stations = jsonData.map((s) => Station.fromJson(s as Map<String, dynamic>)).toList();
-      setState(() {
-        history.addAll(stations);
-      });
-    }
+    setState(() {
+      history.addAll(response);
+    });
   }
 
   void _loadHistory() async {
@@ -542,11 +526,13 @@ class _HomeState extends State<Home> {
                                             ),
                                             child: Row(
                                               children: [
-                                                if ((results[i] as Station).home ??
+                                                if ((results[i] as Station)
+                                                        .home ??
                                                     false) ...[
                                                   const Icon(Icons.home),
                                                 ] else ...[
-                                                  if ((results[i] as Station).history ??
+                                                  if ((results[i] as Station)
+                                                          .history ??
                                                       false) ...[
                                                     const Icon(Icons.history),
                                                   ] else ...[
@@ -568,7 +554,9 @@ class _HomeState extends State<Home> {
                                                         ),
                                                         TextSpan(
                                                           text: _getArea(
-                                                            (results[i] as Station).areas,
+                                                            (results[i]
+                                                                    as Station)
+                                                                .areas,
                                                           ),
                                                           style:
                                                               Theme.of(context)

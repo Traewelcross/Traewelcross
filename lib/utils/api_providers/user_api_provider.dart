@@ -78,10 +78,10 @@ class UserApiProvider {
       return GenericStatusResponse(wasSuccess: true);
     } else {
       if (_context != null) {
-      SharedFunctions.sendSnackBar(
-        AppLocalizations.of(_context!)!.genericErrorSnackBar +
-            res.statusCode.toString(),
-      );
+        SharedFunctions.sendSnackBar(
+          AppLocalizations.of(_context!)!.genericErrorSnackBar +
+              res.statusCode.toString(),
+        );
       }
       return Future.error("${res.statusCode} / ${res.body}");
     }
@@ -283,5 +283,30 @@ class UserApiProvider {
         break;
     }
     return null;
+  }
+
+  Future<List<Station>> getHistory() async {
+    // Refresh User Info to potentially update
+    await _api.getUserFull(withId: false);
+    final userInfo = await SharedFunctions.getUserInfoFromCache();
+    final response = await _api.request("/trains/station/history", .GET);
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body)["data"];
+      final history = List<Station>.empty(growable: true);
+      if (userInfo["home"] != null) {
+        userInfo["home"]["home"] = true;
+        history.add(Station.fromJson(userInfo["home"]));
+      }
+      for (var item in jsonData) {
+        item["history"] = true;
+      }
+      final List<Station> stations = jsonData
+          .map((u) => Station.fromJson(u as Map<String, dynamic>))
+          .toList();
+      history.addAll(stations);
+      return history;
+    } else {
+      return Future.error("${response.statusCode} / ${response.body}");
+    }
   }
 }
