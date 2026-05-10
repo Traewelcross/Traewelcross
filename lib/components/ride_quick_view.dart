@@ -123,15 +123,15 @@ class _RideQuickViewState extends State<RideQuickView> {
       if (isDestination) {
         payload = {
           "manualArrival": updatedDateTime.toUtc().toIso8601String(),
-          "visibility": _rideData.visibility,
-          "business": _rideData.business,
+          "visibility": _rideData.visibility.value,
+          "business": _rideData.business.value,
           "body": _rideData.body,
         };
       } else {
         payload = {
           "manualDeparture": updatedDateTime.toUtc().toIso8601String(),
-          "visibility": _rideData.visibility,
-          "business": _rideData.business,
+          "visibility": _rideData.visibility.value,
+          "business": _rideData.business.value,
           "body": _rideData.body,
         };
       }
