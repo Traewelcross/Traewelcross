@@ -461,3 +461,68 @@ const _$TripTypeEnumMap = {
   TripType.commute: 2,
   TripType.business: 1,
 };
+
+Notification _$NotificationFromJson(Map<String, dynamic> json) => Notification(
+  id: json['id'] as String,
+  type: json['type'] as String,
+  lead: json['lead'] as String,
+  leadFormatted: json['leadFormatted'] as String?,
+  noticeFormatted: json['noticeFormatted'] as String?,
+  notice: json['notice'] as String,
+  link: json['link'] as String?,
+  data: json['data'],
+  readAt: json['readAt'] as String?,
+  createdAt: json['createdAt'] as String,
+  createdAtForHumans: json['createdAtForHumans'] as String,
+);
+
+Map<String, dynamic> _$NotificationToJson(Notification instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'type': instance.type,
+      'lead': instance.lead,
+      'leadFormatted': instance.leadFormatted,
+      'noticeFormatted': instance.noticeFormatted,
+      'notice': instance.notice,
+      'link': instance.link,
+      'data': instance.data,
+      'readAt': instance.readAt,
+      'createdAt': instance.createdAt,
+      'createdAtForHumans': instance.createdAtForHumans,
+    };
+
+CheckInRequest _$CheckInRequestFromJson(Map<String, dynamic> json) =>
+    CheckInRequest(
+      json['body'] as String?,
+      $enumDecodeNullable(_$TripTypeEnumMap, json['business']),
+      $enumDecodeNullable(_$TripVisibilityEnumEnumMap, json['visibility']),
+      (json['eventId'] as num?)?.toInt(),
+      json['toot'] as bool?,
+      json['chainPost'] as bool?,
+      json['tripId'] as String?,
+      json['lineName'] as String?,
+      (json['start'] as num?)?.toInt(),
+      (json['destination'] as num?)?.toInt(),
+      json['departure'] as String?,
+      json['arrival'] as String?,
+      json['force'] as bool,
+      (json['with'] as List<dynamic>?)?.map((e) => (e as num).toInt()).toList(),
+    );
+
+Map<String, dynamic> _$CheckInRequestToJson(CheckInRequest instance) =>
+    <String, dynamic>{
+      'body': instance.body,
+      'business': _$TripTypeEnumMap[instance.business],
+      'visibility': _$TripVisibilityEnumEnumMap[instance.visibility],
+      'eventId': instance.eventId,
+      'toot': instance.toot,
+      'chainPost': instance.chainPost,
+      'tripId': instance.tripId,
+      'lineName': instance.lineName,
+      'start': instance.start,
+      'destination': instance.destination,
+      'departure': instance.departure,
+      'arrival': instance.arrival,
+      'force': instance.force,
+      'with': instance.alsoCheckIn,
+    };

@@ -18,6 +18,7 @@ import 'package:traewelcross/enums/trip_type.dart';
 import 'package:traewelcross/enums/trip_visibility.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/checkin/select_stop.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/check_in_info.dart';
 import 'package:traewelcross/utils/ride_icon_tag_info.dart';
@@ -106,20 +107,9 @@ class _CheckInState extends State<CheckIn> {
     });
   }
 
-  Future<List<dynamic>> _getEvents() async {
+  Future<List<Event>> _getEvents() async {
     final apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/events?timestamp=${Uri.encodeQueryComponent(widget.isEdit ? checkInInfo.departureTime! : DateTime.now().toLocal().toIso8601String())}",
-      HttpRequestTypes.GET,
-    );
-    switch (response.statusCode) {
-      case 200:
-        return jsonDecode(response.body)["data"];
-      default:
-        return Future.error(
-          "Couldn't get events: ${response.statusCode}\n${response.body}",
-        );
-    }
+    return apiService.event.getEvents(timestamp: widget.isEdit ? checkInInfo.departureTime! : DateTime.now().toLocal().toIso8601String());
   }
 
   Future<List<dynamic>> _getTrustedUsers() async {
@@ -688,7 +678,7 @@ class EventButton extends StatelessWidget {
 
   final Map<String, dynamic> event;
   final Function(Map<String, dynamic>) onEventSelected;
-  final Future<List<dynamic>> Function() getEvents;
+  final Future<List<Event>> Function() getEvents;
 
   @override
   Widget build(BuildContext context) {
@@ -752,15 +742,15 @@ class EventButton extends StatelessWidget {
                                     asyncSnapshot.data![index - 1];
                                 return ListTile(
                                   leading: const Icon(Icons.calendar_today),
-                                  title: Text(eventData["name"]),
+                                  title: Text(eventData.name),
                                   subtitle: Text(
-                                    "${DateFormat.yMd(Localizations.localeOf(context).languageCode).format(DateTime.parse(eventData["begin"]))} - ${DateFormat.yMd(Localizations.localeOf(context).languageCode).format(DateTime.parse(eventData["end"]))}",
+                                    "${DateFormat.yMd(Localizations.localeOf(context).languageCode).format(DateTime.parse(eventData.begin))} - ${DateFormat.yMd(Localizations.localeOf(context).languageCode).format(DateTime.parse(eventData.end))}",
                                   ),
                                   onTap: () {
                                     onEventSelected({
                                       "isSelected": true,
-                                      "eventName": eventData["name"],
-                                      "eventId": eventData["id"],
+                                      "eventName": eventData.name,
+                                      "eventId": eventData.id,
                                     });
                                     Navigator.of(context).pop();
                                   },

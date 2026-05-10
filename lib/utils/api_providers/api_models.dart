@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 
 import 'package:traewelcross/enums/trip_type.dart';
@@ -55,7 +57,7 @@ class UserAuth extends User {
   }) : super();
   factory UserAuth.fromJson(Map<String, dynamic> json) =>
       _$UserAuthFromJson(json);
-      @override
+  @override
   Map<String, dynamic> toJson() => _$UserAuthToJson(this);
 }
 
@@ -328,7 +330,7 @@ class Station {
     this.timeOffset,
     this.createdAt,
     this.history,
-    this.home
+    this.home,
   });
   factory Station.fromJson(Map<String, dynamic> json) =>
       _$StationFromJson(json);
@@ -460,6 +462,81 @@ class Status {
   Map<String, dynamic> toJson() => _$StatusToJson(this);
 }
 
+@JsonSerializable(fieldRename: .none)
+class Notification {
+  final String id;
+  final String type;
+  final String lead;
+  final String? leadFormatted;
+  final String? noticeFormatted;
+  final String notice;
+  final String? link;
+  final dynamic data;
+  String? readAt;
+  final String createdAt;
+  final String createdAtForHumans;
+  Notification({
+    required this.id,
+    required this.type,
+    required this.lead,
+    this.leadFormatted,
+    this.noticeFormatted,
+    required this.notice,
+    this.link,
+    this.data,
+    this.readAt,
+    required this.createdAt,
+    required this.createdAtForHumans,
+  });
+  factory Notification.fromJson(Map<String, dynamic> json) =>
+      _$NotificationFromJson(json);
+  Map<String, dynamic> toJson() => _$NotificationToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class CheckInRequest {
+  String? body;
+  TripType? business;
+  TripVisibilityEnum? visibility;
+  int? eventId;
+  bool? toot;
+  bool? chainPost;
+  String? tripId;
+  String? lineName;
+  int? start;
+  int? destination;
+  String? departure;
+  String? arrival;
+  bool force = false;
+  @JsonKey(name: "with")
+  List<int>? alsoCheckIn;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? manualDepart;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? manualArrive;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? eventName;
+  CheckInRequest(
+    this.body,
+    this.business,
+    this.visibility,
+    this.eventId,
+    this.toot,
+    this.chainPost,
+    this.tripId,
+    this.lineName,
+    this.start,
+    this.destination,
+    this.departure,
+    this.arrival,
+    this.force,
+    this.alsoCheckIn,
+  );
+    factory CheckInRequest.fromJson(Map<String, dynamic> json) =>
+      _$CheckInRequestFromJson(json);
+  Map<String, dynamic> toJson() => _$CheckInRequestToJson(this);
+}
+
 class GenericStatusResponse {
   final bool wasSuccess;
   final String? body;
@@ -469,5 +546,8 @@ class GenericStatusResponse {
 class GenericStatusResponseWithObject extends GenericStatusResponse {
   final dynamic object;
 
-  GenericStatusResponseWithObject({required super.wasSuccess, required this.object});
+  GenericStatusResponseWithObject({
+    required super.wasSuccess,
+    required this.object,
+  });
 }
