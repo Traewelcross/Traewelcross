@@ -247,7 +247,7 @@ class _CheckInState extends State<CheckIn> {
       if (response.statusCode == 200) {
         if (!mounted) return;
         if (checkInInfo.rideDataCallback != null) {
-          checkInInfo.rideDataCallback!(jsonDecode(response.body)["data"]);
+          checkInInfo.rideDataCallback!(Status.fromJson(jsonDecode(response.body)["data"]));
         }
         setState(() {
           waitForRes = false;
