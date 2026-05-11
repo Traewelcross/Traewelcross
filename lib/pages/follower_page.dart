@@ -1,16 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/profile_link_button.dart';
-import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/shared.dart';
-import 'package:http/http.dart' as http;
 
 class FollowerPage extends StatefulWidget {
   const FollowerPage({super.key});
@@ -167,7 +164,7 @@ class _SocialUserListState extends State<_SocialUserList> {
   void _acceptFollowRequest(int id) async {
     final ApiService apiService = getIt<ApiService>();
     final response = await apiService.user.acceptFollowRequest(id);
-    if(response.wasSuccess){
+    if (response.wasSuccess) {
       widget.callback.call(null);
     }
   }
@@ -175,7 +172,7 @@ class _SocialUserListState extends State<_SocialUserList> {
   void _denyFollowRequest(int id) async {
     final ApiService apiService = getIt<ApiService>();
     final response = await apiService.user.denyFollowRequest(id);
-    if(response.wasSuccess){
+    if (response.wasSuccess) {
       widget.callback.call(null);
     }
   }
@@ -183,7 +180,7 @@ class _SocialUserListState extends State<_SocialUserList> {
   void _unfollow(int id) async {
     final ApiService apiService = getIt<ApiService>();
     final response = await apiService.user.unfollow(id: id);
-    if(response != null){
+    if (response != null) {
       widget.callback.call(null);
     }
   }
@@ -191,7 +188,7 @@ class _SocialUserListState extends State<_SocialUserList> {
   void _removeFollow(int id) async {
     final ApiService apiService = getIt<ApiService>();
     final response = await apiService.user.removeFollower(id);
-    if(response.wasSuccess){
+    if (response.wasSuccess) {
       widget.callback.call(null);
     }
   }

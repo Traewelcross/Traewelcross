@@ -8,7 +8,6 @@ import 'package:traewelcross/pages/detailed_ride_view.dart';
 import 'package:traewelcross/pages/follower_page.dart';
 import 'package:traewelcross/utils/api_service.dart';
 
-
 import 'package:traewelcross/utils/custom_providers.dart';
 import "package:traewelcross/utils/api_providers/api_models.dart" as models;
 
@@ -51,7 +50,9 @@ class _NotificationsViewState extends State<NotificationsView> {
 
   Future<void> _getUnread() async {
     final apiService = getIt<ApiService>();
-    getIt<UnreadCountProvider>().setCount(await apiService.notification.getNotificationCount());
+    getIt<UnreadCountProvider>().setCount(
+      await apiService.notification.getNotificationCount(),
+    );
   }
 
   Future<void> _fetchNotifications() async {
@@ -61,7 +62,9 @@ class _NotificationsViewState extends State<NotificationsView> {
     });
 
     final apiService = getIt<ApiService>();
-    final response = await apiService.notification.fetchNotifications(page: _page);
+    final response = await apiService.notification.fetchNotifications(
+      page: _page,
+    );
 
     setState(() {
       _notifications.addAll(response);
@@ -133,7 +136,7 @@ class _NotificationsViewState extends State<NotificationsView> {
                 return Card(
                   clipBehavior: Clip.hardEdge,
                   child: ListTile(
-                    tileColor: notification.readAt== null
+                    tileColor: notification.readAt == null
                         ? null
                         : Theme.of(context).splashColor,
                     onTap: () {
@@ -152,8 +155,7 @@ class _NotificationsViewState extends State<NotificationsView> {
                             MaterialPageRoute(
                               builder: (BuildContext context) =>
                                   DetailedRideView(
-                                    rideId:
-                                        notification.data["status"]["id"],
+                                    rideId: notification.data["status"]["id"],
                                   ),
                             ),
                           );
@@ -181,8 +183,7 @@ class _NotificationsViewState extends State<NotificationsView> {
                             MaterialPageRoute(
                               builder: (BuildContext context) =>
                                   DetailedRideView(
-                                    rideId:
-                                        notification.data["status"]["id"],
+                                    rideId: notification.data["status"]["id"],
                                   ),
                             ),
                           );

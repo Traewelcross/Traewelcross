@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 
@@ -532,7 +531,7 @@ class CheckInRequest {
     this.force,
     this.alsoCheckIn,
   );
-    factory CheckInRequest.fromJson(Map<String, dynamic> json) =>
+  factory CheckInRequest.fromJson(Map<String, dynamic> json) =>
       _$CheckInRequestFromJson(json);
   Map<String, dynamic> toJson() => _$CheckInRequestToJson(this);
 }

@@ -13,8 +13,6 @@ import 'package:traewelcross/components/time_progress.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/pages/detailed_ride_view.dart';
 import 'package:traewelcross/pages/checkin/checkin.dart';
-import 'package:traewelcross/enums/trip_type.dart';
-import 'package:traewelcross/enums/trip_visibility.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/profile_view.dart';
 import 'package:traewelcross/pages/checkin/select_connection.dart';

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/enums/trip_visibility.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
@@ -421,9 +420,16 @@ class StatusApiProvider {
     }
     return Future.error("${res.statusCode} / ${res.body}");
   }
-  Future<Station> getStationData({required int stationId, required bool withIdentifiers}) async {
-    final res = await _api.request("/station/$stationId?withIdentifiers=${withIdentifiers.toString()}", .GET);
-    if (res.statusCode == 200){
+
+  Future<Station> getStationData({
+    required int stationId,
+    required bool withIdentifiers,
+  }) async {
+    final res = await _api.request(
+      "/station/$stationId?withIdentifiers=${withIdentifiers.toString()}",
+      .GET,
+    );
+    if (res.statusCode == 200) {
       return Station.fromJson(jsonDecode(res.body)["data"]);
     }
     return Future.error("${res.statusCode} / ${res.body}");

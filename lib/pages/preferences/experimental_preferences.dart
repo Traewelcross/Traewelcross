@@ -52,7 +52,6 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
               }),
             ),
           ),
-          
         ],
       ),
     );

@@ -109,7 +109,11 @@ class _CheckInState extends State<CheckIn> {
 
   Future<List<Event>> _getEvents() async {
     final apiService = getIt<ApiService>();
-    return apiService.event.getEvents(timestamp: widget.isEdit ? checkInInfo.departureTime! : DateTime.now().toLocal().toIso8601String());
+    return apiService.event.getEvents(
+      timestamp: widget.isEdit
+          ? checkInInfo.departureTime!
+          : DateTime.now().toLocal().toIso8601String(),
+    );
   }
 
   Future<List<dynamic>> _getTrustedUsers() async {
@@ -247,7 +251,9 @@ class _CheckInState extends State<CheckIn> {
       if (response.statusCode == 200) {
         if (!mounted) return;
         if (checkInInfo.rideDataCallback != null) {
-          checkInInfo.rideDataCallback!(Status.fromJson(jsonDecode(response.body)["data"]));
+          checkInInfo.rideDataCallback!(
+            Status.fromJson(jsonDecode(response.body)["data"]),
+          );
         }
         setState(() {
           waitForRes = false;

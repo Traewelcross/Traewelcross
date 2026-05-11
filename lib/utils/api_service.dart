@@ -16,7 +16,6 @@ import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/station_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/event_api_provider.dart';
 
-
 class ApiService {
   static const String _baseURL = "https://traewelling.de/api/v1";
   static const int _timeoutDuration = 25;

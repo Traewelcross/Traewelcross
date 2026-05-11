@@ -69,9 +69,7 @@ class _AddTrustedUserState extends State<AddTrustedUser> {
       final apiService = getIt<ApiService>();
       List<models.User> users;
       users = await apiService.user.searchUser(searchTerm);
-      try {
-        
-      } catch (e) {
+      try {} catch (e) {
         users = [];
         print(e);
       }

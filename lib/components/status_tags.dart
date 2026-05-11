@@ -4,7 +4,6 @@ import 'package:traewelcross/components/status_tag.dart';
 import 'package:traewelcross/components/tag_icon.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
-import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
 
 class StatusTags extends StatelessWidget {
   const StatusTags({

@@ -106,7 +106,9 @@ class CheckinSuccess extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
                             child: ProfileLinkButton(
-                              user: LightUser.fromJson(user["user"]).promoteToUser(),
+                              user: LightUser.fromJson(
+                                user["user"],
+                              ).promoteToUser(),
                               subTitle:
                                   "${user["checkin"]["origin"]["name"]} -> ${user["checkin"]["destination"]["name"]}",
                             ),

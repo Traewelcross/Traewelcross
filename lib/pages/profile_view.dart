@@ -1,13 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:traewelcross/components/ride_quick_view_wrapper.dart';
-import 'package:traewelcross/enums/http_request_types.dart';
-import 'package:traewelcross/enums/user_error.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:traewelcross/utils/shared.dart';
@@ -105,9 +101,8 @@ class _ProfileViewState extends State<ProfileView> {
                 if (widget.isOtherUser &&
                     ((userInfo.privateProfile && !userInfo.following) ||
                         userInfo.blocked))
-                  ...[
-                  
-                ] else ...[
+                  ...[]
+                else ...[
                   const SliverToBoxAdapter(child: SizedBox(height: 8)),
                   RideQuickViewWrapper(
                     userName: userInfo.username,
@@ -324,7 +319,6 @@ class _OtherUserCtrlState extends State<_OtherUserCtrl> {
   Future<void> _follow() async {
     final ApiService apiService = getIt<ApiService>();
     final response = await apiService.user.follow(id: _userInfo.id);
-    ;
     if (!mounted) return;
     if (response == null) {
       return;

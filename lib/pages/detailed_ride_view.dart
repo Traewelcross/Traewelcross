@@ -8,7 +8,6 @@ import "package:traewelcross/components/profile_link_button.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:http/http.dart' as http;
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/ride_quick_view.dart';
 import 'package:traewelcross/config/config.dart';
@@ -99,8 +98,11 @@ class _DetailedRideViewState extends State<DetailedRideView> {
   // Workaround for Traewelling/traewelling/discussions/4511 until identifiers are provided in check in again
   Future<String> _getEvaIdent() async {
     final apiService = getIt<ApiService>();
-    final res = await apiService.status.getStationData(stationId: widget.rideData!.checkin.destination.id, withIdentifiers: true);
-    if(res.identifiers == null){
+    final res = await apiService.status.getStationData(
+      stationId: widget.rideData!.checkin.destination.id,
+      withIdentifiers: true,
+    );
+    if (res.identifiers == null) {
       return "";
     }
     final identList = res.identifiers!;
@@ -215,9 +217,8 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                           enabled: asyncSnapshot.data!.isEmpty ? false : true,
                           children: List.generate(
                             asyncSnapshot.data!.length,
-                            (int i) => ProfileLinkButton(
-                              user: asyncSnapshot.data![i],
-                            ),
+                            (int i) =>
+                                ProfileLinkButton(user: asyncSnapshot.data![i]),
                           ),
                         ),
                       );

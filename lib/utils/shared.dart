@@ -230,7 +230,6 @@ class SharedFunctions {
     if (messenger != null) {
       messenger.showSnackBar(SnackBar(content: Text(text)));
     }
-    
   }
 
   static String? getOperatorHAFASIdent(List<OperatorIdentifier>? identifiers) {

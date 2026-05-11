@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/custom_providers.dart';
 import 'package:traewelcross/utils/shared.dart';
