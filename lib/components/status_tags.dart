@@ -67,7 +67,7 @@ class AddTag extends StatelessWidget {
     required this.rideId,
     required this.addCallback,
   });
-  final List<dynamic> tags;
+  final List<Tag> tags;
   final int rideId;
   final Function(Tag data) addCallback;
   @override

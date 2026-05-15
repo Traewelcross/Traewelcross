@@ -19,7 +19,7 @@ class AddTagDialog extends StatelessWidget {
     this.addCallback,
   });
 
-  final List tags;
+  final List<Tag> tags;
   final int rideId;
   final bool tagCanChange;
   //final String? tagType;
@@ -68,7 +68,7 @@ class TagBox extends StatefulWidget {
     required this.rideId,
   });
   final bool tagCanChange;
-  final List<dynamic> setTags;
+  final List<Tag> setTags;
   final int rideId;
   //final String? tagValue;
   //final String? tagType;
@@ -105,7 +105,7 @@ class _TagBoxState extends State<TagBox> {
   void initState() {
     super.initState();
     _availableTags = _supportedTags
-        .where((tag) => !widget.setTags.any((setTag) => setTag["key"] == tag))
+        .where((tag) => !widget.setTags.any((setTag) => setTag.key == tag))
         .toList();
     if (_availableTags.isNotEmpty) {
       _selected = _availableTags[0];
