@@ -18,8 +18,6 @@ class Tag {
 
 @JsonSerializable(fieldRename: .none)
 class UserAuth extends User {
-  @JsonKey(name: "likes_enabled")
-  final bool? likesEnabled; // null for now, so when it get's renamed to likesEnabled, we don't throw an error because we can't find the field
   final String mapProvider;
   final Station? home;
   final String? language;
@@ -47,7 +45,7 @@ class UserAuth extends User {
     super.bio,
     super.profileLinks,
     super.mastodonUrl,
-    this.likesEnabled,
+    super.likesEnabled,
     required this.mapProvider,
     this.home,
     required this.defaultStatusVisibility,
@@ -63,7 +61,7 @@ class UserAuth extends User {
 @JsonSerializable(fieldRename: .none)
 class User {
   final int id;
-  final String uuid;
+  final String? uuid;
   final String displayName;
   final String username;
   final String profilePicture;
@@ -72,7 +70,9 @@ class User {
   final int points;
   final String? mastodonUrl;
   final bool privateProfile;
-  final bool pointsEnabled;
+  final bool? pointsEnabled;
+  @JsonKey(name: "likes_enabled")
+  final bool? likesEnabled; // nullable for now, so when it get's renamed to likesEnabled, we don't throw an error because we can't find the field
   final bool userInvisibleToMe;
   final bool muted;
   final bool blocked;
@@ -103,6 +103,7 @@ class User {
     required this.preventIndex,
     required this.bio,
     required this.profileLinks,
+    this.likesEnabled,
   });
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
@@ -120,7 +121,7 @@ class ProfileLink {
 
 @JsonSerializable(fieldRename: .none)
 class Mention {
-  final User user;
+  final User? user;
   final int position;
   final int length;
   const Mention({
@@ -204,7 +205,7 @@ class Operator {
   final String type;
   final String uuid;
   final String name;
-  final List<OperatorIdentifier> identifiers;
+  final List<OperatorIdentifier>? identifiers;
   const Operator({
     required this.type,
     required this.uuid,

@@ -31,7 +31,7 @@ const _$TripVisibilityEnumEnumMap = {
 
 UserAuth _$UserAuthFromJson(Map<String, dynamic> json) => UserAuth(
   id: (json['id'] as num).toInt(),
-  uuid: json['uuid'] as String,
+  uuid: json['uuid'] as String?,
   displayName: json['displayName'] as String,
   username: json['username'] as String,
   profilePicture: json['profilePicture'] as String,
@@ -39,7 +39,7 @@ UserAuth _$UserAuthFromJson(Map<String, dynamic> json) => UserAuth(
   totalDuration: (json['totalDuration'] as num).toInt(),
   points: (json['points'] as num).toInt(),
   privateProfile: json['privateProfile'] as bool,
-  pointsEnabled: json['pointsEnabled'] as bool,
+  pointsEnabled: json['pointsEnabled'] as bool?,
   userInvisibleToMe: json['userInvisibleToMe'] as bool? ?? false,
   muted: json['muted'] as bool? ?? false,
   blocked: json['blocked'] as bool? ?? false,
@@ -77,6 +77,7 @@ Map<String, dynamic> _$UserAuthToJson(UserAuth instance) => <String, dynamic>{
   'mastodonUrl': instance.mastodonUrl,
   'privateProfile': instance.privateProfile,
   'pointsEnabled': instance.pointsEnabled,
+  'likes_enabled': instance.likesEnabled,
   'userInvisibleToMe': instance.userInvisibleToMe,
   'muted': instance.muted,
   'blocked': instance.blocked,
@@ -86,7 +87,6 @@ Map<String, dynamic> _$UserAuthToJson(UserAuth instance) => <String, dynamic>{
   'preventIndex': instance.preventIndex,
   'bio': instance.bio,
   'profileLinks': instance.profileLinks,
-  'likes_enabled': instance.likesEnabled,
   'mapProvider': instance.mapProvider,
   'home': instance.home,
   'language': instance.language,
@@ -97,7 +97,7 @@ Map<String, dynamic> _$UserAuthToJson(UserAuth instance) => <String, dynamic>{
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
   id: (json['id'] as num).toInt(),
-  uuid: json['uuid'] as String,
+  uuid: json['uuid'] as String?,
   displayName: json['displayName'] as String,
   username: json['username'] as String,
   profilePicture: json['profilePicture'] as String,
@@ -106,7 +106,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
   points: (json['points'] as num).toInt(),
   mastodonUrl: json['mastodonUrl'] as String?,
   privateProfile: json['privateProfile'] as bool,
-  pointsEnabled: json['pointsEnabled'] as bool,
+  pointsEnabled: json['pointsEnabled'] as bool?,
   userInvisibleToMe: json['userInvisibleToMe'] as bool,
   muted: json['muted'] as bool,
   blocked: json['blocked'] as bool,
@@ -118,6 +118,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
   profileLinks: (json['profileLinks'] as List<dynamic>?)
       ?.map((e) => ProfileLink.fromJson(e as Map<String, dynamic>))
       .toList(),
+  likesEnabled: json['likes_enabled'] as bool?,
 );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -132,6 +133,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
   'mastodonUrl': instance.mastodonUrl,
   'privateProfile': instance.privateProfile,
   'pointsEnabled': instance.pointsEnabled,
+  'likes_enabled': instance.likesEnabled,
   'userInvisibleToMe': instance.userInvisibleToMe,
   'muted': instance.muted,
   'blocked': instance.blocked,
@@ -150,7 +152,9 @@ Map<String, dynamic> _$ProfileLinkToJson(ProfileLink instance) =>
     <String, dynamic>{'name': instance.name, 'url': instance.url};
 
 Mention _$MentionFromJson(Map<String, dynamic> json) => Mention(
-  user: User.fromJson(json['user'] as Map<String, dynamic>),
+  user: json['user'] == null
+      ? null
+      : User.fromJson(json['user'] as Map<String, dynamic>),
   position: (json['position'] as num).toInt(),
   length: (json['length'] as num).toInt(),
 );
@@ -225,8 +229,8 @@ Operator _$OperatorFromJson(Map<String, dynamic> json) => Operator(
   type: json['type'] as String,
   uuid: json['uuid'] as String,
   name: json['name'] as String,
-  identifiers: (json['identifiers'] as List<dynamic>)
-      .map((e) => OperatorIdentifier.fromJson(e as Map<String, dynamic>))
+  identifiers: (json['identifiers'] as List<dynamic>?)
+      ?.map((e) => OperatorIdentifier.fromJson(e as Map<String, dynamic>))
       .toList(),
 );
 
