@@ -17,8 +17,8 @@ BehaviorConfig _$BehaviorConfigFromJson(Map<String, dynamic> json) =>
       ..defaultStatusText = json['defaultStatusText'] as String?
       ..volumeBtnCtrl = json['volumeBtnCtrl'] as bool? ?? false
       ..showAltDepartureStops = json['showAltDepartureStops'] as bool? ?? true
-      ..renewLegacy = json['renewLegacy'] as bool? ?? false
-      ..showActiveRideCard = json['showActiveRideCard'] as bool? ?? true;
+      ..showActiveRideCard = json['showActiveRideCard'] as bool? ?? true
+      ..multiAccountSupport = json['multiAccountSupport'] as bool? ?? false;
 
 Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
     <String, dynamic>{
@@ -29,6 +29,6 @@ Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
       'defaultStatusText': instance.defaultStatusText,
       'volumeBtnCtrl': instance.volumeBtnCtrl,
       'showAltDepartureStops': instance.showAltDepartureStops,
-      'renewLegacy': instance.renewLegacy,
       'showActiveRideCard': instance.showActiveRideCard,
+      'multiAccountSupport': instance.multiAccountSupport,
     };

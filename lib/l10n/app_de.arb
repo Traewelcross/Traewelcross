@@ -273,5 +273,7 @@
     "unknown": "Unbekannt",
     "arrivalIn": "Ankunft in {h} Std. und {min} Min.",
     "showActiveRideCard": "Aktive Fahrt anpinnen",
-    "showActiveRideCardDesc": "Deine aktuell stattfindene Fahrt wird an die Navigationsleiste angepinnt"
+    "showActiveRideCardDesc": "Deine aktuell stattfindene Fahrt wird an die Navigationsleiste angepinnt",
+    "multiAccount": "Mehrere Accounts",
+    "multiAccountNotice": "Du kannst mehrere Accounts hinzufügen, indem du dein Profilbild im Profiltab lange gedrückt hältst. Erwarte Fehler."
 }

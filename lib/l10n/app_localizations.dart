@@ -1741,6 +1741,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pin your active ride to the navigation bar'**
   String get showActiveRideCardDesc;
+
+  /// No description provided for @multiAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple Accounts'**
+  String get multiAccount;
+
+  /// No description provided for @multiAccountNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'You can add more accounts through a long tap on your profile picture in the profile tab. Expect bugs and hiccups.'**
+  String get multiAccountNotice;
 }
 
 class _AppLocalizationsDelegate

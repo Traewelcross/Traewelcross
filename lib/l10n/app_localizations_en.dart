@@ -946,4 +946,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get showActiveRideCardDesc =>
       'Pin your active ride to the navigation bar';
+
+  @override
+  String get multiAccount => 'Multiple Accounts';
+
+  @override
+  String get multiAccountNotice =>
+      'You can add more accounts through a long tap on your profile picture in the profile tab. Expect bugs and hiccups.';
 }

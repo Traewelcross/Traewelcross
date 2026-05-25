@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:traewelcross/components/ride_quick_view_wrapper.dart';
+import 'package:traewelcross/dialogs/account_switcher.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:traewelcross/utils/shared.dart';
@@ -144,7 +145,10 @@ class ProfileStatsCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Center(
-                    child: ProfilePicture(imageUrl: imageUrl, maxWidth: 512),
+                    child: GestureDetector(
+                      onLongPress: () => showModalBottomSheet(context: context, builder:(context) => AccountSwitcher(), isScrollControlled: true),
+                      child: ProfilePicture(imageUrl: imageUrl, maxWidth: 512)
+                      ),
                   ),
                   const SizedBox(height: 12),
                   Row(

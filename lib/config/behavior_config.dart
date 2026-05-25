@@ -87,19 +87,19 @@ class BehaviorConfig with ChangeNotifier {
     notifyListeners();
   }
 
-  bool _renewLegacy = false;
-  @JsonKey(defaultValue: false)
-  bool get renewLegacy => _renewLegacy;
-  set renewLegacy(bool val) {
-    _renewLegacy = val;
-    notifyListeners();
-  }
-
   bool _showActiveRideCard = true;
   @JsonKey(defaultValue: true)
   bool get showActiveRideCard => _showActiveRideCard;
   set showActiveRideCard(bool val) {
     _showActiveRideCard = val;
+    notifyListeners();
+  }
+
+  bool _multiAccountSupport = false;
+  @JsonKey(defaultValue: false)
+  bool get multiAccountSupport => _multiAccountSupport;
+  set multiAccountSupport(bool val){
+    _multiAccountSupport = val;
     notifyListeners();
   }
 }

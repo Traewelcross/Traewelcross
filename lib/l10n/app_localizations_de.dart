@@ -952,4 +952,11 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get showActiveRideCardDesc =>
       'Deine aktuell stattfindene Fahrt wird an die Navigationsleiste angepinnt';
+
+  @override
+  String get multiAccount => 'Mehrere Accounts';
+
+  @override
+  String get multiAccountNotice =>
+      'Du kannst mehrere Accounts hinzufügen, indem du dein Profilbild im Profiltab lange gedrückt hältst. Erwarte Fehler.';
 }

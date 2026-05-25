@@ -52,6 +52,20 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
               }),
             ),
           ),
+          /*ListTile(
+            onTap: () => setState(() {
+              config.behavior.multiAccountSupport = !config.behavior.multiAccountSupport;
+            }),
+            leading: const Icon(Icons.group),
+            title: Text(localize.multiAccount),
+            subtitle: Text(localize.multiAccountNotice),
+            trailing: Switch(
+              value: config.behavior.multiAccountSupport,
+              onChanged: (val) => setState(() {
+                config.behavior.multiAccountSupport = val;
+              }),
+            ),
+          ),*/
         ],
       ),
     );

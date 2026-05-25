@@ -587,5 +587,7 @@
     }
   },
   "showActiveRideCard": "Pin active ride",
-  "showActiveRideCardDesc": "Pin your active ride to the navigation bar"
+  "showActiveRideCardDesc": "Pin your active ride to the navigation bar",
+  "multiAccount": "Multiple Accounts",
+  "multiAccountNotice": "You can add more accounts through a long tap on your profile picture in the profile tab. Expect bugs and hiccups."
 }
