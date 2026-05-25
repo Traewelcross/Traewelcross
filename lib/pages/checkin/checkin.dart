@@ -624,7 +624,7 @@ class TrustedCheckInButton extends StatelessWidget {
                                             });
                                           },
                                           title: ProfileLinkButton(
-                                            user: user,
+                                            user: LightUser.fromJson(user).promoteToUser(),
                                             enableNavigateToProfile: false,
                                           ),
                                         );
