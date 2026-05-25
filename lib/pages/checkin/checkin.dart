@@ -111,7 +111,7 @@ class _CheckInState extends State<CheckIn> {
     final apiService = getIt<ApiService>();
     return apiService.event.getEvents(
       timestamp: widget.isEdit
-          ? checkInInfo.departureTime!
+          ? DateTime.parse(checkInInfo.departureTime!).toIso8601String()
           : DateTime.now().toLocal().toIso8601String(),
     );
   }
