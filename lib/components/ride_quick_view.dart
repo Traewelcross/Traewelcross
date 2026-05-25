@@ -354,9 +354,9 @@ class _RideQuickViewState extends State<RideQuickView> {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
+    final averageSpeed = ((_rideData.checkin.distance / 1000.0) / (_rideData.checkin.duration / 60.0));
     final localize = AppLocalizations.of(context)!;
     return RepaintBoundary(
       child: Column(
@@ -446,6 +446,15 @@ class _RideQuickViewState extends State<RideQuickView> {
                                               "0")
                                           ? "${_rideData.checkin.distance} m"
                                           : "${(_rideData.checkin.distance / 1000).toStringAsFixed(0)} km",
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                      child: VerticalDivider(),
+                                    ),
+                                    const Icon(Icons.speed),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      "${averageSpeed.isInfinite || averageSpeed.isNaN ? "0" : averageSpeed.round()} km/h",
                                     ),
                                     const SizedBox(
                                       height: 20,
@@ -803,16 +812,17 @@ class _RideQuickViewState extends State<RideQuickView> {
 
   String _getNeededTime(int duration) {
     TimeSpan ts = SharedFunctions.parseDuration(duration);
+    if (ts.duration <= 0) return "${ts.hours} ${AppLocalizations.of(context)!.abrvHour} ${ts.minutes} ${AppLocalizations.of(context)!.abrvMinute}";
     String concatString = "";
     if (ts.days != 0) {
-      concatString += "${ts.days}${AppLocalizations.of(context)!.abrvDay}";
+      concatString += "${ts.days} ${AppLocalizations.of(context)!.abrvDay}";
     }
     if (ts.hours != 0) {
-      concatString += " ${ts.hours}${AppLocalizations.of(context)!.abrvHour}";
+      concatString += " ${ts.hours} ${AppLocalizations.of(context)!.abrvHour}";
     }
     if (ts.minutes != 0) {
       concatString +=
-          " ${ts.minutes}${AppLocalizations.of(context)!.abrvMinute}";
+          " ${ts.minutes} ${AppLocalizations.of(context)!.abrvMinute}";
     }
     return concatString.trim();
   }
