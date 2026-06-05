@@ -1,8 +1,8 @@
-
 import 'package:json_annotation/json_annotation.dart';
 
 import 'package:traewelcross/enums/trip_type.dart';
 import 'package:traewelcross/enums/trip_visibility.dart';
+import 'package:traewelcross/utils/check_in_info.dart';
 
 part "api_models.g.dart";
 
@@ -535,6 +535,122 @@ class CheckInRequest {
   factory CheckInRequest.fromJson(Map<String, dynamic> json) =>
       _$CheckInRequestFromJson(json);
   Map<String, dynamic> toJson() => _$CheckInRequestToJson(this);
+  factory CheckInRequest.fromCheckInInfo({
+    required CheckInInfo cii,
+    int? eventId,
+    List<int>? withUsers,
+    required bool force,
+    required TripType type,
+    required TripVisibilityEnum visi,
+  }) {
+    return .new(
+      cii.body,
+      type,
+      visi,
+      eventId,
+      cii.toot,
+      cii.attachToLastToot,
+      cii.tripId,
+      cii.lineName,
+      cii.departureId,
+      cii.destinationId,
+      cii.departureTime,
+      cii.arrivalTime,
+      force,
+      withUsers,
+    );
+  }
+}
+
+@JsonSerializable(fieldRename: .none)
+class PointsCalculation {
+  final double base;
+  final double distance;
+  final double factor;
+  final int reason;
+  const PointsCalculation({
+    required this.base,
+    required this.distance,
+    required this.factor,
+    required this.reason,
+  });
+  factory PointsCalculation.fromJson(Map<String, dynamic> json) =>
+      _$PointsCalculationFromJson(json);
+  Map<String, dynamic> toJson() => _$PointsCalculationToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class Points {
+  final int points;
+  final PointsCalculation calculation;
+  const Points({required this.points, required this.calculation});
+  factory Points.fromJson(Map<String, dynamic> json) => _$PointsFromJson(json);
+  Map<String, dynamic> toJson() => _$PointsToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class CheckinResponse {
+  final Status status;
+  final List<Status>? alsoOnThisConnection;
+  final Points points;
+  const CheckinResponse({
+    required this.points,
+    this.alsoOnThisConnection,
+    required this.status,
+  });
+  factory CheckinResponse.fromJson(Map<String, dynamic> json) =>
+      _$CheckinResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$CheckinResponseToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class Alert {
+  String id;
+  String type;
+  @JsonKey(name: "active_from")
+  String activeFrom;
+  @JsonKey(name: "active_until")
+  String? activeUntil;
+  String? url;
+  List<AlertTranslation> translations;
+
+  Alert({
+    required this.id,
+    required this.type,
+    required this.activeUntil,
+    required this.activeFrom,
+    required this.url,
+    required this.translations,
+  });
+  factory Alert.fromJson(Map<String, dynamic> json) => _$AlertFromJson(json);
+  Map<String, dynamic> toJson() => _$AlertToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class AlertTranslation {
+  String title;
+  String content;
+  String? url;
+  String locale;
+  AlertTranslation({
+    required this.title,
+    required this.content,
+    this.url,
+    required this.locale,
+  });
+  factory AlertTranslation.fromJson(Map<String, dynamic> json) =>
+      _$AlertTranslationFromJson(json);
+  Map<String, dynamic> toJson() => _$AlertTranslationToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class TrustedUser {
+  LightUser user;
+  String? expiresAt;
+  TrustedUser({required this.user, this.expiresAt});
+  factory TrustedUser.fromJson(Map<String, dynamic> json) =>
+      _$TrustedUserFromJson(json);
+  Map<String, dynamic> toJson() => _$TrustedUserToJson(this);
 }
 
 class GenericStatusResponse {

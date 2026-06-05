@@ -308,4 +308,16 @@ class UserApiProvider {
       return Future.error("${response.statusCode} / ${response.body}");
     }
   }
+
+  Future<List<TrustedUser>> getTrustedByUsers() async {
+    final response = await _api.request("/user/self/trusted-by", .GET);
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body)["data"];
+      final List<TrustedUser> users = jsonData
+          .map((u) => TrustedUser.fromJson(u as Map<String, dynamic>))
+          .toList();
+      return users;
+    }
+    return [];
+  }
 }

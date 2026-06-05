@@ -530,3 +530,91 @@ Map<String, dynamic> _$CheckInRequestToJson(CheckInRequest instance) =>
       'force': instance.force,
       'with': instance.alsoCheckIn,
     };
+
+PointsCalculation _$PointsCalculationFromJson(Map<String, dynamic> json) =>
+    PointsCalculation(
+      base: (json['base'] as num).toDouble(),
+      distance: (json['distance'] as num).toDouble(),
+      factor: (json['factor'] as num).toDouble(),
+      reason: (json['reason'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$PointsCalculationToJson(PointsCalculation instance) =>
+    <String, dynamic>{
+      'base': instance.base,
+      'distance': instance.distance,
+      'factor': instance.factor,
+      'reason': instance.reason,
+    };
+
+Points _$PointsFromJson(Map<String, dynamic> json) => Points(
+  points: (json['points'] as num).toInt(),
+  calculation: PointsCalculation.fromJson(
+    json['calculation'] as Map<String, dynamic>,
+  ),
+);
+
+Map<String, dynamic> _$PointsToJson(Points instance) => <String, dynamic>{
+  'points': instance.points,
+  'calculation': instance.calculation,
+};
+
+CheckinResponse _$CheckinResponseFromJson(Map<String, dynamic> json) =>
+    CheckinResponse(
+      points: Points.fromJson(json['points'] as Map<String, dynamic>),
+      alsoOnThisConnection: (json['alsoOnThisConnection'] as List<dynamic>?)
+          ?.map((e) => Status.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      status: Status.fromJson(json['status'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$CheckinResponseToJson(CheckinResponse instance) =>
+    <String, dynamic>{
+      'status': instance.status,
+      'alsoOnThisConnection': instance.alsoOnThisConnection,
+      'points': instance.points,
+    };
+
+Alert _$AlertFromJson(Map<String, dynamic> json) => Alert(
+  id: json['id'] as String,
+  type: json['type'] as String,
+  activeUntil: json['active_until'] as String?,
+  activeFrom: json['active_from'] as String,
+  url: json['url'] as String?,
+  translations: (json['translations'] as List<dynamic>)
+      .map((e) => AlertTranslation.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
+
+Map<String, dynamic> _$AlertToJson(Alert instance) => <String, dynamic>{
+  'id': instance.id,
+  'type': instance.type,
+  'active_from': instance.activeFrom,
+  'active_until': instance.activeUntil,
+  'url': instance.url,
+  'translations': instance.translations,
+};
+
+AlertTranslation _$AlertTranslationFromJson(Map<String, dynamic> json) =>
+    AlertTranslation(
+      title: json['title'] as String,
+      content: json['content'] as String,
+      url: json['url'] as String?,
+      locale: json['locale'] as String,
+    );
+
+Map<String, dynamic> _$AlertTranslationToJson(AlertTranslation instance) =>
+    <String, dynamic>{
+      'title': instance.title,
+      'content': instance.content,
+      'url': instance.url,
+      'locale': instance.locale,
+    };
+
+TrustedUser _$TrustedUserFromJson(Map<String, dynamic> json) => TrustedUser(
+  user: LightUser.fromJson(json['user'] as Map<String, dynamic>),
+  expiresAt: json['expiresAt'] as String?,
+);
+
+Map<String, dynamic> _$TrustedUserToJson(TrustedUser instance) =>
+    <String, dynamic>{'user': instance.user, 'expiresAt': instance.expiresAt};

@@ -10,7 +10,6 @@ import 'package:traewelcross/components/dashboard.dart';
 import 'package:traewelcross/components/profile_link_button.dart';
 import 'package:traewelcross/components/progress_bar.dart';
 import 'package:traewelcross/config/config.dart';
-import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/checkin/select_connection.dart';
 import 'package:traewelcross/pages/login/oauth_login.dart';
@@ -18,9 +17,6 @@ import 'package:traewelcross/pages/testpad.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
-
-import 'dart:convert';
 
 import 'package:traewelcross/utils/shared.dart';
 
@@ -46,12 +42,12 @@ class _HomeState extends State<Home> {
   List<dynamic> results = [];
   Timer? debounce;
 
-  void _checkInAtStation(int stationId, String stationName) {
+  void _checkInAtStation(Station station) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (BuildContext context) =>
-            SelectConnection(stationId: stationId, stationName: stationName),
+            SelectConnection(stationId: station.id, stationName: station.name),
       ),
     );
   }
@@ -69,14 +65,17 @@ class _HomeState extends State<Home> {
     }
     if (!mounted) return;
     final apiService = getIt<ApiService>();
-    http.Response response;
+    Station station;
     try {
-      response = await apiService.request(
-        "/trains/station/nearby?latitude=${pos.latitude}&longitude=${pos.longitude}",
-        HttpRequestTypes.GET,
+      station = await apiService.station.getNearestStation(
+        pos.latitude,
+        pos.longitude,
       );
     } on TimeoutException {
       if (!mounted) return;
+      setState(() {
+        isLocating = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AppLocalizations.of(context)!.geoLocationTookTooLong),
@@ -90,30 +89,10 @@ class _HomeState extends State<Home> {
       return;
     }
 
-    if (response.statusCode == 200) {
-      setState(() {
-        isLocating = false;
-      });
-      _checkInAtStation(
-        jsonDecode(response.body)["data"]["id"],
-        jsonDecode(response.body)["data"]["name"],
-      );
-    } else {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.geoLocationTookTooLong),
-          duration: Duration(seconds: 6),
-          action: SnackBarAction(
-            label: AppLocalizations.of(context)!.retry,
-            onPressed: () => _checkInGPSStation(),
-          ),
-        ),
-      );
-      setState(() {
-        isLocating = false;
-      });
-    }
+    setState(() {
+      isLocating = false;
+    });
+    _checkInAtStation(station);
   }
 
   void _typedText() {
@@ -514,8 +493,7 @@ class _HomeState extends State<Home> {
                                         InkWell(
                                           onTap: () {
                                             _checkInAtStation(
-                                              (results[i] as Station).id,
-                                              (results[i] as Station).name,
+                                              results[i] as Station,
                                             );
                                           },
                                           child: Padding(
@@ -613,15 +591,10 @@ class Alerts extends StatefulWidget {
 }
 
 class _AlertsState extends State<Alerts> {
-  late final Future<List<dynamic>> _alerts;
-  Future<List<dynamic>> _getAlerts() async {
+  late final Future<List<Alert>> _alerts;
+  Future<List<Alert>> _getAlerts() async {
     final apiService = getIt<ApiService>();
-    final res = await apiService.request("/alerts", HttpRequestTypes.GET);
-    if (res.statusCode == 200) {
-      return jsonDecode(res.body)["data"];
-    } else {
-      return Future.value([]);
-    }
+    return await apiService.alert.get();
   }
 
   @override
@@ -642,7 +615,7 @@ class _AlertsState extends State<Alerts> {
             itemBuilder: (context, index) {
               final alert = asyncSnapshot.data![index];
               return Card.filled(
-                color: switch (alert["type"]) {
+                color: switch (alert.type) {
                   "info" => Color.alphaBlend(
                     Colors.blue.withValues(alpha: 0.2),
                     Theme.of(context).colorScheme.surface,
@@ -668,7 +641,7 @@ class _AlertsState extends State<Alerts> {
                     children: [
                       Row(
                         children: [
-                          switch (alert["type"]) {
+                          switch (alert.type) {
                             "info" => Icon(Icons.info, size: 32),
                             "warning" => Icon(Icons.warning, size: 32),
                             "danger" => Icon(Icons.dangerous, size: 32),
@@ -677,7 +650,7 @@ class _AlertsState extends State<Alerts> {
                           },
                           SizedBox(width: 8),
                           Text(
-                            alert["translations"][0]["title"],
+                            alert.translations[0].title,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ],
@@ -686,16 +659,16 @@ class _AlertsState extends State<Alerts> {
                       Row(
                         children: [
                           Expanded(
-                            child: Text(alert["translations"][0]["content"]),
+                            child: Text(alert.translations[0].content),
                           ),
                         ],
                       ),
-                      if (alert["translations"][0]["url"] != null)
+                      if (alert.translations[0].url != null)
                         Row(
                           children: [
                             FilledButton.icon(
                               onPressed: () => SharedFunctions.launchURL(
-                                Uri.parse(alert["translations"][0]["url"]),
+                                Uri.parse(alert.translations[0].url!),
                               ),
                               icon: const Icon(Icons.open_in_new),
                               label: Text(

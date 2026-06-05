@@ -9,7 +9,7 @@ import 'package:traewelcross/utils/api_providers/api_models.dart';
 
 class CheckinSuccess extends StatelessWidget {
   const CheckinSuccess({super.key, required this.statusInfo});
-  final Map<String, dynamic> statusInfo;
+  final CheckinResponse statusInfo;
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
@@ -31,13 +31,13 @@ class CheckinSuccess extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  statusInfo["status"]["checkin"]["origin"]["name"],
+                  statusInfo.status.checkin.origin.name,
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
                 const Icon(Icons.arrow_downward),
                 Text(
-                  statusInfo["status"]["checkin"]["destination"]["name"],
+                  statusInfo.status.checkin.destination.name,
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
@@ -51,13 +51,13 @@ class CheckinSuccess extends StatelessWidget {
                         const SizedBox(width: 4),
                         Text(
                           localize.points(
-                            statusInfo["points"]["points"].toString(),
-                            statusInfo["points"]["points"],
+                            statusInfo.points.points.toString(),
+                            statusInfo.points.points,
                           ),
                         ),
                       ],
                     ),
-                    if (statusInfo["points"]["calculation"]["reason"] == 2)
+                    if (statusInfo.points.calculation.reason == 2)
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 32),
                         child: Row(
@@ -80,20 +80,20 @@ class CheckinSuccess extends StatelessWidget {
                       ),
                   ],
                 ),
-                if (statusInfo["status"]["event"] != null) ...[
+                if (statusInfo.status.event != null) ...[
                   const SizedBox(height: 6),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const Icon(Icons.calendar_month),
                       const SizedBox(width: 4),
-                      Text(statusInfo["status"]["event"]["name"]),
+                      Text(statusInfo.status.event!.name),
                     ],
                   ),
                 ],
-                if (statusInfo["alsoOnThisConnection"] != null &&
-                    (statusInfo["alsoOnThisConnection"] as List)
-                        .isNotEmpty) ...[
+                if (statusInfo.alsoOnThisConnection != null &&
+                    statusInfo.alsoOnThisConnection!.isNotEmpty)
+                         ...[
                   Card(
                     clipBehavior: Clip.hardEdge,
                     child: ExpansionTile(
@@ -102,15 +102,13 @@ class CheckinSuccess extends StatelessWidget {
                       shape: Border.all(color: Colors.transparent),
                       children: [
                         for (var user
-                            in (statusInfo["alsoOnThisConnection"] as List))
+                            in statusInfo.alsoOnThisConnection!)
                           Padding(
                             padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
                             child: ProfileLinkButton(
-                              user: LightUser.fromJson(
-                                user["user"],
-                              ).promoteToUser(),
+                              user: user.user.promoteToUser(),
                               subTitle:
-                                  "${user["checkin"]["origin"]["name"]} -> ${user["checkin"]["destination"]["name"]}",
+                                  "${user.checkin.origin.name} -> ${user.checkin.destination.name}",
                             ),
                           ),
                       ],

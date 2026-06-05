@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:traewelcross/config/config.dart';
-import 'package:traewelcross/dialogs/checkin_conflict.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/pages/checkin/checkin_success.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
@@ -116,20 +115,9 @@ class _CheckInState extends State<CheckIn> {
     );
   }
 
-  Future<List<dynamic>> _getTrustedUsers() async {
+  Future<List<TrustedUser>> _getTrustedUsers() async {
     final apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/user/self/trusted-by",
-      HttpRequestTypes.GET,
-    );
-    switch (response.statusCode) {
-      case 200:
-        return jsonDecode(response.body)["data"];
-      default:
-        return Future.error(
-          "Couldn't get trusted users: ${response.statusCode}",
-        );
-    }
+    return await apiService.user.getTrustedByUsers();
   }
 
   Future<void> _checkIn({bool? force}) async {
@@ -138,82 +126,36 @@ class _CheckInState extends State<CheckIn> {
       waitForRes = true;
     });
     final apiService = getIt<ApiService>();
-    final body = {
-      "body": statusController.text,
-      "business": tripType.value,
-      "visibility": tripVisi.value,
-      "eventId": (event["isSelected"] ? event["eventId"] : null),
-      "toot": checkInInfo.toot,
-      "chainPost": checkInInfo.attachToLastToot,
-      "tripId": checkInInfo.tripId,
-      "lineName": checkInInfo.lineName,
-      "start": checkInInfo.departureId,
-      "destination": checkInInfo.destinationId,
-      "with": checkinUsers["withUsers"]
-          ? (checkinUsers["users"] as Map<String, int>).values.toList()
-          : null,
-      "departure": checkInInfo.departureTime,
-      "arrival": checkInInfo.arrivalTime,
-      "force": force ?? false,
-    };
     try {
-      final response = await apiService.request(
-        "/trains/checkin",
-        HttpRequestTypes.POST,
-        body: jsonEncode(body),
+      final response = await apiService.checkin.checkIn(
+        CheckInRequest.fromCheckInInfo(
+          cii: checkInInfo,
+          force: force ?? false,
+          type: tripType,
+          visi: tripVisi,
+          eventId: (event["isSelected"] ? event["eventId"] : null),
+          withUsers: (checkinUsers["withUsers"]
+              ? (checkinUsers["users"] as Map<String, int>).values.toList()
+              : null),
+        ),
       );
-      if (response.statusCode == 201) {
+      if (response.wasSuccess) {
         if (!mounted) return;
-        waitForRes = false;
+        setState(() {
+          waitForRes = false;
+        });
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (BuildContext context) =>
-                CheckinSuccess(statusInfo: jsonDecode(response.body)["data"]),
+                CheckinSuccess(statusInfo: response.object as CheckinResponse),
           ),
         );
-      } else if (response.statusCode == 409) {
-        setState(() {
-          waitForRes = false;
-        });
-        final errorinfo = jsonDecode(response.body)?["message"];
-        if (!mounted) {
-          return;
-        }
-        showDialog(
-          context: context,
-          builder: (context) => CheckinConflict(
-            lineName: errorinfo?["lineName"],
-            statusID: errorinfo?["status_id"]?.toString(),
-            forceCallback: () => _checkIn(force: true),
-          ),
-        );
-        return;
       } else {
+        if (!mounted) return;
         setState(() {
           waitForRes = false;
         });
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showMaterialBanner(
-          MaterialBanner(
-            content: Text(
-              "Couldn't check you in: ${response.statusCode} / ${response.body}",
-            ),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  if (!mounted) {
-                    return;
-                  }
-                  ScaffoldMessenger.of(context).clearMaterialBanners();
-                },
-
-                icon: const Icon(Icons.close),
-              ),
-            ],
-          ),
-        );
-        return;
       }
     } on TimeoutException {
       if (!mounted) return;
@@ -555,7 +497,7 @@ class TrustedCheckInButton extends StatelessWidget {
 
   final Map<String, dynamic> users;
   final Function(Map<String, dynamic>) onSelectionChange;
-  final Future<List<dynamic>> Function() getTrustedUsers;
+  final Future<List<TrustedUser>> Function() getTrustedUsers;
 
   @override
   Widget build(BuildContext context) {
@@ -605,26 +547,25 @@ class TrustedCheckInButton extends StatelessWidget {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                         final user =
-                                            asyncSnapshot.data![index]["user"];
+                                            asyncSnapshot.data![index].user;
                                         final isChecked = selectedUsers
-                                            .containsValue(user["id"]);
+                                            .containsValue(user.id);
                                         return CheckboxListTile(
                                           value: isChecked,
                                           onChanged: (value) {
                                             setState(() {
                                               if (value == true) {
-                                                selectedUsers[user["username"]] =
-                                                    user["id"];
+                                                selectedUsers[user.username] =
+                                                    user.id;
                                               } else {
                                                 selectedUsers.removeWhere(
-                                                  (key, val) =>
-                                                      val == user["id"],
+                                                  (key, val) => val == user.id,
                                                 );
                                               }
                                             });
                                           },
                                           title: ProfileLinkButton(
-                                            user: LightUser.fromJson(user).promoteToUser(),
+                                            user: user.promoteToUser(),
                                             enableNavigateToProfile: false,
                                           ),
                                         );

@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
+import 'package:http/http.dart' as http;
 
 class StationApiProvider {
   final ApiService _api;
@@ -22,5 +24,19 @@ class StationApiProvider {
     } else {
       return Future.error("${response.statusCode} / ${response.body}");
     }
+  }
+  Future<Station> getNearestStation(double latitude, double longitude) async {
+    http.Response response;
+    try {
+     response = await _api.request(
+      "/trains/station/nearby?latitude=$latitude&longitude=$longitude", .GET
+      );
+    } on TimeoutException {
+      throw TimeoutException("");
+    }
+    if(response.statusCode == 200){
+      return Station.fromJson(jsonDecode(response.body)["data"]);
+    }
+    throw TimeoutException("");
   }
 }
