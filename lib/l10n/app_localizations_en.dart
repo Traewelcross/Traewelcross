@@ -977,4 +977,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get secondCheckInFailure =>
       'This check-in was supposed to be done in two parts, however the second check-in failed. Please check-in the missing part of your journey manually';
+
+  @override
+  String get replaceWithDefaultText => 'Replace with Default';
 }

@@ -983,4 +983,7 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get secondCheckInFailure =>
       'Dieser Check-In sollte in zwei Teilen durchgeführt werden. Allerdings kam es beim Check-In des zweiten Teils deiner Reise zu einem Fehler. Bitte checke diesen Teil manuell ein.';
+
+  @override
+  String get replaceWithDefaultText => 'Mit Standardtext ersetzen';
 }

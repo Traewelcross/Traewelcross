@@ -330,6 +330,17 @@ class _CheckInState extends State<CheckIn> {
                           border: OutlineInputBorder(),
                         ),
                       ),
+                      Row(
+                        children: [
+                          ActionChip(
+                            avatar: Icon(Icons.paste),
+                            label: Text(localize.replaceWithDefaultText),
+                            onPressed: () => statusController.text =
+                                getIt<Config>().behavior.defaultStatusText ??
+                                "",
+                          ),
+                        ],
+                      ),
                       const SizedBox(height: 8),
                       TripTypeSelection(
                         selectedType: tripType.value,

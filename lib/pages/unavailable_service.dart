@@ -6,6 +6,8 @@ import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/shared.dart';
 
 class UnavailableService extends StatelessWidget {
+  const UnavailableService({super.key});
+
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;

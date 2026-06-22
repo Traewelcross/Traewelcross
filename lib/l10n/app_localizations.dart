@@ -1789,6 +1789,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This check-in was supposed to be done in two parts, however the second check-in failed. Please check-in the missing part of your journey manually'**
   String get secondCheckInFailure;
+
+  /// No description provided for @replaceWithDefaultText.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace with Default'**
+  String get replaceWithDefaultText;
 }
 
 class _AppLocalizationsDelegate

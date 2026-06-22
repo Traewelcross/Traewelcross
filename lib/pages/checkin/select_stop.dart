@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/checkin/checkin.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
@@ -14,7 +12,6 @@ import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/check_in_info.dart';
 import 'package:traewelcross/utils/ride_icon_tag_info.dart';
 import 'package:traewelcross/utils/shared.dart';
-import "package:http/http.dart" as http;
 
 class SelectStop extends StatefulWidget {
   const SelectStop({
@@ -75,7 +72,7 @@ class _SelectStopState extends State<SelectStop> {
     return response;
   }
 
-  void _checkIn(int id, String name, String arrivalTime, String tripId) {
+  /*void _checkIn(int id, String name, String arrivalTime, String tripId) {
     if (widget.editCallback != null) {
       widget.editCallback!({
         "name": name,
@@ -103,7 +100,7 @@ class _SelectStopState extends State<SelectStop> {
         ),
       ),
     );
-  }
+  }*/
 
   void _navigateToCheckIn({
     required CheckInInfo primary,
