@@ -713,10 +713,10 @@ class TripResource {
   final String? mode;
   final String number;
   final String lineName;
-  final int journeyNumber;
+  final int? journeyNumber;
   final Station origin;
   final Station destination;
-  final List<Stopover> stopovers;
+  List<Stopover> stopovers;
   final DataSource? dataSource;
   final TripResource? continuationTrip;
   TripResource({

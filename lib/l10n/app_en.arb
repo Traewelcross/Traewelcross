@@ -603,5 +603,7 @@
     }
   },
   "serviceUnavailable": "Sorry, but when trying to contact your selected Check-In provider, it returned a 503. This most likely means, that maintenance is being done, and it should be back in a few minutes.",
-  "checkOnTheWeb": "Check on the Web"
+  "checkOnTheWeb": "Check on the Web",
+  "secondCheckInSuccess": "This check-in was done in two parts, both were successful. Please note that you may not have received full points for your second check-in, depending on where the train changes and the second check-in starts.",
+  "secondCheckInFailure": "This check-in was supposed to be done in two parts, however the second check-in failed. Please check-in the missing part of your journey manually"
 }

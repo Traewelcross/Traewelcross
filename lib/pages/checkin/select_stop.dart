@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
+import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/checkin/checkin.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/departure_time.dart';
@@ -50,16 +51,31 @@ class _SelectStopState extends State<SelectStop> {
     final apiService = getIt<ApiService>();
     TripResource response;
     try {
-      response = await apiService.train.getTrip(tripId: widget.tripId, lineName: widget.lineName, startStopId: widget.startStopId);
+      response = await apiService.train.getTrip(
+        tripId: widget.tripId,
+        lineName: widget.lineName,
+        startStopId: widget.startStopId,
+      );
     } on TimeoutException {
       if (!mounted) return Future.error(TimeoutException(null));
       SharedFunctions.handleRequestTimeout(context, _fetchTrip);
       return Future.error(TimeoutException(null));
     }
+    response.stopovers = response.stopovers.reversed.toList();
+    // Workaround https://github.com/Traewelling/traewelling/issues/3791
+    for (var i = response.stopovers.length - 1; i >= 0; i--) {
+      if (widget.startStopId == response.stopovers[i].id) {
+        break;
+      } else {
+        response.stopovers.removeAt(i);
+      }
+    }
+    response.stopovers.removeLast();
+    response.stopovers = response.stopovers.reversed.toList();
     return response;
   }
 
-  void _checkIn(int id, String name, String arrivalTime) {
+  void _checkIn(int id, String name, String arrivalTime, String tripId) {
     if (widget.editCallback != null) {
       widget.editCallback!({
         "name": name,
@@ -75,7 +91,7 @@ class _SelectStopState extends State<SelectStop> {
         builder: (BuildContext context) => CheckIn(
           checkInInfo: CheckInInfo(
             departureId: widget.startStopId,
-            tripId: widget.tripId,
+            tripId: tripId,
             lineName: widget.lineName,
             destination: name,
             destinationId: id,
@@ -83,6 +99,36 @@ class _SelectStopState extends State<SelectStop> {
             departureTime: widget.departureTime,
             arrivalTime: arrivalTime,
           ),
+          isEdit: false,
+        ),
+      ),
+    );
+  }
+
+  void _navigateToCheckIn({
+    required CheckInInfo primary,
+    CheckInInfo? continuation,
+  }) {
+    if (widget.editCallback != null) {
+      // Use continuation details if available, otherwise fallback to primary
+      final finalLeg = continuation ?? primary;
+
+      widget.editCallback!({
+        "name": finalLeg.destination,
+        "id": finalLeg.destinationId,
+        "arrivalTime": finalLeg.arrivalTime,
+      });
+
+      Navigator.pop(context);
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => CheckIn(
+          checkInInfo: primary,
+          continuationCheckInInfo: continuation,
           isEdit: false,
         ),
       ),
@@ -125,7 +171,122 @@ class _SelectStopState extends State<SelectStop> {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    StopoverList(stopsFuture: _trip, callback: _checkIn),
+                    Expanded(
+                      child: FutureBuilder(
+                        future: _trip,
+                        builder: (ctx, snapshot) {
+                          if (snapshot.connectionState == .waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          if (snapshot.connectionState == .done) {
+                            if (snapshot.hasError) {
+                              return Center(
+                                child: Column(
+                                  children: [
+                                    Icon(Icons.error, size: 48),
+                                    Text(snapshot.error.toString()),
+                                  ],
+                                ),
+                              );
+                            }
+                            if (snapshot.hasData) {
+                              final trip = snapshot.data!;
+                              final mainStops = trip.stopovers;
+                              final continuation = trip.continuationTrip;
+
+                              final hasContinuation = continuation != null && widget.editCallback == null;
+                              final mainCount = mainStops.length;
+                              final continuationCount = hasContinuation
+                                  ? continuation.stopovers.length
+                                  : 0;
+                              final totalItems =
+                                  mainCount +
+                                  (hasContinuation ? 1 + continuationCount : 0);
+                              return ListView.builder(
+                                itemCount: totalItems,
+                                itemBuilder: (ctx, idx) {
+                                  if (idx < mainCount) {
+                                    return StopoverRow(
+                                      callback: (id, name, arrival) {
+                                        _navigateToCheckIn(
+                                          primary: .new(
+                                            departureId: widget.startStopId,
+                                            tripId: widget.tripId,
+                                            lineName: widget.lineName,
+                                            destination: mainStops[idx].name,
+                                            destinationId: mainStops[idx].id,
+                                            category: widget.category,
+                                            departureTime: widget.departureTime,
+                                            arrivalTime:
+                                                mainStops[idx].arrivalPlanned,
+                                          ),
+                                        );
+                                      },
+                                      stop: mainStops[idx],
+                                      tripId: trip.tripId,
+                                    );
+                                  } else if (hasContinuation &&
+                                      idx == mainCount) {
+                                    return ContinueHint(
+                                      continuation: continuation,
+                                    );
+                                  } else {
+                                    final continueIdx = idx - mainCount - 1;
+                                    return StopoverRow(
+                                      callback: (id, name, arrival) {
+                                        _navigateToCheckIn(
+                                          primary: .new(
+                                            departureId: widget.startStopId,
+                                            tripId: widget.tripId,
+                                            lineName: widget.lineName,
+                                            destination: mainStops.last.name,
+                                            destinationId: mainStops.last.id,
+                                            category: widget.category,
+                                            departureTime: widget.departureTime,
+                                            arrivalTime:
+                                                mainStops.last.arrivalPlanned,
+                                          ),
+                                          continuation: .new(
+                                            departureId:
+                                                continuation.stopovers.first.id,
+                                            tripId:
+                                                trip.continuationTrip!.tripId,
+                                            lineName:
+                                                trip.continuationTrip!.lineName,
+                                            destination: name,
+                                            destinationId: id,
+                                            category:
+                                                trip.continuationTrip!.category,
+                                            departureTime: continuation
+                                                .stopovers.first
+                                                .departurePlanned,
+                                            arrivalTime: continuation
+                                                .stopovers[continueIdx]
+                                                .arrivalPlanned,
+                                          ),
+                                        );
+                                      },
+                                      stop:
+                                          continuation!.stopovers[continueIdx],
+                                      tripId: continuation.tripId,
+                                    );
+                                  }
+                                },
+                              );
+                            }
+                            return Center(
+                              child: Column(
+                                children: [
+                                  Icon(Icons.error, size: 48),
+                                  Text("data object was null"),
+                                ],
+                              ),
+                            );
+                          }
+                          return const SizedBox(height: 0);
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -137,86 +298,110 @@ class _SelectStopState extends State<SelectStop> {
   }
 }
 
-class StopoverList extends StatelessWidget {
-  const StopoverList({
-    super.key,
-    required this.stopsFuture,
-    required this.callback,
-  });
-  final Future<TripResource> stopsFuture;
+class ContinueHint extends StatelessWidget {
+  const ContinueHint({super.key, required this.continuation});
+
+  final TripResource continuation;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: .min,
+        children: [
+          SizedBox(height: 8),
+          Text(
+            AppLocalizations.of(context)!.continuationTrip(
+              continuation.lineName,
+              continuation.destination.name,
+            ),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall!.copyWith(fontStyle: .italic),
+          ),
+          SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+}
+
+/*class StopoverList extends StatelessWidget {
+  const StopoverList({super.key, required this.stops, required this.callback});
+  final List<Stopover> stops;
   final Function(int, String, String) callback;
   @override
   Widget build(BuildContext context) {
+    if (stops.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisSize: .min,
+          children: [
+            const Icon(Icons.not_listed_location, size: 48),
+            Center(child: Text(AppLocalizations.of(context)!.noStopoversFound)),
+          ],
+        ),
+      );
+    }
     return Expanded(
-      child: FutureBuilder(
-        future: stopsFuture,
-        builder: (context, asyncSnapshot) {
-          if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (asyncSnapshot.hasError) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.error),
-                  Text(asyncSnapshot.error.toString()),
-                ],
-              ),
-            );
-          }
-          if (asyncSnapshot.hasData) {
-            final trip = asyncSnapshot.data!;
-            if (trip.stopovers.isEmpty) {
-              return const Center(child: Text("No stops found."));
-            }
-            return ListView.builder(
-              itemCount: trip.stopovers.length,
-              itemBuilder: (BuildContext context, int i) {
-                return InkWell(
-                  onTap: () {
-                    callback.call(
-                      trip.stopovers[i].id,
-                      trip.stopovers[i].name,
-                      trip.stopovers[i].arrivalPlanned!,
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.circle, size: 6),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            trip.stopovers[i].name,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            softWrap: false,
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            DepartureTime(
-                              planned: trip.stopovers[i].arrivalPlanned!,
-                              real: trip.stopovers[i].arrivalReal,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
-          }
-          return const SizedBox(height: 0);
+      child: ListView.builder(
+        itemCount: stops.length,
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int i) {
+          return StopoverRow(callback: callback, stop: stops[i]);
         },
+      ),
+    );
+  }
+}*/
+
+class StopoverRow extends StatelessWidget {
+  const StopoverRow({
+    super.key,
+    required this.callback,
+    required this.stop,
+    required this.tripId,
+  });
+
+  final Function(int, String, String) callback;
+  final Stopover stop;
+  final String tripId;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        callback.call(stop.id, stop.name, stop.arrivalPlanned!);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            const Icon(Icons.circle, size: 6),
+            const SizedBox(width: 4),
+            Expanded(
+              child: Text(
+                stop.name,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                softWrap: false,
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                DepartureTime(
+                  planned: stop.arrivalPlanned!,
+                  real: stop.arrivalReal,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

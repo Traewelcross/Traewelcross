@@ -975,4 +975,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get checkOnTheWeb => 'Im Web anzeigen';
+
+  @override
+  String get secondCheckInSuccess =>
+      'Dieser Check-In wurde in zwei Teilen durchgeführt. Beide Teile deiner Reise wurden erfolgreich eingecheckt. Bitte beachte, dass du für deinen zweiten Teil eventuell nicht die volle Punktzahl erreicht hast, je nach dem, wann die Linie sich ändert und der zweite Check-In anfängt';
+
+  @override
+  String get secondCheckInFailure =>
+      'Dieser Check-In sollte in zwei Teilen durchgeführt werden. Allerdings kam es beim Check-In des zweiten Teils deiner Reise zu einem Fehler. Bitte checke diesen Teil manuell ein.';
 }

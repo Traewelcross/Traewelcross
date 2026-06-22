@@ -127,7 +127,7 @@ class _RideIconTagState extends State<RideIconTag> {
   Future<dynamic> _getLine() async {
     return jsonDecode(
       await rootBundle.loadString("assets/line_colors/line_colors.json"),
-    )[widget.iconInfo.operatorIdentifier][widget.iconInfo.lineName?.replaceAll(
+    )[widget.iconInfo.operatorIdentifier]?[widget.iconInfo.lineName?.replaceAll(
       " ",
       "",
     )];

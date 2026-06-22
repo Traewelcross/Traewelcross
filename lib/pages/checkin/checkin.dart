@@ -24,8 +24,14 @@ import 'package:traewelcross/utils/ride_icon_tag_info.dart';
 import 'package:traewelcross/utils/shared.dart';
 
 class CheckIn extends StatefulWidget {
-  const CheckIn({super.key, required this.checkInInfo, required this.isEdit});
+  const CheckIn({
+    super.key,
+    required this.checkInInfo,
+    required this.isEdit,
+    this.continuationCheckInInfo,
+  });
   final CheckInInfo checkInInfo;
+  final CheckInInfo? continuationCheckInInfo;
   final bool isEdit;
 
   @override
@@ -127,6 +133,7 @@ class _CheckInState extends State<CheckIn> {
     });
     final apiService = getIt<ApiService>();
     try {
+      checkInInfo.body = statusController.text;
       final response = await apiService.checkin.checkIn(
         CheckInRequest.fromCheckInInfo(
           cii: checkInInfo,
@@ -140,6 +147,38 @@ class _CheckInState extends State<CheckIn> {
         ),
       );
       if (response.wasSuccess) {
+        if (widget.continuationCheckInInfo != null) {
+          final continueRequest = CheckInRequest.fromCheckInInfo(
+            cii: widget.continuationCheckInInfo!,
+            type: tripType,
+            visi: tripVisi,
+            eventId: (event["isSelected"] ? event["eventId"] : null),
+            withUsers: (checkinUsers["withUsers"]
+                ? (checkinUsers["users"] as Map<String, int>).values.toList()
+                : null),
+            force: force ?? false,
+          );
+          continueRequest.toot = checkInInfo.toot;
+          continueRequest.chainPost = checkInInfo.attachToLastToot;
+          continueRequest.body = checkInInfo.body;
+          final continuationResponse = await apiService.checkin.checkIn(
+            continueRequest,
+          );
+          if (!mounted) return;
+          setState(() {
+            waitForRes = false;
+          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => CheckinSuccess(
+                statusInfo: response.object as CheckinResponse,
+                continueSuccess: continuationResponse.wasSuccess,
+              ),
+            ),
+          );
+          return;
+        }
         if (!mounted) return;
         setState(() {
           waitForRes = false;
@@ -147,8 +186,10 @@ class _CheckInState extends State<CheckIn> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) =>
-                CheckinSuccess(statusInfo: response.object as CheckinResponse),
+            builder: (BuildContext context) => CheckinSuccess(
+              statusInfo: response.object as CheckinResponse,
+              continueSuccess: null,
+            ),
           ),
         );
       } else {

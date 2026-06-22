@@ -969,4 +969,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get checkOnTheWeb => 'Check on the Web';
+
+  @override
+  String get secondCheckInSuccess =>
+      'This check-in was done in two parts, both were successful. Please note that you may not have received full points for your second check-in, depending on where the train changes and the second check-in starts.';
+
+  @override
+  String get secondCheckInFailure =>
+      'This check-in was supposed to be done in two parts, however the second check-in failed. Please check-in the missing part of your journey manually';
 }

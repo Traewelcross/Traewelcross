@@ -279,5 +279,7 @@
     "noStopoversFound": "Entschuldige, aber beim abfragen der Haltestellen kam ein leeres Ergebnis zurück",
     "continuationTrip": "Ab hier: fährt weiter als {lineName} nach {destination}",
     "serviceUnavailable": "Entschuldige, aber bei dem Versuch, deinen Check-In Provider zu kontaktieren, kam der Code 503 zurück. Vermutlich werden gerade Wartungsarbeiten durchgeführt, die in ein paar Minuten vorbei sein sollten. Komme später wieder.",
-    "checkOnTheWeb": "Im Web anzeigen"
+    "checkOnTheWeb": "Im Web anzeigen",
+    "secondCheckInSuccess": "Dieser Check-In wurde in zwei Teilen durchgeführt. Beide Teile deiner Reise wurden erfolgreich eingecheckt. Bitte beachte, dass du für deinen zweiten Teil eventuell nicht die volle Punktzahl erreicht hast, je nach dem, wann die Linie sich ändert und der zweite Check-In anfängt",
+    "secondCheckInFailure": "Dieser Check-In sollte in zwei Teilen durchgeführt werden. Allerdings kam es beim Check-In des zweiten Teils deiner Reise zu einem Fehler. Bitte checke diesen Teil manuell ein."
 }

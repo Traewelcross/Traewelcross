@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traewelcross/enums/error_type.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
+import 'package:traewelcross/pages/testpad.dart';
 import 'package:traewelcross/utils/api_providers/train_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/user_api_provider.dart';
 import 'package:traewelcross/utils/authentication.dart';
@@ -19,7 +21,8 @@ import 'package:traewelcross/utils/api_providers/event_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/alert_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/checkin_api_provider.dart';
 
-
+class UnavailableException implements Exception {
+}
 
 class ApiService {
   static const String _baseURL = "https://traewelling.de/api/v1";
@@ -45,7 +48,16 @@ class ApiService {
   }
 
   Future<int> getUserFull({required bool withId}) async {
-    final userInfo = await request("/auth/user", HttpRequestTypes.GET);
+    http.Response userInfo;
+    try {
+      userInfo = await request("/auth/user", HttpRequestTypes.GET);
+    }
+    catch (e) {
+      rethrow;
+    }
+    if(userInfo.statusCode == 503){
+      throw UnavailableException();
+    }
     final userName = jsonDecode(userInfo.body)["data"]["id"];
     withId ? await SharedPreferencesAsync().setInt("userid", userName) : "";
     await SharedPreferencesAsync().setString(

@@ -1777,6 +1777,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check on the Web'**
   String get checkOnTheWeb;
+
+  /// No description provided for @secondCheckInSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'This check-in was done in two parts, both were successful. Please note that you may not have received full points for your second check-in, depending on where the train changes and the second check-in starts.'**
+  String get secondCheckInSuccess;
+
+  /// No description provided for @secondCheckInFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'This check-in was supposed to be done in two parts, however the second check-in failed. Please check-in the missing part of your journey manually'**
+  String get secondCheckInFailure;
 }
 
 class _AppLocalizationsDelegate

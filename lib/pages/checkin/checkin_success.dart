@@ -8,8 +8,9 @@ import 'package:traewelcross/app.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 
 class CheckinSuccess extends StatelessWidget {
-  const CheckinSuccess({super.key, required this.statusInfo});
+  const CheckinSuccess({super.key, required this.statusInfo, this.continueSuccess});
   final CheckinResponse statusInfo;
+  final bool? continueSuccess;
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
@@ -82,13 +83,15 @@ class CheckinSuccess extends StatelessWidget {
                 ),
                 if (statusInfo.status.event != null) ...[
                   const SizedBox(height: 6),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.calendar_month),
-                      const SizedBox(width: 4),
-                      Text(statusInfo.status.event!.name),
-                    ],
+                  Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.calendar_month),
+                        const SizedBox(width: 4),
+                        Text(statusInfo.status.event!.name),
+                      ],
+                    ),
                   ),
                 ],
                 if (statusInfo.alsoOnThisConnection != null &&
@@ -116,6 +119,36 @@ class CheckinSuccess extends StatelessWidget {
                   ),
                   const SizedBox(height: 72),
                 ],
+                if(continueSuccess == true)
+                Card.filled(color: Color.alphaBlend(
+                    Colors.blue.withValues(alpha: 0.2),
+                    Theme.of(context).colorScheme.surface,
+                  ),child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.info),
+                        SizedBox(width: 8,),
+                        Expanded(child: Text(localize.secondCheckInSuccess)),
+                      ],
+                    ),
+                  ),),
+                if(continueSuccess == false)
+                Card.filled(color: Color.alphaBlend(
+                    Colors.red.withValues(alpha: 0.2),
+                    Theme.of(context).colorScheme.surface,
+                  ), child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.error),
+                        SizedBox(width: 8,),
+
+                        Expanded(child: Text(localize.secondCheckInFailure)),
+                      ],
+                    ),
+                  ))
+
               ],
             );
           },

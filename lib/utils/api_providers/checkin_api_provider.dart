@@ -23,6 +23,7 @@ class CheckinApiProvider {
       .POST,
       body: jsonEncode(cir.toJson()),
     );
+    print(response.statusCode);
     if (response.statusCode == 201) {
       return GenericStatusResponseWithObject(wasSuccess: true, object: CheckinResponse.fromJson(jsonDecode(response.body)["data"]));
     }
@@ -45,7 +46,7 @@ class CheckinApiProvider {
     _sM.currentState?.showMaterialBanner(
       MaterialBanner(
         content: Text(
-          "${AppLocalizations.of(_context!)!.genericErrorSnackBar} ${response.statusCode}",
+          "${AppLocalizations.of(_context!)!.genericErrorSnackBar} ${response.statusCode} / ${jsonDecode(response.body)?["message"]}",
         ),
         actions: [
           IconButton(
@@ -61,6 +62,7 @@ class CheckinApiProvider {
         ],
       ),
     );
+    print(response.body);
     return GenericStatusResponseWithObject(wasSuccess: false, object: null);
   }
 }

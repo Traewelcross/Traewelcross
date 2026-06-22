@@ -675,7 +675,7 @@ TripResource _$TripResourceFromJson(Map<String, dynamic> json) => TripResource(
   mode: json['mode'] as String?,
   number: json['number'] as String,
   lineName: json['lineName'] as String,
-  journeyNumber: (json['journeyNumber'] as num).toInt(),
+  journeyNumber: (json['journeyNumber'] as num?)?.toInt(),
   origin: Station.fromJson(json['origin'] as Map<String, dynamic>),
   destination: Station.fromJson(json['destination'] as Map<String, dynamic>),
   stopovers: (json['stopovers'] as List<dynamic>)
