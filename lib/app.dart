@@ -24,6 +24,7 @@ import 'package:traewelcross/pages/on_the_move.dart';
 import 'package:traewelcross/pages/preferences/preferences.dart';
 import 'package:traewelcross/pages/profile_view.dart';
 import 'package:traewelcross/pages/stats/statistics.dart';
+import 'package:traewelcross/pages/unavailable_service.dart';
 import 'package:traewelcross/push_notify/push_common.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
@@ -235,6 +236,15 @@ class _AppHomeState extends State<AppHome> {
               ),
             ),
           ),
+        );
+        return false;
+      } on UnavailableException {
+        final buildCtx =
+            getIt<GlobalKey<NavigatorState>>().currentState?.context;
+        if (!buildCtx!.mounted) return false;
+        Navigator.pushReplacement(
+          buildCtx,
+          MaterialPageRoute(builder: (ctx) => UnavailableService()),
         );
         return false;
       } catch (e) {

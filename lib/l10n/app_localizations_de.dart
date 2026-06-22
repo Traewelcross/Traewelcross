@@ -959,4 +959,20 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get multiAccountNotice =>
       'Du kannst mehrere Accounts hinzufügen, indem du dein Profilbild im Profiltab lange gedrückt hältst. Erwarte Fehler.';
+
+  @override
+  String get noStopoversFound =>
+      'Entschuldige, aber beim abfragen der Haltestellen kam ein leeres Ergebnis zurück';
+
+  @override
+  String continuationTrip(String lineName, String destination) {
+    return 'Ab hier: fährt weiter als $lineName nach $destination';
+  }
+
+  @override
+  String get serviceUnavailable =>
+      'Entschuldige, aber bei dem Versuch, deinen Check-In Provider zu kontaktieren, kam der Code 503 zurück. Vermutlich werden gerade Wartungsarbeiten durchgeführt, die in ein paar Minuten vorbei sein sollten. Komme später wieder.';
+
+  @override
+  String get checkOnTheWeb => 'Im Web anzeigen';
 }

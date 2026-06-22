@@ -953,4 +953,20 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get multiAccountNotice =>
       'You can add more accounts through a long tap on your profile picture in the profile tab. Expect bugs and hiccups.';
+
+  @override
+  String get noStopoversFound =>
+      'Sorry, but when requesting the stops of this trip, none were found';
+
+  @override
+  String continuationTrip(String lineName, String destination) {
+    return 'From here on: continues as $lineName to $destination';
+  }
+
+  @override
+  String get serviceUnavailable =>
+      'Sorry, but when trying to contact your selected Check-In provider, it returned a 503. This most likely means, that maintenance is being done, and it should be back in a few minutes.';
+
+  @override
+  String get checkOnTheWeb => 'Check on the Web';
 }

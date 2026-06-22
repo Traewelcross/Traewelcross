@@ -1753,6 +1753,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You can add more accounts through a long tap on your profile picture in the profile tab. Expect bugs and hiccups.'**
   String get multiAccountNotice;
+
+  /// No description provided for @noStopoversFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, but when requesting the stops of this trip, none were found'**
+  String get noStopoversFound;
+
+  /// No description provided for @continuationTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'From here on: continues as {lineName} to {destination}'**
+  String continuationTrip(String lineName, String destination);
+
+  /// No description provided for @serviceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, but when trying to contact your selected Check-In provider, it returned a 503. This most likely means, that maintenance is being done, and it should be back in a few minutes.'**
+  String get serviceUnavailable;
+
+  /// No description provided for @checkOnTheWeb.
+  ///
+  /// In en, this message translates to:
+  /// **'Check on the Web'**
+  String get checkOnTheWeb;
 }
 
 class _AppLocalizationsDelegate
