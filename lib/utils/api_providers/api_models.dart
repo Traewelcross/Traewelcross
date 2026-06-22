@@ -653,6 +653,92 @@ class TrustedUser {
   Map<String, dynamic> toJson() => _$TrustedUserToJson(this);
 }
 
+@JsonSerializable(fieldRename: .none)
+class Departure {
+  final String tripId;
+  final String? when;
+  final String plannedWhen;
+  final String? platform;
+  final String? plannedPlatform;
+  final String direction;
+  final LineResource? line;
+  final bool cancelled;
+  final Station station;
+  Departure({
+    required this.tripId,
+    this.when,
+    required this.plannedWhen,
+    this.platform,
+    this.plannedPlatform,
+    required this.direction,
+    this.line,
+    required this.cancelled,
+    required this.station,
+  });
+    factory Departure.fromJson(Map<String, dynamic> json) =>
+      _$DepartureFromJson(json);
+  Map<String, dynamic> toJson() => _$DepartureToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class LineResource {
+  final String? type;
+  final String? id;
+  final String? fahrtNr;
+  final String? name;
+  final String? color;
+  final String? textColor;
+  final String? mode;
+  final String? product;
+  LineResource({
+    this.type,
+    this.id,
+    this.fahrtNr,
+    this.name,
+    this.color,
+    this.textColor,
+    this.mode,
+    this.product,
+  });
+    factory LineResource.fromJson(Map<String, dynamic> json) =>
+      _$LineResourceFromJson(json);
+  Map<String, dynamic> toJson() => _$LineResourceToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class TripResource {
+  final int id;
+  final String tripId;
+  final String category;
+  final String? mode;
+  final String number;
+  final String lineName;
+  final int journeyNumber;
+  final Station origin;
+  final Station destination;
+  final List<Stopover> stopovers;
+  final DataSource? dataSource;
+  final TripResource? continuationTrip;
+  TripResource({
+    required this.id,
+    required this.tripId,
+    required this.category,
+    this.mode,
+    required this.number,
+    required this.lineName,
+    required this.journeyNumber,
+    required this.origin,
+    required this.destination,
+    required this.stopovers,
+    this.dataSource,
+    this.continuationTrip,
+  });
+      factory TripResource.fromJson(Map<String, dynamic> json) =>
+      _$TripResourceFromJson(json);
+  Map<String, dynamic> toJson() => _$TripResourceToJson(this);
+}
+
+
 class GenericStatusResponse {
   final bool wasSuccess;
   final String? body;

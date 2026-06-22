@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,14 +8,13 @@ import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/ride_icon_tag.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/depart_types.dart';
-import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/components/platform.dart';
 import 'package:traewelcross/pages/checkin/select_stop.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/ride_icon_tag_info.dart';
 import 'package:traewelcross/utils/shared.dart';
-import "package:http/http.dart" as http;
 
 class SelectConnection extends StatefulWidget {
   const SelectConnection({
@@ -33,7 +31,7 @@ class SelectConnection extends StatefulWidget {
 class _SelectConnectionState extends State<SelectConnection> {
   DateTime departureTime = DateTime.now();
   DepartTypes departType = DepartTypes.all;
-  late Future<List<dynamic>> _departuresFuture;
+  late Future<List<Departure>> _departuresFuture;
 
   @override
   void initState() {
@@ -41,14 +39,11 @@ class _SelectConnectionState extends State<SelectConnection> {
     _departuresFuture = _fetchDepartures();
   }
 
-  Future<List<dynamic>> _fetchDepartures() async {
+  Future<List<Departure>> _fetchDepartures() async {
     final apiService = getIt<ApiService>();
-    http.Response response;
+    List<Departure> response;
     try {
-      response = await apiService.request(
-        "/station/${widget.stationId}/departures?when=${departureTime.toUtc().toIso8601String()}&travelType=$departType",
-        HttpRequestTypes.GET,
-      );
+      response = await apiService.station.getDepartures(stationId: widget.stationId, when: departureTime, type: departType);
     } on TimeoutException {
       if (!mounted) return Future.value([]);
       SharedFunctions.handleRequestTimeout(context, _fetchDepartures);
@@ -56,11 +51,7 @@ class _SelectConnectionState extends State<SelectConnection> {
     } catch (e) {
       return Future.error(e);
     }
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body)["data"];
-    } else {
-      return Future.error(response.body);
-    }
+    return response;
   }
 
   void _updateTime() async {
@@ -100,30 +91,7 @@ class _SelectConnectionState extends State<SelectConnection> {
 
   void _setHome() async {
     final apiService = getIt<ApiService>();
-    final response = await apiService.request(
-      "/station/${widget.stationId}/home",
-      HttpRequestTypes.PUT,
-    );
-    if (!mounted) return;
-
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)!.newHomeSuccessful(widget.stationName),
-          ),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)!.genericErrorSnackBar +
-                response.statusCode.toString(),
-          ),
-        ),
-      );
-    }
+    apiService.user.setHome(widget.stationId, widget.stationName);
   }
 
   @override
@@ -302,7 +270,7 @@ class _DepartureList extends StatelessWidget {
     required this.retryTrigger,
   });
 
-  final Future<List<dynamic>> departuresFuture;
+  final Future<List<Departure>> departuresFuture;
   final String stationName;
   final Function() retryTrigger;
   @override
@@ -350,7 +318,7 @@ class _DepartureList extends StatelessWidget {
               itemBuilder: (BuildContext context, int i) {
                 final departure = departures[i];
                 if (!showOtherStations &&
-                    departure["station"]["name"] != stationName) {
+                    departure.station.name != stationName) {
                   return SizedBox(height: 0);
                 }
                 return InkWell(
@@ -359,12 +327,12 @@ class _DepartureList extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) => SelectStop(
-                          tripId: departure["tripId"],
-                          destination: departure["direction"],
-                          lineName: departure["line"]["name"],
-                          startStopId: departure["station"]["id"],
-                          category: departure["line"]["product"],
-                          departureTime: departure["plannedWhen"],
+                          tripId: departure.tripId,
+                          destination: departure.direction,
+                          lineName: departure.line!.name!,
+                          startStopId: departure.station.id,
+                          category: departure.line!.product!,
+                          departureTime: departure.plannedWhen,
                         ),
                       ),
                     );
@@ -383,8 +351,8 @@ class _DepartureList extends StatelessWidget {
                                 children: [
                                   RideIconTag(
                                     iconInfo: RideIconTagInfo(
-                                      category: departure["line"]["product"],
-                                      lineName: departure["line"]["name"],
+                                      category: departure.line!.product,
+                                      lineName: departure.line!.name,
                                       width: 24,
                                     ),
                                   ),
@@ -396,7 +364,7 @@ class _DepartureList extends StatelessWidget {
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
-                                      departure["direction"],
+                                      departure.direction,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       softWrap: false,
@@ -404,7 +372,7 @@ class _DepartureList extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              if (departure["station"]["name"] != stationName)
+                              if (departure.station.name != stationName)
                                 Row(
                                   children: [
                                     Expanded(
@@ -412,7 +380,7 @@ class _DepartureList extends StatelessWidget {
                                         AppLocalizations.of(
                                           context,
                                         )!.startsAtDifferentStop(
-                                          departure["station"]["name"],
+                                          departure.station.name,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
@@ -429,13 +397,13 @@ class _DepartureList extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             DepartureTime(
-                              planned: departure["plannedWhen"],
-                              real: departure["when"],
+                              planned: departure.plannedWhen,
+                              real: departure.when,
                             ),
-                            if (departure["platform"].toString().isNotEmpty)
+                            if (departure.platform?.toString().isNotEmpty == true)
                               Platform(
-                                platform: departure["platform"],
-                                plannedPlatform: departure["plannedPlatform"],
+                                platform: departure.platform!,
+                                plannedPlatform: departure.plannedPlatform!,
                               ),
                           ],
                         ),

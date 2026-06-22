@@ -320,4 +320,20 @@ class UserApiProvider {
     }
     return [];
   }
+
+  Future<void> setHome(int id, String name) async {
+final response = await _api.request(
+      "/station/$id/home",
+      .PUT,
+    );
+    if (response.statusCode == 200) {
+      SharedFunctions.sendSnackBar(
+        AppLocalizations.of(_context!)!.newHomeSuccessful(name)
+      );
+    } else {
+      SharedFunctions.sendSnackBar(
+        AppLocalizations.of(_context!)!.genericErrorSnackBar + response.statusCode.toString()
+      );
+    }
+  }
 }

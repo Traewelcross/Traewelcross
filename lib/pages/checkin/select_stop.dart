@@ -8,6 +8,7 @@ import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/departure_time.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/ride_icon_tag.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/check_in_info.dart';
 import 'package:traewelcross/utils/ride_icon_tag_info.dart';
@@ -37,42 +38,25 @@ class SelectStop extends StatefulWidget {
 }
 
 class _SelectStopState extends State<SelectStop> {
-  late Future<List<dynamic>> _stops;
+  late Future<TripResource> _trip;
 
   @override
   void initState() {
     super.initState();
-    _stops = _fetchStops();
+    _trip = _fetchTrip();
   }
 
-  Future<List<dynamic>> _fetchStops() async {
+  Future<TripResource> _fetchTrip() async {
     final apiService = getIt<ApiService>();
-    http.Response response;
+    TripResource response;
     try {
-      response = await apiService.request(
-        "/trains/trip?hafasTripId=${Uri.encodeComponent(widget.tripId)}&lineName=${Uri.encodeComponent(widget.lineName)}&start=${Uri.encodeComponent(widget.startStopId.toString())}",
-        HttpRequestTypes.GET,
-      );
+      response = await apiService.train.getTrip(tripId: widget.tripId, lineName: widget.lineName, startStopId: widget.startStopId);
     } on TimeoutException {
-      if (!mounted) return [];
-      SharedFunctions.handleRequestTimeout(context, _fetchStops);
-      return [];
+      if (!mounted) return Future.error(TimeoutException(null));
+      SharedFunctions.handleRequestTimeout(context, _fetchTrip);
+      return Future.error(TimeoutException(null));
     }
-    if (response.statusCode == 200) {
-      List<dynamic> stopovers = jsonDecode(response.body)["data"]["stopovers"];
-      stopovers = stopovers.reversed.toList();
-      // Workaround https://github.com/Traewelling/traewelling/issues/3791
-      for (var i = stopovers.length - 1; i >= 0; i--) {
-        if (widget.startStopId == stopovers[i]["id"]) {
-          break;
-        } else {
-          stopovers.removeAt(i);
-        }
-      }
-      stopovers.removeLast();
-      return stopovers.reversed.toList();
-    }
-    return Future.error(response.body);
+    return response;
   }
 
   void _checkIn(int id, String name, String arrivalTime) {
@@ -141,7 +125,7 @@ class _SelectStopState extends State<SelectStop> {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    StopoverList(stopsFuture: _stops, callback: _checkIn),
+                    StopoverList(stopsFuture: _trip, callback: _checkIn),
                   ],
                 ),
               ),
@@ -159,7 +143,7 @@ class StopoverList extends StatelessWidget {
     required this.stopsFuture,
     required this.callback,
   });
-  final Future<List<dynamic>> stopsFuture;
+  final Future<TripResource> stopsFuture;
   final Function(int, String, String) callback;
   @override
   Widget build(BuildContext context) {
@@ -182,19 +166,19 @@ class StopoverList extends StatelessWidget {
             );
           }
           if (asyncSnapshot.hasData) {
-            final stopovers = asyncSnapshot.data!;
-            if (stopovers.isEmpty) {
+            final trip = asyncSnapshot.data!;
+            if (trip.stopovers.isEmpty) {
               return const Center(child: Text("No stops found."));
             }
             return ListView.builder(
-              itemCount: stopovers.length,
+              itemCount: trip.stopovers.length,
               itemBuilder: (BuildContext context, int i) {
                 return InkWell(
                   onTap: () {
                     callback.call(
-                      stopovers[i]["id"],
-                      stopovers[i]["name"],
-                      stopovers[i]["arrivalPlanned"],
+                      trip.stopovers[i].id,
+                      trip.stopovers[i].name,
+                      trip.stopovers[i].arrivalPlanned!,
                     );
                   },
                   child: Padding(
@@ -205,7 +189,7 @@ class StopoverList extends StatelessWidget {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            stopovers[i]["name"],
+                            trip.stopovers[i].name,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -219,8 +203,8 @@ class StopoverList extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             DepartureTime(
-                              planned: stopovers[i]["arrivalPlanned"],
-                              real: stopovers[i]["arrivalReal"],
+                              planned: trip.stopovers[i].arrivalPlanned!,
+                              real: trip.stopovers[i].arrivalReal,
                             ),
                           ],
                         ),

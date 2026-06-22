@@ -31,6 +31,7 @@ class CheckinApiProvider {
       if (_context?.mounted != true) {
         return GenericStatusResponseWithObject(wasSuccess: false, object: null);
       }
+      // TODO CRITICAL: POST /api/v1/trains/checkin 409 response: message.status_id and message.lineName are deprecated. Use data.conflicts (full StatusResource array) instead (#4677)
       showDialog(
         context: _context!,
         builder: (ctx) => CheckinConflict(

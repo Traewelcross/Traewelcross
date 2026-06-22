@@ -618,3 +618,89 @@ TrustedUser _$TrustedUserFromJson(Map<String, dynamic> json) => TrustedUser(
 
 Map<String, dynamic> _$TrustedUserToJson(TrustedUser instance) =>
     <String, dynamic>{'user': instance.user, 'expiresAt': instance.expiresAt};
+
+Departure _$DepartureFromJson(Map<String, dynamic> json) => Departure(
+  tripId: json['tripId'] as String,
+  when: json['when'] as String?,
+  plannedWhen: json['plannedWhen'] as String,
+  platform: json['platform'] as String?,
+  plannedPlatform: json['plannedPlatform'] as String?,
+  direction: json['direction'] as String,
+  line: json['line'] == null
+      ? null
+      : LineResource.fromJson(json['line'] as Map<String, dynamic>),
+  cancelled: json['cancelled'] as bool,
+  station: Station.fromJson(json['station'] as Map<String, dynamic>),
+);
+
+Map<String, dynamic> _$DepartureToJson(Departure instance) => <String, dynamic>{
+  'tripId': instance.tripId,
+  'when': instance.when,
+  'plannedWhen': instance.plannedWhen,
+  'platform': instance.platform,
+  'plannedPlatform': instance.plannedPlatform,
+  'direction': instance.direction,
+  'line': instance.line,
+  'cancelled': instance.cancelled,
+  'station': instance.station,
+};
+
+LineResource _$LineResourceFromJson(Map<String, dynamic> json) => LineResource(
+  type: json['type'] as String?,
+  id: json['id'] as String?,
+  fahrtNr: json['fahrtNr'] as String?,
+  name: json['name'] as String?,
+  color: json['color'] as String?,
+  textColor: json['textColor'] as String?,
+  mode: json['mode'] as String?,
+  product: json['product'] as String?,
+);
+
+Map<String, dynamic> _$LineResourceToJson(LineResource instance) =>
+    <String, dynamic>{
+      'type': instance.type,
+      'id': instance.id,
+      'fahrtNr': instance.fahrtNr,
+      'name': instance.name,
+      'color': instance.color,
+      'textColor': instance.textColor,
+      'mode': instance.mode,
+      'product': instance.product,
+    };
+
+TripResource _$TripResourceFromJson(Map<String, dynamic> json) => TripResource(
+  id: (json['id'] as num).toInt(),
+  tripId: json['tripId'] as String,
+  category: json['category'] as String,
+  mode: json['mode'] as String?,
+  number: json['number'] as String,
+  lineName: json['lineName'] as String,
+  journeyNumber: (json['journeyNumber'] as num).toInt(),
+  origin: Station.fromJson(json['origin'] as Map<String, dynamic>),
+  destination: Station.fromJson(json['destination'] as Map<String, dynamic>),
+  stopovers: (json['stopovers'] as List<dynamic>)
+      .map((e) => Stopover.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  dataSource: json['dataSource'] == null
+      ? null
+      : DataSource.fromJson(json['dataSource'] as Map<String, dynamic>),
+  continuationTrip: json['continuationTrip'] == null
+      ? null
+      : TripResource.fromJson(json['continuationTrip'] as Map<String, dynamic>),
+);
+
+Map<String, dynamic> _$TripResourceToJson(TripResource instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'tripId': instance.tripId,
+      'category': instance.category,
+      'mode': instance.mode,
+      'number': instance.number,
+      'lineName': instance.lineName,
+      'journeyNumber': instance.journeyNumber,
+      'origin': instance.origin,
+      'destination': instance.destination,
+      'stopovers': instance.stopovers,
+      'dataSource': instance.dataSource,
+      'continuationTrip': instance.continuationTrip,
+    };
