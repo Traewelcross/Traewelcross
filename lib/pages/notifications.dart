@@ -93,9 +93,13 @@ class _NotificationsViewState extends State<NotificationsView> {
       child: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          if (_notifications.isEmpty)
+          if (_notifications.isEmpty && !_isLoading)
             SliverToBoxAdapter(
               child: Center(child: Text(localize.noNotificationsAvailable)),
+            ),
+          if(_notifications.isEmpty)
+            SliverToBoxAdapter(
+              child: Center(child: CircularProgressIndicator(),),
             ),
           if (_notifications.isNotEmpty)
             SliverList.builder(
