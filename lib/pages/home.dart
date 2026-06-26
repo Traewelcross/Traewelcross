@@ -649,9 +649,11 @@ class _AlertsState extends State<Alerts> {
                             _ => const SizedBox(width: 0),
                           },
                           SizedBox(width: 8),
-                          Text(
-                            alert.translations[0].title,
-                            style: Theme.of(context).textTheme.titleMedium,
+                          Expanded(
+                            child: Text(
+                              alert.translations[0].title,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
                           ),
                         ],
                       ),
