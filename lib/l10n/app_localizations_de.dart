@@ -720,7 +720,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get delaySystemTimeOverrideExplain =>
-      'Die Zeit die verstreichen muss, dass die vorausgefüllte Zeit nicht Systemzeit, sondern die geplante Zeit ist. Leave empty to always use system time. Tippen zum ändern.';
+      'Die Zeit die verstreichen muss, dass die vorausgefüllte Zeit nicht Systemzeit, sondern die geplante Zeit ist. Leer lassen um imemr Systemzeit zu nutzen. Tippen zum ändern.';
 
   @override
   String get delaySystemTimeOverrideTextField =>
@@ -986,4 +986,25 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get replaceWithDefaultText => 'Mit Standardtext ersetzen';
+
+  @override
+  String get systemTimeDeviationPreferenceTitle => 'Abfahrtszeitabweichung';
+
+  @override
+  String get systemTimeDeviationPreferenceExplanation =>
+      'Die Zeit, die von der Systemzeit abgewichen werden soll, wenn die Abfahrten einer Station eingesehen werden.';
+
+  @override
+  String get mathAddFirstPerson => 'Addiere';
+
+  @override
+  String get mathSubtractFirstPerson => 'Subtrahiere';
+
+  @override
+  String systemTimeDeviationExample(String orgTime, String modTime) {
+    return 'Anstelle der Abfahrten für $orgTime, werden die Abfahrten für $modTime angezeigt';
+  }
+
+  @override
+  String get done => 'Fertig';
 }

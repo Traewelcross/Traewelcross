@@ -980,4 +980,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get replaceWithDefaultText => 'Replace with Default';
+
+  @override
+  String get systemTimeDeviationPreferenceTitle => 'Departure time deviation';
+
+  @override
+  String get systemTimeDeviationPreferenceExplanation =>
+      'The time to add/subtract from the system time when opening the departures for a station';
+
+  @override
+  String get mathAddFirstPerson => 'Add';
+
+  @override
+  String get mathSubtractFirstPerson => 'Subtract';
+
+  @override
+  String systemTimeDeviationExample(String orgTime, String modTime) {
+    return 'Instead of the departures for $orgTime, the departures for $modTime will be shown';
+  }
+
+  @override
+  String get done => 'Done';
 }

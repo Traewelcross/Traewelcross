@@ -29,7 +29,7 @@ class SelectConnection extends StatefulWidget {
 }
 
 class _SelectConnectionState extends State<SelectConnection> {
-  DateTime departureTime = DateTime.now();
+  DateTime departureTime = DateTime.now().add(Duration(minutes: getIt<Config>().behavior.systemTimeDeviation));
   DepartTypes departType = DepartTypes.all;
   late Future<List<Departure>> _departuresFuture;
 

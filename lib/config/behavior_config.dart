@@ -102,4 +102,13 @@ class BehaviorConfig with ChangeNotifier {
     _multiAccountSupport = val;
     notifyListeners();
   }
+
+  /// Specifies how many minutes should be added/subtracted from system time, when opening departures
+  int _systemTimeDeviation = -3;
+  @JsonKey(defaultValue: -3)
+  int get systemTimeDeviation => _systemTimeDeviation;
+  set systemTimeDeviation(int val){
+    _systemTimeDeviation = val;
+    notifyListeners();
+  }
 }

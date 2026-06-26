@@ -3,6 +3,7 @@ import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/dialogs/default_text.dart';
 import 'package:traewelcross/dialogs/system_time_override.dart';
+import 'package:traewelcross/dialogs/time_deviation.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/shared.dart';
 
@@ -20,6 +21,11 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
 
   void changeDefaultText() {
     showDialog(context: context, builder: (context) => DefaultTextDialog());
+  }
+
+  void changeTimeDeviation(){
+    showDialog(context: context, builder: (context) => TimeDeviationDialog());
+
   }
 
   @override
@@ -51,6 +57,11 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
               subtitle: Text(localize.delaySystemTimeOverrideExplain),
               onTap: () => changeSystemOverrideDelay(),
             ),
+          ListTile(
+            title: Text(localize.systemTimeDeviationPreferenceTitle),
+            subtitle: Text(localize.systemTimeDeviationPreferenceExplanation),
+            onTap: () => changeTimeDeviation(),
+          ),
           Divider(),
           ListTile(
             onTap: () => setState(() {

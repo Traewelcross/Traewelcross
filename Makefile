@@ -18,7 +18,6 @@ all:
 		@echo "Defaulting to FOSS build." ; \
 		$(MAKE) foss; \
 	fi
-	$(FLUTTER) clean
 
 help:
 	@echo "Usage: make [target]"

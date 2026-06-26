@@ -1795,6 +1795,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Replace with Default'**
   String get replaceWithDefaultText;
+
+  /// No description provided for @systemTimeDeviationPreferenceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure time deviation'**
+  String get systemTimeDeviationPreferenceTitle;
+
+  /// No description provided for @systemTimeDeviationPreferenceExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'The time to add/subtract from the system time when opening the departures for a station'**
+  String get systemTimeDeviationPreferenceExplanation;
+
+  /// The word for the mathematical operation of addition in the first person
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get mathAddFirstPerson;
+
+  /// The word for the mathematical operation of subtraction in the first person
+  ///
+  /// In en, this message translates to:
+  /// **'Subtract'**
+  String get mathSubtractFirstPerson;
+
+  /// No description provided for @systemTimeDeviationExample.
+  ///
+  /// In en, this message translates to:
+  /// **'Instead of the departures for {orgTime}, the departures for {modTime} will be shown'**
+  String systemTimeDeviationExample(String orgTime, String modTime);
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
 }
 
 class _AppLocalizationsDelegate

@@ -6,19 +6,20 @@ part of 'behavior_config.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BehaviorConfig _$BehaviorConfigFromJson(Map<String, dynamic> json) =>
-    BehaviorConfig()
-      ..overrideOnTimeTap = json['overrideOnTimeTap'] as bool? ?? true
-      ..delaySystemTimeOverride =
-          (json['delaySystemTimeOverride'] as num?)?.toInt() ?? -1
-      ..confirmDelete = json['confirmDelete'] as bool? ?? true
-      ..hideManualOnTimeOverride =
-          json['hideManualOnTimeOverride'] as bool? ?? true
-      ..defaultStatusText = json['defaultStatusText'] as String?
-      ..volumeBtnCtrl = json['volumeBtnCtrl'] as bool? ?? false
-      ..showAltDepartureStops = json['showAltDepartureStops'] as bool? ?? true
-      ..showActiveRideCard = json['showActiveRideCard'] as bool? ?? true
-      ..multiAccountSupport = json['multiAccountSupport'] as bool? ?? false;
+BehaviorConfig _$BehaviorConfigFromJson(
+  Map<String, dynamic> json,
+) => BehaviorConfig()
+  ..overrideOnTimeTap = json['overrideOnTimeTap'] as bool? ?? true
+  ..delaySystemTimeOverride =
+      (json['delaySystemTimeOverride'] as num?)?.toInt() ?? -1
+  ..confirmDelete = json['confirmDelete'] as bool? ?? true
+  ..hideManualOnTimeOverride = json['hideManualOnTimeOverride'] as bool? ?? true
+  ..defaultStatusText = json['defaultStatusText'] as String?
+  ..volumeBtnCtrl = json['volumeBtnCtrl'] as bool? ?? false
+  ..showAltDepartureStops = json['showAltDepartureStops'] as bool? ?? true
+  ..showActiveRideCard = json['showActiveRideCard'] as bool? ?? true
+  ..multiAccountSupport = json['multiAccountSupport'] as bool? ?? false
+  ..systemTimeDeviation = (json['systemTimeDeviation'] as num?)?.toInt() ?? 0;
 
 Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
     <String, dynamic>{
@@ -31,4 +32,5 @@ Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
       'showAltDepartureStops': instance.showAltDepartureStops,
       'showActiveRideCard': instance.showActiveRideCard,
       'multiAccountSupport': instance.multiAccountSupport,
+      'systemTimeDeviation': instance.systemTimeDeviation,
     };

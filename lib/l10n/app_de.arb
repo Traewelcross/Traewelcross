@@ -207,7 +207,7 @@
     "overrideOnTimeTap": "Zeit mit Zeitstempel überschreiben",
     "overrideOnTimeTapExplain": "Du kannst Ankunft/Abfahrt direkt über tippen auf den Zeitstempel überschreiben.",
     "delaySystemTimeOverride": "Vorausfüllverzögerung",
-    "delaySystemTimeOverrideExplain": "Die Zeit die verstreichen muss, dass die vorausgefüllte Zeit nicht Systemzeit, sondern die geplante Zeit ist. Leave empty to always use system time. Tippen zum ändern.",
+    "delaySystemTimeOverrideExplain": "Die Zeit die verstreichen muss, dass die vorausgefüllte Zeit nicht Systemzeit, sondern die geplante Zeit ist. Leer lassen um imemr Systemzeit zu nutzen. Tippen zum ändern.",
     "delaySystemTimeOverrideTextField": "Zeit in Minuten eingeben. Leer zum deaktivieren",
     "confirmDelete": "Löschen bestätigen?",
     "confirmDeleteExplain": "Wenn an, wirst du gefragt, ob du den Status wirklich löschen willst.",
@@ -282,5 +282,11 @@
     "checkOnTheWeb": "Im Web anzeigen",
     "secondCheckInSuccess": "Dieser Check-In wurde in zwei Teilen durchgeführt. Beide Teile deiner Reise wurden erfolgreich eingecheckt. Bitte beachte, dass du für deinen zweiten Teil eventuell nicht die volle Punktzahl erreicht hast, je nach dem, wann die Linie sich ändert und der zweite Check-In anfängt",
     "secondCheckInFailure": "Dieser Check-In sollte in zwei Teilen durchgeführt werden. Allerdings kam es beim Check-In des zweiten Teils deiner Reise zu einem Fehler. Bitte checke diesen Teil manuell ein.",
-    "replaceWithDefaultText": "Mit Standardtext ersetzen"
+    "replaceWithDefaultText": "Mit Standardtext ersetzen",
+    "systemTimeDeviationPreferenceTitle": "Abfahrtszeitabweichung",
+    "systemTimeDeviationPreferenceExplanation": "Die Zeit, die von der Systemzeit abgewichen werden soll, wenn die Abfahrten einer Station eingesehen werden.",
+    "mathAddFirstPerson": "Addiere",
+    "mathSubtractFirstPerson": "Subtrahiere",
+    "systemTimeDeviationExample": "Anstelle der Abfahrten für {orgTime}, werden die Abfahrten für {modTime} angezeigt",
+    "done": "Fertig"
 }

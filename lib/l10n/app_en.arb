@@ -606,5 +606,27 @@
   "checkOnTheWeb": "Check on the Web",
   "secondCheckInSuccess": "This check-in was done in two parts, both were successful. Please note that you may not have received full points for your second check-in, depending on where the train changes and the second check-in starts.",
   "secondCheckInFailure": "This check-in was supposed to be done in two parts, however the second check-in failed. Please check-in the missing part of your journey manually",
-  "replaceWithDefaultText": "Replace with Default"
+  "replaceWithDefaultText": "Replace with Default",
+  "systemTimeDeviationPreferenceTitle": "Departure time deviation",
+  "systemTimeDeviationPreferenceExplanation": "The time to add/subtract from the system time when opening the departures for a station",
+  "mathAddFirstPerson": "Add",
+  "@mathAddFirstPerson": {
+    "description": "The word for the mathematical operation of addition in the first person"
+  },
+  "mathSubtractFirstPerson": "Subtract",
+    "@mathSubtractFirstPerson": {
+    "description": "The word for the mathematical operation of subtraction in the first person"
+  },
+  "systemTimeDeviationExample": "Instead of the departures for {orgTime}, the departures for {modTime} will be shown",
+  "@systemTimeDeviationExample":{
+    "placeholders": {
+      "orgTime":{
+        "type": "String"
+      },
+      "modTime":{
+        "type": "String"
+      }
+    }
+  },
+  "done": "Done"
 }
