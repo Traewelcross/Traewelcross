@@ -68,11 +68,14 @@ class ApiService {
   Future<http.Response> request(
     String url,
     HttpRequestTypes type, {
-    Map<String, String>? headers = const {"Content-Type": "application/json"},
+    Map<String, String>? headers,
     Object? body,
     Encoding? encoding,
     bool isRetrial = false,
   }) async {
+    // TODO: Maybe do this more elegantly
+    headers ??= {};
+    headers.addAll({"User-Agent": "Traewelcross/1.5.2 (https://github.com/traewelcross/traewelcross; traewelcross.de)", "Content-Type": "application/json"});
     oauth2.Client? client = await getAuthenticatedClient();
     if (DateTime.now().difference(_lastRequest).inMinutes >= 55 ||
         client?.credentials.isExpired == true) {
@@ -88,7 +91,7 @@ class ApiService {
     switch (type) {
       case HttpRequestTypes.GET:
         res = await client
-            .get(SharedFunctions.concatUri([_baseURL, url]))
+            .get(SharedFunctions.concatUri([_baseURL, url]), headers: headers)
             .timeout(Duration(seconds: _timeoutDuration));
         break;
       case HttpRequestTypes.PUT:
@@ -164,7 +167,8 @@ class ApiService {
     try {
       res = await client.post(
         SharedFunctions.concatUri(["https://traewelling.de", "/oauth/token"]),
-        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+    // TODO: Maybe do this more elegantly
+        headers: {"Content-Type": "application/x-www-form-urlencoded", "User-Agent": "Traewelcross/1.5.2 (https://github.com/traewelcross/traewelcross; traewelcross.de)"},
         body: {
           "refresh_token": oAuthClient.credentials.refreshToken ?? "",
           "grant_type": "refresh_token",
@@ -172,7 +176,7 @@ class ApiService {
         },
         encoding: Encoding.getByName("UTF-8"),
       );
-
+      print(res.request);
       if (res.statusCode == 200) {
         final json = jsonDecode(res.body);
         creds = oauth2.Credentials(

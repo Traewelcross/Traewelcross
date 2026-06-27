@@ -22,6 +22,7 @@ class ProfilePicture extends StatelessWidget {
           child: CachedNetworkImage(
             fadeInDuration: Duration.zero,
             fadeOutDuration: Duration.zero,
+            httpHeaders: {"User-Agent": "Traewelcross/1.5.2 (https://github.com/traewelcross/traewelcross; traewelcross.de)"},
             imageUrl: imageUrl ?? "",
             errorWidget: (context, url, error) => const Icon(Icons.error),
             placeholder: (context, url) => const Icon(Icons.account_circle),
