@@ -928,10 +928,11 @@ packages:
   oauth2:
     dependency: "direct main"
     description:
-      name: oauth2
-      sha256: "890a032ba1b44fa8dcfeba500e613df0ecbe16aeace13bb0fe1d25eb42cda5b8"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: main
+      resolved-ref: "829dcf513ff106a928f19a0fa7cfc3a277759439"
+      url: "https://github.com/Traewelcross/oauth2"
+    source: git
     version: "2.0.5"
   objective_c:
     dependency: transitive
