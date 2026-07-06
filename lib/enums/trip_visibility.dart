@@ -12,7 +12,9 @@ enum TripVisibilityEnum {
   @JsonValue(1)
   notListed(1, Icons.link),
   @JsonValue(3)
-  private(3, Icons.lock);
+  private(3, Icons.lock),
+  @JsonValue(5)
+  trusted(5, Icons.verified);
 
   final int value;
   final IconData icon;

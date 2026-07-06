@@ -601,7 +601,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                                 height: 20,
                                 child: VerticalDivider(),
                               ),
-                              switch (_rideData.visibility) {
+                              /*switch (_rideData.visibility) {
                                 .public => const Icon(Icons.public),
                                 .notListed => const Icon(Icons.link),
                                 .followerOnly => const Icon(Icons.group),
@@ -609,7 +609,8 @@ class _RideQuickViewState extends State<RideQuickView> {
                                 .loggedInUser => const Icon(
                                   Symbols.shield_person,
                                 ),
-                              },
+                              },*/
+                              Icon(_rideData.visibility.icon),
                               const SizedBox(
                                 height: 24,
                                 child: VerticalDivider(),

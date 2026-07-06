@@ -847,6 +847,7 @@ class TripVisibility extends StatelessWidget {
       TripVisibilityEnum.notListed => localize.notListed,
       TripVisibilityEnum.loggedInUser => localize.loggedInUsers,
       TripVisibilityEnum.followerOnly => localize.followerOnly,
+      TripVisibilityEnum.trusted => localize.trustedUsers,
       _ => "?",
     };
   }

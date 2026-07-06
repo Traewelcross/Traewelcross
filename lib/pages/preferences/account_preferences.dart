@@ -140,6 +140,7 @@ class _AccountPreferencesState extends State<AccountPreferences> {
       TripVisibilityEnum.notListed => localize.notListed,
       TripVisibilityEnum.loggedInUser => localize.loggedInUsers,
       TripVisibilityEnum.followerOnly => localize.followerOnly,
+      TripVisibilityEnum.trusted => localize.trustedUsers,
 
       MastodonVisibility.public => localize.public,
       MastodonVisibility.private => localize.private,

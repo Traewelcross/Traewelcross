@@ -19,7 +19,7 @@ BehaviorConfig _$BehaviorConfigFromJson(
   ..showAltDepartureStops = json['showAltDepartureStops'] as bool? ?? true
   ..showActiveRideCard = json['showActiveRideCard'] as bool? ?? true
   ..multiAccountSupport = json['multiAccountSupport'] as bool? ?? false
-  ..systemTimeDeviation = (json['systemTimeDeviation'] as num?)?.toInt() ?? 0;
+  ..systemTimeDeviation = (json['systemTimeDeviation'] as num?)?.toInt() ?? -3;
 
 Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
     <String, dynamic>{

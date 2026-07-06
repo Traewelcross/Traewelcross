@@ -27,6 +27,7 @@ const _$TripVisibilityEnumEnumMap = {
   TripVisibilityEnum.followerOnly: 2,
   TripVisibilityEnum.notListed: 1,
   TripVisibilityEnum.private: 3,
+  TripVisibilityEnum.trusted: 5,
 };
 
 UserAuth _$UserAuthFromJson(Map<String, dynamic> json) => UserAuth(
