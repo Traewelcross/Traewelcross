@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:traewelcross/components/ride_quick_view_wrapper.dart';
@@ -157,17 +158,23 @@ class ProfileStatsCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Column(
-                        children: [
-                          Text(
-                            userInfo.displayName,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          Text(
-                            "@${userInfo.username}",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
+                      GestureDetector(
+                        onLongPress: () {
+                          Clipboard.setData(.new(text: userInfo.username));
+                          SharedFunctions.sendSnackBar(AppLocalizations.of(context)!.usernameCopied);
+                        },
+                        child: Column(
+                          children: [
+                            Text(
+                              userInfo.displayName,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            Text(
+                              "@${userInfo.username}",
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
                       ),
                       if (userInfo.mastodonUrl != null &&
                           userInfo.mastodonUrl!.isNotEmpty) ...[

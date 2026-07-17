@@ -117,6 +117,18 @@ class UserApiProvider {
     }
   }
 
+  Future<UserAuth> fetchOwnUserInfo() async {
+    final res = await _api.request("/auth/user", .GET);
+    if (res.statusCode == 200) {
+      return UserAuth.fromJson(jsonDecode(res.body)["data"]);
+    }
+    SharedFunctions.sendSnackBar(
+      AppLocalizations.of(_context!)!.genericErrorSnackBar +
+          res.statusCode.toString(),
+    );
+    return Future.error("${res.statusCode} / ${res.body}");
+  }
+
   Future<User> fetchUserInfo({String? username}) async {
     String endpoint;
     if (username == null) {
@@ -127,14 +139,18 @@ class UserApiProvider {
     final res = await _api.request(endpoint, .GET);
     if (res.statusCode == 200) {
       if (username == null) {
-        return fetchUserInfo(username: jsonDecode(res.body)["data"]["username"]);
+        return fetchUserInfo(
+          username: jsonDecode(res.body)["data"]["username"],
+        );
         //return UserAuth.fromJson(jsonDecode(res.body)["data"]);
       }
       return User.fromJson(jsonDecode(res.body)["data"]);
     }
     if (res.statusCode == 403) {
       final reason = jsonDecode(res.body)["meta"]["reason"];
-      if (reason == "PRIVATE_PROFILE" || reason == "USER_BLOCKED" || reason == "USER_MUTED") {
+      if (reason == "PRIVATE_PROFILE" ||
+          reason == "USER_BLOCKED" ||
+          reason == "USER_MUTED") {
         return User.fromJson(jsonDecode(res.body)["meta"]["user"]);
       }
     }
@@ -323,17 +339,15 @@ class UserApiProvider {
   }
 
   Future<void> setHome(int id, String name) async {
-final response = await _api.request(
-      "/station/$id/home",
-      .PUT,
-    );
+    final response = await _api.request("/station/$id/home", .PUT);
     if (response.statusCode == 200) {
       SharedFunctions.sendSnackBar(
-        AppLocalizations.of(_context!)!.newHomeSuccessful(name)
+        AppLocalizations.of(_context!)!.newHomeSuccessful(name),
       );
     } else {
       SharedFunctions.sendSnackBar(
-        AppLocalizations.of(_context!)!.genericErrorSnackBar + response.statusCode.toString()
+        AppLocalizations.of(_context!)!.genericErrorSnackBar +
+            response.statusCode.toString(),
       );
     }
   }

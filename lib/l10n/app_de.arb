@@ -288,5 +288,6 @@
     "mathAddFirstPerson": "Addiere",
     "mathSubtractFirstPerson": "Subtrahiere",
     "systemTimeDeviationExample": "Anstelle der Abfahrten für {orgTime}, werden die Abfahrten für {modTime} angezeigt",
-    "done": "Fertig"
+    "done": "Fertig",
+    "usernameCopied": "Benutzername kopiert!"
 }

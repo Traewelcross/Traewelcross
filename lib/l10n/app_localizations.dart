@@ -1831,6 +1831,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Done'**
   String get done;
+
+  /// No description provided for @usernameCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Username copied to clipboard!'**
+  String get usernameCopied;
 }
 
 class _AppLocalizationsDelegate

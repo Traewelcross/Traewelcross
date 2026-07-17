@@ -1001,4 +1001,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get done => 'Done';
+
+  @override
+  String get usernameCopied => 'Username copied to clipboard!';
 }

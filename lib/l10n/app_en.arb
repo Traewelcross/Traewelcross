@@ -628,5 +628,6 @@
       }
     }
   },
-  "done": "Done"
+  "done": "Done",
+  "usernameCopied": "Username copied to clipboard!"
 }
