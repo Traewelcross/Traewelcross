@@ -99,10 +99,9 @@ class _ProfileViewState extends State<ProfileView> {
                     isOtherUser: widget.isOtherUser,
                   ),
                 ),
-                if (widget.isOtherUser &&
-                    ((userInfo.privateProfile && !userInfo.following) ||
-                        userInfo.blocked))
-                  ...[]
+                if (widget.isOtherUser && ((userInfo.privateProfile && !userInfo.following) || userInfo.blocked || userInfo.muted) && userInfo.userInvisibleToMe)
+                  ...[
+                  ]
                 else ...[
                   const SliverToBoxAdapter(child: SizedBox(height: 8)),
                   RideQuickViewWrapper(
@@ -146,9 +145,13 @@ class ProfileStatsCard extends StatelessWidget {
                 children: [
                   Center(
                     child: GestureDetector(
-                      onLongPress: () => showModalBottomSheet(context: context, builder:(context) => AccountSwitcher(), isScrollControlled: true),
-                      child: ProfilePicture(imageUrl: imageUrl, maxWidth: 512)
+                      onLongPress: () => showModalBottomSheet(
+                        context: context,
+                        builder: (context) => AccountSwitcher(),
+                        isScrollControlled: true,
                       ),
+                      child: ProfilePicture(imageUrl: imageUrl, maxWidth: 512),
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Row(
