@@ -127,7 +127,8 @@ class UserApiProvider {
     final res = await _api.request(endpoint, .GET);
     if (res.statusCode == 200) {
       if (username == null) {
-        return UserAuth.fromJson(jsonDecode(res.body)["data"]);
+        return fetchUserInfo(username: jsonDecode(res.body)["data"]["username"]);
+        //return UserAuth.fromJson(jsonDecode(res.body)["data"]);
       }
       return User.fromJson(jsonDecode(res.body)["data"]);
     }
