@@ -1010,4 +1010,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get usernameCopied => 'Benutzername kopiert!';
+
+  @override
+  String followedByNote(String displayName) {
+    return '$displayName folgt dir';
+  }
 }

@@ -1004,4 +1004,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get usernameCopied => 'Username copied to clipboard!';
+
+  @override
+  String followedByNote(String displayName) {
+    return '$displayName follows you';
+  }
 }

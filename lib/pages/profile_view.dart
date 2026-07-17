@@ -100,9 +100,12 @@ class _ProfileViewState extends State<ProfileView> {
                     isOtherUser: widget.isOtherUser,
                   ),
                 ),
-                if (widget.isOtherUser && ((userInfo.privateProfile && !userInfo.following) || userInfo.blocked || userInfo.muted) && userInfo.userInvisibleToMe)
-                  ...[
-                  ]
+                if (widget.isOtherUser &&
+                    ((userInfo.privateProfile && !userInfo.following) ||
+                        userInfo.blocked ||
+                        userInfo.muted) &&
+                    userInfo.userInvisibleToMe)
+                  ...[]
                 else ...[
                   const SliverToBoxAdapter(child: SizedBox(height: 8)),
                   RideQuickViewWrapper(
@@ -161,7 +164,9 @@ class ProfileStatsCard extends StatelessWidget {
                       GestureDetector(
                         onLongPress: () {
                           Clipboard.setData(.new(text: userInfo.username));
-                          SharedFunctions.sendSnackBar(AppLocalizations.of(context)!.usernameCopied);
+                          SharedFunctions.sendSnackBar(
+                            AppLocalizations.of(context)!.usernameCopied,
+                          );
                         },
                         child: Column(
                           children: [
@@ -265,6 +270,21 @@ class ProfileStatsCard extends StatelessWidget {
                         ),
                       ),
                     ),
+                  if (userInfo.followedBy)
+                    Card.filled(color: Color.alphaBlend(
+                    Colors.blue.withValues(alpha: 0.2),
+                    Theme.of(context).colorScheme.surface,
+                  ),child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.info),
+                        SizedBox(width: 8,),
+                        Expanded(child: Text(AppLocalizations.of(context)!.followedByNote(userInfo.displayName))),
+                      ],
+                    ),
+                  ),),
+                  SizedBox(height: 8,),
                   FutureBuilder(
                     future: SharedFunctions.getUserId(),
                     builder: (context, asyncSnapshot) {

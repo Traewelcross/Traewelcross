@@ -1837,6 +1837,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Username copied to clipboard!'**
   String get usernameCopied;
+
+  /// No description provided for @followedByNote.
+  ///
+  /// In en, this message translates to:
+  /// **'{displayName} follows you'**
+  String followedByNote(String displayName);
 }
 
 class _AppLocalizationsDelegate

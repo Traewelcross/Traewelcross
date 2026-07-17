@@ -289,5 +289,6 @@
     "mathSubtractFirstPerson": "Subtrahiere",
     "systemTimeDeviationExample": "Anstelle der Abfahrten für {orgTime}, werden die Abfahrten für {modTime} angezeigt",
     "done": "Fertig",
-    "usernameCopied": "Benutzername kopiert!"
+    "usernameCopied": "Benutzername kopiert!",
+    "followedByNote": "{displayName} folgt dir"
 }

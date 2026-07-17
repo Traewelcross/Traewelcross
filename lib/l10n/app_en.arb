@@ -629,5 +629,13 @@
     }
   },
   "done": "Done",
-  "usernameCopied": "Username copied to clipboard!"
+  "usernameCopied": "Username copied to clipboard!",
+  "followedByNote": "{displayName} follows you",
+  "@followedByNote":{
+    "placeholders": {
+      "displayName": {
+        "type": "String"
+      }
+    }
+  }
 }
