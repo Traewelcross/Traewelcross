@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
-import 'package:http/http.dart' as http;
 import 'package:pkce/pkce.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/utils/shared.dart';

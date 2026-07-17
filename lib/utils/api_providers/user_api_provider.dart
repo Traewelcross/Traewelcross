@@ -133,7 +133,7 @@ class UserApiProvider {
     }
     if (res.statusCode == 403) {
       final reason = jsonDecode(res.body)["meta"]["reason"];
-      if (reason == "PRIVATE_PROFILE" || reason == "USER_BLOCKED") {
+      if (reason == "PRIVATE_PROFILE" || reason == "USER_BLOCKED" || reason == "USER_MUTED") {
         return User.fromJson(jsonDecode(res.body)["meta"]["user"]);
       }
     }
