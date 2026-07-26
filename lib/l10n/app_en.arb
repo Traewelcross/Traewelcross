@@ -264,6 +264,7 @@
       }
     }
   },
+    "checkedInWithPlain": "Checked in with:",
   "homeCheckInPlaceholder": "Find Stop (via Name or RIL 100) or @user",
   "@homeCheckInPlaceholder": {
     "description": "The next the gets displayed in the top most card on the Homepage"

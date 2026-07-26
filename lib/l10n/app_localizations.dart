@@ -650,6 +650,12 @@ abstract class AppLocalizations {
   /// **'Checked in with:\n{client}'**
   String checkedInWith(String client);
 
+  /// No description provided for @checkedInWithPlain.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked in with:'**
+  String get checkedInWithPlain;
+
   /// The next the gets displayed in the top most card on the Homepage
   ///
   /// In en, this message translates to:

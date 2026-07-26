@@ -566,7 +566,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                   Row(
                                     mainAxisSize: .min,
                                     children: [
-                                      Text(ride.checkin.origin.name),
+                                      Text(ride.checkin.origin.station.name),
                                       const Icon(Icons.arrow_right),
                                     ],
                                   ),
@@ -574,7 +574,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          ride.checkin.destination.name,
+                                          ride.checkin.destination.station.name,
                                           style: Theme.of(
                                             context,
                                           ).textTheme.headlineSmall,
@@ -644,34 +644,47 @@ class HomeTitle extends WatchingWidget {
       tween: Tween<double>(end: isScrolled ? 0.0 : 1.0),
       duration: const Duration(milliseconds: 250),
       builder: (context, value, child) {
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SvgPicture.asset(
-              "icons/raw_icon.svg",
-              // ignore: deprecated_member_use
-              color: Theme.of(context).colorScheme.primary,
-              width: 24,
-            ),
-            SizedBox(width: 8 * value),
-            ClipRect(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                widthFactor: value,
-                child: Opacity(
-                  opacity: value,
-                  child: Text(
-                    "Träwelcross",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
+        return TraewelcrossLogo(value: value);
+      },
+    );
+  }
+}
+
+class TraewelcrossLogo extends StatelessWidget {
+  const TraewelcrossLogo({
+    super.key,
+    required this.value
+  });
+  final double value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SvgPicture.asset(
+          "icons/raw_icon.svg",
+          // ignore: deprecated_member_use
+          color: Theme.of(context).colorScheme.primary,
+          width: 24,
+        ),
+        SizedBox(width: 8 * value),
+        ClipRect(
+          child: Align(
+            alignment: Alignment.centerLeft,
+            widthFactor: value,
+            child: Opacity(
+              opacity: value,
+              child: Text(
+                "Träwelcross",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
             ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 }

@@ -336,6 +336,9 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get checkedInWithPlain => 'Eingecheckt mit:';
+
+  @override
   String get homeCheckInPlaceholder =>
       'Haltestelle (über Namen oder RIL 100) oder @benutzer finden';
 

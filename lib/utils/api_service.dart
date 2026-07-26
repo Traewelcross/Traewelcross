@@ -7,7 +7,9 @@ import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traewelcross/enums/error_type.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
+import 'package:traewelcross/utils/api_providers/mastodon_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/train_api_provider.dart';
+import 'package:traewelcross/utils/api_providers/trip_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/user_api_provider.dart';
 import 'package:traewelcross/utils/authentication.dart';
 import 'package:traewelcross/utils/error_info.dart';
@@ -38,6 +40,8 @@ class ApiService {
   late final alert = AlertApiProvider(this);
   late final checkin = CheckinApiProvider(this);
   late final train = TrainApiProvider(this);
+  late final trip = TripApiProvider(this);
+  late final mastodon = MastodonApiProvider();
 
   ApiService(this._authService);
 

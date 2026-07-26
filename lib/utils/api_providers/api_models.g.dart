@@ -179,8 +179,9 @@ Map<String, dynamic> _$ClientToJson(Client instance) => <String, dynamic>{
 };
 
 Stopover _$StopoverFromJson(Map<String, dynamic> json) => Stopover(
-  id: (json['id'] as num).toInt(),
-  name: json['name'] as String,
+  id: (json['id'] as num?)?.toInt(),
+  stopoverId: (json['stopoverId'] as num?)?.toInt(),
+  station: Station.fromJson(json['station'] as Map<String, dynamic>),
   arrivalPlanned: json['arrivalPlanned'] as String?,
   arrivalReal: json['arrivalReal'] as String?,
   arrivalPlatformPlanned: json['arrivalPlatformPlanned'] as String?,
@@ -197,7 +198,8 @@ Stopover _$StopoverFromJson(Map<String, dynamic> json) => Stopover(
 
 Map<String, dynamic> _$StopoverToJson(Stopover instance) => <String, dynamic>{
   'id': instance.id,
-  'name': instance.name,
+  'stopoverId': instance.stopoverId,
+  'station': instance.station,
   'arrivalPlanned': instance.arrivalPlanned,
   'arrivalReal': instance.arrivalReal,
   'arrivalPlatformPlanned': instance.arrivalPlatformPlanned,
@@ -704,4 +706,18 @@ Map<String, dynamic> _$TripResourceToJson(TripResource instance) =>
       'stopovers': instance.stopovers,
       'dataSource': instance.dataSource,
       'continuationTrip': instance.continuationTrip,
+    };
+
+MastoCustomEmoji _$MastoCustomEmojiFromJson(Map<String, dynamic> json) =>
+    MastoCustomEmoji(
+      shortcode: json['shortcode'] as String,
+      url: json['url'] as String,
+      staticUrl: json['static_url'] as String,
+    );
+
+Map<String, dynamic> _$MastoCustomEmojiToJson(MastoCustomEmoji instance) =>
+    <String, dynamic>{
+      'shortcode': instance.shortcode,
+      'url': instance.url,
+      'static_url': instance.staticUrl,
     };

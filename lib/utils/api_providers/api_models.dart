@@ -154,8 +154,12 @@ class Client {
 
 @JsonSerializable(fieldRename: .none)
 class Stopover {
-  final int id;
-  final String name;
+  /// Station ID til 2026-11-30, after that stopoverId and removed
+  final int? id;
+  /// Exists until 2026-11-30, after that removed and moved into id
+  final int? stopoverId;
+  //final String name;
+  final Station station;
   final String? arrivalPlanned;
   final String? arrivalReal;
   final String? arrivalPlatformPlanned;
@@ -169,8 +173,10 @@ class Stopover {
   final bool isDepartureDelayed;
   final bool cancelled;
   const Stopover({
-    required this.id,
-    required this.name,
+    this.id,
+    this.stopoverId,
+    //required this.name,
+    required this.station,
     this.arrivalPlanned,
     this.arrivalReal,
     this.arrivalPlatformPlanned,
@@ -742,6 +748,22 @@ class TripResource {
   Map<String, dynamic> toJson() => _$TripResourceToJson(this);
 }
 
+@JsonSerializable(fieldRename: .none)
+class MastoCustomEmoji {
+  final String shortcode;
+  final String url;
+  @JsonKey(name: "static_url")
+  final String staticUrl;
+
+  MastoCustomEmoji({
+    required this.shortcode,
+    required this.url,
+    required this.staticUrl,
+  });
+        factory MastoCustomEmoji.fromJson(Map<String, dynamic> json) =>
+      _$MastoCustomEmojiFromJson(json);
+  Map<String, dynamic> toJson() => _$MastoCustomEmojiToJson(this);
+}
 
 class GenericStatusResponse {
   final bool wasSuccess;

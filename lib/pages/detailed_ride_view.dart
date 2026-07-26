@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
+import 'package:traewelcross/app.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import "package:traewelcross/components/profile_link_button.dart";
 import 'package:flutter/material.dart';
@@ -79,7 +80,8 @@ class DetailedRideView extends StatefulWidget {
 class _DetailedRideViewState extends State<DetailedRideView> {
   late final Future<List<LatLng>> _polylineFuture;
   late Future<List<User>> _likes;
-  late Future<Status> _rideData;
+  late Future<Status> _rideDataFuture;
+  late Future<List<Status>> _sharedTrips;
   late final String _evaIdentOrigin;
   late final int _rideId;
   bool isFound = true;
@@ -95,11 +97,15 @@ class _DetailedRideViewState extends State<DetailedRideView> {
     return (await apiService.status.fetchRide(_rideId));
   }
 
+  Future<List<Status>> _getSharedTrips(int tripId) async {
+    return (await getIt<ApiService>().trip.getSharedStatus(tripId));
+  }
+
   // Workaround for Traewelling/traewelling/discussions/4511 until identifiers are provided in check in again
   Future<String> _getEvaIdent() async {
     final apiService = getIt<ApiService>();
     final res = await apiService.status.getStationData(
-      stationId: widget.rideData!.checkin.destination.id,
+      stationId: widget.rideData!.checkin.destination.station.id,
       withIdentifiers: true,
     );
     if (res.identifiers == null) {
@@ -120,7 +126,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
       _rideId = widget.rideId!;
     }
     _polylineFuture = _fetchAndParsePolyline(apiService, _rideId);
-    _rideData = widget.rideData == null
+    _rideDataFuture = widget.rideData == null
         ? _getRideData()
         : Future.value(widget.rideData!);
     _likes = _getLikeData();
@@ -138,7 +144,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
     final localize = AppLocalizations.of(context)!;
 
     return FutureBuilder<Status>(
-      future: _rideData,
+      future: _rideDataFuture,
       builder: (context, rideSnapshot) {
         if (rideSnapshot.connectionState == ConnectionState.waiting) {
           return MainScaffold(
@@ -160,8 +166,8 @@ class _DetailedRideViewState extends State<DetailedRideView> {
         }
 
         final rideData = rideSnapshot.data!;
-        final originName = rideData.checkin.origin.name;
-        final destinationName = rideData.checkin.destination.name;
+        final originName = rideData.checkin.origin.station.name;
+        final destinationName = rideData.checkin.destination.station.name;
         final title = "$originName -> $destinationName";
 
         return MainScaffold(
@@ -169,7 +175,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
           body: RefreshIndicator(
             onRefresh: () async {
               setState(() {
-                _rideData = _getRideData();
+                _rideDataFuture = _getRideData();
                 _likes = _getLikeData();
               });
             },
@@ -189,7 +195,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return SizedBox(
                         height: 512,
-                        child: MapDisplay(polylinePoints: snapshot.data!),
+                        child: Text("sex")//MapDisplay(polylinePoints: snapshot.data!),
                       );
                     }
                     return const SizedBox(height: 0);
@@ -235,6 +241,33 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                     );
                   },
                 ),
+                FutureBuilder(
+                  future: _getSharedTrips(rideData.checkin.trip),
+                  builder: (context, asyncSnapshot) {
+                    if (asyncSnapshot.hasData && asyncSnapshot.data != null) {
+                      List<Status> data = asyncSnapshot.data!;
+                      data = data
+                          .where((status) => status.user != rideData.user)
+                          .toList();
+                      return Card(
+                        clipBehavior: Clip.hardEdge,
+                        child: ExpansionTile(
+                          shape: Border.all(color: Colors.transparent),
+                          title: Text(localize.alsoOnThisConnection),
+                          dense: false,
+                          enabled: data.isEmpty ? false : true,
+                          children: List.generate(
+                            data.length,
+                            (int i) => ProfileLinkButton(
+                              user: data[i].user.promoteToUser(),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    return SizedBox.shrink();
+                  },
+                ),
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -254,11 +287,21 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                       child: Card(
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            localize.checkedInWith(
-                              rideData.client?.name ?? "Träwelling",
-                            ),
-                          ),
+                          child: rideData.client?.name == "Träwelcross"
+                              ? Column(
+                                  spacing: 4,
+                                  crossAxisAlignment: .start,
+                                  mainAxisSize: .min,
+                                  children: [
+                                    Text(localize.checkedInWithPlain),
+                                    TraewelcrossLogo(value: 1),
+                                  ],
+                                )
+                              : Text(
+                                  localize.checkedInWith(
+                                    rideData.client?.name ?? "Träwelling",
+                                  ),
+                                ),
                         ),
                       ),
                     ),

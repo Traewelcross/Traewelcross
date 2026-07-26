@@ -88,6 +88,7 @@
     "checkInOtherUsersTitle": "Wähle Benutzer:innen zum einchecken aus",
     "operatedBy": "Betrieben von:\n{operator}",
     "checkedInWith": "Eingecheckt mit:\n{client}",
+    "checkedInWithPlain": "Eingecheckt mit:",
     "homeCheckInPlaceholder": "Haltestelle (über Namen oder RIL 100) oder @benutzer finden",
     "stops": "Haltestellen",
     "users": "Benutzer:innen",

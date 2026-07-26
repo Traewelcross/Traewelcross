@@ -24,6 +24,7 @@ import 'package:intl/intl.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
 import 'dart:async';
+import "dart:math" as math;
 
 import 'package:traewelcross/utils/time_span.dart';
 
@@ -177,51 +178,63 @@ class _RideQuickViewState extends State<RideQuickView> {
 
   Widget _parseBodyText(String body, List<Mention> bodyMentions) {
     // This works for now, can't for the life of me figure out how to use API provided Info, so manual detection it is
-    RegExp regExp = RegExp(r'@\w+');
-    List<TextSpan> result = [];
-    int lastMatchEnd = 0;
+    List<String> result = [];
     if ((bodyMentions as List).isEmpty) {
       return Text(body);
     }
-    for (RegExpMatch match in regExp.allMatches(body)) {
-      if (match.start > lastMatchEnd) {
-        result.add(TextSpan(text: body.substring(lastMatchEnd, match.start)));
+    int cursor = 0;
+    for (Mention mention in bodyMentions) {
+      int startPos = math.max(mention.position - 1, 0);
+      int endPos = mention.position + mention.length;
+      if (startPos != 0) {
+        endPos--;
       }
-      result.add(
-        TextSpan(
-          text: match.group(0)!,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.w500,
-          ),
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MainScaffold(
-                    title: AppBarTitle(match.group(0)!),
-                    body: ProfileView(
-                      isOtherUser: true,
-                      username: match.group(0)!.replaceAll("@", ""),
-                      tempScrollController: true,
-                      scrollController: ScrollController(),
-                    ),
-                  ),
-                ),
-              );
-            },
-        ),
-      );
-      lastMatchEnd = match.end;
-    }
-
-    if (lastMatchEnd < body.length) {
-      result.add(TextSpan(text: body.substring(lastMatchEnd)));
+      if (startPos > cursor) {
+        result.add(body.substring(cursor, startPos));
+      }
+      result.add(body.substring(startPos, endPos));
+      cursor = endPos;
+      if (cursor < body.length) {
+        result.add(body.substring(cursor));
+      }
     }
     return RichText(
       text: TextSpan(
-        children: result,
+        children: result.map((element) {
+          // Element does not start with @, not a valid mention
+          if (!element.startsWith("@")) {
+            return TextSpan(text: element);
+          }
+          // Element start with @ and does not contain a space, valid mention
+          if (!element.contains(" ")) {
+            return TextSpan(
+              text: element,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.w500,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MainScaffold(
+                        title: AppBarTitle(element),
+                        body: ProfileView(
+                          isOtherUser: true,
+                          username: element.replaceAll("@", ""),
+                          tempScrollController: true,
+                          scrollController: ScrollController(),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+            );
+          }
+          // Element is not a mention
+          return TextSpan(text: element);
+        }).toList(),
         style: TextStyle(
           fontFamily: "Outfit",
           color: Theme.of(context).colorScheme.onSurface,
@@ -339,9 +352,9 @@ class _RideQuickViewState extends State<RideQuickView> {
       MaterialPageRoute(
         builder: (BuildContext context) => CheckIn(
           checkInInfo: CheckInInfo(
-            destination: status.checkin.destination.name,
-            destinationId: status.checkin.destination.id,
-            departureId: status.checkin.origin.id,
+            destination: status.checkin.destination.station.name,
+            destinationId: status.checkin.destination.station.id,
+            departureId: status.checkin.origin.station.id,
             tripId: status.checkin.hafasId,
             lineName: status.checkin.lineName,
             category: status.checkin.category,
@@ -354,9 +367,12 @@ class _RideQuickViewState extends State<RideQuickView> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
-    final averageSpeed = ((_rideData.checkin.distance / 1000.0) / (_rideData.checkin.duration / 60.0));
+    final averageSpeed =
+        ((_rideData.checkin.distance / 1000.0) /
+        (_rideData.checkin.duration / 60.0));
     final localize = AppLocalizations.of(context)!;
     return RepaintBoundary(
       child: Column(
@@ -654,14 +670,17 @@ class _RideQuickViewState extends State<RideQuickView> {
                                                   departureId: _rideData
                                                       .checkin
                                                       .origin
+                                                      .station
                                                       .id,
                                                   destination: _rideData
                                                       .checkin
                                                       .destination
+                                                      .station
                                                       .name,
                                                   destinationId: _rideData
                                                       .checkin
                                                       .destination
+                                                      .station
                                                       .id,
                                                   rideId: _rideData.id,
                                                   body: _rideData.body,
@@ -813,7 +832,8 @@ class _RideQuickViewState extends State<RideQuickView> {
 
   String _getNeededTime(int duration) {
     TimeSpan ts = SharedFunctions.parseDuration(duration);
-    if (ts.duration <= 0) return "${ts.hours} ${AppLocalizations.of(context)!.abrvHour} ${ts.minutes} ${AppLocalizations.of(context)!.abrvMinute}";
+    if (ts.duration <= 0)
+      return "${ts.hours} ${AppLocalizations.of(context)!.abrvHour} ${ts.minutes} ${AppLocalizations.of(context)!.abrvMinute}";
     String concatString = "";
     if (ts.days != 0) {
       concatString += "${ts.days} ${AppLocalizations.of(context)!.abrvDay}";
@@ -983,13 +1003,16 @@ class _StationText extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => SelectConnection(
-                      stationId: transportData.destination.id,
-                      stationName: transportData.destination.name,
+                      stationId: transportData.destination.station.id,
+                      stationName: transportData.destination.station.name,
                     ),
                   ),
                 );
               },
-              child: Text(transportData.destination.name, style: stationText),
+              child: Text(
+                transportData.destination.station.name,
+                style: stationText,
+              ),
             ),
           ),
         if (!isDestination)
@@ -1000,13 +1023,16 @@ class _StationText extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => SelectConnection(
-                      stationId: transportData.origin.id,
-                      stationName: transportData.origin.name,
+                      stationId: transportData.origin.station.id,
+                      stationName: transportData.origin.station.name,
                     ),
                   ),
                 );
               },
-              child: Text(transportData.origin.name, style: stationText),
+              child: Text(
+                transportData.origin.station.name,
+                style: stationText,
+              ),
             ),
           ),
         Column(
@@ -1065,8 +1091,8 @@ class _StationText extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => SelectConnection(
-                          stationId: transportData.destination.id,
-                          stationName: transportData.destination.name,
+                          stationId: transportData.destination.station.id,
+                          stationName: transportData.destination.station.name,
                         ),
                       ),
                     );
@@ -1075,8 +1101,8 @@ class _StationText extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => SelectConnection(
-                          stationId: transportData.origin.id,
-                          stationName: transportData.origin.name,
+                          stationId: transportData.origin.station.id,
+                          stationName: transportData.origin.station.name,
                         ),
                       ),
                     );

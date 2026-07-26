@@ -331,6 +331,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get checkedInWithPlain => 'Checked in with:';
+
+  @override
   String get homeCheckInPlaceholder =>
       'Find Stop (via Name or RIL 100) or @user';
 
