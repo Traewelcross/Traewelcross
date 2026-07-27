@@ -21,8 +21,7 @@ import 'package:traewelcross/utils/api_providers/event_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/alert_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/checkin_api_provider.dart';
 
-class UnavailableException implements Exception {
-}
+class UnavailableException implements Exception {}
 
 class ApiService {
   static const String _baseURL = "https://traewelling.de/api/v1";
@@ -53,11 +52,10 @@ class ApiService {
     http.Response userInfo;
     try {
       userInfo = await request("/auth/user", HttpRequestTypes.GET);
-    }
-    catch (e) {
+    } catch (e) {
       rethrow;
     }
-    if(userInfo.statusCode == 503){
+    if (userInfo.statusCode == 503) {
       throw UnavailableException();
     }
     final userName = jsonDecode(userInfo.body)["data"]["id"];
@@ -79,7 +77,11 @@ class ApiService {
   }) async {
     // TODO: Maybe do this more elegantly
     headers ??= {};
-    headers.addAll({"User-Agent": "Traewelcross/1.5.2 (https://github.com/traewelcross/traewelcross; traewelcross.de)", "Content-Type": "application/json"});
+    headers.addAll({
+      "User-Agent":
+          "Traewelcross/1.5.2 (https://github.com/traewelcross/traewelcross; traewelcross.de)",
+      "Content-Type": "application/json",
+    });
     oauth2.Client? client = await getAuthenticatedClient();
     if (DateTime.now().difference(_lastRequest).inMinutes >= 55 ||
         client?.credentials.isExpired == true) {
@@ -171,8 +173,12 @@ class ApiService {
     try {
       res = await client.post(
         SharedFunctions.concatUri(["https://traewelling.de", "/oauth/token"]),
-    // TODO: Maybe do this more elegantly
-        headers: {"Content-Type": "application/x-www-form-urlencoded", "User-Agent": "Traewelcross/1.5.2 (https://github.com/traewelcross/traewelcross; traewelcross.de)"},
+        // TODO: Maybe do this more elegantly
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "User-Agent":
+              "Traewelcross/1.5.2 (https://github.com/traewelcross/traewelcross; traewelcross.de)",
+        },
         body: {
           "refresh_token": oAuthClient.credentials.refreshToken ?? "",
           "grant_type": "refresh_token",

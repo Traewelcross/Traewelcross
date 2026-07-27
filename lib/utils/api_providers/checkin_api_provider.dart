@@ -14,7 +14,10 @@ class CheckinApiProvider {
       getIt<GlobalKey<NavigatorState>>().currentState?.context;
   GlobalKey<ScaffoldMessengerState> get _sM =>
       getIt<GlobalKey<ScaffoldMessengerState>>();
-  Future<GenericStatusResponseWithObject> checkIn(CheckInRequest cir, {bool? force}) async {
+  Future<GenericStatusResponseWithObject> checkIn(
+    CheckInRequest cir, {
+    bool? force,
+  }) async {
     if (force == true) {
       cir.force = true;
     }
@@ -25,7 +28,10 @@ class CheckinApiProvider {
     );
     print(response.statusCode);
     if (response.statusCode == 201) {
-      return GenericStatusResponseWithObject(wasSuccess: true, object: CheckinResponse.fromJson(jsonDecode(response.body)["data"]));
+      return GenericStatusResponseWithObject(
+        wasSuccess: true,
+        object: CheckinResponse.fromJson(jsonDecode(response.body)["data"]),
+      );
     }
     if (response.statusCode == 409) {
       final errorInfo = jsonDecode(response.body)?["message"];

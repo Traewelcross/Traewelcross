@@ -10,10 +10,7 @@ class AlertApiProvider {
   AlertApiProvider(this._api);
 
   Future<List<Alert>> get() async {
-    final response = await _api.request(
-      "/alerts",
-      .GET,
-    );
+    final response = await _api.request("/alerts", .GET);
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body)["data"];
       final List<Alert> alerts = jsonData

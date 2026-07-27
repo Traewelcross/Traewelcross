@@ -26,30 +26,38 @@ class StationApiProvider {
       return Future.error("${response.statusCode} / ${response.body}");
     }
   }
+
   Future<Station> getNearestStation(double latitude, double longitude) async {
     http.Response response;
     try {
-     response = await _api.request(
-      "/trains/station/nearby?latitude=$latitude&longitude=$longitude", .GET
+      response = await _api.request(
+        "/trains/station/nearby?latitude=$latitude&longitude=$longitude",
+        .GET,
       );
     } on TimeoutException {
       throw TimeoutException("");
     }
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       return Station.fromJson(jsonDecode(response.body)["data"]);
     }
     throw TimeoutException("");
   }
-  Future<List<Departure>> getDepartures({required int stationId, required DateTime when, required DepartTypes type}) async{
-        http.Response response;
+
+  Future<List<Departure>> getDepartures({
+    required int stationId,
+    required DateTime when,
+    required DepartTypes type,
+  }) async {
+    http.Response response;
     try {
-     response = await _api.request(
-      "/station/$stationId/departures?when=${when.toUtc().toIso8601String()}&travelType=$type", .GET
+      response = await _api.request(
+        "/station/$stationId/departures?when=${when.toUtc().toIso8601String()}&travelType=$type",
+        .GET,
       );
     } on TimeoutException {
       throw TimeoutException("");
     }
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body)["data"];
       final List<Departure> departures = jsonData
           .map((u) => Departure.fromJson(u as Map<String, dynamic>))

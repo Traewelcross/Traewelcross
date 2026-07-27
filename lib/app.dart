@@ -651,10 +651,7 @@ class HomeTitle extends WatchingWidget {
 }
 
 class TraewelcrossLogo extends StatelessWidget {
-  const TraewelcrossLogo({
-    super.key,
-    required this.value
-  });
+  const TraewelcrossLogo({super.key, required this.value});
   final double value;
 
   @override
@@ -677,9 +674,7 @@ class TraewelcrossLogo extends StatelessWidget {
               opacity: value,
               child: Text(
                 "Träwelcross",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
             ),
           ),

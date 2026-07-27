@@ -108,7 +108,7 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
   @override
-  String toString(){
+  String toString() {
     return this.toJson().toString();
   }
 }
@@ -156,6 +156,7 @@ class Client {
 class Stopover {
   /// Station ID til 2026-11-30, after that stopoverId and removed
   final int? id;
+
   /// Exists until 2026-11-30, after that removed and moved into id
   final int? stopoverId;
   //final String name;
@@ -685,7 +686,7 @@ class Departure {
     required this.cancelled,
     required this.station,
   });
-    factory Departure.fromJson(Map<String, dynamic> json) =>
+  factory Departure.fromJson(Map<String, dynamic> json) =>
       _$DepartureFromJson(json);
   Map<String, dynamic> toJson() => _$DepartureToJson(this);
 }
@@ -710,7 +711,7 @@ class LineResource {
     this.mode,
     this.product,
   });
-    factory LineResource.fromJson(Map<String, dynamic> json) =>
+  factory LineResource.fromJson(Map<String, dynamic> json) =>
       _$LineResourceFromJson(json);
   Map<String, dynamic> toJson() => _$LineResourceToJson(this);
 }
@@ -743,7 +744,7 @@ class TripResource {
     this.dataSource,
     this.continuationTrip,
   });
-      factory TripResource.fromJson(Map<String, dynamic> json) =>
+  factory TripResource.fromJson(Map<String, dynamic> json) =>
       _$TripResourceFromJson(json);
   Map<String, dynamic> toJson() => _$TripResourceToJson(this);
 }
@@ -760,7 +761,7 @@ class MastoCustomEmoji {
     required this.url,
     required this.staticUrl,
   });
-        factory MastoCustomEmoji.fromJson(Map<String, dynamic> json) =>
+  factory MastoCustomEmoji.fromJson(Map<String, dynamic> json) =>
       _$MastoCustomEmojiFromJson(json);
   Map<String, dynamic> toJson() => _$MastoCustomEmojiToJson(this);
 }

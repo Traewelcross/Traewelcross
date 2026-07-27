@@ -8,7 +8,11 @@ import 'package:traewelcross/app.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 
 class CheckinSuccess extends StatelessWidget {
-  const CheckinSuccess({super.key, required this.statusInfo, this.continueSuccess});
+  const CheckinSuccess({
+    super.key,
+    required this.statusInfo,
+    this.continueSuccess,
+  });
   final CheckinResponse statusInfo;
   final bool? continueSuccess;
   @override
@@ -95,8 +99,7 @@ class CheckinSuccess extends StatelessWidget {
                   ),
                 ],
                 if (statusInfo.alsoOnThisConnection != null &&
-                    statusInfo.alsoOnThisConnection!.isNotEmpty)
-                         ...[
+                    statusInfo.alsoOnThisConnection!.isNotEmpty) ...[
                   Card(
                     clipBehavior: Clip.hardEdge,
                     child: ExpansionTile(
@@ -104,8 +107,7 @@ class CheckinSuccess extends StatelessWidget {
                       title: Text(localize.alsoOnThisConnection),
                       shape: Border.all(color: Colors.transparent),
                       children: [
-                        for (var user
-                            in statusInfo.alsoOnThisConnection!)
+                        for (var user in statusInfo.alsoOnThisConnection!)
                           Padding(
                             padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
                             child: ProfileLinkButton(
@@ -119,36 +121,41 @@ class CheckinSuccess extends StatelessWidget {
                   ),
                   const SizedBox(height: 72),
                 ],
-                if(continueSuccess == true)
-                Card.filled(color: Color.alphaBlend(
-                    Colors.blue.withValues(alpha: 0.2),
-                    Theme.of(context).colorScheme.surface,
-                  ),child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.info),
-                        SizedBox(width: 8,),
-                        Expanded(child: Text(localize.secondCheckInSuccess)),
-                      ],
+                if (continueSuccess == true)
+                  Card.filled(
+                    color: Color.alphaBlend(
+                      Colors.blue.withValues(alpha: 0.2),
+                      Theme.of(context).colorScheme.surface,
                     ),
-                  ),),
-                if(continueSuccess == false)
-                Card.filled(color: Color.alphaBlend(
-                    Colors.red.withValues(alpha: 0.2),
-                    Theme.of(context).colorScheme.surface,
-                  ), child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.error),
-                        SizedBox(width: 8,),
-
-                        Expanded(child: Text(localize.secondCheckInFailure)),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.info),
+                          SizedBox(width: 8),
+                          Expanded(child: Text(localize.secondCheckInSuccess)),
+                        ],
+                      ),
                     ),
-                  ))
+                  ),
+                if (continueSuccess == false)
+                  Card.filled(
+                    color: Color.alphaBlend(
+                      Colors.red.withValues(alpha: 0.2),
+                      Theme.of(context).colorScheme.surface,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.error),
+                          SizedBox(width: 8),
 
+                          Expanded(child: Text(localize.secondCheckInFailure)),
+                        ],
+                      ),
+                    ),
+                  ),
               ],
             );
           },

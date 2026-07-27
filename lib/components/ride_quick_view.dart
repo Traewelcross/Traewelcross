@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -862,8 +861,9 @@ class _RideQuickViewState extends State<RideQuickView> {
 
   String _getNeededTime(int duration) {
     TimeSpan ts = SharedFunctions.parseDuration(duration);
-    if (ts.duration <= 0)
+    if (ts.duration <= 0) {
       return "${ts.hours} ${AppLocalizations.of(context)!.abrvHour} ${ts.minutes} ${AppLocalizations.of(context)!.abrvMinute}";
+    }
     String concatString = "";
     if (ts.days != 0) {
       concatString += "${ts.days} ${AppLocalizations.of(context)!.abrvDay}";

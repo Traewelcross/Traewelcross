@@ -271,20 +271,29 @@ class ProfileStatsCard extends StatelessWidget {
                       ),
                     ),
                   if (userInfo.followedBy)
-                    Card.filled(color: Color.alphaBlend(
-                    Colors.blue.withValues(alpha: 0.2),
-                    Theme.of(context).colorScheme.surface,
-                  ),child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.info),
-                        SizedBox(width: 8,),
-                        Expanded(child: Text(AppLocalizations.of(context)!.followedByNote(userInfo.displayName))),
-                      ],
+                    Card.filled(
+                      color: Color.alphaBlend(
+                        Colors.blue.withValues(alpha: 0.2),
+                        Theme.of(context).colorScheme.surface,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.info),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!.followedByNote(userInfo.displayName),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),),
-                  SizedBox(height: 8,),
+                  SizedBox(height: 8),
                   FutureBuilder(
                     future: SharedFunctions.getUserId(),
                     builder: (context, asyncSnapshot) {

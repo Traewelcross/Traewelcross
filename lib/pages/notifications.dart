@@ -97,9 +97,9 @@ class _NotificationsViewState extends State<NotificationsView> {
             SliverToBoxAdapter(
               child: Center(child: Text(localize.noNotificationsAvailable)),
             ),
-          if(_notifications.isEmpty)
+          if (_notifications.isEmpty)
             SliverToBoxAdapter(
-              child: Center(child: CircularProgressIndicator(),),
+              child: Center(child: CircularProgressIndicator()),
             ),
           if (_notifications.isNotEmpty)
             SliverList.builder(

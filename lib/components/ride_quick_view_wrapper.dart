@@ -10,7 +10,6 @@ import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/ride_info.dart';
 
-
 import 'package:traewelcross/utils/shared.dart';
 
 class RideQuickViewWrapperController {

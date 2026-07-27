@@ -13,17 +13,18 @@ class MastodonApiProvider {
       return "";
     }
     final lookUpCode = shortcode.replaceAll(":", "");
-    if(_emojiCache.containsKey(mastodonUrl)){
+    if (_emojiCache.containsKey(mastodonUrl)) {
       return _emojiCache[mastodonUrl]?[lookUpCode];
     }
-    if(!_inFlight.containsKey(mastodonUrl)){
+    if (!_inFlight.containsKey(mastodonUrl)) {
       _inFlight[mastodonUrl] = _getEmojis(mastodonUrl);
     }
     List<MastoCustomEmoji>? emojis = await _inFlight[mastodonUrl];
     _emojiCache[mastodonUrl] = {};
-    if(emojis != null){
-      for (MastoCustomEmoji emoji in emojis){
-        _emojiCache[mastodonUrl]![emoji.shortcode.replaceAll(":", "")] = emoji.staticUrl;
+    if (emojis != null) {
+      for (MastoCustomEmoji emoji in emojis) {
+        _emojiCache[mastodonUrl]![emoji.shortcode.replaceAll(":", "")] =
+            emoji.staticUrl;
       }
     }
     _inFlight.remove(mastodonUrl);

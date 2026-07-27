@@ -191,7 +191,9 @@ class _SelectStopState extends State<SelectStop> {
                               final mainStops = trip.stopovers;
                               final continuation = trip.continuationTrip;
 
-                              final hasContinuation = continuation != null && widget.editCallback == null;
+                              final hasContinuation =
+                                  continuation != null &&
+                                  widget.editCallback == null;
                               final mainCount = mainStops.length;
                               final continuationCount = hasContinuation
                                   ? continuation.stopovers.length
@@ -210,8 +212,10 @@ class _SelectStopState extends State<SelectStop> {
                                             departureId: widget.startStopId,
                                             tripId: widget.tripId,
                                             lineName: widget.lineName,
-                                            destination: mainStops[idx].station.name,
-                                            destinationId: mainStops[idx].station.id,
+                                            destination:
+                                                mainStops[idx].station.name,
+                                            destinationId:
+                                                mainStops[idx].station.id,
                                             category: widget.category,
                                             departureTime: widget.departureTime,
                                             arrivalTime:
@@ -236,16 +240,21 @@ class _SelectStopState extends State<SelectStop> {
                                             departureId: widget.startStopId,
                                             tripId: widget.tripId,
                                             lineName: widget.lineName,
-                                            destination: mainStops.last.station.name,
-                                            destinationId: mainStops.last.station.id,
+                                            destination:
+                                                mainStops.last.station.name,
+                                            destinationId:
+                                                mainStops.last.station.id,
                                             category: widget.category,
                                             departureTime: widget.departureTime,
                                             arrivalTime:
                                                 mainStops.last.arrivalPlanned,
                                           ),
                                           continuation: .new(
-                                            departureId:
-                                                continuation.stopovers.first.station.id,
+                                            departureId: continuation
+                                                .stopovers
+                                                .first
+                                                .station
+                                                .id,
                                             tripId:
                                                 trip.continuationTrip!.tripId,
                                             lineName:
@@ -255,7 +264,8 @@ class _SelectStopState extends State<SelectStop> {
                                             category:
                                                 trip.continuationTrip!.category,
                                             departureTime: continuation
-                                                .stopovers.first
+                                                .stopovers
+                                                .first
                                                 .departurePlanned,
                                             arrivalTime: continuation
                                                 .stopovers[continueIdx]

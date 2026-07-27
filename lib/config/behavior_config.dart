@@ -98,7 +98,7 @@ class BehaviorConfig with ChangeNotifier {
   bool _multiAccountSupport = false;
   @JsonKey(defaultValue: false)
   bool get multiAccountSupport => _multiAccountSupport;
-  set multiAccountSupport(bool val){
+  set multiAccountSupport(bool val) {
     _multiAccountSupport = val;
     notifyListeners();
   }
@@ -107,7 +107,7 @@ class BehaviorConfig with ChangeNotifier {
   int _systemTimeDeviation = -3;
   @JsonKey(defaultValue: -3)
   int get systemTimeDeviation => _systemTimeDeviation;
-  set systemTimeDeviation(int val){
+  set systemTimeDeviation(int val) {
     _systemTimeDeviation = val;
     notifyListeners();
   }

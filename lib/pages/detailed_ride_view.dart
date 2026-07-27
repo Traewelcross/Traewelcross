@@ -195,7 +195,9 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return SizedBox(
                         height: 512,
-                        child: Text("done")//MapDisplay(polylinePoints: snapshot.data!),
+                        child: Text(
+                          "done",
+                        ), //MapDisplay(polylinePoints: snapshot.data!),
                       );
                     }
                     return const SizedBox(height: 0);

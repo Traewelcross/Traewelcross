@@ -29,7 +29,9 @@ class SelectConnection extends StatefulWidget {
 }
 
 class _SelectConnectionState extends State<SelectConnection> {
-  DateTime departureTime = DateTime.now().add(Duration(minutes: getIt<Config>().behavior.systemTimeDeviation));
+  DateTime departureTime = DateTime.now().add(
+    Duration(minutes: getIt<Config>().behavior.systemTimeDeviation),
+  );
   DepartTypes departType = DepartTypes.all;
   late Future<List<Departure>> _departuresFuture;
 
@@ -43,7 +45,11 @@ class _SelectConnectionState extends State<SelectConnection> {
     final apiService = getIt<ApiService>();
     List<Departure> response;
     try {
-      response = await apiService.station.getDepartures(stationId: widget.stationId, when: departureTime, type: departType);
+      response = await apiService.station.getDepartures(
+        stationId: widget.stationId,
+        when: departureTime,
+        type: departType,
+      );
     } on TimeoutException {
       if (!mounted) return Future.value([]);
       SharedFunctions.handleRequestTimeout(context, _fetchDepartures);
@@ -400,7 +406,8 @@ class _DepartureList extends StatelessWidget {
                               planned: departure.plannedWhen,
                               real: departure.when,
                             ),
-                            if (departure.platform?.toString().isNotEmpty == true)
+                            if (departure.platform?.toString().isNotEmpty ==
+                                true)
                               Platform(
                                 platform: departure.platform!,
                                 plannedPlatform: departure.plannedPlatform!,

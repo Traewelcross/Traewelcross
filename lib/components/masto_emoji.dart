@@ -11,16 +11,19 @@ class MastoEmoji extends StatelessWidget {
     required this.mastodonUrl,
     required this.shortCode,
     required this.width,
-    super.key
+    super.key,
   });
   @override
   Widget build(BuildContext context) {
-   return FutureBuilder(future: getIt<ApiService>().mastodon.getEmoji(mastodonUrl, shortCode), builder: (ctx, snp){
-    if(snp.connectionState != .done || !snp.hasData){
-      return Text(shortCode);
-    }
-    String imageUrl = snp.data!;
-    return CachedNetworkImage(imageUrl: imageUrl, width: width,);
-   });
+    return FutureBuilder(
+      future: getIt<ApiService>().mastodon.getEmoji(mastodonUrl, shortCode),
+      builder: (ctx, snp) {
+        if (snp.connectionState != .done || !snp.hasData) {
+          return Text(shortCode);
+        }
+        String imageUrl = snp.data!;
+        return CachedNetworkImage(imageUrl: imageUrl, width: width);
+      },
+    );
   }
 }

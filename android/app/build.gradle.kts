@@ -42,6 +42,8 @@ android {
         create("foss") {
             dimension = "default"
             versionNameSuffix = "-foss"
+            // Changing flavors and then returning to the original flavor bricks push notifications and cofuses preferences, so at this time, the foss version will be a seperate package
+            applicationIdSuffix = ".foss"
         }
         create("play") {
             dimension = "default"

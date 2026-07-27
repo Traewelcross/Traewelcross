@@ -19,21 +19,24 @@ class _TimeDeviationDialogState extends State<TimeDeviationDialog> {
   @override
   void initState() {
     super.initState();
-    if(!getIt<Config>().behavior.systemTimeDeviation.isNegative){
+    if (!getIt<Config>().behavior.systemTimeDeviation.isNegative) {
       mode = "add";
     }
-    textEdit.text = getIt<Config>().behavior.systemTimeDeviation.abs().toString();
+    textEdit.text = getIt<Config>().behavior.systemTimeDeviation
+        .abs()
+        .toString();
     textEdit.addListener(() {
       print(mode);
-      if(textEdit.text.isEmpty){
+      if (textEdit.text.isEmpty) {
         getIt<Config>().behavior.systemTimeDeviation = 0;
         setState(() {});
         return;
       }
-      if(mode == "add"){
+      if (mode == "add") {
         getIt<Config>().behavior.systemTimeDeviation = int.parse(textEdit.text);
       } else {
-        getIt<Config>().behavior.systemTimeDeviation = (int.parse(textEdit.text) / -1).toInt();
+        getIt<Config>().behavior.systemTimeDeviation =
+            (int.parse(textEdit.text) / -1).toInt();
       }
       setState(() {});
     });
@@ -58,13 +61,13 @@ class _TimeDeviationDialogState extends State<TimeDeviationDialog> {
                   keyboardType: .number,
                   controller: textEdit,
                   inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ], 
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     suffix: Text(localize.abrvMinute),
                     prefix: Padding(
-                      padding: const EdgeInsets.fromLTRB(0,0,8,0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
                       child: DropdownButton(
                         isDense: true,
                         value: mode,
@@ -99,9 +102,15 @@ class _TimeDeviationDialogState extends State<TimeDeviationDialog> {
           ),
           Row(
             children: [
-              Expanded(child: FilledButton.icon(onPressed: () => Navigator.pop(context), label: Text(localize.done), icon: const Icon(Icons.check_circle))),
+              Expanded(
+                child: FilledButton.icon(
+                  onPressed: () => Navigator.pop(context),
+                  label: Text(localize.done),
+                  icon: const Icon(Icons.check_circle),
+                ),
+              ),
             ],
-          )
+          ),
         ],
       ),
     );

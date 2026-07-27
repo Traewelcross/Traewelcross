@@ -22,12 +22,27 @@ class UnavailableService extends StatelessWidget {
               color: Theme.of(context).colorScheme.error,
               size: 96,
             ),
-            SizedBox(height: 16,),
-            Center(child: Text(localize.serviceUnavailable, textAlign: .center,)),
-            SizedBox(height: 16,),
-            FilledButton.icon(onPressed: ()=>SharedFunctions.launchURL(Uri.parse("https://traewelling.de",), launchMode: .externalApplication), label: Text(localize.checkOnTheWeb), icon: Icon(Icons.open_in_new)),
-            SizedBox(height: 8,),
-            FilledButton.tonalIcon(onPressed: () => TerminateRestart.instance.restartApp(options:TerminateRestartOptions(clearData: false)), label: Text(localize.errorTroubleshootButtonRestart), icon: Icon(Icons.restart_alt))
+            SizedBox(height: 16),
+            Center(
+              child: Text(localize.serviceUnavailable, textAlign: .center),
+            ),
+            SizedBox(height: 16),
+            FilledButton.icon(
+              onPressed: () => SharedFunctions.launchURL(
+                Uri.parse("https://traewelling.de"),
+                launchMode: .externalApplication,
+              ),
+              label: Text(localize.checkOnTheWeb),
+              icon: Icon(Icons.open_in_new),
+            ),
+            SizedBox(height: 8),
+            FilledButton.tonalIcon(
+              onPressed: () => TerminateRestart.instance.restartApp(
+                options: TerminateRestartOptions(clearData: false),
+              ),
+              label: Text(localize.errorTroubleshootButtonRestart),
+              icon: Icon(Icons.restart_alt),
+            ),
           ],
         ),
       ),

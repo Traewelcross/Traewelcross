@@ -5,12 +5,13 @@ class AccountSwitcher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomSheet(onClosing: () => "", builder:(context) {
-      return ListView(
-        children: [
-          ListTile(title: Text("Nothing to see here (yet)"),)
-        ],
-      );
-    },);
+    return BottomSheet(
+      onClosing: () => "",
+      builder: (context) {
+        return ListView(
+          children: [ListTile(title: Text("Nothing to see here (yet)"))],
+        );
+      },
+    );
   }
 }

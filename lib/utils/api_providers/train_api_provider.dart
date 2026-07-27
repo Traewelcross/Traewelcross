@@ -10,14 +10,21 @@ class TrainApiProvider {
 
   TrainApiProvider(this._api);
 
-  Future<TripResource> getTrip({required String tripId, required String lineName, required int startStopId}) async {
+  Future<TripResource> getTrip({
+    required String tripId,
+    required String lineName,
+    required int startStopId,
+  }) async {
     http.Response response;
     try {
-      response = await _api.request("/trains/trip?hafasTripId=${Uri.encodeComponent(tripId)}&lineName=${Uri.encodeComponent(lineName)}&start=${Uri.encodeComponent(startStopId.toString())}", .GET);
+      response = await _api.request(
+        "/trains/trip?hafasTripId=${Uri.encodeComponent(tripId)}&lineName=${Uri.encodeComponent(lineName)}&start=${Uri.encodeComponent(startStopId.toString())}",
+        .GET,
+      );
     } on TimeoutException {
       throw TimeoutException(null);
     }
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       print(response.body);
       return TripResource.fromJson(jsonDecode(response.body)["data"]);
     } else {

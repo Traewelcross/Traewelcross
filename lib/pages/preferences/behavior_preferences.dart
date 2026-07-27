@@ -23,9 +23,8 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
     showDialog(context: context, builder: (context) => DefaultTextDialog());
   }
 
-  void changeTimeDeviation(){
+  void changeTimeDeviation() {
     showDialog(context: context, builder: (context) => TimeDeviationDialog());
-
   }
 
   @override

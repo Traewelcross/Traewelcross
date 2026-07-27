@@ -660,9 +660,7 @@ class _AlertsState extends State<Alerts> {
                       Divider(height: 0),
                       Row(
                         children: [
-                          Expanded(
-                            child: Text(alert.translations[0].content),
-                          ),
+                          Expanded(child: Text(alert.translations[0].content)),
                         ],
                       ),
                       if (alert.translations[0].url != null)
