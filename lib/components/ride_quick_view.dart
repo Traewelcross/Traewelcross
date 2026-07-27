@@ -466,13 +466,15 @@ class _RideQuickViewState extends State<RideQuickView> {
                                         category: _rideData.checkin.category,
                                         width: 24,
                                         lineName: _rideData.checkin.lineName,
-                                        operatorIdentifier:
-                                            SharedFunctions.getOperatorHAFASIdent(
+                                        operatorIdentifier:_rideData
+                                                  .checkin
+                                                  .operator?.name
+                                            /*SharedFunctions.getOperatorHAFASIdent(
                                               _rideData
                                                   .checkin
                                                   .operator
                                                   ?.identifiers,
-                                            ),
+                                            )*/,
                                       ),
                                     ),
                                     const SizedBox(

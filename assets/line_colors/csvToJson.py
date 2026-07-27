@@ -3,7 +3,7 @@ import json
 
 # --- First Pass: Build a map from shortOperatorName to hafasOperatorCode ---
 short_to_hafas_map = {}
-try:
+"""try:
     with open('line-colors.csv', mode='r', encoding='utf-8') as infile:
         reader = csv.DictReader(infile)
         for row in reader:
@@ -13,16 +13,13 @@ try:
 except FileNotFoundError:
     print("Error: 'line-colors.csv' not found. Make sure the file is in the same directory.")
     exit()
-
+"""
 # --- Second Pass: Build the final JSON structure ---
 json_data = {}
 with open('line-colors.csv', mode='r', encoding='utf-8') as infile:
     reader = csv.DictReader(infile)
     for row in reader:
-        hafas_code = row.get('hafasOperatorCode')
-
-        if not hafas_code:
-            hafas_code = short_to_hafas_map.get(row.get('shortOperatorName'))
+        hafas_code = row.get('delfiAgencyName').lower()
 
         if not hafas_code:
             continue

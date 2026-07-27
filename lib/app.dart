@@ -592,10 +592,12 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                 width: 24,
                                 category: ride.checkin.category,
                                 lineName: ride.checkin.lineName,
-                                operatorIdentifier:
-                                    SharedFunctions.getOperatorHAFASIdent(
+                                operatorIdentifier:ride
+                                                  .checkin
+                                                  .operator?.name
+                                    /*SharedFunctions.getOperatorHAFASIdent(
                                       ride.checkin.operator?.identifiers,
-                                    ),
+                                    )*/,
                               ),
                             ),
                           ],
