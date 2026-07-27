@@ -55,7 +55,7 @@ Future<List<LatLng>> _fetchAndParsePolyline(
         .where(
           (point) => point.length >= 2 && point[0] is num && point[1] is num,
         )
-        .map((point) => LatLng(point[1], point[0]))
+        .map((point) => LatLng(point[1]+.0, point[0]+.0))
         .toList();
   } catch (e) {
     throw Exception('Failed to parse polyline coordinates: $e');
@@ -195,9 +195,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return SizedBox(
                         height: 512,
-                        child: Text(
-                          "done",
-                        ), //MapDisplay(polylinePoints: snapshot.data!),
+                        child: MapDisplay(polylinePoints: snapshot.data!),
                       );
                     }
                     return const SizedBox(height: 0);
