@@ -1849,6 +1849,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{displayName} follows you'**
   String followedByNote(String displayName);
+
+  /// No description provided for @routeColorColorSchemeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use route color as color accent'**
+  String get routeColorColorSchemeTitle;
+
+  /// No description provided for @routeColorColorSchemeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'If a route color is available, display the card with that color accent'**
+  String get routeColorColorSchemeSubtitle;
 }
 
 class _AppLocalizationsDelegate

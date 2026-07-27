@@ -174,10 +174,11 @@ class SharedFunctions {
     }
   }
 
-  static Color secondCard(BuildContext context) => Color.alphaBlend(
-    Colors.white.withValues(alpha: .03),
-    Theme.of(context).cardColor,
-  );
+  static Color secondCard(BuildContext context) =>
+      Color.alphaBlend(
+        Colors.white.withValues(alpha: .03),
+        Theme.of(context).cardColor,
+      );
   static Future<int> getUserId() async {
     int userid = 0;
     userid = await SharedPreferencesAsync().getInt("userid") ?? 0;
@@ -238,5 +239,26 @@ class SharedFunctions {
     }
     final hafasIdent = identifiers.where((ident) => ident.type == "hafas");
     return hafasIdent.isEmpty ? "" : hafasIdent.first.identifier;
+  }
+
+  static ThemeData deriviateThemeFromRouteColor(
+    String? routeColor,
+    BuildContext context,
+  ) {
+    if (routeColor == null ||
+        getIt<Config>().appearance.routeColorColorScheme == false) {
+      return Theme.of(context);
+    }
+    final cs = ColorScheme.fromSeed(
+      seedColor: Color(int.parse(routeColor.padLeft(8, "FF"), radix: 16)),
+      brightness: Theme.of(context).brightness,
+    );
+    return Theme.of(context).copyWith(colorScheme: cs);
+  }
+
+  static Color? tryParseColor(String? color){
+    if(color == null) return null;
+    final colorInt = int.parse("FF$color", radix: 16);
+    return Color(colorInt);
   }
 }

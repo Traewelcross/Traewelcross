@@ -1018,4 +1018,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String followedByNote(String displayName) {
     return '$displayName folgt dir';
   }
+
+  @override
+  String get routeColorColorSchemeTitle =>
+      'Routenfarbe als Farbakzent verwenden';
+
+  @override
+  String get routeColorColorSchemeSubtitle =>
+      'Wenn eine Routenfarbe verfügbar ist, nimmt die jeweilige Fahrt diesen Farbakzent an';
 }

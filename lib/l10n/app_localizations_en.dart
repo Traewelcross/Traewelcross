@@ -1012,4 +1012,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String followedByNote(String displayName) {
     return '$displayName follows you';
   }
+
+  @override
+  String get routeColorColorSchemeTitle => 'Use route color as color accent';
+
+  @override
+  String get routeColorColorSchemeSubtitle =>
+      'If a route color is available, display the card with that color accent';
 }

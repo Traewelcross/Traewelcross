@@ -638,5 +638,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "routeColorColorSchemeTitle": "Use route color as color accent",
+  "routeColorColorSchemeSubtitle": "If a route color is available, display the card with that color accent"
 }

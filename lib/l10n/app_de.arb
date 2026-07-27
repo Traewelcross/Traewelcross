@@ -291,5 +291,7 @@
     "systemTimeDeviationExample": "Anstelle der Abfahrten für {orgTime}, werden die Abfahrten für {modTime} angezeigt",
     "done": "Fertig",
     "usernameCopied": "Benutzername kopiert!",
-    "followedByNote": "{displayName} folgt dir"
+    "followedByNote": "{displayName} folgt dir",
+    "routeColorColorSchemeTitle": "Routenfarbe als Farbakzent verwenden",
+    "routeColorColorSchemeSubtitle": "Wenn eine Routenfarbe verfügbar ist, nimmt die jeweilige Fahrt diesen Farbakzent an"
 }

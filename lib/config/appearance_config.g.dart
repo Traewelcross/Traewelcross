@@ -21,7 +21,8 @@ AppearanceConfig _$AppearanceConfigFromJson(Map<String, dynamic> json) =>
           $enumDecodeNullable(_$MapTypeEnumEnumMap, json['mapType']) ??
           MapTypeEnum.standard
       ..fontFam = json['fontFam'] as String? ?? 'Outfit'
-      ..prideModePreference = json['prideModePreference'] as bool? ?? false;
+      ..prideModePreference = json['prideModePreference'] as bool? ?? false
+      ..routeColorColorScheme = json['routeColorColorScheme'] as bool? ?? false;
 
 Map<String, dynamic> _$AppearanceConfigToJson(AppearanceConfig instance) =>
     <String, dynamic>{
@@ -35,6 +36,7 @@ Map<String, dynamic> _$AppearanceConfigToJson(AppearanceConfig instance) =>
       'mapType': _$MapTypeEnumEnumMap[instance.mapType]!,
       'fontFam': instance.fontFam,
       'prideModePreference': instance.prideModePreference,
+      'routeColorColorScheme': instance.routeColorColorScheme,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

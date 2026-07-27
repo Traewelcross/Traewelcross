@@ -80,4 +80,13 @@ class AppearanceConfig with ChangeNotifier {
   bool get isPrideActive {
     return DateTime.now().month == 6 || _prideMode;
   }
+
+  /// If a route color is available, display the card in that color
+  bool _routeColorColorScheme = false;
+  @JsonKey(defaultValue: false)
+  bool get routeColorColorScheme => _routeColorColorScheme;
+  set routeColorColorScheme(bool val){
+    _routeColorColorScheme = val;
+    notifyListeners();
+  }
 }

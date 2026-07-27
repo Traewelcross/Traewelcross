@@ -21,7 +21,7 @@ class _RideIconTagState extends State<RideIconTag> {
   void initState() {
     super.initState();
     if (widget.iconInfo.operatorIdentifier != null) {
-      _lineDataFuture = _getLine();
+      _lineDataFuture = _getLineData();
     }
   }
 
@@ -82,7 +82,7 @@ class _RideIconTagState extends State<RideIconTag> {
                         decoration: BoxDecoration(
                           shape: _getShape(shape),
                           borderRadius: _getRadius(shape),
-                          color: Color(int.parse("0xFF${data["background"]}")),
+                          color: widget.iconInfo.routeColor ?? Color(int.parse("0xFF${data["background"]}")),
                           border: Border.all(
                             width: 1.5,
                             color: Color(
@@ -101,7 +101,7 @@ class _RideIconTagState extends State<RideIconTag> {
                                 widget.iconInfo.lineName!,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: Color(
+                                  color: widget.iconInfo.routeTextColor ?? Color(
                                     int.parse("0xFF${data["text"]}"),
                                   ),
                                 ),
@@ -124,7 +124,7 @@ class _RideIconTagState extends State<RideIconTag> {
     );
   }
 
-  Future<dynamic> _getLine() async {
+  Future<dynamic> _getLineData() async {
     return jsonDecode(
       await rootBundle.loadString("assets/line_colors/line_colors.json"),
     )[widget.iconInfo.operatorIdentifier?.toLowerCase()]?[widget.iconInfo.lineName?.replaceAll(

@@ -211,6 +211,20 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                   }),
                 ),
               ),
+                            ListTile(
+                onTap: () => setState(() {
+                  config.appearance.routeColorColorScheme =
+                      !config.appearance.routeColorColorScheme;
+                }),
+                title: Text(localize.routeColorColorSchemeTitle),
+                subtitle: Text(localize.routeColorColorSchemeSubtitle),
+                trailing: Checkbox(
+                  value: config.appearance.routeColorColorScheme,
+                  onChanged: (val) => setState(() {
+                    config.appearance.routeColorColorScheme = val!;
+                  }),
+                ),
+              ),
               Divider(),
               ListTile(title: Text(localize.selectMapType)),
               RadioGroup(

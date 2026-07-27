@@ -594,10 +594,12 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                 lineName: ride.checkin.lineName,
                                 operatorIdentifier:ride
                                                   .checkin
-                                                  .operator?.name
+                                                  .operator?.name,
+                                routeColor: SharedFunctions.tryParseColor(ride.checkin.routeColor),
+                                routeTextColor: SharedFunctions.tryParseColor(ride.checkin.routeTextColor),
                                     /*SharedFunctions.getOperatorHAFASIdent(
                                       ride.checkin.operator?.identifiers,
-                                    )*/,
+                                    )*/
                               ),
                             ),
                           ],
