@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,7 +27,6 @@ import 'package:intl/intl.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
 import 'dart:async';
-import "dart:math" as math;
 
 import 'package:traewelcross/utils/time_span.dart';
 
@@ -217,24 +218,25 @@ class _RideQuickViewState extends State<RideQuickView> {
 
   Widget _parseBodyText() {
     List<String> result = [];
+    List<int> bodyBytes = utf8.encode(widget.rideData.body);
     int cursor = 0;
     if (widget.rideData.bodyMentions.isEmpty) {
       return RichText(text: _getEmojis(widget.rideData.body));
     }
+    widget.rideData.bodyMentions.sort((a,b) => a.position.compareTo(b.position));
     for (Mention mention in widget.rideData.bodyMentions) {
-      int startPos = math.max(mention.position - 1, 0);
+      int startPos = mention.position;
       int endPos = mention.position + mention.length;
-      if (startPos != 0) {
-        endPos--;
-      }
+      if(startPos < cursor || endPos > widget.rideData.body.length) continue;
       if (startPos > cursor) {
-        result.add(widget.rideData.body.substring(cursor, startPos));
+        result.add(utf8.decode(bodyBytes.sublist(cursor, startPos)));
       }
-      result.add(widget.rideData.body.substring(startPos, endPos));
+      result.add(utf8.decode(bodyBytes.sublist(startPos, endPos)));
       cursor = endPos;
-      if (cursor < widget.rideData.body.length) {
-        result.add(widget.rideData.body.substring(cursor));
-      }
+
+    }
+    if(cursor < bodyBytes.length){
+      result.add(utf8.decode(bodyBytes.sublist(cursor)));
     }
     return RichText(
       text: TextSpan(
