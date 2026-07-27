@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +6,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
+import 'package:traewelcross/components/masto_emoji.dart';
 import 'package:traewelcross/components/pride_gradient.dart';
 import 'package:traewelcross/components/profile_picture.dart';
 import 'package:traewelcross/components/ride_icon_tag.dart';
@@ -176,37 +178,70 @@ class _RideQuickViewState extends State<RideQuickView> {
     );
   }
 
-  Widget _parseBodyText(String body, List<Mention> bodyMentions) {
-    // This works for now, can't for the life of me figure out how to use API provided Info, so manual detection it is
-    List<String> result = [];
-    if ((bodyMentions as List).isEmpty) {
-      return Text(body);
-    }
+  TextSpan _getEmojis(String element) {
+    RegExp regExp = RegExp(r':\w+:');
     int cursor = 0;
-    for (Mention mention in bodyMentions) {
+    List<String> segments = [];
+    for (RegExpMatch match in regExp.allMatches(element)) {
+      if (match.start > cursor) {
+        segments.add(element.substring(cursor, match.start));
+      }
+      segments.add(match.group(0)!);
+      cursor = match.end;
+    }
+    if (cursor < element.length) {
+      segments.add(element.substring(cursor));
+    }
+    return TextSpan(
+      children: segments.map((segment) {
+        if (regExp.hasMatch(segment)) {
+          return WidgetSpan(
+            alignment: .middle,
+            baseline: .alphabetic,
+            child: MastoEmoji(
+              mastodonUrl: widget.rideData.user.mastodon?.server,
+              shortCode: segment,
+              width: 24,
+            ),
+          );
+        }
+        return TextSpan(
+          text: segment,
+          style: TextStyle(
+            fontFamily: "Outfit",
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _parseBodyText() {
+    List<String> result = [];
+    int cursor = 0;
+    if (widget.rideData.bodyMentions.isEmpty) {
+      return RichText(text: _getEmojis(widget.rideData.body));
+    }
+    for (Mention mention in widget.rideData.bodyMentions) {
       int startPos = math.max(mention.position - 1, 0);
       int endPos = mention.position + mention.length;
       if (startPos != 0) {
         endPos--;
       }
       if (startPos > cursor) {
-        result.add(body.substring(cursor, startPos));
+        result.add(widget.rideData.body.substring(cursor, startPos));
       }
-      result.add(body.substring(startPos, endPos));
+      result.add(widget.rideData.body.substring(startPos, endPos));
       cursor = endPos;
-      if (cursor < body.length) {
-        result.add(body.substring(cursor));
+      if (cursor < widget.rideData.body.length) {
+        result.add(widget.rideData.body.substring(cursor));
       }
     }
     return RichText(
       text: TextSpan(
         children: result.map((element) {
-          // Element does not start with @, not a valid mention
-          if (!element.startsWith("@")) {
-            return TextSpan(text: element);
-          }
           // Element start with @ and does not contain a space, valid mention
-          if (!element.contains(" ")) {
+          if (element.startsWith("@") && !element.contains(" ")) {
             return TextSpan(
               text: element,
               style: TextStyle(
@@ -232,8 +267,8 @@ class _RideQuickViewState extends State<RideQuickView> {
                 },
             );
           }
-          // Element is not a mention
-          return TextSpan(text: element);
+          // Element is not a mention, but it might contain an emoji
+          return _getEmojis(element);
         }).toList(),
         style: TextStyle(
           fontFamily: "Outfit",
@@ -507,12 +542,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                             children: [
                               const Icon(Icons.format_quote),
                               const SizedBox(width: 8),
-                              Expanded(
-                                child: _parseBodyText(
-                                  _rideData.body,
-                                  _rideData.bodyMentions,
-                                ),
-                              ),
+                              Expanded(child: _parseBodyText()),
                             ],
                           ),
                         ),
