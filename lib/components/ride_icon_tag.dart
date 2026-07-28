@@ -133,7 +133,7 @@ class _RideIconTagState extends State<RideIconTag> {
     )];
   }
 
-  BorderRadius _getRadius(String shape) {
+  BorderRadius? _getRadius(String shape) {
     if (shape == "rectangle") {
       return BorderRadius.zero;
     }
@@ -142,6 +142,9 @@ class _RideIconTagState extends State<RideIconTag> {
     }
     if (shape == "pill") {
       return BorderRadius.circular(999999);
+    }
+    if (shape == "circle"){
+      return null;
     }
     return BorderRadius.zero;
   }
