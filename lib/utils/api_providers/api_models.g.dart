@@ -475,7 +475,7 @@ Notification _$NotificationFromJson(Map<String, dynamic> json) => Notification(
   lead: json['lead'] as String,
   leadFormatted: json['leadFormatted'] as String?,
   noticeFormatted: json['noticeFormatted'] as String?,
-  notice: json['notice'] as String,
+  notice: json['notice'] as String?,
   link: json['link'] as String?,
   data: json['data'],
   readAt: json['readAt'] as String?,

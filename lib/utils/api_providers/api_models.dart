@@ -480,7 +480,7 @@ class Notification {
   final String lead;
   final String? leadFormatted;
   final String? noticeFormatted;
-  final String notice;
+  final String? notice;
   final String? link;
   final dynamic data;
   String? readAt;
