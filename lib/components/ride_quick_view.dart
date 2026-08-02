@@ -388,9 +388,9 @@ class _RideQuickViewState extends State<RideQuickView> {
       MaterialPageRoute(
         builder: (BuildContext context) => CheckIn(
           checkInInfo: CheckInInfo(
-            destination: status.checkin.destination.station.name,
-            destinationId: status.checkin.destination.station.id,
-            departureId: status.checkin.origin.station.id,
+            destination: status.checkin.destination.station?.name ?? status.checkin.destination.name ?? "???",
+            destinationId: status.checkin.destination.station?.id ?? status.checkin.destination.id ?? 0,
+            departureId: status.checkin.origin.station?.id ?? status.checkin.origin.id ?? 0,
             tripId: status.checkin.hafasId,
             lineName: status.checkin.lineName,
             category: status.checkin.category,
@@ -708,17 +708,17 @@ class _RideQuickViewState extends State<RideQuickView> {
                                                         .checkin
                                                         .origin
                                                         .station
-                                                        .id,
+                                                        ?.id ?? _rideData.checkin.origin.id ?? 0,
                                                     destination: _rideData
                                                         .checkin
                                                         .destination
                                                         .station
-                                                        .name,
+                                                        ?.name ?? _rideData.checkin.destination.name ?? "???",
                                                     destinationId: _rideData
                                                         .checkin
                                                         .destination
                                                         .station
-                                                        .id,
+                                                        ?.id ?? _rideData.checkin.destination.id ?? 0,
                                                     rideId: _rideData.id,
                                                     body: _rideData.body,
                                                     visibility:
@@ -1042,14 +1042,14 @@ class _StationText extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => SelectConnection(
-                      stationId: transportData.destination.station.id,
-                      stationName: transportData.destination.station.name,
+                      stationId: transportData.destination.station?.id ?? transportData.destination.id ?? 0,
+                      stationName: transportData.destination.station?.name ?? transportData.destination.name ?? "???",
                     ),
                   ),
                 );
               },
               child: Text(
-                transportData.destination.station.name,
+                transportData.destination.station?.name ?? transportData.destination.name ?? "???",
                 style: stationText,
               ),
             ),
@@ -1062,14 +1062,14 @@ class _StationText extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => SelectConnection(
-                      stationId: transportData.origin.station.id,
-                      stationName: transportData.origin.station.name,
+                      stationId: transportData.origin.station?.id ?? transportData.origin.id ?? 0,
+                      stationName: transportData.origin.station?.name ?? transportData.origin.name ?? "???",
                     ),
                   ),
                 );
               },
               child: Text(
-                transportData.origin.station.name,
+                transportData.origin.station?.name ?? transportData.origin.name ?? "???",
                 style: stationText,
               ),
             ),
@@ -1130,8 +1130,8 @@ class _StationText extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => SelectConnection(
-                          stationId: transportData.destination.station.id,
-                          stationName: transportData.destination.station.name,
+                          stationId: transportData.destination.station?.id ?? transportData.destination.id ?? 0,
+                          stationName: transportData.destination.station?.name ?? transportData.destination.name ?? "???",
                         ),
                       ),
                     );
@@ -1140,8 +1140,8 @@ class _StationText extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => SelectConnection(
-                          stationId: transportData.origin.station.id,
-                          stationName: transportData.origin.station.name,
+                          stationId: transportData.origin.station?.id ?? transportData.origin.id ?? 0,
+                          stationName: transportData.origin.station?.name ?? transportData.origin.name ?? "???",
                         ),
                       ),
                     );

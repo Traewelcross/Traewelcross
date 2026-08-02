@@ -36,13 +36,13 @@ class CheckinSuccess extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  statusInfo.status.checkin.origin.station.name,
+                  statusInfo.status.checkin.origin.station?.name ?? statusInfo.status.checkin.origin.name ?? "???",
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
                 const Icon(Icons.arrow_downward),
                 Text(
-                  statusInfo.status.checkin.destination.station.name,
+                  statusInfo.status.checkin.destination.station?.name ?? statusInfo.status.checkin.origin.name ?? "???",
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
@@ -113,7 +113,7 @@ class CheckinSuccess extends StatelessWidget {
                             child: ProfileLinkButton(
                               user: user.user.promoteToUser(),
                               subTitle:
-                                  "${user.checkin.origin.station.name} -> ${user.checkin.destination.station.name}",
+                                  "${user.checkin.origin.station?.name ?? user.checkin.origin.name ?? "???"} -> ${user.checkin.destination.station?.name ?? user.checkin.destination.name ?? "???"}",
                             ),
                           ),
                       ],

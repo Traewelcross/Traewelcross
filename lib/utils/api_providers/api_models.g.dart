@@ -181,7 +181,10 @@ Map<String, dynamic> _$ClientToJson(Client instance) => <String, dynamic>{
 Stopover _$StopoverFromJson(Map<String, dynamic> json) => Stopover(
   id: (json['id'] as num?)?.toInt(),
   stopoverId: (json['stopoverId'] as num?)?.toInt(),
-  station: Station.fromJson(json['station'] as Map<String, dynamic>),
+  name: json['name'] as String?,
+  station: json['station'] == null
+      ? null
+      : Station.fromJson(json['station'] as Map<String, dynamic>),
   arrivalPlanned: json['arrivalPlanned'] as String?,
   arrivalReal: json['arrivalReal'] as String?,
   arrivalPlatformPlanned: json['arrivalPlatformPlanned'] as String?,
@@ -199,6 +202,7 @@ Stopover _$StopoverFromJson(Map<String, dynamic> json) => Stopover(
 Map<String, dynamic> _$StopoverToJson(Stopover instance) => <String, dynamic>{
   'id': instance.id,
   'stopoverId': instance.stopoverId,
+  'name': instance.name,
   'station': instance.station,
   'arrivalPlanned': instance.arrivalPlanned,
   'arrivalReal': instance.arrivalReal,

@@ -213,9 +213,9 @@ class _SelectStopState extends State<SelectStop> {
                                             tripId: widget.tripId,
                                             lineName: widget.lineName,
                                             destination:
-                                                mainStops[idx].station.name,
+                                                mainStops[idx].station?.name ?? mainStops[idx].name ?? "???",
                                             destinationId:
-                                                mainStops[idx].station.id,
+                                                mainStops[idx].station?.id ?? mainStops[idx].id ?? 0,
                                             category: widget.category,
                                             departureTime: widget.departureTime,
                                             arrivalTime:
@@ -241,9 +241,9 @@ class _SelectStopState extends State<SelectStop> {
                                             tripId: widget.tripId,
                                             lineName: widget.lineName,
                                             destination:
-                                                mainStops.last.station.name,
+                                                mainStops.last.station?.name ?? mainStops.last.name ?? "???",
                                             destinationId:
-                                                mainStops.last.station.id,
+                                                mainStops.last.station?.id ?? mainStops.last.id ?? 0,
                                             category: widget.category,
                                             departureTime: widget.departureTime,
                                             arrivalTime:
@@ -254,7 +254,7 @@ class _SelectStopState extends State<SelectStop> {
                                                 .stopovers
                                                 .first
                                                 .station
-                                                .id,
+                                                ?.id ?? continuation.stopovers.first.id ?? 0,
                                             tripId:
                                                 trip.continuationTrip!.tripId,
                                             lineName:
@@ -378,7 +378,7 @@ class StopoverRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        callback.call(stop.station.id, stop.station.name, stop.arrivalPlanned!);
+        callback.call(stop.station?.id ?? stop.id ?? 0, stop.station?.name ?? stop.name ?? "???", stop.arrivalPlanned!);
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -388,7 +388,7 @@ class StopoverRow extends StatelessWidget {
             const SizedBox(width: 4),
             Expanded(
               child: Text(
-                stop.station.name,
+                stop.station?.name ?? stop.name ?? "???",
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,

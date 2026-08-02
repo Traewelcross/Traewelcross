@@ -105,7 +105,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
   Future<String> _getEvaIdent() async {
     final apiService = getIt<ApiService>();
     final res = await apiService.status.getStationData(
-      stationId: widget.rideData!.checkin.destination.station.id,
+      stationId: widget.rideData!.checkin.destination.station?.id ?? widget.rideData!.checkin.destination.id ?? 0,
       withIdentifiers: true,
     );
     if (res.identifiers == null) {
@@ -166,8 +166,8 @@ class _DetailedRideViewState extends State<DetailedRideView> {
         }
 
         final rideData = rideSnapshot.data!;
-        final originName = rideData.checkin.origin.station.name;
-        final destinationName = rideData.checkin.destination.station.name;
+        final originName = rideData.checkin.origin.station?.name ?? rideData.checkin.origin.name ?? "???";
+        final destinationName = rideData.checkin.destination.station?.name ?? rideData.checkin.destination.name ?? "???";
         final title = "$originName -> $destinationName";
 
         return MainScaffold(

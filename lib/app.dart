@@ -566,7 +566,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                   Row(
                                     mainAxisSize: .min,
                                     children: [
-                                      Text(ride.checkin.origin.station.name),
+                                      Text(ride.checkin.origin.station?.name ?? ride.checkin.origin.name ?? "???"),
                                       const Icon(Icons.arrow_right),
                                     ],
                                   ),
@@ -574,7 +574,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          ride.checkin.destination.station.name,
+                                          ride.checkin.destination.station?.name ?? ride.checkin.destination.name ?? "???",
                                           style: Theme.of(
                                             context,
                                           ).textTheme.headlineSmall,
