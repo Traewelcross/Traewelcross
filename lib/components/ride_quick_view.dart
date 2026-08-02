@@ -445,7 +445,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                         isAuthUser: _isAuthUser(),
                       ),
                       Card(
-                        surfaceTintColor: _rideData.checkin.routeColor != null ? Color(int.parse("FF${_rideData.checkin.routeColor}", radix: 16)) : null,
+                        surfaceTintColor: _rideData.checkin.routeColor != null && getIt<Config>().appearance.routeColorColorScheme ? Color(int.parse("FF${_rideData.checkin.routeColor}", radix: 16)) : null,
                         child: LayoutBuilder(
                           builder: (ctx, constraints) {
                             return SingleChildScrollView(
@@ -542,7 +542,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                       ),
                       if (_rideData.body != "")
                         Card(
-                        surfaceTintColor: _rideData.checkin.routeColor != null ? Color(int.parse("FF${_rideData.checkin.routeColor}", radix: 16)) : null,
+                        surfaceTintColor: _rideData.checkin.routeColor != null && getIt<Config>().appearance.routeColorColorScheme ? Color(int.parse("FF${_rideData.checkin.routeColor}", radix: 16)) : null,
                           child: Padding(
                             padding: const EdgeInsets.all(16),
                             child: Row(
