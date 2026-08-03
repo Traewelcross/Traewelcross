@@ -423,7 +423,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get checkInSuccessful => 'Erfolgreich eingecheckt!';
 
   @override
-  String get alsoOnThisConnection => 'Auch in deiner Verbindung';
+  String get alsoOnThisConnection => 'Auch in dieser Verbindung';
 
   @override
   String get changeDestination => 'Ziel ändern';

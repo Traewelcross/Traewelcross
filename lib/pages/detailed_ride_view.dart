@@ -97,8 +97,9 @@ class _DetailedRideViewState extends State<DetailedRideView> {
     return (await apiService.status.fetchRide(_rideId));
   }
 
-  Future<List<Status>> _getSharedTrips(int tripId) async {
-    return (await getIt<ApiService>().trip.getSharedStatus(tripId));
+  Future<List<Status>> _getSharedTrips(int tripId, int userId) async {
+    List<Status> status = await getIt<ApiService>().trip.getSharedStatus(tripId);
+    return status.where((s) => s.user.id != userId).toList();
   }
 
   // Workaround for Traewelling/traewelling/discussions/4511 until identifiers are provided in check in again
@@ -242,7 +243,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                   },
                 ),
                 FutureBuilder(
-                  future: _getSharedTrips(rideData.checkin.trip),
+                  future: _getSharedTrips(rideData.checkin.trip, rideData.user.id),
                   builder: (context, asyncSnapshot) {
                     if (asyncSnapshot.hasData && asyncSnapshot.data != null) {
                       List<Status> data = asyncSnapshot.data!;
@@ -260,6 +261,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                             data.length,
                             (int i) => ProfileLinkButton(
                               user: data[i].user.promoteToUser(),
+                              subTitle: "${data[i].checkin.origin.name ?? "???"} -> ${data[i].checkin.destination.name ?? "???"}",
                             ),
                           ),
                         ),
