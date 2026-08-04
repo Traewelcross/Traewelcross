@@ -26,7 +26,7 @@ class _TimeDeviationDialogState extends State<TimeDeviationDialog> {
         .abs()
         .toString();
     textEdit.addListener(() {
-      print(mode);
+      //print(mode);
       if (textEdit.text.isEmpty) {
         getIt<Config>().behavior.systemTimeDeviation = 0;
         setState(() {});

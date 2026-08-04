@@ -45,7 +45,7 @@ class _MapStatForUserState extends State<MapStatForUser> {
         riddenDays.add(DateTime.parse(date["date"]));
       }
     }
-    print(riddenDays);
+    //print(riddenDays);
     return riddenDays;
   }
 

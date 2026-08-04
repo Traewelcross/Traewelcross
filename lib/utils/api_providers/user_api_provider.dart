@@ -400,7 +400,7 @@ class UserApiProvider {
       .PUT,
       body: jsonEncode(settings.toJson()),
     );
-    print(response.body);
+    //print(response.body);
     return GenericStatusResponseWithObject(
       wasSuccess: response.statusCode == 200 ? true : false,
       object: UserProfileSettings.fromJson(jsonDecode(response.body)["data"]),

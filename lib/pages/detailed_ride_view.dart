@@ -333,7 +333,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                       Expanded(
                         child: FilledButton.icon(
                           onPressed: () {
-                            print(_evaIdentOrigin);
+                            //print(_evaIdentOrigin);
                             SharedFunctions.launchURL(
                               Uri.parse(
                                 "https://bahn.expert/details/${rideData.checkin.journeyNumber}/${rideData.checkin.origin.departurePlanned}?evaNumberAlongRoute=$_evaIdentOrigin",

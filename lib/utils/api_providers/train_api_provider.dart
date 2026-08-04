@@ -25,7 +25,7 @@ class TrainApiProvider {
       throw TimeoutException(null);
     }
     if (response.statusCode == 200) {
-      print(response.body);
+      //print(response.body);
       return TripResource.fromJson(jsonDecode(response.body)["data"]);
     } else {
       return Future.error(Exception(response.statusCode.toString()));

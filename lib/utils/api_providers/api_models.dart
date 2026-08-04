@@ -411,7 +411,7 @@ class LightUser {
   Map<String, dynamic> toJson() => _$LightUserToJson(this);
 
   /// Return LightUser info in a User format, wonky but good enough (hopefully)
-  /// TODO: Make this better
+  /// TODO: Make this better maybe
   User promoteToUser() {
     return User(
       id: id,

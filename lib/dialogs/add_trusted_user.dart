@@ -71,7 +71,7 @@ class _AddTrustedUserState extends State<AddTrustedUser> {
       users = await apiService.user.searchUser(searchTerm);
       try {} catch (e) {
         users = [];
-        print(e);
+        //print(e);
       }
       if (mounted && searchTerm == _userSearchController.text.trim()) {
         setState(() {

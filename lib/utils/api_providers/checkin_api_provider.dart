@@ -26,7 +26,7 @@ class CheckinApiProvider {
       .POST,
       body: jsonEncode(cir.toJson()),
     );
-    print(response.statusCode);
+    //print(response.statusCode);
     if (response.statusCode == 201) {
       return GenericStatusResponseWithObject(
         wasSuccess: true,
@@ -68,7 +68,7 @@ class CheckinApiProvider {
         ],
       ),
     );
-    print(response.body);
+    //print(response.body);
     return GenericStatusResponseWithObject(wasSuccess: false, object: null);
   }
 }
