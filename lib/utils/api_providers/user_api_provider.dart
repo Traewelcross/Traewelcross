@@ -338,6 +338,37 @@ class UserApiProvider {
     return [];
   }
 
+  Future<List<TrustedUser>> getTrustedUsers() async {
+    final response = await _api.request("/user/self/trusted", .GET);
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body)["data"];
+      final List<TrustedUser> users = jsonData
+          .map((u) => TrustedUser.fromJson(u as Map<String, dynamic>))
+          .toList();
+      return users;
+    }
+    return [];
+  }
+
+  Future<GenericStatusResponse> stopTrust(int id) async {
+    final response = await _api.request("/user/self/trusted/$id", .DELETE);
+    if(response.statusCode == 204){
+      return .new(wasSuccess: true);
+    }
+    return .new(wasSuccess: false, body: response.body);
+  }
+
+  Future<GenericStatusResponse> startTrust(int id, DateTime? expire) async{
+    final response = await _api.request("/user/self/trusted",.POST, body: jsonEncode({
+      "userId": id,
+      "expiresAt": expire?.toIso8601String()
+    }));
+    if(response.statusCode == 201){
+      return .new(wasSuccess: true);
+    }
+    return .new(wasSuccess: false, body: response.body);
+  }
+
   Future<void> setHome(int id, String name) async {
     final response = await _api.request("/station/$id/home", .PUT);
     if (response.statusCode == 200) {
@@ -354,15 +385,25 @@ class UserApiProvider {
 
   Future<UserProfileSettings> getSettings() async {
     final response = await _api.request("/settings/profile", .GET);
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       return UserProfileSettings.fromJson(jsonDecode(response.body)["data"]);
     } else {
       return Future.error("${response.statusCode} ${response.body}");
     }
   }
-  Future<GenericStatusResponseWithObject> setSettings(UserProfileSettings settings) async {
-    final response = await _api.request("/settings/profile", .PUT, body: jsonEncode(settings.toJson()));
+
+  Future<GenericStatusResponseWithObject> setSettings(
+    UserProfileSettings settings,
+  ) async {
+    final response = await _api.request(
+      "/settings/profile",
+      .PUT,
+      body: jsonEncode(settings.toJson()),
+    );
     print(response.body);
-    return GenericStatusResponseWithObject(wasSuccess: response.statusCode == 200 ? true : false, object: UserProfileSettings.fromJson(jsonDecode(response.body)["data"]));
+    return GenericStatusResponseWithObject(
+      wasSuccess: response.statusCode == 200 ? true : false,
+      object: UserProfileSettings.fromJson(jsonDecode(response.body)["data"]),
+    );
   }
 }
