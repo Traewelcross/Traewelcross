@@ -134,6 +134,7 @@ class _SelectStopState extends State<SelectStop> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO: Move FutureBuilder up and apply trip routeColor
     return MainScaffold(
       title: AppBarTitle("${widget.lineName} -> ${widget.destination}"),
       body: Row(

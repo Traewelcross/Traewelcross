@@ -723,6 +723,8 @@ class TripResource {
   final String tripId;
   final String category;
   final String? mode;
+  final String? routeColor;
+  final String? routeTextColor;
   final String number;
   final String lineName;
   final int? journeyNumber;
@@ -736,6 +738,8 @@ class TripResource {
     required this.tripId,
     required this.category,
     this.mode,
+    this.routeColor,
+    this.routeTextColor,
     required this.number,
     required this.lineName,
     required this.journeyNumber,
