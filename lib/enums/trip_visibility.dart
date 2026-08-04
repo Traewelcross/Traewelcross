@@ -9,12 +9,12 @@ enum TripVisibilityEnum {
   loggedInUser(4, Symbols.shield_person),
   @JsonValue(2)
   followerOnly(2, Icons.group),
+  @JsonValue(5)
+  trusted(5, Icons.verified),
   @JsonValue(1)
   notListed(1, Icons.link),
   @JsonValue(3)
-  private(3, Icons.lock),
-  @JsonValue(5)
-  trusted(5, Icons.verified);
+  private(3, Icons.lock);
 
   final int value;
   final IconData icon;

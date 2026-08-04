@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:traewelcross/config/enums/account_type_enum.dart';
+import 'package:traewelcross/enums/account_type_enum.dart';
 part 'misc_config.g.dart';
 
 @JsonSerializable()

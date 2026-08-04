@@ -25,9 +25,9 @@ const _$TripVisibilityEnumEnumMap = {
   TripVisibilityEnum.public: 0,
   TripVisibilityEnum.loggedInUser: 4,
   TripVisibilityEnum.followerOnly: 2,
+  TripVisibilityEnum.trusted: 5,
   TripVisibilityEnum.notListed: 1,
   TripVisibilityEnum.private: 3,
-  TripVisibilityEnum.trusted: 5,
 };
 
 UserAuth _$UserAuthFromJson(Map<String, dynamic> json) => UserAuth(
@@ -729,3 +729,69 @@ Map<String, dynamic> _$MastoCustomEmojiToJson(MastoCustomEmoji instance) =>
       'url': instance.url,
       'static_url': instance.staticUrl,
     };
+
+UserProfileSettings _$UserProfileSettingsFromJson(Map<String, dynamic> json) =>
+    UserProfileSettings(
+      username: json['username'] as String,
+      displayName: json['displayName'] as String,
+      profilePicture: json['profilePicture'] as String,
+      privateProfile: json['privateProfile'] as bool,
+      preventIndex: json['preventIndex'] as bool,
+      defaultStatusVisibility: $enumDecode(
+        _$TripVisibilityEnumEnumMap,
+        json['defaultStatusVisibility'],
+      ),
+      privacyHideDays: (json['privacyHideDays'] as num?)?.toInt(),
+      password: json['password'] as bool,
+      email: json['email'] as String,
+      emailVerified: json['emailVerified'] as bool,
+      profilePictureSet: json['profilePictureSet'] as bool,
+      mastodon: json['mastodon'] as String?,
+      mastodonVisibility: $enumDecode(
+        _$MastodonVisibilityEnumMap,
+        json['mastodonVisibility'],
+      ),
+      friendCheckin: json['friendCheckin'] as String,
+      likesEnabled: json['likesEnabled'] as bool,
+      pointsEnabled: json['pointsEnabled'] as bool,
+      timezone: json['timezone'] as String,
+      bio: json['bio'] as String?,
+      profileLinks: (json['profileLinks'] as List<dynamic>?)
+          ?.map((e) => ProfileLink.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      experimental: json['experimental'] as bool,
+    );
+
+Map<String, dynamic> _$UserProfileSettingsToJson(
+  UserProfileSettings instance,
+) => <String, dynamic>{
+  'username': instance.username,
+  'displayName': instance.displayName,
+  'profilePicture': instance.profilePicture,
+  'privateProfile': instance.privateProfile,
+  'preventIndex': instance.preventIndex,
+  'defaultStatusVisibility':
+      _$TripVisibilityEnumEnumMap[instance.defaultStatusVisibility]!,
+  'privacyHideDays': instance.privacyHideDays,
+  'password': instance.password,
+  'email': instance.email,
+  'emailVerified': instance.emailVerified,
+  'profilePictureSet': instance.profilePictureSet,
+  'mastodon': instance.mastodon,
+  'mastodonVisibility':
+      _$MastodonVisibilityEnumMap[instance.mastodonVisibility]!,
+  'friendCheckin': instance.friendCheckin,
+  'likesEnabled': instance.likesEnabled,
+  'pointsEnabled': instance.pointsEnabled,
+  'timezone': instance.timezone,
+  'bio': instance.bio,
+  'profileLinks': instance.profileLinks,
+  'experimental': instance.experimental,
+};
+
+const _$MastodonVisibilityEnumMap = {
+  MastodonVisibility.public: 0,
+  MastodonVisibility.followerOnly: 2,
+  MastodonVisibility.notListed: 1,
+  MastodonVisibility.private: 3,
+};

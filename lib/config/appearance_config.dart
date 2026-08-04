@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:traewelcross/config/converters.dart';
-import 'package:traewelcross/config/enums/map_type_enum.dart';
+import 'package:traewelcross/enums/map_type_enum.dart';
 
 part 'appearance_config.g.dart';
 

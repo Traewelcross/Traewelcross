@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
+
 
 enum MastodonVisibility {
+  @JsonValue(0)
   public(0, Icons.public),
+  @JsonValue(2)
   followerOnly(2, Icons.group),
+  @JsonValue(1)
   notListed(1, Icons.link),
+  @JsonValue(3)
   private(3, Icons.lock);
 
   final int value;

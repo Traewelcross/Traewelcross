@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:traewelcross/components/color_circle.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/config/config.dart';
-import 'package:traewelcross/config/enums/map_type_enum.dart';
+import 'package:traewelcross/enums/map_type_enum.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import "package:traewelcross/utils/color_scheme.dart";
 import 'package:traewelcross/utils/shared.dart';

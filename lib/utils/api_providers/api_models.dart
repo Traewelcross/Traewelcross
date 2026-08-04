@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import "package:traewelcross/enums/mastodon_visibility.dart";
 import 'package:traewelcross/enums/trip_type.dart';
 import 'package:traewelcross/enums/trip_visibility.dart';
 import 'package:traewelcross/utils/check_in_info.dart';
@@ -769,6 +770,56 @@ class MastoCustomEmoji {
   factory MastoCustomEmoji.fromJson(Map<String, dynamic> json) =>
       _$MastoCustomEmojiFromJson(json);
   Map<String, dynamic> toJson() => _$MastoCustomEmojiToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class UserProfileSettings {
+  String username;
+  String displayName;
+  String profilePicture;
+  bool privateProfile;
+  bool preventIndex;
+  TripVisibilityEnum defaultStatusVisibility;
+  int? privacyHideDays;
+  bool password;
+  String email;
+  bool emailVerified;
+  bool profilePictureSet;
+  String? mastodon;
+  MastodonVisibility mastodonVisibility;
+  //TODO: Use enum
+  String friendCheckin;
+  bool likesEnabled;
+  bool pointsEnabled;
+  String timezone;
+  String? bio;
+  List<ProfileLink>? profileLinks;
+  bool experimental;
+  UserProfileSettings({
+    required this.username,
+    required this.displayName,
+    required this.profilePicture,
+    required this.privateProfile,
+    required this.preventIndex,
+    required this.defaultStatusVisibility,
+    this.privacyHideDays,
+    required this.password,
+    required this.email,
+    required this.emailVerified,
+    required this.profilePictureSet,
+    this.mastodon,
+    required this.mastodonVisibility,
+    required this.friendCheckin,
+    required this.likesEnabled,
+    required this.pointsEnabled,
+    required this.timezone,
+    this.bio,
+    this.profileLinks,
+    required this.experimental,
+  });
+    factory UserProfileSettings.fromJson(Map<String, dynamic> json) =>
+      _$UserProfileSettingsFromJson(json);
+  Map<String, dynamic> toJson() => _$UserProfileSettingsToJson(this);
 }
 
 class GenericStatusResponse {
