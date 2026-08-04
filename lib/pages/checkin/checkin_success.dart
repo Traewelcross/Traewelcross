@@ -42,7 +42,7 @@ class CheckinSuccess extends StatelessWidget {
                 ),
                 const Icon(Icons.arrow_downward),
                 Text(
-                  statusInfo.status.checkin.destination.station?.name ?? statusInfo.status.checkin.origin.name ?? "???",
+                  statusInfo.status.checkin.destination.station?.name ?? statusInfo.status.checkin.destination.name ?? "???",
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
