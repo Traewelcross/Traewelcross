@@ -1,25 +1,18 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:terminate_restart/terminate_restart.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/own_profile_picture.dart';
-import 'package:traewelcross/config/enums/trusted_type_enum.dart';
-import 'package:traewelcross/config/enums/mastodon_visibility.dart';
-import 'package:traewelcross/enums/error_type.dart';
-import 'package:traewelcross/enums/http_request_types.dart';
+import 'package:traewelcross/enums/trusted_type_enum.dart';
+import 'package:traewelcross/enums/mastodon_visibility.dart';
 import 'package:traewelcross/enums/trip_visibility.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
-import 'package:traewelcross/pages/error_page.dart';
 import 'package:traewelcross/pages/preferences/modify_trusted_users.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
-import 'package:traewelcross/utils/authentication.dart';
-import 'package:traewelcross/utils/error_info.dart';
 import 'package:traewelcross/utils/shared.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
 
 class AccountPreferences extends StatefulWidget {
   const AccountPreferences({super.key});
@@ -29,103 +22,43 @@ class AccountPreferences extends StatefulWidget {
 }
 
 class _AccountPreferencesState extends State<AccountPreferences> {
-  Map<String, dynamic>? _userConfig;
-  Map<String, dynamic>? _orgUserConfig;
-  bool _isLoading = true;
-  bool _enabledArchive = false;
   bool _changedSetting = false;
   bool _applying = false;
-  bool _waitForRefresh = false;
-  String? _error;
-  DateTime? _tokenExpire;
-
+  UserProfileSettings? _userConfig;
+  late Future<UserProfileSettings> _userConfigF;
   @override
   void initState() {
     super.initState();
-    _getTokenExpire();
-    _getUserConfig();
+    _userConfigF = _getUserConfig();
   }
 
-  Future<void> _getTokenExpire() async {
-    final client = await getIt<AuthService>().getAuthenticatedClient();
-    setState(() {
-      _tokenExpire = client?.credentials.expiration;
-    });
-  }
-
-  Future<void> _getUserConfig() async {
-    try {
-      final apiService = getIt<ApiService>();
-      http.Response response;
-      try {
-        response = await apiService.request(
-          "/settings/profile",
-          HttpRequestTypes.GET,
-        );
-      } on TimeoutException {
-        if (!mounted) return;
-        SharedFunctions.handleRequestTimeout(context, _getUserConfig);
-        return;
-      }
-
-      if (response.statusCode == 200) {
-        final json = jsonDecode(response.body)["data"];
-        setState(() {
-          if (json["privacyHideDays"] != 0) {
-            _enabledArchive = true;
-          }
-          _userConfig = json;
-          // Copy instead of reference
-          _orgUserConfig = {...json};
-          _isLoading = false;
-        });
-      } else {
-        return Future.error(
-          "Couldn't fetch Account Settings :( (${response.statusCode})",
-        );
-      }
-    } catch (e) {
-      return Future.error("An unexpected error occurred: $e");
-    }
+  Future<UserProfileSettings> _getUserConfig() async {
+    final apiService = getIt<ApiService>();
+    final response = await apiService.user.getSettings();
+    return response;
   }
 
   Future<void> _saveSettings() async {
-    if (_applying) return;
+    if (_userConfig == null) return;
     setState(() {
       _applying = true;
     });
-    final newSettings = SharedFunctions.diffMaps(_orgUserConfig!, _userConfig!);
-    if (newSettings.isEmpty) {
+    UserProfileSettings u = _userConfig!;
+    try {
+      final res = await getIt<ApiService>().user.setSettings(_userConfig!);
+      u = res.object;
+    } catch (e) {
+      SharedFunctions.sendSnackBar(e.toString());
       setState(() {
-        _changedSetting = false;
         _applying = false;
       });
-    } else {
-      //These fields have to always be filled
-      newSettings["username"] = _userConfig!["username"];
-      newSettings["displayName"] = _userConfig!["displayName"];
-      newSettings["email"] = _userConfig!["email"];
-
-      if (!_enabledArchive) newSettings["privacyHideDays"] = null;
-      final res = await getIt<ApiService>().request(
-        "/settings/profile",
-        HttpRequestTypes.PUT,
-        body: jsonEncode(newSettings),
-      );
-      if (res.statusCode == 200) {
-        if (!mounted) return;
-        await getIt<ApiService>().getUserFull(withId: false);
-        setState(() {
-          _changedSetting = false;
-          _applying = false;
-        });
-      } else {
-        setState(() {
-          _changedSetting = false;
-          _applying = false;
-        });
-        return Future.error("(${res.statusCode}): ${res.body}");
-      }
+      return;
+    } finally {
+      setState(() {
+        _applying = false;
+        _changedSetting = false;
+        _userConfig = u;
+      });
     }
   }
 
@@ -196,327 +129,331 @@ class _AccountPreferencesState extends State<AccountPreferences> {
               )
             : null,
         title: Text(localize.account),
-        body: Builder(
-          builder: (context) {
-            if (_isLoading) {
+        body: FutureBuilder(
+          future: _userConfigF,
+          builder: (ctx, snp) {
+            if (snp.connectionState == .waiting) {
               return Center(child: CircularProgressIndicator());
             }
-
-            if (_error != null) {
+            if (snp.hasError) {
               return Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.error, color: Colors.red, size: 48),
-                    const SizedBox(height: 16),
-                    Text(_error!, textAlign: TextAlign.center),
+                    const Icon(Icons.error),
+                    Text(snp.error.toString()),
                   ],
                 ),
               );
             }
-
-            if (_userConfig == null) {
-              return const Center(child: Icon(Icons.error));
-            }
-
-            return ListView(
-              children: [
-                const SizedBox(height: 8),
-                TextFormField(
-                  onChanged: (value) {
-                    _userConfig!["username"] = value;
-                    setState(() {
-                      _changedSetting = true;
-                    });
-                  },
-                  initialValue: _userConfig!["username"],
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text(localize.username),
-                    prefix: Text("@"),
-                    // Workaround to fix missing pixels for perfect circle
-                    prefixIcon: SizedBox(
-                      width: 24,
-                      child: FittedBox(
-                        child: Transform.scale(
-                          scale: 0.6,
-                          child: OwnProfilePicture(maxWidth: 240),
+            if (snp.connectionState == .done && snp.hasData) {
+              _userConfig = snp.data!;
+              final userConfig = _userConfig!;
+              return ListView(
+                children: [
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    onChanged: (value) {
+                      userConfig.username = value;
+                      setState(() {
+                        _changedSetting = true;
+                      });
+                    },
+                    initialValue: userConfig.username,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text(localize.username),
+                      prefix: Text("@"),
+                      // Workaround to fix missing pixels for perfect circle
+                      prefixIcon: SizedBox(
+                        width: 24,
+                        child: FittedBox(
+                          child: Transform.scale(
+                            scale: 0.6,
+                            child: OwnProfilePicture(maxWidth: 240),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return localize.fieldRequired;
-                    }
-                    var re = RegExp(r"[^a-zA-Z0-9_.]");
-                    if (re.hasMatch(value)) {
-                      return localize.fieldNoSpecialChar;
-                    }
-                    return null;
-                  },
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  onChanged: (value) {
-                    _userConfig!["displayName"] = value;
-                    setState(() {
-                      _changedSetting = true;
-                    });
-                  },
-                  initialValue: _userConfig!["displayName"],
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text(localize.displayName),
-                    prefixIcon: Icon(Icons.person),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return localize.fieldRequired;
-                    }
-                    return null;
-                  },
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  onChanged: (value) {
-                    _userConfig!["bio"] = value;
-                    setState(() {
-                      _changedSetting = true;
-                    });
-                  },
-                  initialValue: _userConfig!["bio"],
-                  minLines: 1,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    label: Text(localize.bio),
-                    border: OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.format_quote),
-                  ),
-                ),
-                Divider(),
-                const SizedBox(height: 8),
-                ListTile(
-                  onTap: () => setState(() {
-                    _userConfig!["privateProfile"] =
-                        !_userConfig!["privateProfile"];
-                    _changedSetting = true;
-                  }),
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(localize.privateAccount),
-                  trailing: Switch(
-                    value: _userConfig!['privateProfile'],
-                    onChanged: (val) {
-                      setState(() {
-                        _userConfig!['privateProfile'] = val;
-                        _changedSetting = true;
-                      });
-                    },
-                  ),
-                  leading: _userConfig!['privateProfile']
-                      ? const Icon(Icons.lock)
-                      : const Icon(Icons.lock_open),
-                ),
-                const SizedBox(height: 8),
-                ListTile(
-                  onTap: () => setState(() {
-                    _userConfig!["likesEnabled"] =
-                        !_userConfig!["likesEnabled"];
-                    _changedSetting = true;
-                  }),
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(localize.allowLikes),
-                  trailing: Switch(
-                    value: _userConfig!['likesEnabled'],
-                    onChanged: (val) {
-                      setState(() {
-                        _userConfig!['likesEnabled'] = val;
-                        _changedSetting = true;
-                      });
-                    },
-                  ),
-                  leading: _userConfig!['likesEnabled']
-                      ? const Icon(Icons.favorite)
-                      : Icon(Icons.heart_broken_outlined),
-                ),
-                const SizedBox(height: 8),
-                ListTile(
-                  onTap: () => setState(() {
-                    _userConfig!["pointsEnabled"] =
-                        !_userConfig!["pointsEnabled"];
-                    _changedSetting = true;
-                  }),
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(localize.collectPoints),
-                  trailing: Switch(
-                    value: _userConfig!['pointsEnabled'],
-                    onChanged: (val) {
-                      setState(() {
-                        _userConfig!['pointsEnabled'] = val;
-                        _changedSetting = true;
-                      });
-                    },
-                  ),
-                  leading: _userConfig!['pointsEnabled']
-                      ? const Icon(Icons.star_rounded)
-                      : const Icon(Icons.star_outline_rounded),
-                ),
-                const SizedBox(height: 8),
-                ListTile(
-                  onTap: () => setState(() {
-                    _enabledArchive = !_enabledArchive;
-                    _changedSetting = true;
-                  }),
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(localize.hideCheckIns),
-                  trailing: Switch(
-                    value: _enabledArchive,
-                    onChanged: (val) {
-                      setState(() {
-                        _enabledArchive = !_enabledArchive;
-                        _changedSetting = true;
-                      });
-                    },
-                  ),
-                  leading: _enabledArchive
-                      ? const Icon(Icons.archive)
-                      : const Icon(Icons.archive_outlined),
-                ),
-                if (_enabledArchive) ...[
-                  TextFormField(
-                    initialValue: _userConfig!["privacyHideDays"].toString(),
-                    keyboardType: TextInputType.number,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
-                      if (int.tryParse(value ?? "INT") == null) {
-                        return localize.noOfDaysValid;
+                      if (value == null || value.isEmpty) {
+                        return localize.fieldRequired;
+                      }
+                      var re = RegExp(r"[^a-zA-Z0-9_.]");
+                      if (re.hasMatch(value)) {
+                        return localize.fieldNoSpecialChar;
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      label: Text(localize.noOfDays),
-                      suffix: Text(
-                        localize.days(
-                          int.tryParse(
-                                _userConfig!["privacyHideDays"].toString(),
-                              ) ??
-                              0,
-                        ),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      _userConfig!["privacyHideDays"] =
-                          int.tryParse(value) ?? 0;
-                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
-                ],
-                Divider(),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(localize.trustedUsersSelectTitle),
-                ),
-                SegmentedButton(
-                  selected: <TrustedTypeEnum>{
-                    TrustedTypeEnum.fromValue(_userConfig!["friendCheckin"]),
-                  },
-                  showSelectedIcon: true,
-                  onSelectionChanged: (Set<TrustedTypeEnum> val) =>
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    onChanged: (value) {
+                      userConfig.displayName = value;
                       setState(() {
                         _changedSetting = true;
-                        _userConfig!["friendCheckin"] = val.first.value;
-                      }),
-                  segments: [
-                    ButtonSegment(
-                      value: TrustedTypeEnum.list,
-                      icon: const Icon(Icons.how_to_reg),
-                      label: Text(
-                        localize.trustedUsers,
-                        textAlign: TextAlign.center,
-                      ),
-                      tooltip: localize.trustedUsers,
+                      });
+                    },
+                    initialValue: userConfig.displayName,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text(localize.displayName),
+                      prefixIcon: Icon(Icons.person),
                     ),
-                    ButtonSegment(
-                      value: TrustedTypeEnum.friends,
-                      icon: const Icon(Icons.group),
-                      label: Text(localize.friends),
-                      tooltip: localize.friendsExplanation,
-                    ),
-                    ButtonSegment(
-                      value: TrustedTypeEnum.forbidden,
-                      icon: const Icon(Icons.block),
-                      label: Text(localize.noTrustedCheckIn),
-                      tooltip: localize.noTrustedCheckIn,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                OutlinedButton.icon(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ModifyTrustedUsers(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return localize.fieldRequired;
+                      }
+                      return null;
+                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    onChanged: (value) {
+                      userConfig.bio = value;
+                      setState(() {
+                        _changedSetting = true;
+                      });
+                    },
+                    initialValue: userConfig.bio,
+                    minLines: 1,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                      label: Text(localize.bio),
+                      border: OutlineInputBorder(),
+                      prefixIcon: const Icon(Icons.format_quote),
                     ),
                   ),
-                  label: Text(localize.setupTrustedUsers),
-                  icon: const Icon(Icons.how_to_reg),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text(localize.defaultVisibilitySelectTitle),
-                  contentPadding: EdgeInsets.zero,
-                ),
-                const SizedBox(height: 4),
-                SegmentedButton(
-                  onSelectionChanged: (val) => setState(() {
-                    _changedSetting = true;
-                    _userConfig!["defaultStatusVisibility"] = val.first;
-                  }),
-                  showSelectedIcon: false,
-                  selected: <int>{_userConfig!["defaultStatusVisibility"]},
-                  segments: TripVisibilityEnum.values.map((
-                    TripVisibilityEnum tve,
-                  ) {
-                    return ButtonSegment(
-                      value: tve.value,
-                      tooltip: _getVisibilityString(tve, null, localize),
-                      icon: Icon(tve.icon),
-                    );
-                  }).toList(),
-                ),
-                Divider(),
-                if (_userConfig!["mastodon"] != null) ...[
+                  Divider(),
+                  const SizedBox(height: 8),
                   ListTile(
-                    title: Text(
-                      localize.mastodonVisibilitySelectTitle,
-                      style: Theme.of(context).textTheme.titleMedium,
+                    onTap: () => setState(() {
+                      userConfig.privateProfile = !userConfig.privateProfile;
+                      _changedSetting = true;
+                    }),
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(localize.privateAccount),
+                    trailing: Switch(
+                      value: userConfig.privateProfile,
+                      onChanged: (val) {
+                        setState(() {
+                          userConfig.privateProfile = val;
+                          _changedSetting = true;
+                        });
+                      },
                     ),
+                    leading: userConfig.privateProfile
+                        ? const Icon(Icons.lock)
+                        : const Icon(Icons.lock_open),
+                  ),
+                  const SizedBox(height: 8),
+                  ListTile(
+                    onTap: () => setState(() {
+                      userConfig.likesEnabled = !userConfig.likesEnabled;
+                      _changedSetting = true;
+                    }),
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(localize.allowLikes),
+                    trailing: Switch(
+                      value: userConfig.likesEnabled,
+                      onChanged: (val) {
+                        setState(() {
+                          userConfig.likesEnabled = val;
+                          _changedSetting = true;
+                        });
+                      },
+                    ),
+                    leading: userConfig.likesEnabled
+                        ? const Icon(Icons.favorite)
+                        : Icon(Icons.heart_broken_outlined),
+                  ),
+                  const SizedBox(height: 8),
+                  ListTile(
+                    onTap: () => setState(() {
+                      userConfig.pointsEnabled = !userConfig.pointsEnabled;
+                      _changedSetting = true;
+                    }),
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(localize.collectPoints),
+                    trailing: Switch(
+                      value: userConfig.pointsEnabled,
+                      onChanged: (val) {
+                        setState(() {
+                          userConfig.pointsEnabled = val;
+                          _changedSetting = true;
+                        });
+                      },
+                    ),
+                    leading: userConfig.pointsEnabled
+                        ? const Icon(Icons.star_rounded)
+                        : const Icon(Icons.star_outline_rounded),
+                  ),
+                  const SizedBox(height: 8),
+                  ListTile(
+                    onTap: () => setState(() {
+                      if (userConfig.privacyHideDays == null) {
+                        userConfig.privacyHideDays = 1;
+                      } else {
+                        userConfig.privacyHideDays = null;
+                      }
+                      _changedSetting = true;
+                    }),
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(localize.hideCheckIns),
+                    trailing: Switch(
+                      value: userConfig.privacyHideDays == null ? false : true,
+                      onChanged: (val) {
+                        setState(() {
+                          if (userConfig.privacyHideDays == null) {
+                            userConfig.privacyHideDays = 1;
+                          } else {
+                            userConfig.privacyHideDays = null;
+                          }
+                          _changedSetting = true;
+                        });
+                      },
+                    ),
+                    leading: userConfig.privacyHideDays == null
+                        ? const Icon(Icons.archive)
+                        : const Icon(Icons.archive_outlined),
+                  ),
+                  if (userConfig.privacyHideDays != null) ...[
+                    TextFormField(
+                      initialValue: userConfig.privacyHideDays.toString(),
+                      keyboardType: TextInputType.number,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (int.tryParse(value ?? "INT") == null || value == "0") {
+                          return localize.noOfDaysValid;
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        label: Text(localize.noOfDays),
+                        suffix: Text(
+                          localize.days(
+                            int.tryParse(
+                                  userConfig.privacyHideDays.toString(),
+                                ) ??
+                                0,
+                          ),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        userConfig.privacyHideDays = int.tryParse(value) ?? 0;
+                      },
+                    ),
+                  ],
+                  Divider(),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(localize.trustedUsersSelectTitle),
+                  ),
+                  SegmentedButton(
+                    selected: <TrustedTypeEnum>{
+                      TrustedTypeEnum.fromValue(userConfig.friendCheckin),
+                    },
+                    showSelectedIcon: true,
+                    onSelectionChanged: (Set<TrustedTypeEnum> val) =>
+                        setState(() {
+                          _changedSetting = true;
+                          userConfig.friendCheckin = val.first.value;
+                        }),
+                    segments: [
+                      ButtonSegment(
+                        value: TrustedTypeEnum.list,
+                        icon: const Icon(Icons.how_to_reg),
+                        label: Text(
+                          localize.trustedUsers,
+                          textAlign: TextAlign.center,
+                        ),
+                        tooltip: localize.trustedUsers,
+                      ),
+                      ButtonSegment(
+                        value: TrustedTypeEnum.friends,
+                        icon: const Icon(Icons.group),
+                        label: Text(localize.friends),
+                        tooltip: localize.friendsExplanation,
+                      ),
+                      ButtonSegment(
+                        value: TrustedTypeEnum.forbidden,
+                        icon: const Icon(Icons.block),
+                        label: Text(localize.noTrustedCheckIn),
+                        tooltip: localize.noTrustedCheckIn,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  OutlinedButton.icon(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ModifyTrustedUsers(),
+                      ),
+                    ),
+                    label: Text(localize.setupTrustedUsers),
+                    icon: const Icon(Icons.how_to_reg),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text(localize.defaultVisibilitySelectTitle),
                     contentPadding: EdgeInsets.zero,
                   ),
                   const SizedBox(height: 4),
                   SegmentedButton(
                     onSelectionChanged: (val) => setState(() {
                       _changedSetting = true;
-
-                      _userConfig!["mastodonVisibility"] = val.first;
+                      userConfig.defaultStatusVisibility = val.first;
                     }),
                     showSelectedIcon: false,
-                    selected: <int>{_userConfig!["mastodonVisibility"]},
-                    segments: MastodonVisibility.values.map((
-                      MastodonVisibility mve,
+                    selected: <TripVisibilityEnum>{
+                      userConfig.defaultStatusVisibility,
+                    },
+                    segments: TripVisibilityEnum.values.map((
+                      TripVisibilityEnum tve,
                     ) {
                       return ButtonSegment(
-                        value: mve.value,
-                        tooltip: _getVisibilityString(null, mve, localize),
-                        icon: Icon(mve.icon),
+                        value: tve,
+                        tooltip: _getVisibilityString(tve, null, localize),
+                        icon: Icon(tve.icon),
                       );
                     }).toList(),
                   ),
                   Divider(),
-                ],
-                ListTile(
+                  if (userConfig.mastodon != null) ...[
+                    ListTile(
+                      title: Text(
+                        localize.mastodonVisibilitySelectTitle,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                    const SizedBox(height: 4),
+                    SegmentedButton(
+                      onSelectionChanged: (val) => setState(() {
+                        _changedSetting = true;
+
+                        userConfig.mastodonVisibility = val.first;
+                      }),
+                      showSelectedIcon: false,
+                      selected: <MastodonVisibility>{
+                        userConfig.mastodonVisibility,
+                      },
+                      segments: MastodonVisibility.values.map((
+                        MastodonVisibility mve,
+                      ) {
+                        return ButtonSegment(
+                          value: mve,
+                          tooltip: _getVisibilityString(null, mve, localize),
+                          icon: Icon(mve.icon),
+                        );
+                      }).toList(),
+                    ),
+                    Divider(),
+                  ],
+                  /*ListTile(
                   contentPadding: EdgeInsets.zero,
                   onTap: () async {
                     setState(() {
@@ -558,37 +495,39 @@ class _AccountPreferencesState extends State<AccountPreferences> {
                   leading: _waitForRefresh
                       ? const CircularProgressIndicator()
                       : const Icon(Icons.refresh),
-                ),
-                Divider(),
-                ListTile(
-                  onTap: () => SharedFunctions.launchURL(
-                    Uri.parse("https://traewelling.de/settings/profile"),
-                    launchMode: LaunchMode.externalApplication,
+                ),*/
+                  Divider(),
+                  ListTile(
+                    onTap: () => SharedFunctions.launchURL(
+                      Uri.parse("https://traewelling.de/settings/profile"),
+                      launchMode: LaunchMode.externalApplication,
+                    ),
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(localize.moreSettings),
+                    subtitle: Text(localize.moreSettingsSub),
+                    leading: const Icon(Icons.open_in_new),
                   ),
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(localize.moreSettings),
-                  subtitle: Text(localize.moreSettingsSub),
-                  leading: const Icon(Icons.open_in_new),
-                ),
-                Divider(),
-                ListTile(
-                  onTap: () async {
-                    await getIt<ApiService>().logOut();
-                    TerminateRestart.instance.restartApp(
-                      options: const TerminateRestartOptions(
-                        terminate: true,
-                        clearData: true,
-                      ),
-                    );
-                  },
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(localize.logOut),
-                  subtitle: Text(localize.logOutNotice),
-                  leading: const Icon(Icons.logout),
-                ),
-                const SizedBox(height: 72),
-              ],
-            );
+                  Divider(),
+                  ListTile(
+                    onTap: () async {
+                      await getIt<ApiService>().logOut();
+                      TerminateRestart.instance.restartApp(
+                        options: const TerminateRestartOptions(
+                          terminate: true,
+                          clearData: true,
+                        ),
+                      );
+                    },
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(localize.logOut),
+                    subtitle: Text(localize.logOutNotice),
+                    leading: const Icon(Icons.logout),
+                  ),
+                  const SizedBox(height: 72),
+                ],
+              );
+            }
+            return SizedBox.shrink();
           },
         ),
       ),

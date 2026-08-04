@@ -81,7 +81,6 @@ class _DetailedRideViewState extends State<DetailedRideView> {
   late final Future<List<LatLng>> _polylineFuture;
   late Future<List<User>> _likes;
   late Future<Status> _rideDataFuture;
-  late Future<List<Status>> _sharedTrips;
   late final String _evaIdentOrigin;
   late final int _rideId;
   bool isFound = true;

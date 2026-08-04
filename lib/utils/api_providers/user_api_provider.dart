@@ -351,4 +351,18 @@ class UserApiProvider {
       );
     }
   }
+
+  Future<UserProfileSettings> getSettings() async {
+    final response = await _api.request("/settings/profile", .GET);
+    if(response.statusCode == 200){
+      return UserProfileSettings.fromJson(jsonDecode(response.body)["data"]);
+    } else {
+      return Future.error("${response.statusCode} ${response.body}");
+    }
+  }
+  Future<GenericStatusResponseWithObject> setSettings(UserProfileSettings settings) async {
+    final response = await _api.request("/settings/profile", .PUT, body: jsonEncode(settings.toJson()));
+    print(response.body);
+    return GenericStatusResponseWithObject(wasSuccess: response.statusCode == 200 ? true : false, object: UserProfileSettings.fromJson(jsonDecode(response.body)["data"]));
+  }
 }
