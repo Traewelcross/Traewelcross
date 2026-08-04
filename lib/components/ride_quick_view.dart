@@ -50,7 +50,12 @@ class RideQuickView extends StatefulWidget {
 
 class _RideQuickViewState extends State<RideQuickView> {
   late Status _rideData;
+  static final RegExp _emojiPattern = RegExp(r':\w+:');
+  InlineSpan? _cachedBody;
   static const _volChan = MethodChannel("volume");
+  final List<TapGestureRecognizer> _recognizers = [];
+  Color? _tintColor;
+  DateTime? _createdAtDate;
   @override
   void initState() {
     super.initState();
@@ -67,11 +72,154 @@ class _RideQuickViewState extends State<RideQuickView> {
         return Future.value(null);
       });
     }
+    _initData();
+  }
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    _cachedBody = _parseBodyText();
+  }
+  @override
+  void didUpdateWidget(covariant RideQuickView ow){
+    super.didUpdateWidget(ow);
+    if(ow.rideData.body != widget.rideData.body){
+      _cachedBody = _parseBodyText();
+    }
+  }
+  @override
+  void dispose() {
+    if (widget.detailedView == true) {
+      _volChan.setMethodCallHandler(null);
+    }
+    _clearRecognizers();
+    super.dispose();
+  }
+
+  void _clearRecognizers() {
+    for (final reg in _recognizers) {
+      reg.dispose();
+    }
+  }
+
+  void _initData() {
+    final rawHex = _rideData.checkin.routeColor;
+    if (rawHex != null && getIt<Config>().appearance.routeColorColorScheme) {
+      _tintColor = Color(
+        int.parse("FF${_rideData.checkin.routeColor}", radix: 16),
+      );
+    } else {
+      _tintColor = null;
+    }
+    _createdAtDate = DateTime.parse(_rideData.createdAt).toLocal();
+  }
+
+  TextSpan _getEmojis(String element) {
+    int cursor = 0;
+    List<String> segments = [];
+    for (RegExpMatch match in _emojiPattern.allMatches(element)) {
+      if (match.start > cursor) {
+        segments.add(element.substring(cursor, match.start));
+      }
+      segments.add(match.group(0)!);
+      cursor = match.end;
+    }
+    if (cursor < element.length) {
+      segments.add(element.substring(cursor));
+    }
+    return TextSpan(
+      children: segments.map((segment) {
+        if (_emojiPattern.hasMatch(segment)) {
+          return WidgetSpan(
+            alignment: .middle,
+            baseline: .alphabetic,
+            child: MastoEmoji(
+              mastodonUrl: widget.rideData.user.mastodon?.server,
+              shortCode: segment,
+              width: 24,
+            ),
+          );
+        }
+        return TextSpan(
+          text: segment,
+          style: TextStyle(
+            fontFamily: "Outfit",
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  InlineSpan _parseBodyText() {
+    _clearRecognizers();
+    List<String> result = [];
+    List<int> bodyBytes = utf8.encode(widget.rideData.body);
+    int cursor = 0;
+    if (widget.rideData.bodyMentions.isEmpty) {
+      return _getEmojis(widget.rideData.body);
+    }
+    widget.rideData.bodyMentions.sort(
+      (a, b) => a.position.compareTo(b.position),
+    );
+    for (Mention mention in widget.rideData.bodyMentions) {
+      int startPos = mention.position;
+      int endPos = mention.position + mention.length;
+      if (startPos < cursor || endPos > widget.rideData.body.length) continue;
+      if (startPos > cursor) {
+        result.add(utf8.decode(bodyBytes.sublist(cursor, startPos)));
+      }
+      result.add(utf8.decode(bodyBytes.sublist(startPos, endPos)));
+      cursor = endPos;
+    }
+    if (cursor < bodyBytes.length) {
+      result.add(utf8.decode(bodyBytes.sublist(cursor)));
+    }
+    return TextSpan(
+      children: result.map((element) {
+        final recog = TapGestureRecognizer()
+          ..onTap = () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainScaffold(
+                  title: AppBarTitle(element),
+                  body: ProfileView(
+                    isOtherUser: true,
+                    username: element.replaceAll("@", ""),
+                    tempScrollController: true,
+                    scrollController: ScrollController(),
+                  ),
+                ),
+              ),
+            );
+          };
+        _recognizers.add(recog);
+        // Element start with @ and does not contain a space, valid mention
+        if (element.startsWith("@") && !element.contains(" ")) {
+          return TextSpan(
+            text: element,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.w500,
+            ),
+            recognizer: recog,
+          );
+        }
+        // Element is not a mention, but it might contain an emoji
+        return _getEmojis(element);
+      }).toList(),
+      style: TextStyle(
+        fontFamily: "Outfit",
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
+    );
   }
 
   void _updateRideData(Status newRideData) {
     setState(() {
       _rideData = newRideData;
+      _initData();
+      _cachedBody = _parseBodyText();
     });
   }
 
@@ -178,107 +326,6 @@ class _RideQuickViewState extends State<RideQuickView> {
     );
   }
 
-  TextSpan _getEmojis(String element) {
-    RegExp regExp = RegExp(r':\w+:');
-    int cursor = 0;
-    List<String> segments = [];
-    for (RegExpMatch match in regExp.allMatches(element)) {
-      if (match.start > cursor) {
-        segments.add(element.substring(cursor, match.start));
-      }
-      segments.add(match.group(0)!);
-      cursor = match.end;
-    }
-    if (cursor < element.length) {
-      segments.add(element.substring(cursor));
-    }
-    return TextSpan(
-      children: segments.map((segment) {
-        if (regExp.hasMatch(segment)) {
-          return WidgetSpan(
-            alignment: .middle,
-            baseline: .alphabetic,
-            child: MastoEmoji(
-              mastodonUrl: widget.rideData.user.mastodon?.server,
-              shortCode: segment,
-              width: 24,
-            ),
-          );
-        }
-        return TextSpan(
-          text: segment,
-          style: TextStyle(
-            fontFamily: "Outfit",
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _parseBodyText() {
-    List<String> result = [];
-    List<int> bodyBytes = utf8.encode(widget.rideData.body);
-    int cursor = 0;
-    if (widget.rideData.bodyMentions.isEmpty) {
-      return RichText(text: _getEmojis(widget.rideData.body));
-    }
-    widget.rideData.bodyMentions.sort((a,b) => a.position.compareTo(b.position));
-    for (Mention mention in widget.rideData.bodyMentions) {
-      int startPos = mention.position;
-      int endPos = mention.position + mention.length;
-      if(startPos < cursor || endPos > widget.rideData.body.length) continue;
-      if (startPos > cursor) {
-        result.add(utf8.decode(bodyBytes.sublist(cursor, startPos)));
-      }
-      result.add(utf8.decode(bodyBytes.sublist(startPos, endPos)));
-      cursor = endPos;
-
-    }
-    if(cursor < bodyBytes.length){
-      result.add(utf8.decode(bodyBytes.sublist(cursor)));
-    }
-    return RichText(
-      text: TextSpan(
-        children: result.map((element) {
-          // Element start with @ and does not contain a space, valid mention
-          if (element.startsWith("@") && !element.contains(" ")) {
-            return TextSpan(
-              text: element,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.w500,
-              ),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MainScaffold(
-                        title: AppBarTitle(element),
-                        body: ProfileView(
-                          isOtherUser: true,
-                          username: element.replaceAll("@", ""),
-                          tempScrollController: true,
-                          scrollController: ScrollController(),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-            );
-          }
-          // Element is not a mention, but it might contain an emoji
-          return _getEmojis(element);
-        }).toList(),
-        style: TextStyle(
-          fontFamily: "Outfit",
-          color: Theme.of(context).colorScheme.onSurface,
-        ),
-      ),
-    );
-  }
-
   void _openReport(int id) {
     TextEditingController controller = TextEditingController();
     String reason = "inappropriate";
@@ -342,7 +389,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                 maxLines: null,
                 controller: controller,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   label: Text(
                     AppLocalizations.of(context)!.reportBoxDescriptionTitle,
                   ),
@@ -388,9 +435,18 @@ class _RideQuickViewState extends State<RideQuickView> {
       MaterialPageRoute(
         builder: (BuildContext context) => CheckIn(
           checkInInfo: CheckInInfo(
-            destination: status.checkin.destination.station?.name ?? status.checkin.destination.name ?? "???",
-            destinationId: status.checkin.destination.station?.id ?? status.checkin.destination.id ?? 0,
-            departureId: status.checkin.origin.station?.id ?? status.checkin.origin.id ?? 0,
+            destination:
+                status.checkin.destination.station?.name ??
+                status.checkin.destination.name ??
+                "???",
+            destinationId:
+                status.checkin.destination.station?.id ??
+                status.checkin.destination.id ??
+                0,
+            departureId:
+                status.checkin.origin.station?.id ??
+                status.checkin.origin.id ??
+                0,
             tripId: status.checkin.hafasId,
             lineName: status.checkin.lineName,
             category: status.checkin.category,
@@ -412,7 +468,10 @@ class _RideQuickViewState extends State<RideQuickView> {
     final localize = AppLocalizations.of(context)!;
     return RepaintBoundary(
       child: Theme(
-        data: SharedFunctions.deriviateThemeFromRouteColor(_rideData.checkin.routeColor, context),
+        data: SharedFunctions.deriviateThemeFromRouteColor(
+          _rideData.checkin.routeColor,
+          context,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -432,7 +491,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                           ),
                         );
                       },
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
@@ -445,7 +504,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                         isAuthUser: _isAuthUser(),
                       ),
                       Card(
-                        surfaceTintColor: _rideData.checkin.routeColor != null && getIt<Config>().appearance.routeColorColorScheme ? Color(int.parse("FF${_rideData.checkin.routeColor}", radix: 16)) : null,
+                        surfaceTintColor: _tintColor,
                         child: LayoutBuilder(
                           builder: (ctx, constraints) {
                             return SingleChildScrollView(
@@ -468,12 +527,19 @@ class _RideQuickViewState extends State<RideQuickView> {
                                           category: _rideData.checkin.category,
                                           width: 24,
                                           lineName: _rideData.checkin.lineName,
-                                          operatorIdentifier:_rideData
+                                          operatorIdentifier:
+                                              _rideData.checkin.operator?.name,
+                                          routeColor:
+                                              SharedFunctions.tryParseColor(
+                                                _rideData.checkin.routeColor,
+                                              ),
+                                          routeTextColor:
+                                              SharedFunctions.tryParseColor(
+                                                _rideData
                                                     .checkin
-                                                    .operator?.name,
-                                                                                    routeColor: SharedFunctions.tryParseColor(_rideData.checkin.routeColor),
-                                routeTextColor: SharedFunctions.tryParseColor(_rideData.checkin.routeTextColor),
-                                              /*SharedFunctions.getOperatorHAFASIdent(
+                                                    .routeTextColor,
+                                              ),
+                                          /*SharedFunctions.getOperatorHAFASIdent(
                                                 _rideData
                                                     .checkin
                                                     .operator
@@ -542,14 +608,14 @@ class _RideQuickViewState extends State<RideQuickView> {
                       ),
                       if (_rideData.body != "")
                         Card(
-                        surfaceTintColor: _rideData.checkin.routeColor != null && getIt<Config>().appearance.routeColorColorScheme ? Color(int.parse("FF${_rideData.checkin.routeColor}", radix: 16)) : null,
+                          surfaceTintColor: _tintColor,
                           child: Padding(
                             padding: const EdgeInsets.all(16),
                             child: Row(
                               children: [
                                 const Icon(Icons.format_quote),
                                 const SizedBox(width: 8),
-                                Expanded(child: _parseBodyText()),
+                                Expanded(child: RichText(text: _cachedBody!)),
                               ],
                             ),
                           ),
@@ -604,17 +670,19 @@ class _RideQuickViewState extends State<RideQuickView> {
                                 Flexible(
                                   child: TextButton(
                                     style: ButtonStyle(
-                                      padding: WidgetStatePropertyAll(
+                                      padding: const WidgetStatePropertyAll(
                                         EdgeInsets.zero,
                                       ),
-                                      minimumSize: WidgetStatePropertyAll(
+                                      minimumSize: const WidgetStatePropertyAll(
                                         Size.zero,
                                       ),
                                       tapTargetSize:
                                           MaterialTapTargetSize.shrinkWrap,
                                       shape: WidgetStatePropertyAll(
                                         RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(0),
+                                          borderRadius: BorderRadius.circular(
+                                            0,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -638,7 +706,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                                       );
                                     },
                                     child: Text(
-                                      "${_rideData.user.displayName}, ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(DateTime.parse(_rideData.createdAt).toLocal())}",
+                                      "${_rideData.user.displayName}, ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(_createdAtDate!)}",
                                       overflow: TextOverflow.fade,
                                       maxLines: 1,
                                       softWrap: false,
@@ -671,10 +739,10 @@ class _RideQuickViewState extends State<RideQuickView> {
                                 PopupMenuButton(
                                   icon: const Icon(Icons.more_vert, size: 24),
                                   style: ButtonStyle(
-                                    padding: WidgetStatePropertyAll(
+                                    padding: const WidgetStatePropertyAll(
                                       EdgeInsets.zero,
                                     ),
-                                    minimumSize: WidgetStatePropertyAll(
+                                    minimumSize: const WidgetStatePropertyAll(
                                       Size.zero,
                                     ),
                                     tapTargetSize:
@@ -704,28 +772,48 @@ class _RideQuickViewState extends State<RideQuickView> {
                                             builder: (BuildContext context) =>
                                                 CheckIn(
                                                   checkInInfo: CheckInInfo(
-                                                    departureId: _rideData
-                                                        .checkin
-                                                        .origin
-                                                        .station
-                                                        ?.id ?? _rideData.checkin.origin.id ?? 0,
-                                                    destination: _rideData
-                                                        .checkin
-                                                        .destination
-                                                        .station
-                                                        ?.name ?? _rideData.checkin.destination.name ?? "???",
-                                                    destinationId: _rideData
-                                                        .checkin
-                                                        .destination
-                                                        .station
-                                                        ?.id ?? _rideData.checkin.destination.id ?? 0,
+                                                    departureId:
+                                                        _rideData
+                                                            .checkin
+                                                            .origin
+                                                            .station
+                                                            ?.id ??
+                                                        _rideData
+                                                            .checkin
+                                                            .origin
+                                                            .id ??
+                                                        0,
+                                                    destination:
+                                                        _rideData
+                                                            .checkin
+                                                            .destination
+                                                            .station
+                                                            ?.name ??
+                                                        _rideData
+                                                            .checkin
+                                                            .destination
+                                                            .name ??
+                                                        "???",
+                                                    destinationId:
+                                                        _rideData
+                                                            .checkin
+                                                            .destination
+                                                            .station
+                                                            ?.id ??
+                                                        _rideData
+                                                            .checkin
+                                                            .destination
+                                                            .id ??
+                                                        0,
                                                     rideId: _rideData.id,
                                                     body: _rideData.body,
                                                     visibility:
                                                         _rideData.visibility,
-                                                    tripType: _rideData.business,
-                                                    tripId:
-                                                        _rideData.checkin.hafasId,
+                                                    tripType:
+                                                        _rideData.business,
+                                                    tripId: _rideData
+                                                        .checkin
+                                                        .hafasId,
                                                     category: _rideData
                                                         .checkin
                                                         .category,
@@ -794,7 +882,9 @@ class _RideQuickViewState extends State<RideQuickView> {
                                                       _deleteStatus();
                                                     },
                                                     label: Text(localize.yes),
-                                                    icon: const Icon(Icons.check),
+                                                    icon: const Icon(
+                                                      Icons.check,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -909,8 +999,8 @@ class _LikeButtonState extends State<LikeButton> {
         if (getIt<Config>().appearance.isPrideActive) ...[
           TextButton.icon(
             style: ButtonStyle(
-              padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
-              minimumSize: WidgetStatePropertyAll(Size.zero),
+              padding: const WidgetStatePropertyAll(EdgeInsets.all(8)),
+              minimumSize: const WidgetStatePropertyAll(Size.zero),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               visualDensity: VisualDensity.compact,
             ),
@@ -934,14 +1024,14 @@ class _LikeButtonState extends State<LikeButton> {
             ),
             label: Text(
               widget.rideData.likes.toString(),
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
           ),
         ] else ...[
           TextButton.icon(
             style: ButtonStyle(
-              padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
-              minimumSize: WidgetStatePropertyAll(Size.zero),
+              padding: const WidgetStatePropertyAll(EdgeInsets.all(8)),
+              minimumSize: const WidgetStatePropertyAll(Size.zero),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               visualDensity: VisualDensity.compact,
             ),
@@ -962,7 +1052,7 @@ class _LikeButtonState extends State<LikeButton> {
                   ),
             label: Text(
               widget.rideData.likes.toString(),
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
           ),
         ],
@@ -1042,14 +1132,22 @@ class _StationText extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => SelectConnection(
-                      stationId: transportData.destination.station?.id ?? transportData.destination.id ?? 0,
-                      stationName: transportData.destination.station?.name ?? transportData.destination.name ?? "???",
+                      stationId:
+                          transportData.destination.station?.id ??
+                          transportData.destination.id ??
+                          0,
+                      stationName:
+                          transportData.destination.station?.name ??
+                          transportData.destination.name ??
+                          "???",
                     ),
                   ),
                 );
               },
               child: Text(
-                transportData.destination.station?.name ?? transportData.destination.name ?? "???",
+                transportData.destination.station?.name ??
+                    transportData.destination.name ??
+                    "???",
                 style: stationText,
               ),
             ),
@@ -1062,14 +1160,22 @@ class _StationText extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => SelectConnection(
-                      stationId: transportData.origin.station?.id ?? transportData.origin.id ?? 0,
-                      stationName: transportData.origin.station?.name ?? transportData.origin.name ?? "???",
+                      stationId:
+                          transportData.origin.station?.id ??
+                          transportData.origin.id ??
+                          0,
+                      stationName:
+                          transportData.origin.station?.name ??
+                          transportData.origin.name ??
+                          "???",
                     ),
                   ),
                 );
               },
               child: Text(
-                transportData.origin.station?.name ?? transportData.origin.name ?? "???",
+                transportData.origin.station?.name ??
+                    transportData.origin.name ??
+                    "???",
                 style: stationText,
               ),
             ),
@@ -1079,8 +1185,8 @@ class _StationText extends StatelessWidget {
           children: [
             TextButton(
               style: ButtonStyle(
-                padding: WidgetStatePropertyAll(EdgeInsets.zero),
-                minimumSize: WidgetStatePropertyAll(Size.zero),
+                padding: const WidgetStatePropertyAll(EdgeInsets.zero),
+                minimumSize: const WidgetStatePropertyAll(Size.zero),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 shape: WidgetStatePropertyAll(
                   RoundedRectangleBorder(
@@ -1130,8 +1236,14 @@ class _StationText extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => SelectConnection(
-                          stationId: transportData.destination.station?.id ?? transportData.destination.id ?? 0,
-                          stationName: transportData.destination.station?.name ?? transportData.destination.name ?? "???",
+                          stationId:
+                              transportData.destination.station?.id ??
+                              transportData.destination.id ??
+                              0,
+                          stationName:
+                              transportData.destination.station?.name ??
+                              transportData.destination.name ??
+                              "???",
                         ),
                       ),
                     );
@@ -1140,8 +1252,14 @@ class _StationText extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => SelectConnection(
-                          stationId: transportData.origin.station?.id ?? transportData.origin.id ?? 0,
-                          stationName: transportData.origin.station?.name ?? transportData.origin.name ?? "???",
+                          stationId:
+                              transportData.origin.station?.id ??
+                              transportData.origin.id ??
+                              0,
+                          stationName:
+                              transportData.origin.station?.name ??
+                              transportData.origin.name ??
+                              "???",
                         ),
                       ),
                     );
@@ -1160,7 +1278,7 @@ class _StationText extends StatelessWidget {
                 DateFormat.Hm(
                   Localizations.localeOf(context).languageCode,
                 ).format(plannedTime!.toLocal()),
-                style: TextStyle(decoration: TextDecoration.lineThrough),
+                style: const TextStyle(decoration: TextDecoration.lineThrough),
               ),
           ],
         ),
