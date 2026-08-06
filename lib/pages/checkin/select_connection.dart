@@ -157,6 +157,7 @@ class _SelectConnectionState extends State<SelectConnection> {
                   const Divider(),
                   Wrap(
                     spacing: 4,
+                    runSpacing: 4,
                     children: [
                       _DepartTypeChoiceChip(
                         label: localize.national,
