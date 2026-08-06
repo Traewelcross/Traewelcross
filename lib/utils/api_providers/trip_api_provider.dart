@@ -22,4 +22,13 @@ class TripApiProvider {
     }
     return [];
   }
+  Future<List<TripResource>> getManualTrips() async {
+    final response = await _api.request("/trips", .GET);
+    if(response.statusCode == 200){
+      final List<dynamic> jsonData = jsonDecode(response.body)["data"];
+      final List<TripResource> trips = jsonData.map((t) => TripResource.fromJson(t as Map<String, dynamic>)).toList();
+      return trips;
+    }
+    return [];
+  }
 }

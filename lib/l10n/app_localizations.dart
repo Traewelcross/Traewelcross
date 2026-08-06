@@ -1861,6 +1861,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'If a route color is available, display the card with that color accent'**
   String get routeColorColorSchemeSubtitle;
+
+  /// No description provided for @manualTripCreationTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Manually create trip'**
+  String get manualTripCreationTile;
+
+  /// No description provided for @manualTripCreationDialogContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your about to create your trip manually. That means that you have to enter some additional information besides the usual stop selection. Please note that you won\'t receive any point at all for checkins into manually created trips!'**
+  String get manualTripCreationDialogContent;
+
+  /// No description provided for @gotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it!'**
+  String get gotIt;
+
+  /// No description provided for @gotItDontShow.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it, don\'t show again!'**
+  String get gotItDontShow;
+
+  /// No description provided for @manualTripOverviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Trips'**
+  String get manualTripOverviewTitle;
+
+  /// No description provided for @manualTripNewTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new trip'**
+  String get manualTripNewTrip;
 }
 
 class _AppLocalizationsDelegate

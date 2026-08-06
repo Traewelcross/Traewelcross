@@ -640,5 +640,11 @@
     }
   },
   "routeColorColorSchemeTitle": "Use route color as color accent",
-  "routeColorColorSchemeSubtitle": "If a route color is available, display the card with that color accent"
+  "routeColorColorSchemeSubtitle": "If a route color is available, display the card with that color accent",
+  "manualTripCreationTile": "Manually create trip",
+  "manualTripCreationDialogContent": "Your about to create your trip manually. That means that you have to enter some additional information besides the usual stop selection. Please note that you won't receive any point at all for checkins into manually created trips!",
+  "gotIt": "Got it!",
+  "gotItDontShow": "Got it, don't show again!",
+  "manualTripOverviewTitle": "Trips",
+  "manualTripNewTrip": "Create new trip"
 }

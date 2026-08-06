@@ -7,6 +7,8 @@ import 'package:traewelcross/config/appearance_config.dart';
 import 'package:traewelcross/config/behavior_config.dart';
 import 'package:traewelcross/config/misc_config.dart';
 import 'package:traewelcross/config/notification_config.dart';
+import 'package:traewelcross/config/dialog_config.dart';
+
 part 'config.g.dart';
 
 @JsonSerializable()
@@ -25,6 +27,8 @@ class Config with ChangeNotifier {
   MiscConfig misc = MiscConfig();
   @JsonKey(defaultValue: NotificationConfig.new)
   NotificationConfig notification = NotificationConfig();
+  @JsonKey(defaultValue: DialogConfig.new)
+  DialogConfig dialog = DialogConfig();
 
   void _onConfigChanged() {
     saveCofig();
@@ -51,6 +55,7 @@ class Config with ChangeNotifier {
     behavior.removeListener(_onConfigChanged);
     misc.removeListener(_onConfigChanged);
     notification.removeListener(_onConfigChanged);
+    dialog.removeListener(_onConfigChanged);
     super.dispose();
   }
 
@@ -60,6 +65,7 @@ class Config with ChangeNotifier {
     config.behavior.addListener(config._onConfigChanged);
     config.misc.addListener(config._onConfigChanged);
     config.notification.addListener(config._onConfigChanged);
+    config.dialog.addListener(config._onConfigChanged);
     return config;
   }
   Map<String, dynamic> toJson() => _$ConfigToJson(this);

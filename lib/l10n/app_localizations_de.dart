@@ -1026,4 +1026,23 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get routeColorColorSchemeSubtitle =>
       'Wenn eine Routenfarbe verfügbar ist, nimmt die jeweilige Fahrt diesen Farbakzent an';
+
+  @override
+  String get manualTripCreationTile => 'Fahrt manuell erstellen';
+
+  @override
+  String get manualTripCreationDialogContent =>
+      'Du bist davor, deine Fahrt manuell zu erstellen. Das bedeutet, dass du einige Zusatzinformationen angeben musst. Bitte beachte das dir auf manuell erstellte Fahrten keine Punkte angerechnet werden.';
+
+  @override
+  String get gotIt => 'Verstanden!';
+
+  @override
+  String get gotItDontShow => 'Verstanden, nicht erneut zeigen!';
+
+  @override
+  String get manualTripOverviewTitle => 'Fahrten';
+
+  @override
+  String get manualTripNewTrip => 'Create new trip';
 }

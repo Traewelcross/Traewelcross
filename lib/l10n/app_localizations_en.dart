@@ -1019,4 +1019,23 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get routeColorColorSchemeSubtitle =>
       'If a route color is available, display the card with that color accent';
+
+  @override
+  String get manualTripCreationTile => 'Manually create trip';
+
+  @override
+  String get manualTripCreationDialogContent =>
+      'Your about to create your trip manually. That means that you have to enter some additional information besides the usual stop selection. Please note that you won\'t receive any point at all for checkins into manually created trips!';
+
+  @override
+  String get gotIt => 'Got it!';
+
+  @override
+  String get gotItDontShow => 'Got it, don\'t show again!';
+
+  @override
+  String get manualTripOverviewTitle => 'Trips';
+
+  @override
+  String get manualTripNewTrip => 'Create new trip';
 }

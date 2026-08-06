@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:traewelcross/enums/depart_types.dart';
 
 import "package:traewelcross/enums/mastodon_visibility.dart";
 import 'package:traewelcross/enums/trip_type.dart';
@@ -730,6 +731,7 @@ class TripResource {
   final String lineName;
   final int? journeyNumber;
   final Station origin;
+  final Operator? operator;
   final Station destination;
   List<Stopover> stopovers;
   final DataSource? dataSource;
@@ -741,6 +743,7 @@ class TripResource {
     this.mode,
     this.routeColor,
     this.routeTextColor,
+    this.operator,
     required this.number,
     required this.lineName,
     required this.journeyNumber,
@@ -753,6 +756,94 @@ class TripResource {
   factory TripResource.fromJson(Map<String, dynamic> json) =>
       _$TripResourceFromJson(json);
   Map<String, dynamic> toJson() => _$TripResourceToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class TripDraft {
+  DepartTypes? category;
+  String? lineName;
+  int? journeyNumber;
+  String? operatorId;
+  int? originId;
+  String? originDeparturePlanned;
+  int? destinationId;
+  String? destinationArrivalPlanned;
+  List<StopoverDraft>? stopovers;
+}
+
+@JsonSerializable(fieldRename: .none)
+class StopoverDraft{
+  final String stationId;
+  final String arrival;
+  final String departure;
+  const StopoverDraft({
+    required this.stationId,
+    required this.arrival,
+    required this.departure
+  });
+}
+
+class TripResourceDraft {
+  final int? id;
+  final String? tripId;
+  final String? category;
+  final String? mode;
+  final String? routeColor;
+  final String? routeTextColor;
+  final String? number;
+  final String? lineName;
+  final int? journeyNumber;
+  final Station? origin;
+  final Operator? operator;
+  final Station? destination;
+  List<Stopover>? stopovers;
+  final DataSource? dataSource;
+  final TripResource? continuationTrip;
+  TripResourceDraft({
+     this.id,
+     this.tripId,
+     this.category,
+    this.mode,
+    this.routeColor,
+    this.routeTextColor,
+    this.operator,
+     this.number,
+     this.lineName,
+     this.journeyNumber,
+     this.origin,
+     this.destination,
+     this.stopovers,
+    this.dataSource,
+    this.continuationTrip,
+  });
+  factory TripResourceDraft.fromResource(TripResource? r){
+    if(r==null) return TripResourceDraft();
+    return TripResourceDraft(
+      id: r.id,
+      tripId: r.tripId,
+      category: r.category,
+      mode: r.mode,
+      routeColor: r.routeColor,
+      routeTextColor: r.routeTextColor,
+      operator: r.operator,
+      number: r.number,
+      lineName: r.lineName,
+      journeyNumber: r.journeyNumber,
+      origin: r.origin,
+      destination: r.destination,
+      stopovers: r.stopovers,
+      dataSource: r.dataSource,
+      continuationTrip: r.continuationTrip
+    );
+  }
+  TripResource? build(){
+    try {
+      return TripResource(id: id!,tripId: tripId!, category: category!, mode: mode, routeColor: routeColor,
+      routeTextColor: routeTextColor, operator: operator, number: number!, lineName: lineName!, journeyNumber: journeyNumber, origin: origin!, destination: destination!, stopovers: stopovers!, dataSource: dataSource, continuationTrip: continuationTrip);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 @JsonSerializable(fieldRename: .none)

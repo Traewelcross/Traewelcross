@@ -7,9 +7,11 @@ import 'package:traewelcross/components/departure_time.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/ride_icon_tag.dart';
 import 'package:traewelcross/config/config.dart';
+import 'package:traewelcross/dialogs/manual_trip_info.dart';
 import 'package:traewelcross/enums/depart_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/components/platform.dart';
+import 'package:traewelcross/pages/checkin/manual_trips/trip_creation.dart';
 import 'package:traewelcross/pages/checkin/select_stop.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
@@ -321,8 +323,23 @@ class _DepartureList extends StatelessWidget {
             final showOtherStations =
                 getIt<Config>().behavior.showAltDepartureStops;
             return ListView.builder(
-              itemCount: departures.length,
+              itemCount: departures.length + 1,
               itemBuilder: (BuildContext context, int i) {
+                if (i >= departures.length) {
+                  return ListTile(
+                    title: Text(
+                      AppLocalizations.of(context)!.manualTripCreationTile,
+                    ),
+                    leading: const Icon(Icons.add),
+                    onTap: () async {
+                      if(getIt<Config>().dialog.manualTripInfo){
+                        await showDialog(context: context, builder: (ctx) => ManualTripInfo(), barrierDismissible: false);
+                      }
+                      if(!context.mounted) return;
+                      Navigator.push(context, MaterialPageRoute(builder: (ctx) => TripCreation()));
+                    },
+                  );
+                }
                 final departure = departures[i];
                 if (!showOtherStations &&
                     departure.station.name != stationName) {

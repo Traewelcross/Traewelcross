@@ -1,3 +1,5 @@
+import 'package:json_annotation/json_annotation.dart';
+
 enum DepartTypes {
   subUrban("suburban"),
   express("express"),
@@ -8,6 +10,7 @@ enum DepartTypes {
   tram("tram"),
   taxi("taxi"),
   plane("plane"),
+  freightTrain("freightTrain"),
   all("");
 
   final String value;

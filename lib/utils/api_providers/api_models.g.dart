@@ -682,6 +682,9 @@ TripResource _$TripResourceFromJson(Map<String, dynamic> json) => TripResource(
   mode: json['mode'] as String?,
   routeColor: json['routeColor'] as String?,
   routeTextColor: json['routeTextColor'] as String?,
+  operator: json['operator'] == null
+      ? null
+      : Operator.fromJson(json['operator'] as Map<String, dynamic>),
   number: json['number'] as String,
   lineName: json['lineName'] as String,
   journeyNumber: (json['journeyNumber'] as num?)?.toInt(),
@@ -710,6 +713,7 @@ Map<String, dynamic> _$TripResourceToJson(TripResource instance) =>
       'lineName': instance.lineName,
       'journeyNumber': instance.journeyNumber,
       'origin': instance.origin,
+      'operator': instance.operator,
       'destination': instance.destination,
       'stopovers': instance.stopovers,
       'dataSource': instance.dataSource,
