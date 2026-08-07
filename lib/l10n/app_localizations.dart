@@ -1993,6 +1993,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Departure'**
   String get manualTripDeparture;
+
+  /// No description provided for @manualTripCreateTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Trip'**
+  String get manualTripCreateTrip;
+
+  /// No description provided for @noStationsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, no stopovers could be found for this ride. You can either try to reopen the departure board and selecting this ride again, or try and use the offical Träwelling page.'**
+  String get noStationsFound;
+
+  /// No description provided for @returnToDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to dashboard'**
+  String get returnToDashboard;
+
+  /// No description provided for @openTraewelling.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Träwelling'**
+  String get openTraewelling;
 }
 
 class _AppLocalizationsDelegate

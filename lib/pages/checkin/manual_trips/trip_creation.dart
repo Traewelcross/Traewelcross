@@ -8,10 +8,12 @@ import 'package:traewelcross/components/ride_icon_tag.dart';
 import 'package:traewelcross/dialogs/manual_trip_add_stopover_dialog.dart';
 import 'package:traewelcross/enums/depart_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
+import 'package:traewelcross/pages/checkin/select_stop.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/ride_icon_tag_info.dart';
 import 'package:traewelcross/utils/shared.dart';
+import 'package:watch_it/watch_it.dart';
 
 class TripCreation extends StatefulWidget {
   const TripCreation({super.key});
@@ -30,7 +32,8 @@ class _TripCreationState extends State<TripCreation> {
   Future<void> _addStopover() async {
     final stop = await showDialog<StopoverDraft>(
       context: context,
-      builder: (ctx) => const ManualTripAddStopoverDialog(edit: false),
+      builder: (ctx) =>
+          const ManualTripAddStopoverDialog(edit: false, isDestination: false),
     );
     if (stop?.stationId == -1 || stop == null) {
       return;
@@ -47,6 +50,7 @@ class _TripCreationState extends State<TripCreation> {
       builder: (ctx) => ManualTripAddStopoverDialog(
         edit: true,
         editStation: stopovers.firstWhere((s) => s.stationId == initId),
+        isDestination: false,
       ),
     );
     if (stop == null) return;
@@ -65,6 +69,7 @@ class _TripCreationState extends State<TripCreation> {
       builder: (ctx) => ManualTripAddStopoverDialog(
         edit: originStop.stationId != -1,
         editStation: originStop,
+        isDestination: false,
       ),
     );
     if (stop == null || stop.stationId == -2) return;
@@ -93,7 +98,38 @@ class _TripCreationState extends State<TripCreation> {
   List<StopoverDraft> stopovers = [];
   StopoverDraft originStop = .new(stationId: -1, name: "", departure: "");
   StopoverDraft destinationStop = .new(stationId: -1, name: "", departure: "");
+  Future<void> _createTrip() async {
+    if (stopovers.isNotEmpty) {
+      stopovers.sort((a, b) => a.compareTo(b));
+    }
+    tD.originId = originStop.stationId;
+    tD.destinationId = destinationStop.stationId;
+    tD.destinationArrivalPlanned = destinationStop.arrival;
+    tD.originDeparturePlanned = originStop.departure;
+    tD.lineName = lineName.text;
+    tD.stopovers = stopovers;
+    if (int.tryParse(journeyNumber.text) != null) {
+      tD.journeyNumber = int.parse(journeyNumber.text);
+    }
+    final response = await getIt<ApiService>().trip.createTrip(tD);
+    if (!mounted) return;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => SelectStop(
+          lineName: response.lineName,
+          tripId: response.tripId,
+          destination: response.destination.name,
+          startStopId: originStop.stationId,
+          category: response.category,
+          departureTime: originStop.departure,
+        ),
+      ),
+    );
+  }
 
+  TextEditingController lineName = TextEditingController();
+  TextEditingController journeyNumber = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
@@ -168,6 +204,7 @@ class _TripCreationState extends State<TripCreation> {
                       labelText: localize.lineNumber,
                       counterText: "",
                     ),
+                    controller: lineName,
                   ),
                   TextField(
                     keyboardType: .number,
@@ -178,6 +215,7 @@ class _TripCreationState extends State<TripCreation> {
                       labelText: localize.journeyNumber,
                       counterText: "",
                     ),
+                    controller: journeyNumber,
                   ),
                   const Divider(),
                   Autocomplete<Operator>(
@@ -195,7 +233,7 @@ class _TripCreationState extends State<TripCreation> {
                           try {
                             final options = await _searchOperators(query);
                             _lastOptions = options;
-        
+
                             if (!completer.isCompleted) {
                               completer.complete(options);
                             }
@@ -269,6 +307,11 @@ class _TripCreationState extends State<TripCreation> {
                 ],
               ),
             ),
+            FilledButton.icon(
+              onPressed: () => _createTrip(),
+              label: Text(localize.manualTripCreateTrip),
+              icon: const Icon(Icons.add),
+            ),
           ],
         ),
       ),
@@ -301,14 +344,8 @@ class StopoverField extends StatelessWidget {
         suffixIcon: Row(
           mainAxisSize: .min,
           children: [
-            const SizedBox(
-              height: 24,
-              child: VerticalDivider(),
-            ),
-            IconButton(
-              onPressed: onPressed,
-              icon: const Icon(Icons.edit),
-            ),
+            const SizedBox(height: 24, child: VerticalDivider()),
+            IconButton(onPressed: onPressed, icon: const Icon(Icons.edit)),
             const SizedBox(width: 8),
           ],
         ),

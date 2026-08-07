@@ -662,5 +662,9 @@
   "manualTripDestinationStop": "Destination stop",
   "searchStopover": "Search stop",
   "manualTripArrival": "Arrival (optional)",
-  "manualTripDeparture": "Departure"
+  "manualTripDeparture": "Departure",
+  "manualTripCreateTrip": "Create Trip",
+  "noStationsFound": "Sorry, no stopovers could be found for this ride. You can either try to reopen the departure board and selecting this ride again, or try and use the offical Träwelling page.",
+  "returnToDashboard": "Return to dashboard",
+  "openTraewelling": "Open Träwelling"
 }

@@ -720,6 +720,61 @@ Map<String, dynamic> _$TripResourceToJson(TripResource instance) =>
       'continuationTrip': instance.continuationTrip,
     };
 
+TripDraft _$TripDraftFromJson(Map<String, dynamic> json) => TripDraft(
+  category: $enumDecodeNullable(_$DepartTypesEnumMap, json['category']),
+  lineName: json['lineName'] as String?,
+  journeyNumber: (json['journeyNumber'] as num?)?.toInt(),
+  operatorId: json['operatorId'] as String?,
+  originId: (json['originId'] as num?)?.toInt(),
+  originDeparturePlanned: json['originDeparturePlanned'] as String?,
+  destinationId: (json['destinationId'] as num?)?.toInt(),
+  destinationArrivalPlanned: json['destinationArrivalPlanned'] as String?,
+  stopovers: (json['stopovers'] as List<dynamic>?)
+      ?.map((e) => StopoverDraft.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
+
+Map<String, dynamic> _$TripDraftToJson(TripDraft instance) => <String, dynamic>{
+  'category': _$DepartTypesEnumMap[instance.category],
+  'lineName': instance.lineName,
+  'journeyNumber': instance.journeyNumber,
+  'operatorId': instance.operatorId,
+  'originId': instance.originId,
+  'originDeparturePlanned': instance.originDeparturePlanned,
+  'destinationId': instance.destinationId,
+  'destinationArrivalPlanned': instance.destinationArrivalPlanned,
+  'stopovers': instance.stopovers,
+};
+
+const _$DepartTypesEnumMap = {
+  DepartTypes.express: 'express',
+  DepartTypes.regional: 'regional',
+  DepartTypes.subUrban: 'subUrban',
+  DepartTypes.subway: 'subway',
+  DepartTypes.tram: 'tram',
+  DepartTypes.bus: 'bus',
+  DepartTypes.ferry: 'ferry',
+  DepartTypes.taxi: 'taxi',
+  DepartTypes.plane: 'plane',
+  DepartTypes.freightTrain: 'freightTrain',
+  DepartTypes.all: 'all',
+};
+
+StopoverDraft _$StopoverDraftFromJson(Map<String, dynamic> json) =>
+    StopoverDraft(
+      stationId: (json['stationId'] as num).toInt(),
+      arrival: json['arrival'] as String?,
+      name: json['name'] as String,
+      departure: json['departure'] as String,
+    );
+
+Map<String, dynamic> _$StopoverDraftToJson(StopoverDraft instance) =>
+    <String, dynamic>{
+      'stationId': instance.stationId,
+      'arrival': instance.arrival,
+      'departure': instance.departure,
+    };
+
 MastoCustomEmoji _$MastoCustomEmojiFromJson(Map<String, dynamic> json) =>
     MastoCustomEmoji(
       shortcode: json['shortcode'] as String,

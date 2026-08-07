@@ -1093,4 +1093,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get manualTripDeparture => 'Departure';
+
+  @override
+  String get manualTripCreateTrip => 'Create Trip';
+
+  @override
+  String get noStationsFound =>
+      'Sorry, no stopovers could be found for this ride. You can either try to reopen the departure board and selecting this ride again, or try and use the offical Träwelling page.';
+
+  @override
+  String get returnToDashboard => 'Return to dashboard';
+
+  @override
+  String get openTraewelling => 'Open Träwelling';
 }

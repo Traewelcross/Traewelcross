@@ -764,7 +764,7 @@ class TripDraft {
   String? lineName;
   int? journeyNumber;
   String? operatorId;
-  String? originId;
+  int? originId;
   String? originDeparturePlanned;
   int? destinationId;
   String? destinationArrivalPlanned;
@@ -780,10 +780,12 @@ class TripDraft {
     this.destinationArrivalPlanned,
     this.stopovers,
   });
+  factory TripDraft.fromJson(Map<String, dynamic> json) => _$TripDraftFromJson(json);
+  Map<String, dynamic> toJson() => _$TripDraftToJson(this);
 }
 
 @JsonSerializable(fieldRename: .none)
-class StopoverDraft{
+class StopoverDraft implements Comparable<StopoverDraft> {
    int stationId;
    String? arrival;
    String departure;
@@ -795,6 +797,12 @@ class StopoverDraft{
     required this.name,
     required this.departure
   });
+  factory StopoverDraft.fromJson(Map<String, dynamic> json) => _$StopoverDraftFromJson(json);
+  Map<String, dynamic> toJson() => _$StopoverDraftToJson(this);
+  @override
+  int compareTo(StopoverDraft other){
+    return DateTime.parse(departure).isBefore(DateTime.parse(other.departure)) ? -1 : 1;
+  }
 }
 
 class TripResourceDraft {

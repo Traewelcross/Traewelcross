@@ -13,10 +13,10 @@ class ManualTripAddStopoverDialog extends StatefulWidget {
     super.key,
     required this.edit,
     this.editStation,
-    this.isDestination
+    required this.isDestination
   });
   final bool edit;
-  final bool? isDestination;
+  final bool isDestination;
   final StopoverDraft? editStation;
 
   @override
@@ -97,7 +97,7 @@ class _ManualTripAddStopoverDialogState
                   ),
                 if (!widget.edit)
                   FilledButton(
-                    onPressed: selectedStation.departure.isNotEmpty || (selectedStation.arrival?.isNotEmpty == true && widget.isDestination == true)
+                    onPressed: (selectedStation.departure.isNotEmpty && !widget.isDestination) || (selectedStation.arrival?.isNotEmpty == true && widget.isDestination)
                         ? () => Navigator.pop(context, selectedStation)
                         : null,
                     child: Text(localize.addStopover),

@@ -31,4 +31,13 @@ class TripApiProvider {
     }
     return [];
   }
+
+  Future<TripResource> createTrip(TripDraft tD) async {
+    final response = await _api.request("trips", .POST, body: jsonEncode(tD.toJson()));
+    if(response.statusCode == 201){
+      return TripResource.fromJson(jsonDecode(response.body)["data"]);
+    } else {
+      return Future.error("${response.statusCode} / ${response.body}"); 
+    }
+  }
 }
