@@ -44,6 +44,7 @@ dependencies:
   logger: ^2.6.2
   fl_chart: ^1.1.1
   flutter_cache_manager: ^3.4.2
+  easy_debounce: ^2.0.3
 
 dependency_overrides:
   oauth2:
