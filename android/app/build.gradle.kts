@@ -19,7 +19,7 @@ val keyProperties = Properties().apply {
 }
 android {
     namespace = "de.traewelcross"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37 //flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
     flavorDimensions += "default"
 
