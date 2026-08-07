@@ -20,6 +20,7 @@ import 'package:traewelcross/utils/api_providers/station_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/event_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/alert_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/checkin_api_provider.dart';
+import 'package:traewelcross/utils/api_providers/operator_api_provider.dart';
 
 class UnavailableException implements Exception {}
 
@@ -41,6 +42,7 @@ class ApiService {
   late final train = TrainApiProvider(this);
   late final trip = TripApiProvider(this);
   late final mastodon = MastodonApiProvider();
+  late final operator = OperatorApiProvider(this);
 
   ApiService(this._authService);
 

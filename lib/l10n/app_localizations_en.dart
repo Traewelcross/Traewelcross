@@ -1038,4 +1038,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get manualTripNewTrip => 'Create new trip';
+
+  @override
+  String get taxi => 'Taxi';
+
+  @override
+  String get plane => 'Plane';
+
+  @override
+  String get freightTrain => 'Freight train';
+
+  @override
+  String get trainDetails => 'Vehicle details';
+
+  @override
+  String get lineNumber => 'Line number (i.e. S4, IC 2545)';
+
+  @override
+  String get journeyNumber => 'Journey number (i.e. 34442)';
+
+  @override
+  String get operator => 'Operator';
+
+  @override
+  String get routeDetails => 'Route details';
+
+  @override
+  String get addStopover => 'Add stopover';
+
+  @override
+  String get removeStopover => 'Remove stopover';
+
+  @override
+  String get editStopover => 'Edit stopover';
+
+  @override
+  String get manualTripOriginStop => 'Origin station';
+
+  @override
+  String get manualTripDestinationStop => 'Destination stop';
+
+  @override
+  String get searchStopover => 'Search stop';
+
+  @override
+  String get manualTripArrival => 'Arrival (optional)';
+
+  @override
+  String get manualTripDeparture => 'Departure';
 }

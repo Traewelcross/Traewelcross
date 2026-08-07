@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:traewelcross/enums/depart_types.dart';
 
 import "package:traewelcross/enums/mastodon_visibility.dart";
+import 'package:traewelcross/enums/depart_types.dart';
 import 'package:traewelcross/enums/trip_type.dart';
 import 'package:traewelcross/enums/trip_visibility.dart';
 import 'package:traewelcross/utils/check_in_info.dart';
@@ -764,21 +764,35 @@ class TripDraft {
   String? lineName;
   int? journeyNumber;
   String? operatorId;
-  int? originId;
+  String? originId;
   String? originDeparturePlanned;
   int? destinationId;
   String? destinationArrivalPlanned;
   List<StopoverDraft>? stopovers;
+  TripDraft({
+    this.category,
+    this.lineName,
+    this.journeyNumber,
+    this.operatorId,
+    this.originId,
+    this.originDeparturePlanned,
+    this.destinationId,
+    this.destinationArrivalPlanned,
+    this.stopovers,
+  });
 }
 
 @JsonSerializable(fieldRename: .none)
 class StopoverDraft{
-  final String stationId;
-  final String arrival;
-  final String departure;
-  const StopoverDraft({
+   int stationId;
+   String? arrival;
+   String departure;
+   @JsonKey(includeToJson: false)
+   String name;
+   StopoverDraft({
     required this.stationId,
-    required this.arrival,
+    this.arrival,
+    required this.name,
     required this.departure
   });
 }

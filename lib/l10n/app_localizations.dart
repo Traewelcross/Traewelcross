@@ -1897,6 +1897,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create new trip'**
   String get manualTripNewTrip;
+
+  /// No description provided for @taxi.
+  ///
+  /// In en, this message translates to:
+  /// **'Taxi'**
+  String get taxi;
+
+  /// No description provided for @plane.
+  ///
+  /// In en, this message translates to:
+  /// **'Plane'**
+  String get plane;
+
+  /// No description provided for @freightTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Freight train'**
+  String get freightTrain;
+
+  /// No description provided for @trainDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle details'**
+  String get trainDetails;
+
+  /// No description provided for @lineNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Line number (i.e. S4, IC 2545)'**
+  String get lineNumber;
+
+  /// No description provided for @journeyNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Journey number (i.e. 34442)'**
+  String get journeyNumber;
+
+  /// No description provided for @operator.
+  ///
+  /// In en, this message translates to:
+  /// **'Operator'**
+  String get operator;
+
+  /// No description provided for @routeDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Route details'**
+  String get routeDetails;
+
+  /// No description provided for @addStopover.
+  ///
+  /// In en, this message translates to:
+  /// **'Add stopover'**
+  String get addStopover;
+
+  /// No description provided for @removeStopover.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove stopover'**
+  String get removeStopover;
+
+  /// No description provided for @editStopover.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit stopover'**
+  String get editStopover;
+
+  /// No description provided for @manualTripOriginStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Origin station'**
+  String get manualTripOriginStop;
+
+  /// No description provided for @manualTripDestinationStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Destination stop'**
+  String get manualTripDestinationStop;
+
+  /// No description provided for @searchStopover.
+  ///
+  /// In en, this message translates to:
+  /// **'Search stop'**
+  String get searchStopover;
+
+  /// No description provided for @manualTripArrival.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrival (optional)'**
+  String get manualTripArrival;
+
+  /// No description provided for @manualTripDeparture.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure'**
+  String get manualTripDeparture;
 }
 
 class _AppLocalizationsDelegate

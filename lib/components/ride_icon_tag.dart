@@ -31,6 +31,7 @@ class _RideIconTagState extends State<RideIconTag> {
       (Config c) => c.appearance.customLineIcons,
     );
     return Row(
+      mainAxisSize: .min,
       children: [
         if (widget.iconInfo.showCategoryIcon ?? true)
           switch (widget.iconInfo.category) {

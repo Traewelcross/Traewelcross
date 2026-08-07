@@ -646,5 +646,21 @@
   "gotIt": "Got it!",
   "gotItDontShow": "Got it, don't show again!",
   "manualTripOverviewTitle": "Trips",
-  "manualTripNewTrip": "Create new trip"
+  "manualTripNewTrip": "Create new trip",
+  "taxi": "Taxi",
+  "plane": "Plane",
+  "freightTrain": "Freight train",
+  "trainDetails": "Vehicle details",
+  "lineNumber": "Line number (i.e. S4, IC 2545)",
+  "journeyNumber": "Journey number (i.e. 34442)",
+  "operator": "Operator",
+  "routeDetails": "Route details",
+  "addStopover": "Add stopover",
+  "removeStopover": "Remove stopover",
+  "editStopover": "Edit stopover",
+  "manualTripOriginStop": "Origin station",
+  "manualTripDestinationStop": "Destination stop",
+  "searchStopover": "Search stop",
+  "manualTripArrival": "Arrival (optional)",
+  "manualTripDeparture": "Departure"
 }

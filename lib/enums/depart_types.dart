@@ -1,13 +1,12 @@
-import 'package:json_annotation/json_annotation.dart';
 
 enum DepartTypes {
-  subUrban("suburban"),
   express("express"),
   regional("regional"),
-  bus("bus"),
-  ferry("ferry"),
+  subUrban("suburban"),
   subway("subway"),
   tram("tram"),
+  bus("bus"),
+  ferry("ferry"),
   taxi("taxi"),
   plane("plane"),
   freightTrain("freightTrain"),
