@@ -18,10 +18,9 @@ class TrainApiProvider {
     http.Response response;
     try {
       response = await _api.request(
-        "/trains/trip?hafasTripId=${tripId}&lineName=${Uri.encodeComponent(lineName)}&start=${Uri.encodeComponent(startStopId.toString())}",
+        "/trains/trip?hafasTripId=${Uri.encodeComponent(tripId)}&lineName=${Uri.encodeComponent(lineName)}&start=${Uri.encodeComponent(startStopId.toString())}",
         .GET,
       );
-      print("/trains/trip?hafasTripId=${tripId}&lineName=${Uri.encodeComponent(lineName)}&start=${Uri.encodeComponent(startStopId.toString())}");
     } on TimeoutException {
       throw TimeoutException(null);
     }

@@ -13,7 +13,6 @@ import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/ride_icon_tag_info.dart';
 import 'package:traewelcross/utils/shared.dart';
-import 'package:watch_it/watch_it.dart';
 
 class TripCreation extends StatefulWidget {
   const TripCreation({super.key});
