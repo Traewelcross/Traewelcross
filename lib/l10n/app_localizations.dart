@@ -2017,6 +2017,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open Träwelling'**
   String get openTraewelling;
+
+  /// No description provided for @notifyInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Have had troubles with push notifications recently? Please try to disable them and then enable them again. This hint will appear {counter} more times'**
+  String notifyInfo(int counter);
 }
 
 class _AppLocalizationsDelegate

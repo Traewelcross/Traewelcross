@@ -18,4 +18,11 @@ class DialogConfig with ChangeNotifier {
     _manaulTripInfo = val;
     notifyListeners();
   }
+  int _notifyFixInfoDisplayCount = 0;
+  @JsonKey(defaultValue: 0)
+  int get notifyFixInfoDisplayCount => _notifyFixInfoDisplayCount;
+  set notifyFixInfoDisplayCount(int val){
+    _notifyFixInfoDisplayCount = val;
+    notifyListeners();
+  }
 }

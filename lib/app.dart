@@ -181,6 +181,11 @@ class _AppHomeState extends State<AppHome> {
         if (Platform.isAndroid || Platform.isIOS) {
           _coldNotificationBootHandler();
         }
+        //TODO: remove in version >1.6.5
+        if(getIt<Config>().dialog.notifyFixInfoDisplayCount <= 4){
+          SharedFunctions.sendSnackBar(AppLocalizations.of(context)!.notifyInfo(4-getIt<Config>().dialog.notifyFixInfoDisplayCount), duration: Duration(seconds: 7));
+          getIt<Config>().dialog.notifyFixInfoDisplayCount++;
+        }
       }
     });
   }

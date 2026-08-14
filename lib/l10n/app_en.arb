@@ -666,5 +666,13 @@
   "manualTripCreateTrip": "Create Trip",
   "noStationsFound": "Sorry, no stopovers could be found for this ride. You can either try to reopen the departure board and selecting this ride again, or try and use the offical Träwelling page.",
   "returnToDashboard": "Return to dashboard",
-  "openTraewelling": "Open Träwelling"
+  "openTraewelling": "Open Träwelling",
+  "notifyInfo": "Have had troubles with push notifications recently? Please try to disable them and then enable them again. This hint will appear {counter} more times",
+  "@notifyInfo": {
+    "placeholders": {
+      "counter": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -226,10 +226,10 @@ class SharedFunctions {
     return hslColor.toColor();
   }
 
-  static void sendSnackBar(String text) {
+  static void sendSnackBar(String text, {Duration? duration}) {
     final messenger = getIt<GlobalKey<ScaffoldMessengerState>>().currentState;
     if (messenger != null) {
-      messenger.showSnackBar(SnackBar(content: Text(text)));
+      messenger.showSnackBar(SnackBar(content: Text(text), duration: duration ?? Duration(seconds: 4),));
     }
   }
 

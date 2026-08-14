@@ -1099,4 +1099,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openTraewelling => 'Open Träwelling';
+
+  @override
+  String notifyInfo(int counter) {
+    return 'Have had troubles with push notifications recently? Please try to disable them and then enable them again. This hint will appear $counter more times';
+  }
 }

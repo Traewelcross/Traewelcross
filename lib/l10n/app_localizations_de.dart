@@ -1106,4 +1106,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get openTraewelling => 'Open Träwelling';
+
+  @override
+  String notifyInfo(int counter) {
+    return 'Probleme mit Pushbenachrichtigungen gehabt in letzter Zeit? Bitte versuche sie zu de- und dann wieder zu aktivieren. Diese Nachricht wird noch $counter Mal erscheinen.';
+  }
 }
