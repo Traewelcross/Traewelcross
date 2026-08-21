@@ -1,5 +1,5 @@
 import 'package:app_settings/app_settings.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';

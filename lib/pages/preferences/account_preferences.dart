@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:terminate_restart/terminate_restart.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/own_profile_picture.dart';

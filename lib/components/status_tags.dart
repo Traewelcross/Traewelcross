@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/dialogs/add_tag_dialog.dart';
 import 'package:traewelcross/components/status_tag.dart';
 import 'package:traewelcross/components/tag_icon.dart';

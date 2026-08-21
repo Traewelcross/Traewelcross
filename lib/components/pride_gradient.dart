@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/utils/pride_flags.dart';
 
 /// Will use a randomly selected (or user defined) pride flag (presentent as gradient) to act as a Color replacement through ShaderMask

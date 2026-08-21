@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/checkin/checkin.dart';
 import 'package:traewelcross/components/app_bar_title.dart';

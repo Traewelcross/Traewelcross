@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
   intl: any
   provider: ^6.1.5
-  dynamic_color: ^1.8.1
+  dynamic_color: ^2.1.0
   material_symbols_icons: ^4.2873.0
   flutter_secure_storage: ^11.0.0
   url_launcher: ^6.3.1
@@ -38,13 +38,14 @@ dependencies:
   google_api_availability: ^5.0.1
   firebase_core: ^4.2.1
   flutter_local_notifications: ^22.0.0-dev.3
-  app_settings: ^8.0.3
+  app_settings: ^9.0.0
   get_it: ^9.1.1
   watch_it: ^2.3.1
   logger: ^2.6.2
   fl_chart: ^1.1.1
   flutter_cache_manager: ^3.4.2
   easy_debounce: ^2.0.3
+  material_ui: any
 
 dependency_overrides:
   oauth2:

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';

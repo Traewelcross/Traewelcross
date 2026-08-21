@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/pages/login/desktop_auth_view.dart';
 import 'package:traewelcross/utils/authentication.dart';

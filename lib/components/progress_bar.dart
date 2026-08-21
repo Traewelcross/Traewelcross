@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/components/pride_gradient.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/utils/shared.dart';

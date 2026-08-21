@@ -18,7 +18,7 @@ import 'package:traewelcross/utils/deeplink_service.dart';
 import 'package:traewelcross/utils/time_span.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 late final PushManager globalPushManager;
 

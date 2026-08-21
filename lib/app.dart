@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -117,7 +117,7 @@ class App extends WatchingWidget {
             navigatorKey: getIt<GlobalKey<NavigatorState>>(),
             scaffoldMessengerKey: getIt<GlobalKey<ScaffoldMessengerState>>(),
             title: "Träwelcross",
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            localizationsDelegates: [AppLocalizations.delegate, ...GlobalMaterialLocalizations.delegates],
             supportedLocales: AppLocalizations.supportedLocales,
             theme: ThemeData(
               useMaterial3: true,
@@ -135,6 +135,7 @@ class App extends WatchingWidget {
             ),
             themeMode: themeMode,
             home: const AppHome(),
+            builder: (ctx, chd) => MaterialUiCompatibilityBridge(child: chd!),
           );
         },
       ),
