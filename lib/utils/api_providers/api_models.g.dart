@@ -584,7 +584,7 @@ Map<String, dynamic> _$CheckinResponseToJson(CheckinResponse instance) =>
 
 Alert _$AlertFromJson(Map<String, dynamic> json) => Alert(
   id: json['id'] as String,
-  type: json['type'] as String,
+  type: $enumDecode(_$AlertTypesEnumMap, json['type']),
   activeUntil: json['active_until'] as String?,
   activeFrom: json['active_from'] as String,
   url: json['url'] as String?,
@@ -595,11 +595,18 @@ Alert _$AlertFromJson(Map<String, dynamic> json) => Alert(
 
 Map<String, dynamic> _$AlertToJson(Alert instance) => <String, dynamic>{
   'id': instance.id,
-  'type': instance.type,
+  'type': _$AlertTypesEnumMap[instance.type]!,
   'active_from': instance.activeFrom,
   'active_until': instance.activeUntil,
   'url': instance.url,
   'translations': instance.translations,
+};
+
+const _$AlertTypesEnumMap = {
+  AlertTypes.info: 'info',
+  AlertTypes.warning: 'warning',
+  AlertTypes.danger: 'danger',
+  AlertTypes.success: 'success',
 };
 
 AlertTranslation _$AlertTranslationFromJson(Map<String, dynamic> json) =>

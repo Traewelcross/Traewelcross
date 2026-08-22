@@ -72,7 +72,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
               Divider(),
               ListTile(
                 title: Text(localize.useSystemAccent),
-                trailing: Checkbox(
+                trailing: Switch(
                   value: config.appearance.useSystemAccent,
                   onChanged: asyncSnapshot.data!
                       ? (val) => config.appearance.useSystemAccent = val!
@@ -109,7 +109,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                             !config.appearance.prideModePreference;
                       })
                     : null,
-                trailing: Checkbox(
+                trailing: Switch(
                   value: config.appearance.isPrideActive,
                   onChanged: DateTime.now().month != 6
                       ? (val) => setState(() {
@@ -204,7 +204,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                       !config.appearance.customLineIcons;
                 }),
                 title: Text(localize.useLineIcons),
-                trailing: Checkbox(
+                trailing: Switch(
                   value: config.appearance.customLineIcons,
                   onChanged: (val) => setState(() {
                     config.appearance.customLineIcons = val!;
@@ -218,7 +218,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                 }),
                 title: Text(localize.routeColorColorSchemeTitle),
                 subtitle: Text(localize.routeColorColorSchemeSubtitle),
-                trailing: Checkbox(
+                trailing: Switch(
                   value: config.appearance.routeColorColorScheme,
                   onChanged: (val) => setState(() {
                     config.appearance.routeColorColorScheme = val!;
@@ -266,10 +266,23 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                 }),
                 title: Text(localize.showActiveRideCard),
                 subtitle: Text(localize.showActiveRideCardDesc),
-                trailing: Checkbox(
+                trailing: Switch(
                   value: config.behavior.showActiveRideCard,
                   onChanged: (val) => setState(() {
-                    config.behavior.showActiveRideCard = val!;
+                    config.behavior.showActiveRideCard = val;
+                  }),
+                ),
+              ),
+                            ListTile(
+                onTap: () => setState(() {
+                  config.behavior.hideTicketButton =
+                      !config.behavior.hideTicketButton;
+                }),
+                title: Text(localize.hideTicketButton),
+                trailing: Switch(
+                  value: config.behavior.hideTicketButton,
+                  onChanged: (val) => setState(() {
+                    config.behavior.hideTicketButton = val;
                   }),
                 ),
               ),

@@ -2023,6 +2023,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Have had troubles with push notifications recently? Please try to disable them and then enable them again. This hint will appear {counter} more times'**
   String notifyInfo(int counter);
+
+  /// No description provided for @ticketListViewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tickets'**
+  String get ticketListViewTitle;
+
+  /// No description provided for @ticketListViewNoTickets.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t added any tickets yet'**
+  String get ticketListViewNoTickets;
+
+  /// No description provided for @ticketListViewAddTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Ticket'**
+  String get ticketListViewAddTicket;
+
+  /// No description provided for @ticketAddTicketDataFieldset.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket data'**
+  String get ticketAddTicketDataFieldset;
+
+  /// No description provided for @ticketAddTicketDataManual.
+  ///
+  /// In en, this message translates to:
+  /// **'or do it manually'**
+  String get ticketAddTicketDataManual;
+
+  /// No description provided for @ticketAddTicketDataFromImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Read from image'**
+  String get ticketAddTicketDataFromImage;
+
+  /// No description provided for @ticketAddTicketDataFromCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Read from camera'**
+  String get ticketAddTicketDataFromCamera;
+
+  /// No description provided for @ticketAddTicketDataOr.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get ticketAddTicketDataOr;
+
+  /// No description provided for @ticketAddTicketDataSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket data is set'**
+  String get ticketAddTicketDataSuccess;
+
+  /// No description provided for @ticketAddTicketDataReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset ticket data'**
+  String get ticketAddTicketDataReset;
+
+  /// No description provided for @ticketAddTicketDataManuallyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket data is not validated if the provided data can actually be encoded into the selected code type until displaying. Also, since tickets often contain binary data, manually pasting it here might not work.'**
+  String get ticketAddTicketDataManuallyHint;
+
+  /// No description provided for @ticketAddTicketDataData.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket data'**
+  String get ticketAddTicketDataData;
+
+  /// No description provided for @ticketAddOptionalDataFieldset.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional data'**
+  String get ticketAddOptionalDataFieldset;
+
+  /// No description provided for @ticketAddOptionalDataValidBegin.
+  ///
+  /// In en, this message translates to:
+  /// **'Validity start'**
+  String get ticketAddOptionalDataValidBegin;
+
+  /// No description provided for @ticketAddOptionalDataValidEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Validity end'**
+  String get ticketAddOptionalDataValidEnd;
+
+  /// No description provided for @ticketAddOptionalDataAdditionalNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Notes'**
+  String get ticketAddOptionalDataAdditionalNotes;
+
+  /// No description provided for @ticketAddOptionalDataName.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket name'**
+  String get ticketAddOptionalDataName;
+
+  /// No description provided for @ticketListViewGenericTicketName.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket #{count}'**
+  String ticketListViewGenericTicketName(int count);
+
+  /// No description provided for @ticketAddTicketOnDeviceInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Tickets never leave your device'**
+  String get ticketAddTicketOnDeviceInfo;
+
+  /// No description provided for @ticketViewDisclaimerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Disclaimer'**
+  String get ticketViewDisclaimerTitle;
+
+  /// No description provided for @ticketViewDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'This is only a recreation of your actual ticket. Train staff may ask for the actual, official ticket. Use/Present at your own risk!'**
+  String get ticketViewDisclaimer;
+
+  /// No description provided for @ticketViewAdditionalDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Details'**
+  String get ticketViewAdditionalDetails;
+
+  /// No description provided for @hideTicketButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide ticket button'**
+  String get hideTicketButton;
 }
 
 class _AppLocalizationsDelegate

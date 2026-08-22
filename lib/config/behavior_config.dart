@@ -111,4 +111,11 @@ class BehaviorConfig with ChangeNotifier {
     _systemTimeDeviation = val;
     notifyListeners();
   }
+  bool _hideTicketButton = false;
+  @JsonKey(defaultValue: false)
+  bool get hideTicketButton => _hideTicketButton;
+  set hideTicketButton(bool val){
+    _hideTicketButton = val;
+    notifyListeners();
+  }
 }

@@ -81,7 +81,7 @@ class ApiService {
     headers ??= {};
     headers.addAll({
       "User-Agent":
-          "Traewelcross/1.5.2 (https://github.com/traewelcross/traewelcross; traewelcross.de)",
+          "Traewelcross/1.6.2 (https://github.com/traewelcross/traewelcross; traewelcross.de)",
       "Content-Type": "application/json",
     });
     oauth2.Client? client = await getAuthenticatedClient();
@@ -203,7 +203,7 @@ class ApiService {
           return true;
         }
         if (secondTry) {
-          return Future.error(
+          return await Future.error(
             ErrorInfo(
               "rate limit",
               type: ErrorType.httpError,
@@ -213,7 +213,7 @@ class ApiService {
           );
         }
         await Future.delayed(const Duration(seconds: 10));
-        return refreshToken(secondTry: true);
+        return await refreshToken(secondTry: true);
       }
     } catch (e) {
       return Future.error(e);

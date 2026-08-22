@@ -43,7 +43,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             }),
             title: Text(localize.overrideOnTimeTap),
             subtitle: Text(localize.overrideOnTimeTapExplain),
-            trailing: Checkbox(
+            trailing: Switch(
               value: config.behavior.overrideOnTimeTap,
               onChanged: (val) => setState(() {
                 config.behavior.overrideOnTimeTap = val!;
@@ -68,7 +68,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             }),
             title: Text(localize.confirmDelete),
             subtitle: Text(localize.confirmDeleteExplain),
-            trailing: Checkbox(
+            trailing: Switch(
               value: config.behavior.confirmDelete,
               onChanged: (val) => setState(() {
                 config.behavior.confirmDelete = val!;
@@ -83,7 +83,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             }),
             title: Text(localize.hideManualOnTimeOverride),
             subtitle: Text(localize.hideManualOnTimeOverrideExplain),
-            trailing: Checkbox(
+            trailing: Switch(
               value: config.behavior.hideManualOnTimeOverride,
               onChanged: (val) => setState(() {
                 config.behavior.hideManualOnTimeOverride = val!;
@@ -103,7 +103,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
                   !config.behavior.showAltDepartureStops;
             }),
             title: Text(localize.showAltDepStation),
-            trailing: Checkbox(
+            trailing: Switch(
               value: config.behavior.showAltDepartureStops,
               onChanged: (val) => setState(() {
                 config.behavior.showAltDepartureStops = val!;
@@ -117,13 +117,26 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             }),
             title: Text(localize.showActiveRideCard),
             subtitle: Text(localize.showActiveRideCardDesc),
-            trailing: Checkbox(
+            trailing: Switch(
               value: config.behavior.showActiveRideCard,
               onChanged: (val) => setState(() {
                 config.behavior.showActiveRideCard = val!;
               }),
             ),
           ),
+          ListTile(
+                onTap: () => setState(() {
+                  config.behavior.hideTicketButton =
+                      !config.behavior.hideTicketButton;
+                }),
+                title: Text(localize.hideTicketButton),
+                trailing: Switch(
+                  value: config.behavior.hideTicketButton,
+                  onChanged: (val) => setState(() {
+                    config.behavior.hideTicketButton = val;
+                  }),
+                ),
+              ),
         ],
       ),
     );

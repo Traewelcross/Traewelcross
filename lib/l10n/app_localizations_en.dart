@@ -1104,4 +1104,77 @@ class AppLocalizationsEn extends AppLocalizations {
   String notifyInfo(int counter) {
     return 'Have had troubles with push notifications recently? Please try to disable them and then enable them again. This hint will appear $counter more times';
   }
+
+  @override
+  String get ticketListViewTitle => 'Tickets';
+
+  @override
+  String get ticketListViewNoTickets => 'You haven\'t added any tickets yet';
+
+  @override
+  String get ticketListViewAddTicket => 'Add Ticket';
+
+  @override
+  String get ticketAddTicketDataFieldset => 'Ticket data';
+
+  @override
+  String get ticketAddTicketDataManual => 'or do it manually';
+
+  @override
+  String get ticketAddTicketDataFromImage => 'Read from image';
+
+  @override
+  String get ticketAddTicketDataFromCamera => 'Read from camera';
+
+  @override
+  String get ticketAddTicketDataOr => 'or';
+
+  @override
+  String get ticketAddTicketDataSuccess => 'Ticket data is set';
+
+  @override
+  String get ticketAddTicketDataReset => 'Reset ticket data';
+
+  @override
+  String get ticketAddTicketDataManuallyHint =>
+      'Ticket data is not validated if the provided data can actually be encoded into the selected code type until displaying. Also, since tickets often contain binary data, manually pasting it here might not work.';
+
+  @override
+  String get ticketAddTicketDataData => 'Ticket data';
+
+  @override
+  String get ticketAddOptionalDataFieldset => 'Optional data';
+
+  @override
+  String get ticketAddOptionalDataValidBegin => 'Validity start';
+
+  @override
+  String get ticketAddOptionalDataValidEnd => 'Validity end';
+
+  @override
+  String get ticketAddOptionalDataAdditionalNotes => 'Additional Notes';
+
+  @override
+  String get ticketAddOptionalDataName => 'Ticket name';
+
+  @override
+  String ticketListViewGenericTicketName(int count) {
+    return 'Ticket #$count';
+  }
+
+  @override
+  String get ticketAddTicketOnDeviceInfo => 'Tickets never leave your device';
+
+  @override
+  String get ticketViewDisclaimerTitle => 'Disclaimer';
+
+  @override
+  String get ticketViewDisclaimer =>
+      'This is only a recreation of your actual ticket. Train staff may ask for the actual, official ticket. Use/Present at your own risk!';
+
+  @override
+  String get ticketViewAdditionalDetails => 'Additional Details';
+
+  @override
+  String get hideTicketButton => 'Hide ticket button';
 }

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart' as pkg;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:terminate_restart/terminate_restart.dart';
+import 'package:traewelcross/components/alert_card.dart';
 import 'package:traewelcross/components/dashboard.dart';
 import 'package:traewelcross/components/profile_link_button.dart';
 import 'package:traewelcross/components/progress_bar.dart';
@@ -614,7 +615,8 @@ class _AlertsState extends State<Alerts> {
             itemCount: asyncSnapshot.data!.length,
             itemBuilder: (context, index) {
               final alert = asyncSnapshot.data![index];
-              return Card.filled(
+              return AlertCard(text: alert.translations.first.content, title: alert.translations.first.title, type: alert.type, url: alert.url,);
+              /*return Card.filled(
                 color: switch (alert.type) {
                   "info" => Color.alphaBlend(
                     Colors.blue.withValues(alpha: 0.2),
@@ -680,7 +682,7 @@ class _AlertsState extends State<Alerts> {
                     ],
                   ),
                 ),
-              );
+              );*/
             },
           );
         }

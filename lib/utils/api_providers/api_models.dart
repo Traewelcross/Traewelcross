@@ -2,6 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 import "package:traewelcross/enums/mastodon_visibility.dart";
 import 'package:traewelcross/enums/depart_types.dart';
+import "package:traewelcross/enums/alert_types.dart";
+
 import 'package:traewelcross/enums/trip_type.dart';
 import 'package:traewelcross/enums/trip_visibility.dart';
 import 'package:traewelcross/utils/check_in_info.dart';
@@ -620,7 +622,7 @@ class CheckinResponse {
 @JsonSerializable(fieldRename: .none)
 class Alert {
   String id;
-  String type;
+  AlertTypes type;
   @JsonKey(name: "active_from")
   String activeFrom;
   @JsonKey(name: "active_until")

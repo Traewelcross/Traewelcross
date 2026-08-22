@@ -674,5 +674,35 @@
         "type": "int"
       }
     }
-  }
+  },
+  "ticketListViewTitle": "Tickets",
+  "ticketListViewNoTickets": "You haven't added any tickets yet",
+  "ticketListViewAddTicket": "Add Ticket",
+  "ticketAddTicketDataFieldset": "Ticket data",
+  "ticketAddTicketDataManual": "or do it manually",
+  "ticketAddTicketDataFromImage": "Read from image",
+  "ticketAddTicketDataFromCamera": "Read from camera",
+  "ticketAddTicketDataOr": "or",
+  "ticketAddTicketDataSuccess": "Ticket data is set",
+  "ticketAddTicketDataReset": "Reset ticket data",
+  "ticketAddTicketDataManuallyHint": "Ticket data is not validated if the provided data can actually be encoded into the selected code type until displaying. Also, since tickets often contain binary data, manually pasting it here might not work.",
+  "ticketAddTicketDataData": "Ticket data",
+  "ticketAddOptionalDataFieldset": "Optional data",
+  "ticketAddOptionalDataValidBegin": "Validity start",
+  "ticketAddOptionalDataValidEnd": "Validity end",
+  "ticketAddOptionalDataAdditionalNotes": "Additional Notes",
+  "ticketAddOptionalDataName": "Ticket name",
+  "ticketListViewGenericTicketName": "Ticket #{count}",
+  "@ticketListViewGenericTicketName": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ticketAddTicketOnDeviceInfo": "Tickets never leave your device",
+  "ticketViewDisclaimerTitle": "Disclaimer",
+  "ticketViewDisclaimer": "This is only a recreation of your actual ticket. Train staff may ask for the actual, official ticket. Use/Present at your own risk!",
+  "ticketViewAdditionalDetails": "Additional Details",
+  "hideTicketButton": "Hide ticket button"
 }

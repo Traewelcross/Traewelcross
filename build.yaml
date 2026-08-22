@@ -5,3 +5,4 @@ targets:
         generate_for:
           - lib/config/**
           - lib/utils/api_providers/**
+          - lib/utils/tickets/ticket_model.dart
