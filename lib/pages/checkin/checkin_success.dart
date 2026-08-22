@@ -5,6 +5,7 @@ import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/profile_link_button.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/app.dart';
+import 'package:traewelcross/components/alert_card.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 
 class CheckinSuccess extends StatelessWidget {
@@ -122,40 +123,9 @@ class CheckinSuccess extends StatelessWidget {
                   const SizedBox(height: 72),
                 ],
                 if (continueSuccess == true)
-                  Card.filled(
-                    color: Color.alphaBlend(
-                      Colors.blue.withValues(alpha: 0.2),
-                      Theme.of(context).colorScheme.surface,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.info),
-                          SizedBox(width: 8),
-                          Expanded(child: Text(localize.secondCheckInSuccess)),
-                        ],
-                      ),
-                    ),
-                  ),
+                  AlertCard(text: localize.secondCheckInSuccess, type: .success,),
                 if (continueSuccess == false)
-                  Card.filled(
-                    color: Color.alphaBlend(
-                      Colors.red.withValues(alpha: 0.2),
-                      Theme.of(context).colorScheme.surface,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.error),
-                          SizedBox(width: 8),
-
-                          Expanded(child: Text(localize.secondCheckInFailure)),
-                        ],
-                      ),
-                    ),
-                  ),
+                  AlertCard(text: localize.secondCheckInFailure, type: .danger),
               ],
             );
           },

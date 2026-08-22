@@ -7,13 +7,15 @@ class TimeOverrideField extends StatefulWidget {
   final Function(DateTime?) onDateChanged;
   final String watermark;
   final bool? showDelete;
+  final bool? showNow;
 
   const TimeOverrideField({
     super.key,
     required this.initialDate,
     required this.onDateChanged,
     required this.watermark,
-    this.showDelete
+    this.showDelete,
+    this.showNow,
   });
 
   @override
@@ -111,7 +113,7 @@ class _TimeOverrideFieldState extends State<TimeOverrideField> {
         labelText: widget.watermark,
         border: const OutlineInputBorder(),
         prefixIcon: const Icon(Icons.schedule),
-        suffixIcon: _selectedDate == null
+        suffixIcon: _selectedDate == null && widget.showNow != false
             ? TextButton(
                 onPressed: () {
                   final newDate = DateTime.now();
@@ -123,7 +125,7 @@ class _TimeOverrideFieldState extends State<TimeOverrideField> {
                 },
                 child: Text(localize.now),
               )
-            : (widget.showDelete == false ? null : IconButton(
+            : (widget.showDelete == false || (_selectedDate == null && widget.showNow == false) ? null : IconButton(
                 onPressed: () {
                   setState(() {
                     _selectedDate = null;

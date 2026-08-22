@@ -24,6 +24,7 @@ import 'package:traewelcross/pages/on_the_move.dart';
 import 'package:traewelcross/pages/preferences/preferences.dart';
 import 'package:traewelcross/pages/profile_view.dart';
 import 'package:traewelcross/pages/stats/statistics.dart';
+import 'package:traewelcross/pages/tickets/ticket_list.dart';
 import 'package:traewelcross/pages/unavailable_service.dart';
 import 'package:traewelcross/push_notify/push_common.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
@@ -135,7 +136,6 @@ class App extends WatchingWidget {
             ),
             themeMode: themeMode,
             home: const AppHome(),
-            builder: (ctx, chd) => MaterialUiCompatibilityBridge(child: chd!),
           );
         },
       ),
@@ -356,6 +356,10 @@ class _ChromeState extends State<Chrome> {
           icon: const Icon(Icons.home),
           label: l10n.navHome,
         ),
+        actions: [
+          if(!getIt<Config>().behavior.hideTicketButton)
+          IconButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (ctx) => TicketList())), icon: const Icon(Icons.qr_code))
+        ]
       ),
       _Tab(
         page: OnTheMove(scrollController: _scrollController),
