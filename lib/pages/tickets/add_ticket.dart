@@ -30,7 +30,11 @@ class _AddTicketState extends State<AddTicket> {
   Code ticketC = Code(format: Format.aztec);
   Ticket t = Ticket(data: Uint8List(0), format: 0, uuid: "");
   bool ticketDataSet = false;
-  void processImage(XFile image) async {
+  bool processing = false;
+  Future<void> processImage(XFile image) async {
+        setState(() {
+      processing = true;
+    });
     Code result = await zx.readBarcodeImagePath(
       image,
       DecodeParams(
@@ -42,21 +46,26 @@ class _AddTicketState extends State<AddTicket> {
         maxSize: 4096,
       ),
     );
+    setState(() {
+      processing = false;
+    });
     if (result.rawBytes == null) return;
     ticketC = result;
     setState(() {
       ticketDataSet = true;
     });
   }
+
   late Iterable<Operator> _lastOptions = <Operator>[];
   Future<Iterable<Operator>> _searchOperators(String query) async {
     List<Operator> response = await getIt<ApiService>().operator
         .autocompleteOperator(query);
     return response;
   }
-    final TextEditingController controller = TextEditingController();
-    final TextEditingController notesController = TextEditingController();
-    final TextEditingController nameController = TextEditingController();
+
+  final TextEditingController controller = TextEditingController();
+  final TextEditingController notesController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
@@ -65,7 +74,11 @@ class _AddTicketState extends State<AddTicket> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AlertCard(text: localize.ticketAddTicketOnDeviceInfo, type: .info, size: 16,),
+            AlertCard(
+              text: localize.ticketAddTicketOnDeviceInfo,
+              type: .info,
+              size: 16,
+            ),
             SizedBox(height: 6),
             Stack(
               children: [
@@ -83,7 +96,7 @@ class _AddTicketState extends State<AddTicket> {
                               requestFullMetadata: false,
                             );
                             if (image == null) return;
-                            processImage(image);
+                            await processImage(image);
                           },
                           label: Text(localize.ticketAddTicketDataFromImage),
                           icon: Icon(Icons.image),
@@ -98,8 +111,11 @@ class _AddTicketState extends State<AddTicket> {
                               source: .camera,
                               requestFullMetadata: false,
                             );
-                            if (image == null) return;
-                            processImage(image);
+                            if (image == null) {
+                              SharedFunctions.sendSnackBar(localize.ticketAddTicketDataCameraFail, duration: Duration(seconds: 4));
+                              return;
+                            };
+                            await processImage(image);
                           },
                           label: Text(localize.ticketAddTicketDataFromCamera),
                           icon: Icon(Icons.camera),
@@ -169,7 +185,7 @@ class _AddTicketState extends State<AddTicket> {
                     ),
                   ),
                 ),
-                if (ticketDataSet)
+                if (ticketDataSet || processing)
                   Positioned.fill(
                     child: Container(
                       color: Colors.black.withAlpha(230),
@@ -177,6 +193,7 @@ class _AddTicketState extends State<AddTicket> {
                         child: Column(
                           mainAxisSize: .min,
                           children: [
+                            if(ticketDataSet) ...[
                             const Icon(
                               Icons.check,
                               size: 48,
@@ -192,6 +209,10 @@ class _AddTicketState extends State<AddTicket> {
                               },
                               child: Text(localize.ticketAddTicketDataReset),
                             ),
+                            ],
+                            if(processing) ...[
+                              CircularProgressIndicator()
+                            ]
                           ],
                         ),
                       ),
@@ -205,8 +226,13 @@ class _AddTicketState extends State<AddTicket> {
               child: Column(
                 spacing: 6,
                 children: [
-                  TextField(controller: nameController,
-                    decoration: InputDecoration(border: OutlineInputBorder(), label: Text(localize.ticketAddOptionalDataName), hint: Text("Hannover Hbf - Uelzen, GVB 96h, ...")),
+                  TextField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text(localize.ticketAddOptionalDataName),
+                      hint: Text("Hannover Hbf - Uelzen, GVB 96h, ..."),
+                    ),
                   ),
                   TimeOverrideField(
                     initialDate: null,
@@ -265,24 +291,34 @@ class _AddTicketState extends State<AddTicket> {
                   ),
                   TextField(
                     controller: notesController,
-                    decoration: InputDecoration(border: OutlineInputBorder(), label: Text(localize.ticketAddOptionalDataAdditionalNotes)),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text(
+                        localize.ticketAddOptionalDataAdditionalNotes,
+                      ),
+                    ),
                     minLines: 3,
                     maxLines: null,
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 6,),
-            FilledButton.icon(onPressed: ticketDataSet == true ? () async {
-              t.uuid = UuidV4().generate();
-              t.data = ticketC.rawBytes ?? utf8.encode(controller.text);
-              t.format = ticketC.format!;
-              t.notes = notesController.text;
-              t.name = nameController.text;
-              await TicketManager.addTicket(t);
-              if(!context.mounted) return;
-              Navigator.pop(context);
-            }: null, label: Text(localize.ticketListViewAddTicket))
+            SizedBox(height: 6),
+            FilledButton.icon(
+              onPressed: ticketDataSet == true
+                  ? () async {
+                      t.uuid = UuidV4().generate();
+                      t.data = ticketC.rawBytes ?? utf8.encode(controller.text);
+                      t.format = ticketC.format!;
+                      t.notes = notesController.text;
+                      t.name = nameController.text;
+                      await TicketManager.addTicket(t);
+                      if (!context.mounted) return;
+                      Navigator.pop(context);
+                    }
+                  : null,
+              label: Text(localize.ticketListViewAddTicket),
+            ),
           ],
         ),
       ),

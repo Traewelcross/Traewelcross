@@ -2126,6 +2126,12 @@ abstract class AppLocalizations {
   /// **'Ticket name'**
   String get ticketAddOptionalDataName;
 
+  /// No description provided for @ticketAddTicketDataCameraFail.
+  ///
+  /// In en, this message translates to:
+  /// **'Having troubles with using the camera? A screenshot from your ticket app usually works best!'**
+  String get ticketAddTicketDataCameraFail;
+
   /// No description provided for @ticketListViewGenericTicketName.
   ///
   /// In en, this message translates to:

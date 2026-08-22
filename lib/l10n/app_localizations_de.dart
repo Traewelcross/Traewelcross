@@ -1165,6 +1165,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get ticketAddOptionalDataName => 'Ticket name';
 
   @override
+  String get ticketAddTicketDataCameraFail =>
+      'Having troubles with using the camera? A screenshot from your ticket app usually works best!';
+
+  @override
   String ticketListViewGenericTicketName(int count) {
     return 'Ticket #$count';
   }

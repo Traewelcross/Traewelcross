@@ -692,6 +692,7 @@
   "ticketAddOptionalDataValidEnd": "Validity end",
   "ticketAddOptionalDataAdditionalNotes": "Additional Notes",
   "ticketAddOptionalDataName": "Ticket name",
+  "ticketAddTicketDataCameraFail": "Having troubles with using the camera? A screenshot from your ticket app usually works best!",
   "ticketListViewGenericTicketName": "Ticket #{count}",
   "@ticketListViewGenericTicketName": {
     "placeholders": {
