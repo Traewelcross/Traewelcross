@@ -27,11 +27,10 @@ class Ticket {
     required this.format,
     this.name,
     this.overriddenAppPackage,
-    this.notes
+    this.notes,
   });
-    factory Ticket.fromJson(Map<String, dynamic> json) =>
-      _$TicketFromJson(json);
-  Map<String, dynamic> toJson() => _$TicketToJson(this); 
+  factory Ticket.fromJson(Map<String, dynamic> json) => _$TicketFromJson(json);
+  Map<String, dynamic> toJson() => _$TicketToJson(this);
 }
 
 @JsonSerializable()
@@ -39,7 +38,6 @@ class App {
   final String packageName;
   final String name;
   const App({required this.packageName, required this.name});
-      factory App.fromJson(Map<String, dynamic> json) =>
-      _$AppFromJson(json);
-  Map<String, dynamic> toJson() => _$AppToJson(this); 
+  factory App.fromJson(Map<String, dynamic> json) => _$AppFromJson(json);
+  Map<String, dynamic> toJson() => _$AppToJson(this);
 }

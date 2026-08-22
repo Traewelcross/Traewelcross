@@ -55,7 +55,7 @@ Future<List<LatLng>> _fetchAndParsePolyline(
         .where(
           (point) => point.length >= 2 && point[0] is num && point[1] is num,
         )
-        .map((point) => LatLng(point[1]+.0, point[0]+.0))
+        .map((point) => LatLng(point[1] + .0, point[0] + .0))
         .toList();
   } catch (e) {
     throw Exception('Failed to parse polyline coordinates: $e');
@@ -97,7 +97,9 @@ class _DetailedRideViewState extends State<DetailedRideView> {
   }
 
   Future<List<Status>> _getSharedTrips(int tripId, int userId) async {
-    List<Status> status = await getIt<ApiService>().trip.getSharedStatus(tripId);
+    List<Status> status = await getIt<ApiService>().trip.getSharedStatus(
+      tripId,
+    );
     return status.where((s) => s.user.id != userId).toList();
   }
 
@@ -105,7 +107,10 @@ class _DetailedRideViewState extends State<DetailedRideView> {
   Future<String> _getEvaIdent() async {
     final apiService = getIt<ApiService>();
     final res = await apiService.status.getStationData(
-      stationId: widget.rideData!.checkin.destination.station?.id ?? widget.rideData!.checkin.destination.id ?? 0,
+      stationId:
+          widget.rideData!.checkin.destination.station?.id ??
+          widget.rideData!.checkin.destination.id ??
+          0,
       withIdentifiers: true,
     );
     if (res.identifiers == null) {
@@ -166,8 +171,14 @@ class _DetailedRideViewState extends State<DetailedRideView> {
         }
 
         final rideData = rideSnapshot.data!;
-        final originName = rideData.checkin.origin.station?.name ?? rideData.checkin.origin.name ?? "???";
-        final destinationName = rideData.checkin.destination.station?.name ?? rideData.checkin.destination.name ?? "???";
+        final originName =
+            rideData.checkin.origin.station?.name ??
+            rideData.checkin.origin.name ??
+            "???";
+        final destinationName =
+            rideData.checkin.destination.station?.name ??
+            rideData.checkin.destination.name ??
+            "???";
         final title = "$originName -> $destinationName";
 
         return MainScaffold(
@@ -242,7 +253,10 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                   },
                 ),
                 FutureBuilder(
-                  future: _getSharedTrips(rideData.checkin.trip, rideData.user.id),
+                  future: _getSharedTrips(
+                    rideData.checkin.trip,
+                    rideData.user.id,
+                  ),
                   builder: (context, asyncSnapshot) {
                     if (asyncSnapshot.hasData && asyncSnapshot.data != null) {
                       List<Status> data = asyncSnapshot.data!;
@@ -260,7 +274,8 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                             data.length,
                             (int i) => ProfileLinkButton(
                               user: data[i].user.promoteToUser(),
-                              subTitle: "${data[i].checkin.origin.name ?? "???"} -> ${data[i].checkin.destination.name ?? "???"}",
+                              subTitle:
+                                  "${data[i].checkin.origin.name ?? "???"} -> ${data[i].checkin.destination.name ?? "???"}",
                             ),
                           ),
                         ),

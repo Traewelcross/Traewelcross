@@ -118,7 +118,10 @@ class App extends WatchingWidget {
             navigatorKey: getIt<GlobalKey<NavigatorState>>(),
             scaffoldMessengerKey: getIt<GlobalKey<ScaffoldMessengerState>>(),
             title: "Träwelcross",
-            localizationsDelegates: [AppLocalizations.delegate, ...GlobalMaterialLocalizations.delegates],
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              ...GlobalMaterialLocalizations.delegates,
+            ],
             supportedLocales: AppLocalizations.supportedLocales,
             theme: ThemeData(
               useMaterial3: true,
@@ -183,8 +186,13 @@ class _AppHomeState extends State<AppHome> {
           _coldNotificationBootHandler();
         }
         //TODO: remove in version >1.6.5
-        if(getIt<Config>().dialog.notifyFixInfoDisplayCount <= 4){
-          SharedFunctions.sendSnackBar(AppLocalizations.of(context)!.notifyInfo(4-getIt<Config>().dialog.notifyFixInfoDisplayCount), duration: Duration(seconds: 7));
+        if (getIt<Config>().dialog.notifyFixInfoDisplayCount <= 4) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(
+              context,
+            )!.notifyInfo(4 - getIt<Config>().dialog.notifyFixInfoDisplayCount),
+            duration: Duration(seconds: 7),
+          );
           getIt<Config>().dialog.notifyFixInfoDisplayCount++;
         }
       }
@@ -357,9 +365,15 @@ class _ChromeState extends State<Chrome> {
           label: l10n.navHome,
         ),
         actions: [
-          if(!getIt<Config>().behavior.hideTicketButton)
-          IconButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (ctx) => TicketList())), icon: const Icon(Icons.qr_code))
-        ]
+          if (!getIt<Config>().behavior.hideTicketButton)
+            IconButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (ctx) => TicketList()),
+              ),
+              icon: const Icon(Icons.qr_code),
+            ),
+        ],
       ),
       _Tab(
         page: OnTheMove(scrollController: _scrollController),
@@ -576,7 +590,11 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                   Row(
                                     mainAxisSize: .min,
                                     children: [
-                                      Text(ride.checkin.origin.station?.name ?? ride.checkin.origin.name ?? "???"),
+                                      Text(
+                                        ride.checkin.origin.station?.name ??
+                                            ride.checkin.origin.name ??
+                                            "???",
+                                      ),
                                       const Icon(Icons.arrow_right),
                                     ],
                                   ),
@@ -584,7 +602,13 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          ride.checkin.destination.station?.name ?? ride.checkin.destination.name ?? "???",
+                                          ride
+                                                  .checkin
+                                                  .destination
+                                                  .station
+                                                  ?.name ??
+                                              ride.checkin.destination.name ??
+                                              "???",
                                           style: Theme.of(
                                             context,
                                           ).textTheme.headlineSmall,
@@ -602,12 +626,14 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                 width: 24,
                                 category: ride.checkin.category,
                                 lineName: ride.checkin.lineName,
-                                operatorIdentifier:ride
-                                                  .checkin
-                                                  .operator?.name,
-                                routeColor: SharedFunctions.tryParseColor(ride.checkin.routeColor),
-                                routeTextColor: SharedFunctions.tryParseColor(ride.checkin.routeTextColor),
-                                    /*SharedFunctions.getOperatorHAFASIdent(
+                                operatorIdentifier: ride.checkin.operator?.name,
+                                routeColor: SharedFunctions.tryParseColor(
+                                  ride.checkin.routeColor,
+                                ),
+                                routeTextColor: SharedFunctions.tryParseColor(
+                                  ride.checkin.routeTextColor,
+                                ),
+                                /*SharedFunctions.getOperatorHAFASIdent(
                                       ride.checkin.operator?.identifiers,
                                     )*/
                               ),

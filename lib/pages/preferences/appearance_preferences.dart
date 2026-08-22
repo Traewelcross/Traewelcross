@@ -75,7 +75,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                 trailing: Switch(
                   value: config.appearance.useSystemAccent,
                   onChanged: asyncSnapshot.data!
-                      ? (val) => config.appearance.useSystemAccent = val!
+                      ? (val) => config.appearance.useSystemAccent = val
                       : null,
                 ),
                 onTap: () => config.appearance.useSystemAccent =
@@ -113,7 +113,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                   value: config.appearance.isPrideActive,
                   onChanged: DateTime.now().month != 6
                       ? (val) => setState(() {
-                          config.appearance.prideModePreference = val!;
+                          config.appearance.prideModePreference = val;
                         })
                       : null,
                 ),
@@ -207,11 +207,11 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                 trailing: Switch(
                   value: config.appearance.customLineIcons,
                   onChanged: (val) => setState(() {
-                    config.appearance.customLineIcons = val!;
+                    config.appearance.customLineIcons = val;
                   }),
                 ),
               ),
-                            ListTile(
+              ListTile(
                 onTap: () => setState(() {
                   config.appearance.routeColorColorScheme =
                       !config.appearance.routeColorColorScheme;
@@ -221,7 +221,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                 trailing: Switch(
                   value: config.appearance.routeColorColorScheme,
                   onChanged: (val) => setState(() {
-                    config.appearance.routeColorColorScheme = val!;
+                    config.appearance.routeColorColorScheme = val;
                   }),
                 ),
               ),
@@ -273,7 +273,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                   }),
                 ),
               ),
-                            ListTile(
+              ListTile(
                 onTap: () => setState(() {
                   config.behavior.hideTicketButton =
                       !config.behavior.hideTicketButton;

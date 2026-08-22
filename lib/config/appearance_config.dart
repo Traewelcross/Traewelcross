@@ -85,7 +85,7 @@ class AppearanceConfig with ChangeNotifier {
   bool _routeColorColorScheme = false;
   @JsonKey(defaultValue: false)
   bool get routeColorColorScheme => _routeColorColorScheme;
-  set routeColorColorScheme(bool val){
+  set routeColorColorScheme(bool val) {
     _routeColorColorScheme = val;
     notifyListeners();
   }

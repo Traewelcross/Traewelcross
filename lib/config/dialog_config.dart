@@ -14,14 +14,15 @@ class DialogConfig with ChangeNotifier {
   bool _manaulTripInfo = true;
   @JsonKey(defaultValue: true)
   bool get manualTripInfo => _manaulTripInfo;
-  set manualTripInfo(bool val){
+  set manualTripInfo(bool val) {
     _manaulTripInfo = val;
     notifyListeners();
   }
+
   int _notifyFixInfoDisplayCount = 0;
   @JsonKey(defaultValue: 0)
   int get notifyFixInfoDisplayCount => _notifyFixInfoDisplayCount;
-  set notifyFixInfoDisplayCount(int val){
+  set notifyFixInfoDisplayCount(int val) {
     _notifyFixInfoDisplayCount = val;
     notifyListeners();
   }

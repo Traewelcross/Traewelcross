@@ -1,4 +1,3 @@
-
 enum DepartTypes {
   express("express"),
   regional("regional"),

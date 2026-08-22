@@ -332,11 +332,18 @@ class _DepartureList extends StatelessWidget {
                     ),
                     leading: const Icon(Icons.add),
                     onTap: () async {
-                      if(getIt<Config>().dialog.manualTripInfo){
-                        await showDialog(context: context, builder: (ctx) => ManualTripInfo(), barrierDismissible: false);
+                      if (getIt<Config>().dialog.manualTripInfo) {
+                        await showDialog(
+                          context: context,
+                          builder: (ctx) => ManualTripInfo(),
+                          barrierDismissible: false,
+                        );
                       }
-                      if(!context.mounted) return;
-                      Navigator.push(context, MaterialPageRoute(builder: (ctx) => TripCreation()));
+                      if (!context.mounted) return;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (ctx) => TripCreation()),
+                      );
                     },
                   );
                 }

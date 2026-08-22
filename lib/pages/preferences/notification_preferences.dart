@@ -61,7 +61,7 @@ class _NotificationPreferencesState extends State<NotificationPreferences> {
                     scale: 0.5,
                     child: CircularProgressIndicator(strokeWidth: 8),
                   )
-                : Checkbox(
+                : Switch(
                     value: config.notification.notificationsEnabled,
                     onChanged: (val) =>
                         toggleNotifications(val, context, config),

@@ -174,11 +174,10 @@ class SharedFunctions {
     }
   }
 
-  static Color secondCard(BuildContext context) =>
-      Color.alphaBlend(
-        Colors.white.withValues(alpha: .03),
-        Theme.of(context).cardColor,
-      );
+  static Color secondCard(BuildContext context) => Color.alphaBlend(
+    Colors.white.withValues(alpha: .03),
+    Theme.of(context).cardColor,
+  );
   static Future<int> getUserId() async {
     int userid = 0;
     userid = await SharedPreferencesAsync().getInt("userid") ?? 0;
@@ -229,7 +228,12 @@ class SharedFunctions {
   static void sendSnackBar(String text, {Duration? duration}) {
     final messenger = getIt<GlobalKey<ScaffoldMessengerState>>().currentState;
     if (messenger != null) {
-      messenger.showSnackBar(SnackBar(content: Text(text), duration: duration ?? Duration(seconds: 4),));
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(text),
+          duration: duration ?? Duration(seconds: 4),
+        ),
+      );
     }
   }
 
@@ -256,8 +260,8 @@ class SharedFunctions {
     return Theme.of(context).copyWith(colorScheme: cs);
   }
 
-  static Color? tryParseColor(String? color){
-    if(color == null) return null;
+  static Color? tryParseColor(String? color) {
+    if (color == null) return null;
     final colorInt = int.parse("FF$color", radix: 16);
     return Color(colorInt);
   }

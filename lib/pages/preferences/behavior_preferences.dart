@@ -46,7 +46,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             trailing: Switch(
               value: config.behavior.overrideOnTimeTap,
               onChanged: (val) => setState(() {
-                config.behavior.overrideOnTimeTap = val!;
+                config.behavior.overrideOnTimeTap = val;
               }),
             ),
           ),
@@ -71,7 +71,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             trailing: Switch(
               value: config.behavior.confirmDelete,
               onChanged: (val) => setState(() {
-                config.behavior.confirmDelete = val!;
+                config.behavior.confirmDelete = val;
               }),
             ),
           ),
@@ -86,7 +86,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             trailing: Switch(
               value: config.behavior.hideManualOnTimeOverride,
               onChanged: (val) => setState(() {
-                config.behavior.hideManualOnTimeOverride = val!;
+                config.behavior.hideManualOnTimeOverride = val;
               }),
             ),
           ),
@@ -106,7 +106,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             trailing: Switch(
               value: config.behavior.showAltDepartureStops,
               onChanged: (val) => setState(() {
-                config.behavior.showAltDepartureStops = val!;
+                config.behavior.showAltDepartureStops = val;
               }),
             ),
           ),
@@ -120,23 +120,23 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             trailing: Switch(
               value: config.behavior.showActiveRideCard,
               onChanged: (val) => setState(() {
-                config.behavior.showActiveRideCard = val!;
+                config.behavior.showActiveRideCard = val;
               }),
             ),
           ),
           ListTile(
-                onTap: () => setState(() {
-                  config.behavior.hideTicketButton =
-                      !config.behavior.hideTicketButton;
-                }),
-                title: Text(localize.hideTicketButton),
-                trailing: Switch(
-                  value: config.behavior.hideTicketButton,
-                  onChanged: (val) => setState(() {
-                    config.behavior.hideTicketButton = val;
-                  }),
-                ),
-              ),
+            onTap: () => setState(() {
+              config.behavior.hideTicketButton =
+                  !config.behavior.hideTicketButton;
+            }),
+            title: Text(localize.hideTicketButton),
+            trailing: Switch(
+              value: config.behavior.hideTicketButton,
+              onChanged: (val) => setState(() {
+                config.behavior.hideTicketButton = val;
+              }),
+            ),
+          ),
         ],
       ),
     );

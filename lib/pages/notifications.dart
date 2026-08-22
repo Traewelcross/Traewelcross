@@ -198,7 +198,9 @@ class _NotificationsViewState extends State<NotificationsView> {
                     },
                     leading: Icon(notificationIcon),
                     title: Text(notification.lead),
-                    subtitle: notification.notice.toString().isEmpty || notification.notice == null
+                    subtitle:
+                        notification.notice.toString().isEmpty ||
+                            notification.notice == null
                         ? null
                         : Text(notification.notice!),
                     trailing: Row(

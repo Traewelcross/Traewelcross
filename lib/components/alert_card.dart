@@ -10,7 +10,7 @@ class AlertCard extends StatelessWidget {
     required this.type,
     this.url,
     this.title,
-    this.size
+    this.size,
   });
 
   final String text;
@@ -21,10 +21,10 @@ class AlertCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final icon = switch (type) {
-      .info =>  Icon(Icons.info, size: size ?? 32),
-      .warning =>  Icon(Icons.warning, size: size ?? 32),
-      .danger =>  Icon(Icons.dangerous, size: size ?? 32),
-      .success =>  Icon(Icons.check, size: size ?? 32),
+      .info => Icon(Icons.info, size: size ?? 32),
+      .warning => Icon(Icons.warning, size: size ?? 32),
+      .danger => Icon(Icons.dangerous, size: size ?? 32),
+      .success => Icon(Icons.check, size: size ?? 32),
     };
 
     return Card.filled(
@@ -72,9 +72,7 @@ class AlertCard extends StatelessWidget {
                 children: [
                   icon,
                   const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(text),
-                  ),
+                  Expanded(child: Text(text)),
                 ],
               ),
             ],

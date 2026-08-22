@@ -31,10 +31,10 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
               leading: const Icon(Icons.music_note),
               title: Text(localize.volumeBtnCtrl),
               subtitle: Text(localize.volumeBtnCtrlNote),
-              trailing: Checkbox(
+              trailing: Switch(
                 value: config.behavior.volumeBtnCtrl,
                 onChanged: (val) => setState(() {
-                  config.behavior.volumeBtnCtrl = val!;
+                  config.behavior.volumeBtnCtrl = val;
                 }),
               ),
             ),

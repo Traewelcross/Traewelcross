@@ -37,13 +37,17 @@ class CheckinSuccess extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  statusInfo.status.checkin.origin.station?.name ?? statusInfo.status.checkin.origin.name ?? "???",
+                  statusInfo.status.checkin.origin.station?.name ??
+                      statusInfo.status.checkin.origin.name ??
+                      "???",
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
                 const Icon(Icons.arrow_downward),
                 Text(
-                  statusInfo.status.checkin.destination.station?.name ?? statusInfo.status.checkin.destination.name ?? "???",
+                  statusInfo.status.checkin.destination.station?.name ??
+                      statusInfo.status.checkin.destination.name ??
+                      "???",
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
@@ -123,7 +127,10 @@ class CheckinSuccess extends StatelessWidget {
                   const SizedBox(height: 72),
                 ],
                 if (continueSuccess == true)
-                  AlertCard(text: localize.secondCheckInSuccess, type: .success,),
+                  AlertCard(
+                    text: localize.secondCheckInSuccess,
+                    type: .success,
+                  ),
                 if (continueSuccess == false)
                   AlertCard(text: localize.secondCheckInFailure, type: .danger),
               ],

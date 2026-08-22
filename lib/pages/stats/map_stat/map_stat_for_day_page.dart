@@ -58,7 +58,7 @@ class _MapStatForDayPageState extends State<MapStatForDayPage> {
           final ride = allRides.firstWhere((r) => r.rideId == rideId);
           final List<dynamic> coords = feat["geometry"]["coordinates"];
           ride.coordinates = coords.map((c) {
-            return LatLng(c[1]+.0 as double, c[0]+.0 as double);
+            return LatLng(c[1] + .0 as double, c[0] + .0 as double);
           }).toList();
         }
       }

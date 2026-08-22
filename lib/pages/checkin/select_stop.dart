@@ -213,11 +213,12 @@ class _SelectStopState extends State<SelectStop> {
                                     mainAxisSize: .min,
                                     spacing: 8,
                                     children: [
-                                      const Icon(Icons.error, size: 48,),
+                                      const Icon(Icons.error, size: 48),
                                       Text(
                                         AppLocalizations.of(
                                           context,
-                                        )!.noStationsFound, textAlign: .center,
+                                        )!.noStationsFound,
+                                        textAlign: .center,
                                       ),
                                       FilledButton.icon(
                                         icon: const Icon(Icons.home),

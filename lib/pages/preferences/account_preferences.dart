@@ -324,7 +324,8 @@ class _AccountPreferencesState extends State<AccountPreferences> {
                       keyboardType: TextInputType.number,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
-                        if (int.tryParse(value ?? "INT") == null || value == "0") {
+                        if (int.tryParse(value ?? "INT") == null ||
+                            value == "0") {
                           return localize.noOfDaysValid;
                         }
                         return null;

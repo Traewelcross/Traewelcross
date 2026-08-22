@@ -125,16 +125,19 @@ class _TimeOverrideFieldState extends State<TimeOverrideField> {
                 },
                 child: Text(localize.now),
               )
-            : (widget.showDelete == false || (_selectedDate == null && widget.showNow == false) ? null : IconButton(
-                onPressed: () {
-                  setState(() {
-                    _selectedDate = null;
-                    _controller.text = "";
-                  });
-                  widget.onDateChanged(null);
-                },
-                icon: const Icon(Icons.delete),
-              )),
+            : (widget.showDelete == false ||
+                      (_selectedDate == null && widget.showNow == false)
+                  ? null
+                  : IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _selectedDate = null;
+                          _controller.text = "";
+                        });
+                        widget.onDateChanged(null);
+                      },
+                      icon: const Icon(Icons.delete),
+                    )),
       ),
     );
   }

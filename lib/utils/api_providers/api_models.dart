@@ -160,8 +160,10 @@ class Client {
 class Stopover {
   /// Station ID til 2026-11-30, after that stopoverId and removed
   final int? id;
+
   /// Exists until 2026-11-30, after that removed and moved into id
   final int? stopoverId;
+
   /// Deprecated but needed until https://github.com/Traewelling/traewelling/issues/4960 is resolved
   final String? name;
   final Station? station;
@@ -782,28 +784,32 @@ class TripDraft {
     this.destinationArrivalPlanned,
     this.stopovers,
   });
-  factory TripDraft.fromJson(Map<String, dynamic> json) => _$TripDraftFromJson(json);
+  factory TripDraft.fromJson(Map<String, dynamic> json) =>
+      _$TripDraftFromJson(json);
   Map<String, dynamic> toJson() => _$TripDraftToJson(this);
 }
 
 @JsonSerializable(fieldRename: .none)
 class StopoverDraft implements Comparable<StopoverDraft> {
-   int stationId;
-   String? arrival;
-   String departure;
-   @JsonKey(includeToJson: false)
-   String name;
-   StopoverDraft({
+  int stationId;
+  String? arrival;
+  String departure;
+  @JsonKey(includeToJson: false)
+  String name;
+  StopoverDraft({
     required this.stationId,
     this.arrival,
     required this.name,
-    required this.departure
+    required this.departure,
   });
-  factory StopoverDraft.fromJson(Map<String, dynamic> json) => _$StopoverDraftFromJson(json);
+  factory StopoverDraft.fromJson(Map<String, dynamic> json) =>
+      _$StopoverDraftFromJson(json);
   Map<String, dynamic> toJson() => _$StopoverDraftToJson(this);
   @override
-  int compareTo(StopoverDraft other){
-    return DateTime.parse(departure).isBefore(DateTime.parse(other.departure)) ? -1 : 1;
+  int compareTo(StopoverDraft other) {
+    return DateTime.parse(departure).isBefore(DateTime.parse(other.departure))
+        ? -1
+        : 1;
   }
 }
 
@@ -824,24 +830,24 @@ class TripResourceDraft {
   final DataSource? dataSource;
   final TripResource? continuationTrip;
   TripResourceDraft({
-     this.id,
-     this.tripId,
-     this.category,
+    this.id,
+    this.tripId,
+    this.category,
     this.mode,
     this.routeColor,
     this.routeTextColor,
     this.operator,
-     this.number,
-     this.lineName,
-     this.journeyNumber,
-     this.origin,
-     this.destination,
-     this.stopovers,
+    this.number,
+    this.lineName,
+    this.journeyNumber,
+    this.origin,
+    this.destination,
+    this.stopovers,
     this.dataSource,
     this.continuationTrip,
   });
-  factory TripResourceDraft.fromResource(TripResource? r){
-    if(r==null) return TripResourceDraft();
+  factory TripResourceDraft.fromResource(TripResource? r) {
+    if (r == null) return TripResourceDraft();
     return TripResourceDraft(
       id: r.id,
       tripId: r.tripId,
@@ -857,13 +863,28 @@ class TripResourceDraft {
       destination: r.destination,
       stopovers: r.stopovers,
       dataSource: r.dataSource,
-      continuationTrip: r.continuationTrip
+      continuationTrip: r.continuationTrip,
     );
   }
-  TripResource? build(){
+  TripResource? build() {
     try {
-      return TripResource(id: id!,tripId: tripId!, category: category!, mode: mode, routeColor: routeColor,
-      routeTextColor: routeTextColor, operator: operator, number: number!, lineName: lineName!, journeyNumber: journeyNumber, origin: origin!, destination: destination!, stopovers: stopovers!, dataSource: dataSource, continuationTrip: continuationTrip);
+      return TripResource(
+        id: id!,
+        tripId: tripId!,
+        category: category!,
+        mode: mode,
+        routeColor: routeColor,
+        routeTextColor: routeTextColor,
+        operator: operator,
+        number: number!,
+        lineName: lineName!,
+        journeyNumber: journeyNumber,
+        origin: origin!,
+        destination: destination!,
+        stopovers: stopovers!,
+        dataSource: dataSource,
+        continuationTrip: continuationTrip,
+      );
     } catch (e) {
       rethrow;
     }
@@ -932,7 +953,7 @@ class UserProfileSettings {
     this.profileLinks,
     required this.experimental,
   });
-    factory UserProfileSettings.fromJson(Map<String, dynamic> json) =>
+  factory UserProfileSettings.fromJson(Map<String, dynamic> json) =>
       _$UserProfileSettingsFromJson(json);
   Map<String, dynamic> toJson() => _$UserProfileSettingsToJson(this);
 }

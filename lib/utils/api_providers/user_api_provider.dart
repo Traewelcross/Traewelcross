@@ -352,18 +352,19 @@ class UserApiProvider {
 
   Future<GenericStatusResponse> stopTrust(int id) async {
     final response = await _api.request("/user/self/trusted/$id", .DELETE);
-    if(response.statusCode == 204){
+    if (response.statusCode == 204) {
       return .new(wasSuccess: true);
     }
     return .new(wasSuccess: false, body: response.body);
   }
 
-  Future<GenericStatusResponse> startTrust(int id, DateTime? expire) async{
-    final response = await _api.request("/user/self/trusted",.POST, body: jsonEncode({
-      "userId": id,
-      "expiresAt": expire?.toIso8601String()
-    }));
-    if(response.statusCode == 201){
+  Future<GenericStatusResponse> startTrust(int id, DateTime? expire) async {
+    final response = await _api.request(
+      "/user/self/trusted",
+      .POST,
+      body: jsonEncode({"userId": id, "expiresAt": expire?.toIso8601String()}),
+    );
+    if (response.statusCode == 201) {
       return .new(wasSuccess: true);
     }
     return .new(wasSuccess: false, body: response.body);

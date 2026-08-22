@@ -615,7 +615,12 @@ class _AlertsState extends State<Alerts> {
             itemCount: asyncSnapshot.data!.length,
             itemBuilder: (context, index) {
               final alert = asyncSnapshot.data![index];
-              return AlertCard(text: alert.translations.first.content, title: alert.translations.first.title, type: alert.type, url: alert.url,);
+              return AlertCard(
+                text: alert.translations.first.content,
+                title: alert.translations.first.title,
+                type: alert.type,
+                url: alert.url,
+              );
               /*return Card.filled(
                 color: switch (alert.type) {
                   "info" => Color.alphaBlend(

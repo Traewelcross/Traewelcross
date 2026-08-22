@@ -33,9 +33,7 @@ class _ModifyTrustedUsersState extends State<ModifyTrustedUsers> {
         _users = _getTrustedUsers();
       });
     } else {
-      return Future.error(
-        Exception("${response.body}"),
-      );
+      return Future.error(Exception("${response.body}"));
     }
   }
 

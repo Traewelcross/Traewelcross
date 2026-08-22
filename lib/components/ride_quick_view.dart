@@ -74,18 +74,21 @@ class _RideQuickViewState extends State<RideQuickView> {
     }
     _initData();
   }
+
   @override
-  void didChangeDependencies(){
+  void didChangeDependencies() {
     super.didChangeDependencies();
     _cachedBody = _parseBodyText();
   }
+
   @override
-  void didUpdateWidget(covariant RideQuickView ow){
+  void didUpdateWidget(covariant RideQuickView ow) {
     super.didUpdateWidget(ow);
-    if(ow.rideData.body != widget.rideData.body){
+    if (ow.rideData.body != widget.rideData.body) {
       _cachedBody = _parseBodyText();
     }
   }
+
   @override
   void dispose() {
     if (widget.detailedView == true) {

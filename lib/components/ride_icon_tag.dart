@@ -83,7 +83,9 @@ class _RideIconTagState extends State<RideIconTag> {
                         decoration: BoxDecoration(
                           shape: _getShape(shape),
                           borderRadius: _getRadius(shape),
-                          color: widget.iconInfo.routeColor ?? Color(int.parse("0xFF${data["background"]}")),
+                          color:
+                              widget.iconInfo.routeColor ??
+                              Color(int.parse("0xFF${data["background"]}")),
                           border: Border.all(
                             width: 1.5,
                             color: Color(
@@ -102,9 +104,9 @@ class _RideIconTagState extends State<RideIconTag> {
                                 widget.iconInfo.lineName!,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: widget.iconInfo.routeTextColor ?? Color(
-                                    int.parse("0xFF${data["text"]}"),
-                                  ),
+                                  color:
+                                      widget.iconInfo.routeTextColor ??
+                                      Color(int.parse("0xFF${data["text"]}")),
                                 ),
                               ),
                             ],
@@ -128,10 +130,10 @@ class _RideIconTagState extends State<RideIconTag> {
   Future<dynamic> _getLineData() async {
     return jsonDecode(
       await rootBundle.loadString("assets/line_colors/line_colors.json"),
-    )[widget.iconInfo.operatorIdentifier?.toLowerCase()]?[widget.iconInfo.lineName?.replaceAll(
-      " ",
-      "",
-    )];
+    )[widget.iconInfo.operatorIdentifier?.toLowerCase()]?[widget
+        .iconInfo
+        .lineName
+        ?.replaceAll(" ", "")];
   }
 
   BorderRadius? _getRadius(String shape) {
@@ -144,7 +146,7 @@ class _RideIconTagState extends State<RideIconTag> {
     if (shape == "pill") {
       return BorderRadius.circular(999999);
     }
-    if (shape == "circle"){
+    if (shape == "circle") {
       return null;
     }
     return BorderRadius.zero;

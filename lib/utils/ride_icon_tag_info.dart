@@ -6,8 +6,10 @@ class RideIconTagInfo {
   bool? showCategoryIcon;
   String? operatorIdentifier;
   String? lineName;
+
   /// Supplied by API
   Color? routeColor;
+
   /// Supplied by API
   Color? routeTextColor;
   RideIconTagInfo({

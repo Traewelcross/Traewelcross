@@ -13,7 +13,7 @@ class ManualTripAddStopoverDialog extends StatefulWidget {
     super.key,
     required this.edit,
     this.editStation,
-    required this.isDestination
+    required this.isDestination,
   });
   final bool edit;
   final bool isDestination;
@@ -59,12 +59,20 @@ class _ManualTripAddStopoverDialogState
                 ),
               ],
             ),
-            StationAutocomplete(selectedCallback: (s) {selectedStation.name = s.name; selectedStation.stationId = s.id;}, label: localize.searchStopover, initSelection: widget.editStation?.name,),
+            StationAutocomplete(
+              selectedCallback: (s) {
+                selectedStation.name = s.name;
+                selectedStation.stationId = s.id;
+              },
+              label: localize.searchStopover,
+              initSelection: widget.editStation?.name,
+            ),
             Divider(),
             TimeOverrideField(
               initialDate: DateTime.tryParse(widget.editStation?.arrival ?? ""),
-              onDateChanged: (d) =>
-                  setState(()=>selectedStation.arrival = d?.toIso8601String()),
+              onDateChanged: (d) => setState(
+                () => selectedStation.arrival = d?.toIso8601String(),
+              ),
               watermark: localize.manualTripArrival,
               showDelete: widget.isDestination == true ? false : true,
             ),
@@ -97,7 +105,11 @@ class _ManualTripAddStopoverDialogState
                   ),
                 if (!widget.edit)
                   FilledButton(
-                    onPressed: (selectedStation.departure.isNotEmpty && !widget.isDestination) || (selectedStation.arrival?.isNotEmpty == true && widget.isDestination)
+                    onPressed:
+                        (selectedStation.departure.isNotEmpty &&
+                                !widget.isDestination) ||
+                            (selectedStation.arrival?.isNotEmpty == true &&
+                                widget.isDestination)
                         ? () => Navigator.pop(context, selectedStation)
                         : null,
                     child: Text(localize.addStopover),
@@ -117,7 +129,12 @@ class _ManualTripAddStopoverDialogState
 }
 
 class StationAutocomplete extends StatelessWidget {
-  const StationAutocomplete({super.key, required this.selectedCallback, this.initSelection, required this.label});
+  const StationAutocomplete({
+    super.key,
+    required this.selectedCallback,
+    this.initSelection,
+    required this.label,
+  });
   final Function(Station selectedStation) selectedCallback;
   final String? initSelection;
   final String label;
@@ -127,7 +144,7 @@ class StationAutocomplete extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  late Iterable<Station> lastOptions = <Station>[];
+    late Iterable<Station> lastOptions = <Station>[];
     return Autocomplete<Station>(
       optionsBuilder: (textEditValue) {
         final query = textEditValue.text;

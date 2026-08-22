@@ -32,7 +32,7 @@ class _AddTicketState extends State<AddTicket> {
   bool ticketDataSet = false;
   bool processing = false;
   Future<void> processImage(XFile image) async {
-        setState(() {
+    setState(() {
       processing = true;
     });
     Code result = await zx.readBarcodeImagePath(
@@ -112,9 +112,12 @@ class _AddTicketState extends State<AddTicket> {
                               requestFullMetadata: false,
                             );
                             if (image == null) {
-                              SharedFunctions.sendSnackBar(localize.ticketAddTicketDataCameraFail, duration: Duration(seconds: 4));
+                              SharedFunctions.sendSnackBar(
+                                localize.ticketAddTicketDataCameraFail,
+                                duration: Duration(seconds: 4),
+                              );
                               return;
-                            };
+                            }
                             await processImage(image);
                           },
                           label: Text(localize.ticketAddTicketDataFromCamera),
@@ -193,26 +196,24 @@ class _AddTicketState extends State<AddTicket> {
                         child: Column(
                           mainAxisSize: .min,
                           children: [
-                            if(ticketDataSet) ...[
-                            const Icon(
-                              Icons.check,
-                              size: 48,
-                              color: Colors.greenAccent,
-                            ),
-                            Text(localize.ticketAddTicketDataSuccess),
-                            TextButton(
-                              onPressed: () {
-                                ticketC = Code();
-                                setState(() {
-                                  ticketDataSet = false;
-                                });
-                              },
-                              child: Text(localize.ticketAddTicketDataReset),
-                            ),
+                            if (ticketDataSet) ...[
+                              const Icon(
+                                Icons.check,
+                                size: 48,
+                                color: Colors.greenAccent,
+                              ),
+                              Text(localize.ticketAddTicketDataSuccess),
+                              TextButton(
+                                onPressed: () {
+                                  ticketC = Code();
+                                  setState(() {
+                                    ticketDataSet = false;
+                                  });
+                                },
+                                child: Text(localize.ticketAddTicketDataReset),
+                              ),
                             ],
-                            if(processing) ...[
-                              CircularProgressIndicator()
-                            ]
+                            if (processing) ...[CircularProgressIndicator()],
                           ],
                         ),
                       ),

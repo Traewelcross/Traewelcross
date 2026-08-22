@@ -7,11 +7,13 @@ class OperatorApiProvider {
   final ApiService _api;
   OperatorApiProvider(this._api);
 
-  Future<List<Operator>> autocompleteOperator(String query) async{
+  Future<List<Operator>> autocompleteOperator(String query) async {
     final response = await _api.request("/operators?query=$query", .GET);
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body)["data"];
-      final List<Operator> operators = jsonData.map((o) => Operator.fromJson(o as Map<String, dynamic>)).toList();
+      final List<Operator> operators = jsonData
+          .map((o) => Operator.fromJson(o as Map<String, dynamic>))
+          .toList();
       return operators;
     }
     return [];

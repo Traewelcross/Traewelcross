@@ -12,13 +12,22 @@ class ManualTripInfo extends StatelessWidget {
     return AlertDialog(
       icon: const Icon(Icons.info_outline),
       title: Text(localize.manualTripCreationTile),
-      content: Text(localize.manualTripCreationDialogContent, textAlign: .center,),
+      content: Text(
+        localize.manualTripCreationDialogContent,
+        textAlign: .center,
+      ),
       actions: [
-        TextButton(onPressed: () {
-          getIt<Config>().dialog.manualTripInfo = false;
-          Navigator.pop(context);
-        }, child: Text(localize.gotItDontShow)),
-        FilledButton(onPressed: () => Navigator.pop(context), child: Text(localize.gotIt)),
+        TextButton(
+          onPressed: () {
+            getIt<Config>().dialog.manualTripInfo = false;
+            Navigator.pop(context);
+          },
+          child: Text(localize.gotItDontShow),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(localize.gotIt),
+        ),
       ],
       actionsOverflowAlignment: .center,
       actionsOverflowDirection: .up,
