@@ -21,6 +21,7 @@ class PushManager {
     oauth2.Client? client,
   ) => api.checkAndSyncToken(currentSaved, client);
   Future<void> initializeNotifications() => api.initializeNotifications();
+  Future<void> askForReview() => api.askForReview();
 }
 
 Future<void> createNotificationChannels() async {

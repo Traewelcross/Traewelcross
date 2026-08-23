@@ -248,6 +248,7 @@ class _HomeState extends State<Home> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
+      getIt<Config>().misc.launchCount++;
       if (getIt<Config>().misc.needsRelogin) {
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -288,6 +289,20 @@ class _HomeState extends State<Home> {
       }
       return Future.value(null);
     });
+    //TODO: remove in some future version
+    if (getIt<Config>().dialog.notifyFixInfoDisplayCount <= 4) {
+      SharedFunctions.sendSnackBar(
+        AppLocalizations.of(
+          context,
+        )!.notifyInfo(4 - getIt<Config>().dialog.notifyFixInfoDisplayCount),
+        duration: Duration(seconds: 7),
+      );
+      getIt<Config>().dialog.notifyFixInfoDisplayCount++;
+    }
+    if (getIt<Config>().misc.launchCount == 15) {
+      globalPushManager.askForReview();
+    } else {
+    }
   }
 
   @override

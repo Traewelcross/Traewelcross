@@ -25,4 +25,9 @@ class PushFoss implements PushApi {
   Future<void> unregisterDevice(oauth2.Client? client) {
     return Future.value();
   }
+  @override
+  Future<void> askForReview(){
+    return Future.value();
+
+  }
 }

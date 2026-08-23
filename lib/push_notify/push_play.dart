@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:logger/logger.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:traewelcross/push_notify/push_common.dart';
@@ -138,5 +139,12 @@ class PushPlay implements PushApi {
     getIt<Logger>().i("notify register status: ${response.statusCode}");
     getIt<Logger>().t(response.body);
     return false;
+  }
+  @override
+  Future<void> askForReview() async {
+    final InAppReview inAppReview = InAppReview.instance;
+    if(await inAppReview.isAvailable()){
+      inAppReview.requestReview();
+    }
   }
 }

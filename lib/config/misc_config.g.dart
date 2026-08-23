@@ -14,7 +14,8 @@ MiscConfig _$MiscConfigFromJson(Map<String, dynamic> json) => MiscConfig()
   ..lastBoot = json['lastBoot'] == null
       ? null
       : DateTime.parse(json['lastBoot'] as String)
-  ..needsRelogin = json['needsRelogin'] as bool? ?? false;
+  ..needsRelogin = json['needsRelogin'] as bool? ?? false
+  ..launchCount = (json['launchCount'] as num?)?.toInt() ?? 0;
 
 Map<String, dynamic> _$MiscConfigToJson(MiscConfig instance) =>
     <String, dynamic>{
@@ -22,6 +23,7 @@ Map<String, dynamic> _$MiscConfigToJson(MiscConfig instance) =>
       'showStats': instance.showStats,
       'lastBoot': instance.lastBoot?.toIso8601String(),
       'needsRelogin': instance.needsRelogin,
+      'launchCount': instance.launchCount,
     };
 
 const _$AccountTypeEnumEnumMap = {

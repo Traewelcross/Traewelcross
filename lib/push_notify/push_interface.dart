@@ -5,4 +5,5 @@ abstract class PushApi {
   Future<bool> registerDevice(oauth2.Client? client);
   Future<String> checkAndSyncToken(String currentSaved, oauth2.Client? client);
   Future<void> initializeNotifications();
+  Future<void> askForReview();
 }

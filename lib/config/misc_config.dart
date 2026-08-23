@@ -49,4 +49,12 @@ class MiscConfig with ChangeNotifier {
     _needsRelogin = val;
     notifyListeners();
   }
+
+  int _launchCount = 0;
+  @JsonKey(defaultValue: 0)
+  int get launchCount => _launchCount;
+  set launchCount(int val){
+    _launchCount = val;
+    notifyListeners();
+  }
 }
