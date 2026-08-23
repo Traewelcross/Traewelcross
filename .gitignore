@@ -46,3 +46,5 @@ app.*.map.json
 
 lib/l10n/missing_translations.json
 lib/utils/firebase_options.dart
+# Widget Preview related
+.widget_preview/

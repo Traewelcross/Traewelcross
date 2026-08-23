@@ -84,7 +84,9 @@ class _RideQuickViewState extends State<RideQuickView> {
   @override
   void didUpdateWidget(covariant RideQuickView ow) {
     super.didUpdateWidget(ow);
-    if (ow.rideData.body != widget.rideData.body) {
+    if (ow.rideData != widget.rideData) {
+      _rideData = widget.rideData;
+      _initData();
       _cachedBody = _parseBodyText();
     }
   }
@@ -136,7 +138,7 @@ class _RideQuickViewState extends State<RideQuickView> {
             alignment: .middle,
             baseline: .alphabetic,
             child: MastoEmoji(
-              mastodonUrl: widget.rideData.user.mastodon?.server,
+              mastodonUrl: _rideData.user.mastodon?.server,
               shortCode: segment,
               width: 24,
             ),
@@ -156,18 +158,18 @@ class _RideQuickViewState extends State<RideQuickView> {
   InlineSpan _parseBodyText() {
     _clearRecognizers();
     List<String> result = [];
-    List<int> bodyBytes = utf8.encode(widget.rideData.body);
+    List<int> bodyBytes = utf8.encode(_rideData.body);
     int cursor = 0;
-    if (widget.rideData.bodyMentions.isEmpty) {
-      return _getEmojis(widget.rideData.body);
+    if (_rideData.bodyMentions.isEmpty) {
+      return _getEmojis(_rideData.body);
     }
-    widget.rideData.bodyMentions.sort(
+    _rideData.bodyMentions.sort(
       (a, b) => a.position.compareTo(b.position),
     );
-    for (Mention mention in widget.rideData.bodyMentions) {
+    for (Mention mention in _rideData.bodyMentions) {
       int startPos = mention.position;
       int endPos = mention.position + mention.length;
-      if (startPos < cursor || endPos > widget.rideData.body.length) continue;
+      if (startPos < cursor || endPos > _rideData.body.length) continue;
       if (startPos > cursor) {
         result.add(utf8.decode(bodyBytes.sublist(cursor, startPos)));
       }
@@ -311,7 +313,7 @@ class _RideQuickViewState extends State<RideQuickView> {
 
   Future<void> _deleteStatus() async {
     final apiService = getIt<ApiService>();
-    final success = await apiService.status.delete(widget.rideData.id);
+    final success = await apiService.status.delete(_rideData.id);
     if (success && mounted) {
       if (widget.detailedView ?? false) {
         Navigator.pop(context);
@@ -324,7 +326,7 @@ class _RideQuickViewState extends State<RideQuickView> {
   Future<void> _shareRide() async {
     SharePlus.instance.share(
       ShareParams(
-        text: "https://traewelling.de/status/${widget.rideData.id} #Träwelling",
+        text: "https://traewelling.de/status/${_rideData.id} #Träwelling",
       ),
     );
   }
