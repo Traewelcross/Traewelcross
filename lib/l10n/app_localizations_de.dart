@@ -1044,68 +1044,68 @@ class AppLocalizationsDe extends AppLocalizations {
   String get manualTripOverviewTitle => 'Fahrten';
 
   @override
-  String get manualTripNewTrip => 'Create new trip';
+  String get manualTripNewTrip => 'Neue Fahrt erstellen';
 
   @override
   String get taxi => 'Taxi';
 
   @override
-  String get plane => 'Plane';
+  String get plane => 'Flugzeug';
 
   @override
-  String get freightTrain => 'Freight train';
+  String get freightTrain => 'Güterzug';
 
   @override
-  String get trainDetails => 'Vehicle details';
+  String get trainDetails => 'Fahrzeugdetails';
 
   @override
-  String get lineNumber => 'Line number (i.e. S4, IC 2545)';
+  String get lineNumber => 'Linie (z.B. S4, IC 2545)';
 
   @override
-  String get journeyNumber => 'Journey number (i.e. 34442)';
+  String get journeyNumber => 'Fahrtnummer (z.B. 34442)';
 
   @override
-  String get operator => 'Operator';
+  String get operator => 'Betreiber';
 
   @override
-  String get routeDetails => 'Route details';
+  String get routeDetails => 'Routendetails';
 
   @override
-  String get addStopover => 'Add stopover';
+  String get addStopover => 'Halt hinzufügen';
 
   @override
-  String get removeStopover => 'Remove stopover';
+  String get removeStopover => 'Halt entfernen';
 
   @override
-  String get editStopover => 'Edit stopover';
+  String get editStopover => 'Halt bearbeiten';
 
   @override
-  String get manualTripOriginStop => 'Origin station';
+  String get manualTripOriginStop => 'Starthalt';
 
   @override
-  String get manualTripDestinationStop => 'Destination stop';
+  String get manualTripDestinationStop => 'Endpunkt';
 
   @override
-  String get searchStopover => 'Search stop';
+  String get searchStopover => 'Halt suchen';
 
   @override
-  String get manualTripArrival => 'Arrival (optional)';
+  String get manualTripArrival => 'Ankunft (optional)';
 
   @override
-  String get manualTripDeparture => 'Departure';
+  String get manualTripDeparture => 'Abfahrt';
 
   @override
-  String get manualTripCreateTrip => 'Create Trip';
+  String get manualTripCreateTrip => 'Fahrt erstellen';
 
   @override
   String get noStationsFound =>
-      'Sorry, no stopovers could be found for this ride. You can either try to reopen the departure board and selecting this ride again, or try and use the offical Träwelling page.';
+      'Entschuldige, aber es konnten keine Haltepunkte für diese Reise gefunden werden. Du kannst a) probieren die Abfahrten neu abzurufen und diese Fahrt erneut auswählen oder b) probieren über Träwelling einzuchecken';
 
   @override
-  String get returnToDashboard => 'Return to dashboard';
+  String get returnToDashboard => 'Zum Dashboard zurück';
 
   @override
-  String get openTraewelling => 'Open Träwelling';
+  String get openTraewelling => 'Träwelling öffnen';
 
   @override
   String notifyInfo(int counter) {
@@ -1113,79 +1113,81 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get ticketListViewTitle => 'Tickets';
+  String get ticketListViewTitle => 'Fahrscheine';
 
   @override
-  String get ticketListViewNoTickets => 'You haven\'t added any tickets yet';
+  String get ticketListViewNoTickets =>
+      'Du hast noch keine Fahrscheine hinzugefügt';
 
   @override
-  String get ticketListViewAddTicket => 'Add Ticket';
+  String get ticketListViewAddTicket => 'Fahrschein hinzufügen';
 
   @override
-  String get ticketAddTicketDataFieldset => 'Ticket data';
+  String get ticketAddTicketDataFieldset => 'Fahrscheindaten';
 
   @override
-  String get ticketAddTicketDataManual => 'or do it manually';
+  String get ticketAddTicketDataManual => 'oder manuell anpassen';
 
   @override
-  String get ticketAddTicketDataFromImage => 'Read from image';
+  String get ticketAddTicketDataFromImage => 'Aus Bild einlesen';
 
   @override
-  String get ticketAddTicketDataFromCamera => 'Read from camera';
+  String get ticketAddTicketDataFromCamera => 'Mit Kamera einlesen';
 
   @override
-  String get ticketAddTicketDataOr => 'or';
+  String get ticketAddTicketDataOr => 'oder';
 
   @override
-  String get ticketAddTicketDataSuccess => 'Ticket data is set';
+  String get ticketAddTicketDataSuccess => 'Fahrscheindaten gesetzt';
 
   @override
-  String get ticketAddTicketDataReset => 'Reset ticket data';
+  String get ticketAddTicketDataReset => 'Fahrscheindaten anpassen';
 
   @override
   String get ticketAddTicketDataManuallyHint =>
-      'Ticket data is not validated if the provided data can actually be encoded into the selected code type until displaying. Also, since tickets often contain binary data, manually pasting it here might not work.';
+      'Fahrscheindaten werden nicht validiert bis der Fahrschein tatsächlich angezeigt wird. Außerdem beinhalten die Barcodes oft Binärdaten, daher funktioniert manuelles hinzufügen womöglich nicht.';
 
   @override
-  String get ticketAddTicketDataData => 'Ticket data';
+  String get ticketAddTicketDataData => 'Fahrscheindaten';
 
   @override
-  String get ticketAddOptionalDataFieldset => 'Optional data';
+  String get ticketAddOptionalDataFieldset => 'Optionale Infos';
 
   @override
-  String get ticketAddOptionalDataValidBegin => 'Validity start';
+  String get ticketAddOptionalDataValidBegin => 'Gültigkeitsbeginn';
 
   @override
-  String get ticketAddOptionalDataValidEnd => 'Validity end';
+  String get ticketAddOptionalDataValidEnd => 'Gültigkeitsende';
 
   @override
-  String get ticketAddOptionalDataAdditionalNotes => 'Additional Notes';
+  String get ticketAddOptionalDataAdditionalNotes => 'Weitere Notizen';
 
   @override
-  String get ticketAddOptionalDataName => 'Ticket name';
+  String get ticketAddOptionalDataName => 'Fahrscheinname';
 
   @override
   String get ticketAddTicketDataCameraFail =>
-      'Having troubles with using the camera? A screenshot from your ticket app usually works best!';
+      'Probleme mit der Kamera? Ein Screenshot aus deiner Fahrscheinapp funktioniert meistens am besten!';
 
   @override
   String ticketListViewGenericTicketName(int count) {
-    return 'Ticket #$count';
+    return 'Fahrschein Nr. $count';
   }
 
   @override
-  String get ticketAddTicketOnDeviceInfo => 'Tickets never leave your device';
+  String get ticketAddTicketOnDeviceInfo =>
+      'Fahrscheine verlassen nie dein Gerät';
 
   @override
-  String get ticketViewDisclaimerTitle => 'Disclaimer';
+  String get ticketViewDisclaimerTitle => 'Achtung';
 
   @override
   String get ticketViewDisclaimer =>
-      'This is only a recreation of your actual ticket. Train staff may ask for the actual, official ticket. Use/Present at your own risk!';
+      'Dies ist ein neuerzeugter Fahrschein. Das Zugpersonal wird dich eventuell nach dem orginalen Fahrschein aus App/auf Papier fragen. Benutze/Zeige dieses Ticket auf eigene Gefahr!';
 
   @override
-  String get ticketViewAdditionalDetails => 'Additional Details';
+  String get ticketViewAdditionalDetails => 'Weitere Infos';
 
   @override
-  String get hideTicketButton => 'Hide ticket button';
+  String get hideTicketButton => 'Fahrscheinknopf verstecken';
 }
