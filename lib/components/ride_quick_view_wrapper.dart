@@ -37,6 +37,7 @@ class RideQuickViewWrapper extends StatefulWidget {
 
 class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
   final List<Status> _userRides = [];
+  final Map<int, DateTime> _rideDates = {};
   int _page = 1;
   bool _isLoading = false;
   int _userIdAuthUser = 0;
@@ -62,10 +63,25 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
     if (!mounted) return;
     setState(() {
       _userRides.clear();
+      _rideDates.clear();
       _page = 1;
       _isLoading = false;
     });
     await _fetchRides();
+  }
+
+  DateTime _parseRideDate(Status ride) {
+    if (_rideDates.containsKey(ride.id)) {
+      return _rideDates[ride.id]!;
+    }
+    final parsed = DateTime.parse(
+      ride.checkin.manualDeparture ??
+          ride.checkin.origin.departureReal ??
+          ride.checkin.origin.departurePlanned ??
+          "1970-01-01",
+    );
+    _rideDates[ride.id] = parsed;
+    return parsed;
   }
 
   Future<void> _fetchRides() async {
@@ -86,6 +102,11 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
         username: widget.userName,
         page: _page,
       );
+
+      for (final ride in newRides) {
+        _parseRideDate(ride);
+      }
+
       setState(() {
         _userRides.addAll(newRides);
         _page++;
@@ -126,24 +147,14 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
         }
 
         final ride = _userRides[index];
-        final currentRideDate = DateTime.parse(
-          ride.checkin.manualDeparture ??
-              ride.checkin.origin.departureReal ??
-              ride.checkin.origin.departurePlanned ??
-              "1970-01-01",
-        );
+        final currentRideDate = _parseRideDate(ride);
 
         bool showDateHeader = false;
         if (index == 0) {
           showDateHeader = true;
         } else {
           final previousRide = _userRides[index - 1];
-          final previousRideDate = DateTime.parse(
-            previousRide.checkin.manualDeparture ??
-                previousRide.checkin.origin.departureReal ??
-                previousRide.checkin.origin.departurePlanned ??
-                "1970=01-01",
-          );
+          final previousRideDate = _parseRideDate(previousRide);
           if (currentRideDate.day != previousRideDate.day ||
               currentRideDate.month != previousRideDate.month ||
               currentRideDate.year != previousRideDate.year) {
@@ -163,18 +174,13 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
                     DateFormat.yMMMMEEEEd(
                       Localizations.localeOf(context).languageCode,
                     ).format(currentRideDate),
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                    style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   IconButton(
                     onPressed: () {
-                      final ridesOnThisDate = _userRides.where((ride) {
-                        final rideDate = DateTime.parse(
-                          ride.checkin.manualDeparture ??
-                              ride.checkin.origin.departureReal ??
-                              ride.checkin.origin.departurePlanned ??
-                              "1970-01-01",
-                        );
+                      final ridesOnThisDate = _userRides.where((rideItem) {
+                        final rideDate = _parseRideDate(rideItem);
                         return rideDate.year == currentRideDate.year &&
                             rideDate.month == currentRideDate.month &&
                             rideDate.day == currentRideDate.day;
@@ -184,7 +190,7 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
                         MaterialPageRoute(
                           builder: (context) => MapStatForDayPage(
                             rideInfo: ridesOnThisDate
-                                .map((ride) => RideInfo.fromRides(ride))
+                                .map((rideItem) => RideInfo.fromRides(rideItem))
                                 .toList(),
                             date: currentRideDate,
                           ),
@@ -199,14 +205,17 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
           );
         }
 
-        Widget rideView = RideQuickView(
-          rideData: ride,
-          authUserId: _userIdAuthUser,
-          onDelete: () {
-            setState(() {
-              _userRides.removeWhere((item) => item.id == ride.id);
-            });
-          },
+        Widget rideView = RepaintBoundary(
+          child: RideQuickView(
+            rideData: ride,
+            authUserId: _userIdAuthUser,
+            onDelete: () {
+              setState(() {
+                _rideDates.remove(ride.id);
+                _userRides.removeWhere((item) => item.id == ride.id);
+              });
+            },
+          ),
         );
         widgets.add(rideView);
         widgets.add(const SizedBox(height: 8));
