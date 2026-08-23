@@ -469,278 +469,208 @@ class _RideQuickViewState extends State<RideQuickView> {
         ((_rideData.checkin.distance / 1000.0) /
         (_rideData.checkin.duration / 60.0));
     final localize = AppLocalizations.of(context)!;
-    return RepaintBoundary(
-      child: Theme(
-        data: SharedFunctions.deriviateThemeFromRouteColor(
-          _rideData.checkin.routeColor,
-          context,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Card(
-              child: InkWell(
-                hoverColor: Colors.transparent,
-                onTap: (widget.detailedView == true)
-                    ? null
-                    : () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailedRideView(
-                              rideData: _rideData,
-                              authUserId: widget.authUserId,
-                            ),
+    return Theme(
+      data: SharedFunctions.deriviateThemeFromRouteColor(
+        _rideData.checkin.routeColor,
+        context,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Card(
+            child: InkWell(
+              hoverColor: Colors.transparent,
+              onTap: (widget.detailedView == true)
+                  ? null
+                  : () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailedRideView(
+                            rideData: _rideData,
+                            authUserId: widget.authUserId,
                           ),
-                        );
-                      },
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _StationText(
-                        transportData: _rideData.checkin,
-                        isDestination: false,
-                        onUpdateTime: _updateTime,
-                        isAuthUser: _isAuthUser(),
-                      ),
-                      Card(
-                        surfaceTintColor: _tintColor,
-                        child: LayoutBuilder(
-                          builder: (ctx, constraints) {
-                            return SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  minWidth: constraints.maxWidth,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Row(
-                                    children: [
-                                      const Icon(Icons.info_outline),
-                                      const SizedBox(
-                                        height: 24,
-                                        child: VerticalDivider(),
+                        ),
+                      );
+                    },
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _StationText(
+                      transportData: _rideData.checkin,
+                      isDestination: false,
+                      onUpdateTime: _updateTime,
+                      isAuthUser: _isAuthUser(),
+                    ),
+                    Card(
+                      surfaceTintColor: _tintColor,
+                      child: LayoutBuilder(
+                        builder: (ctx, constraints) {
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                minWidth: constraints.maxWidth,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.info_outline),
+                                    const SizedBox(
+                                      height: 24,
+                                      child: VerticalDivider(),
+                                    ),
+                                    RideIconTag(
+                                      iconInfo: RideIconTagInfo(
+                                        category: _rideData.checkin.category,
+                                        width: 24,
+                                        lineName: _rideData.checkin.lineName,
+                                        operatorIdentifier:
+                                            _rideData.checkin.operator?.name,
+                                        routeColor:
+                                            SharedFunctions.tryParseColor(
+                                              _rideData.checkin.routeColor,
+                                            ),
+                                        routeTextColor:
+                                            SharedFunctions.tryParseColor(
+                                              _rideData
+                                                  .checkin
+                                                  .routeTextColor,
+                                            ),
+                                        /*SharedFunctions.getOperatorHAFASIdent(
+                                              _rideData
+                                                  .checkin
+                                                  .operator
+                                                  ?.identifiers,
+                                            )*/
                                       ),
-                                      RideIconTag(
-                                        iconInfo: RideIconTagInfo(
-                                          category: _rideData.checkin.category,
-                                          width: 24,
-                                          lineName: _rideData.checkin.lineName,
-                                          operatorIdentifier:
-                                              _rideData.checkin.operator?.name,
-                                          routeColor:
-                                              SharedFunctions.tryParseColor(
-                                                _rideData.checkin.routeColor,
-                                              ),
-                                          routeTextColor:
-                                              SharedFunctions.tryParseColor(
-                                                _rideData
-                                                    .checkin
-                                                    .routeTextColor,
-                                              ),
-                                          /*SharedFunctions.getOperatorHAFASIdent(
-                                                _rideData
-                                                    .checkin
-                                                    .operator
-                                                    ?.identifiers,
-                                              )*/
-                                        ),
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                      child: VerticalDivider(),
+                                    ),
+                                    const Icon(Icons.timer_outlined),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      _getNeededTime(
+                                        _rideData.checkin.duration,
                                       ),
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                      child: VerticalDivider(),
+                                    ),
+                                    const Icon(Symbols.distance),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      ((_rideData.checkin.distance / 1000)
+                                                  .toStringAsFixed(0) ==
+                                              "0")
+                                          ? "${_rideData.checkin.distance} m"
+                                          : "${(_rideData.checkin.distance / 1000).toStringAsFixed(0)} km",
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                      child: VerticalDivider(),
+                                    ),
+                                    const Icon(Icons.speed),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      "${averageSpeed.isInfinite || averageSpeed.isNaN ? "0" : averageSpeed.round()} km/h",
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                      child: VerticalDivider(),
+                                    ),
+                                    switch (_rideData.business) {
+                                      .private => const Icon(Icons.home),
+                                      .business => const Icon(Icons.work),
+                                      .commute => const Icon(Icons.home_work),
+                                    },
+                                    if (_rideData.event != null) ...[
                                       const SizedBox(
                                         height: 20,
                                         child: VerticalDivider(),
                                       ),
-                                      const Icon(Icons.timer_outlined),
+                                      const Icon(Icons.calendar_month),
                                       const SizedBox(width: 4),
-                                      Text(
-                                        _getNeededTime(
-                                          _rideData.checkin.duration,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                        child: VerticalDivider(),
-                                      ),
-                                      const Icon(Symbols.distance),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        ((_rideData.checkin.distance / 1000)
-                                                    .toStringAsFixed(0) ==
-                                                "0")
-                                            ? "${_rideData.checkin.distance} m"
-                                            : "${(_rideData.checkin.distance / 1000).toStringAsFixed(0)} km",
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                        child: VerticalDivider(),
-                                      ),
-                                      const Icon(Icons.speed),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        "${averageSpeed.isInfinite || averageSpeed.isNaN ? "0" : averageSpeed.round()} km/h",
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                        child: VerticalDivider(),
-                                      ),
-                                      switch (_rideData.business) {
-                                        .private => const Icon(Icons.home),
-                                        .business => const Icon(Icons.work),
-                                        .commute => const Icon(Icons.home_work),
-                                      },
-                                      if (_rideData.event != null) ...[
-                                        const SizedBox(
-                                          height: 20,
-                                          child: VerticalDivider(),
-                                        ),
-                                        const Icon(Icons.calendar_month),
-                                        const SizedBox(width: 4),
-                                        Text(_rideData.event!.name),
-                                      ],
+                                      Text(_rideData.event!.name),
                                     ],
-                                  ),
+                                  ],
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                      ),
-                      if (_rideData.body != "")
-                        Card(
-                          surfaceTintColor: _tintColor,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.format_quote),
-                                const SizedBox(width: 8),
-                                Expanded(child: RichText(text: _cachedBody!)),
-                              ],
                             ),
+                          );
+                        },
+                      ),
+                    ),
+                    if (_rideData.body != "")
+                      Card(
+                        surfaceTintColor: _tintColor,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.format_quote),
+                              const SizedBox(width: 8),
+                              Expanded(child: RichText(text: _cachedBody!)),
+                            ],
                           ),
                         ),
-                      _StationText(
-                        transportData: _rideData.checkin,
-                        isDestination: true,
-                        onUpdateTime: _updateTime,
-                        isAuthUser: _isAuthUser(),
                       ),
-                      const SizedBox(height: 4),
-                      TimeProgress(
-                        startDate: DateTime.parse(
-                          (_rideData.checkin.manualDeparture ??
-                              _rideData.checkin.origin.departureReal ??
-                              _rideData.checkin.origin.departurePlanned ??
-                              "1970-01-01"),
-                        ).toLocal(),
-                        endDate: DateTime.parse(
-                          (_rideData.checkin.manualArrival ??
-                              _rideData.checkin.destination.arrivalReal ??
-                              _rideData.checkin.destination.departurePlanned ??
-                              "1970-01-01"),
-                        ).toLocal(),
-                        rideId: _rideData.id,
-                      ),
-                      const SizedBox(height: 8),
-                      StatusTags(
-                        tags: _rideData.tags,
-                        canAdd: _isAuthUser(),
-                        rideId: _rideData.id,
-                        onAddTag: _addTag,
-                        onDeleteTag: _deleteTag,
-                      ),
-                      const Divider(indent: 0, endIndent: 0),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          LikeButton(
-                            rideData: _rideData,
-                            onUpdateLikes: _updateLikes,
-                          ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                ProfilePicture(
-                                  imageUrl: _rideData.user.profilePicture,
-                                  maxWidth: 42,
-                                ),
-                                const SizedBox(width: 4),
-                                Flexible(
-                                  child: TextButton(
-                                    style: ButtonStyle(
-                                      padding: const WidgetStatePropertyAll(
-                                        EdgeInsets.zero,
-                                      ),
-                                      minimumSize: const WidgetStatePropertyAll(
-                                        Size.zero,
-                                      ),
-                                      tapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                      shape: WidgetStatePropertyAll(
-                                        RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            0,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => MainScaffold(
-                                            title: AppBarTitle(
-                                              _rideData.user.displayName,
-                                            ),
-                                            body: ProfileView(
-                                              isOtherUser: true,
-                                              username: _rideData.user.username,
-                                              tempScrollController: true,
-                                              scrollController:
-                                                  ScrollController(),
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      "${_rideData.user.displayName}, ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(_createdAtDate!)}",
-                                      overflow: TextOverflow.fade,
-                                      maxLines: 1,
-                                      softWrap: false,
-                                      style: TextStyle(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onSurface,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                  child: VerticalDivider(),
-                                ),
-                                /*switch (_rideData.visibility) {
-                                  .public => const Icon(Icons.public),
-                                  .notListed => const Icon(Icons.link),
-                                  .followerOnly => const Icon(Icons.group),
-                                  .private => const Icon(Icons.lock),
-                                  .loggedInUser => const Icon(
-                                    Symbols.shield_person,
-                                  ),
-                                },*/
-                                Icon(_rideData.visibility.icon),
-                                const SizedBox(
-                                  height: 24,
-                                  child: VerticalDivider(),
-                                ),
-                                PopupMenuButton(
-                                  icon: const Icon(Icons.more_vert, size: 24),
+                    _StationText(
+                      transportData: _rideData.checkin,
+                      isDestination: true,
+                      onUpdateTime: _updateTime,
+                      isAuthUser: _isAuthUser(),
+                    ),
+                    const SizedBox(height: 4),
+                    TimeProgress(
+                      startDate: DateTime.parse(
+                        (_rideData.checkin.manualDeparture ??
+                            _rideData.checkin.origin.departureReal ??
+                            _rideData.checkin.origin.departurePlanned ??
+                            "1970-01-01"),
+                      ).toLocal(),
+                      endDate: DateTime.parse(
+                        (_rideData.checkin.manualArrival ??
+                            _rideData.checkin.destination.arrivalReal ??
+                            _rideData.checkin.destination.departurePlanned ??
+                            "1970-01-01"),
+                      ).toLocal(),
+                      rideId: _rideData.id,
+                    ),
+                    const SizedBox(height: 8),
+                    StatusTags(
+                      tags: _rideData.tags,
+                      canAdd: _isAuthUser(),
+                      rideId: _rideData.id,
+                      onAddTag: _addTag,
+                      onDeleteTag: _deleteTag,
+                    ),
+                    const Divider(indent: 0, endIndent: 0),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        LikeButton(
+                          rideData: _rideData,
+                          onUpdateLikes: _updateLikes,
+                        ),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ProfilePicture(
+                                imageUrl: _rideData.user.profilePicture,
+                                maxWidth: 42,
+                              ),
+                              const SizedBox(width: 4),
+                              Flexible(
+                                child: TextButton(
                                   style: ButtonStyle(
                                     padding: const WidgetStatePropertyAll(
                                       EdgeInsets.zero,
@@ -752,194 +682,262 @@ class _RideQuickViewState extends State<RideQuickView> {
                                         MaterialTapTargetSize.shrinkWrap,
                                     shape: WidgetStatePropertyAll(
                                       RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(0),
+                                        borderRadius: BorderRadius.circular(
+                                          0,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  itemBuilder: (context) => <PopupMenuEntry>[
-                                    if (_isAuthUser()) ...[
-                                      PopupMenuItem(
-                                        onTap: () => _shareRide(),
-                                        child: Row(
-                                          children: [
-                                            const Icon(Icons.share),
-                                            const SizedBox(width: 8),
-                                            Text(localize.share),
-                                          ],
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        onTap: () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                CheckIn(
-                                                  checkInInfo: CheckInInfo(
-                                                    departureId:
-                                                        _rideData
-                                                            .checkin
-                                                            .origin
-                                                            .station
-                                                            ?.id ??
-                                                        _rideData
-                                                            .checkin
-                                                            .origin
-                                                            .id ??
-                                                        0,
-                                                    destination:
-                                                        _rideData
-                                                            .checkin
-                                                            .destination
-                                                            .station
-                                                            ?.name ??
-                                                        _rideData
-                                                            .checkin
-                                                            .destination
-                                                            .name ??
-                                                        "???",
-                                                    destinationId:
-                                                        _rideData
-                                                            .checkin
-                                                            .destination
-                                                            .station
-                                                            ?.id ??
-                                                        _rideData
-                                                            .checkin
-                                                            .destination
-                                                            .id ??
-                                                        0,
-                                                    rideId: _rideData.id,
-                                                    body: _rideData.body,
-                                                    visibility:
-                                                        _rideData.visibility,
-                                                    tripType:
-                                                        _rideData.business,
-                                                    tripId: _rideData
-                                                        .checkin
-                                                        .hafasId,
-                                                    category: _rideData
-                                                        .checkin
-                                                        .category,
-                                                    lineName: _rideData
-                                                        .checkin
-                                                        .lineName,
-                                                    event: _rideData.event,
-                                                    manualArrive: _rideData
-                                                        .checkin
-                                                        .manualArrival,
-                                                    manualDepart: _rideData
-                                                        .checkin
-                                                        .manualDeparture,
-                                                    departureTime: _rideData
-                                                        .checkin
-                                                        .origin
-                                                        .departurePlanned,
-                                                    arrivalTime: _rideData
-                                                        .checkin
-                                                        .destination
-                                                        .arrivalPlanned,
-                                                    rideDataCallback:
-                                                        (rideData) =>
-                                                            _updateRideData(
-                                                              rideData,
-                                                            ),
-                                                  ),
-                                                  isEdit: true,
-                                                ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MainScaffold(
+                                          title: AppBarTitle(
+                                            _rideData.user.displayName,
+                                          ),
+                                          body: ProfileView(
+                                            isOtherUser: true,
+                                            username: _rideData.user.username,
+                                            tempScrollController: true,
+                                            scrollController:
+                                                ScrollController(),
                                           ),
                                         ),
-                                        child: Row(
-                                          children: [
-                                            const Icon(Icons.edit),
-                                            const SizedBox(width: 8),
-                                            Text(localize.edit),
-                                          ],
-                                        ),
                                       ),
-                                      PopupMenuItem(
-                                        onTap: () {
-                                          if (getIt<Config>()
-                                              .behavior
-                                              .confirmDelete) {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                icon: const Icon(Icons.delete),
-                                                title: Text(localize.delete),
-                                                content: Text(
-                                                  localize.areYouSure,
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                                actions: [
-                                                  TextButton.icon(
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
-                                                    label: Text(localize.no),
-                                                    icon: const Icon(
-                                                      Icons.cancel,
-                                                    ),
-                                                  ),
-                                                  FilledButton.icon(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                      _deleteStatus();
-                                                    },
-                                                    label: Text(localize.yes),
-                                                    icon: const Icon(
-                                                      Icons.check,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          } else {
-                                            _deleteStatus();
-                                          }
-                                        },
-                                        child: Row(
-                                          children: [
-                                            const Icon(Icons.delete),
-                                            const SizedBox(width: 8),
-                                            Text(localize.delete),
-                                          ],
-                                        ),
-                                      ),
-                                    ] else ...[
-                                      PopupMenuItem(
-                                        onTap: () => _copyCheckIn(_rideData),
-                                        child: Row(
-                                          children: [
-                                            const Icon(Icons.group_add),
-                                            const SizedBox(width: 8),
-                                            Text(localize.join_ride),
-                                          ],
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        onTap: () => _openReport(_rideData.id),
-                                        child: Row(
-                                          children: [
-                                            const Icon(Icons.report),
-                                            const SizedBox(width: 8),
-                                            Text(localize.report),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ],
+                                    );
+                                  },
+                                  child: Text(
+                                    "${_rideData.user.displayName}, ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(_createdAtDate!)}",
+                                    overflow: TextOverflow.fade,
+                                    maxLines: 1,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                    ),
+                                  ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                                child: VerticalDivider(),
+                              ),
+                              /*switch (_rideData.visibility) {
+                                .public => const Icon(Icons.public),
+                                .notListed => const Icon(Icons.link),
+                                .followerOnly => const Icon(Icons.group),
+                                .private => const Icon(Icons.lock),
+                                .loggedInUser => const Icon(
+                                  Symbols.shield_person,
+                                ),
+                              },*/
+                              Icon(_rideData.visibility.icon),
+                              const SizedBox(
+                                height: 24,
+                                child: VerticalDivider(),
+                              ),
+                              PopupMenuButton(
+                                icon: const Icon(Icons.more_vert, size: 24),
+                                style: ButtonStyle(
+                                  padding: const WidgetStatePropertyAll(
+                                    EdgeInsets.zero,
+                                  ),
+                                  minimumSize: const WidgetStatePropertyAll(
+                                    Size.zero,
+                                  ),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  shape: WidgetStatePropertyAll(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0),
+                                    ),
+                                  ),
+                                ),
+                                itemBuilder: (context) => <PopupMenuEntry>[
+                                  if (_isAuthUser()) ...[
+                                    PopupMenuItem(
+                                      onTap: () => _shareRide(),
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.share),
+                                          const SizedBox(width: 8),
+                                          Text(localize.share),
+                                        ],
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              CheckIn(
+                                                checkInInfo: CheckInInfo(
+                                                  departureId:
+                                                      _rideData
+                                                          .checkin
+                                                          .origin
+                                                          .station
+                                                          ?.id ??
+                                                      _rideData
+                                                          .checkin
+                                                          .origin
+                                                          .id ??
+                                                      0,
+                                                  destination:
+                                                      _rideData
+                                                          .checkin
+                                                          .destination
+                                                          .station
+                                                          ?.name ??
+                                                      _rideData
+                                                          .checkin
+                                                          .destination
+                                                          .name ??
+                                                      "???",
+                                                  destinationId:
+                                                      _rideData
+                                                          .checkin
+                                                          .destination
+                                                          .station
+                                                          ?.id ??
+                                                      _rideData
+                                                          .checkin
+                                                          .destination
+                                                          .id ??
+                                                      0,
+                                                  rideId: _rideData.id,
+                                                  body: _rideData.body,
+                                                  visibility:
+                                                      _rideData.visibility,
+                                                  tripType:
+                                                      _rideData.business,
+                                                  tripId: _rideData
+                                                      .checkin
+                                                      .hafasId,
+                                                  category: _rideData
+                                                      .checkin
+                                                      .category,
+                                                  lineName: _rideData
+                                                      .checkin
+                                                      .lineName,
+                                                  event: _rideData.event,
+                                                  manualArrive: _rideData
+                                                      .checkin
+                                                      .manualArrival,
+                                                  manualDepart: _rideData
+                                                      .checkin
+                                                      .manualDeparture,
+                                                  departureTime: _rideData
+                                                      .checkin
+                                                      .origin
+                                                      .departurePlanned,
+                                                  arrivalTime: _rideData
+                                                      .checkin
+                                                      .destination
+                                                      .arrivalPlanned,
+                                                  rideDataCallback:
+                                                      (rideData) =>
+                                                          _updateRideData(
+                                                            rideData,
+                                                          ),
+                                                ),
+                                                isEdit: true,
+                                              ),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.edit),
+                                          const SizedBox(width: 8),
+                                          Text(localize.edit),
+                                        ],
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      onTap: () {
+                                        if (getIt<Config>()
+                                            .behavior
+                                            .confirmDelete) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              icon: const Icon(Icons.delete),
+                                              title: Text(localize.delete),
+                                              content: Text(
+                                                localize.areYouSure,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              actions: [
+                                                TextButton.icon(
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  label: Text(localize.no),
+                                                  icon: const Icon(
+                                                    Icons.cancel,
+                                                  ),
+                                                ),
+                                                FilledButton.icon(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    _deleteStatus();
+                                                  },
+                                                  label: Text(localize.yes),
+                                                  icon: const Icon(
+                                                    Icons.check,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        } else {
+                                          _deleteStatus();
+                                        }
+                                      },
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.delete),
+                                          const SizedBox(width: 8),
+                                          Text(localize.delete),
+                                        ],
+                                      ),
+                                    ),
+                                  ] else ...[
+                                    PopupMenuItem(
+                                      onTap: () => _copyCheckIn(_rideData),
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.group_add),
+                                          const SizedBox(width: 8),
+                                          Text(localize.join_ride),
+                                        ],
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      onTap: () => _openReport(_rideData.id),
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.report),
+                                          const SizedBox(width: 8),
+                                          Text(localize.report),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
