@@ -21,7 +21,7 @@ dependencies:
   oauth2: ^2.0.3
   pkce: ^1.1.0+1
   http: ^1.4.0
-  cached_network_image: ^3.4.1
+  cached_network_image: ^4.0.0
   terminate_restart: ^1.1.0
   flutter_svg: ^2.2.0
   package_info_plus: ^10.1.0
