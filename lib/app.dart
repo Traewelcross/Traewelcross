@@ -196,6 +196,7 @@ class _AppHomeState extends State<AppHome> {
           getIt<Config>().dialog.notifyFixInfoDisplayCount++;
         }
         // This technically allows for the user to launch the app 15 times and get asked to rate it without ever logging in but eh, who cares
+        getIt<Config>().misc.launchCount++;
         if (getIt<Config>().misc.launchCount == 15) {
           globalPushManager.askForReview();
         } else {}
