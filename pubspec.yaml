@@ -46,7 +46,7 @@ dependencies:
   flutter_cache_manager: ^3.4.2
   easy_debounce: ^2.0.3
   material_ui: any
-  flutter_zxing: ^2.3.0
+  flutter_zxing: ^3.0.1
   uuid: ^4.6.0
   image_picker: ^1.2.3
   barcode: ^2.2.9
