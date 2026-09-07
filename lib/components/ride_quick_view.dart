@@ -181,10 +181,7 @@ class _RideQuickViewState extends State<RideQuickView> {
         }
         return TextSpan(
           text: segment,
-          style: TextStyle(
-            fontFamily: "Outfit",
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium,
         );
       }).toList(),
     );
@@ -248,10 +245,7 @@ class _RideQuickViewState extends State<RideQuickView> {
         // Element is not a mention, but it might contain an emoji
         return _getEmojis(element);
       }).toList(),
-      style: TextStyle(
-        fontFamily: "Outfit",
-        color: Theme.of(context).colorScheme.onSurface,
-      ),
+      style: Theme.of(context).textTheme.bodyMedium,
     );
   }
 
