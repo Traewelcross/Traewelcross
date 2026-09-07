@@ -81,7 +81,6 @@ flutter:
     - family: Outfit
       fonts:
         - asset: fonts/Outfit/Outfit-VariableFont_wght.ttf
-
     - family: SUSE
       fonts:
         - asset: fonts/SUSE/SUSE-Italic-VariableFont_wght.ttf
