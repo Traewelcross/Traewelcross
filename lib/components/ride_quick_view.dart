@@ -201,7 +201,7 @@ class _RideQuickViewState extends State<RideQuickView> {
     for (Mention mention in _rideData.bodyMentions) {
       int startPos = mention.position;
       int endPos = mention.position + mention.length;
-      if (startPos < cursor || endPos > _rideData.body.length) continue;
+      if (startPos < cursor || endPos > bodyBytes.length) continue;
       if (startPos > cursor) {
         result.add(utf8.decode(bodyBytes.sublist(cursor, startPos)));
       }
