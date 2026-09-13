@@ -180,199 +180,206 @@ class _DetailedRideViewState extends State<DetailedRideView> {
             rideData.checkin.destination.name ??
             "???";
         final title = "$originName -> $destinationName";
-
+        final theme = SharedFunctions.deriviateThemeFromRouteColor(
+          rideData.checkin.routeColor,
+          context,
+        );
         return MainScaffold(
           title: AppBarTitle(title),
-          body: RefreshIndicator(
-            onRefresh: () async {
-              setState(() {
-                _rideDataFuture = _getRideData();
-                _likes = _getLikeData();
-              });
-            },
-            child: ListView(
-              children: [
-                FutureBuilder<List<LatLng>>(
-                  future: _polylineFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text("Error loading map: ${snapshot.error}"),
-                      );
-                    }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return SizedBox(
-                        height: 512,
-                        child: MapDisplay(polylinePoints: snapshot.data!),
-                      );
-                    }
-                    return const SizedBox(height: 0);
-                  },
-                ),
-                const SizedBox(height: 12),
-                RideQuickView(
-                  rideData: rideData,
-                  authUserId: widget.authUserId ?? 0,
-                  detailedView: true,
-                  likeCallback: _likeCallback,
-                ),
-                FutureBuilder(
-                  future: _likes,
-                  builder: (context, asyncSnapshot) {
-                    if (asyncSnapshot.hasData && asyncSnapshot.data != null) {
-                      return Card(
-                        clipBehavior: Clip.hardEdge,
-                        child: ExpansionTile(
-                          shape: Border.all(color: Colors.transparent),
-                          title: Text(
-                            "${asyncSnapshot.data!.length.toString()} ${localize.likes(asyncSnapshot.data!.length)}",
-                          ),
-                          dense: false,
-                          enabled: asyncSnapshot.data!.isEmpty ? false : true,
-                          children: List.generate(
-                            asyncSnapshot.data!.length,
-                            (int i) =>
-                                ProfileLinkButton(user: asyncSnapshot.data![i]),
-                          ),
-                        ),
-                      );
-                    }
-                    return Card(
-                      clipBehavior: Clip.hardEdge,
-                      child: ExpansionTile(
-                        shape: Border.all(color: Colors.transparent),
-                        clipBehavior: Clip.hardEdge,
-                        title: Text("0 ${localize.likes(0)}"),
-                        enabled: false,
-                        children: const [],
-                      ),
-                    );
-                  },
-                ),
-                FutureBuilder(
-                  future: _getSharedTrips(
-                    rideData.checkin.trip,
-                    rideData.user.id,
+          body: Theme(
+            data: theme,
+            child: RefreshIndicator(
+              onRefresh: () async {
+                setState(() {
+                  _rideDataFuture = _getRideData();
+                  _likes = _getLikeData();
+                });
+              },
+              child: ListView(
+                children: [
+                  FutureBuilder<List<LatLng>>(
+                    future: _polylineFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text("Error loading map: ${snapshot.error}"),
+                        );
+                      }
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return SizedBox(
+                          height: 512,
+                          child: MapDisplay(polylinePoints: snapshot.data!),
+                        );
+                      }
+                      return const SizedBox(height: 0);
+                    },
                   ),
-                  builder: (context, asyncSnapshot) {
-                    if (asyncSnapshot.hasData && asyncSnapshot.data != null) {
-                      List<Status> data = asyncSnapshot.data!;
-                      data = data
-                          .where((status) => status.user != rideData.user)
-                          .toList();
+                  const SizedBox(height: 12),
+                  RideQuickView(
+                    rideData: rideData,
+                    authUserId: widget.authUserId ?? 0,
+                    detailedView: true,
+                    likeCallback: _likeCallback,
+                  ),
+                  FutureBuilder(
+                    future: _likes,
+                    builder: (context, asyncSnapshot) {
+                      if (asyncSnapshot.hasData && asyncSnapshot.data != null) {
+                        return Card(
+                          clipBehavior: Clip.hardEdge,
+                          child: ExpansionTile(
+                            shape: Border.all(color: Colors.transparent),
+                            title: Text(
+                              "${asyncSnapshot.data!.length.toString()} ${localize.likes(asyncSnapshot.data!.length)}",
+                            ),
+                            dense: false,
+                            enabled: asyncSnapshot.data!.isEmpty ? false : true,
+                            children: List.generate(
+                              asyncSnapshot.data!.length,
+                              (int i) => ProfileLinkButton(
+                                user: asyncSnapshot.data![i],
+                              ),
+                            ),
+                          ),
+                        );
+                      }
                       return Card(
                         clipBehavior: Clip.hardEdge,
                         child: ExpansionTile(
                           shape: Border.all(color: Colors.transparent),
-                          title: Text(localize.alsoOnThisConnection),
-                          dense: false,
-                          enabled: data.isEmpty ? false : true,
-                          children: List.generate(
-                            data.length,
-                            (int i) => ProfileLinkButton(
-                              user: data[i].user.promoteToUser(),
-                              subTitle:
-                                  "${data[i].checkin.origin.name ?? "???"} -> ${data[i].checkin.destination.name ?? "???"}",
-                            ),
-                          ),
+                          clipBehavior: Clip.hardEdge,
+                          title: Text("0 ${localize.likes(0)}"),
+                          enabled: false,
+                          children: const [],
                         ),
                       );
-                    }
-                    return SizedBox.shrink();
-                  },
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            localize.operatedBy(
-                              rideData.checkin.operator?.name ?? "N/A",
+                    },
+                  ),
+                  FutureBuilder(
+                    future: _getSharedTrips(
+                      rideData.checkin.trip,
+                      rideData.user.id,
+                    ),
+                    builder: (context, asyncSnapshot) {
+                      if (asyncSnapshot.hasData && asyncSnapshot.data != null) {
+                        List<Status> data = asyncSnapshot.data!;
+                        data = data
+                            .where((status) => status.user != rideData.user)
+                            .toList();
+                        return Card(
+                          clipBehavior: Clip.hardEdge,
+                          child: ExpansionTile(
+                            shape: Border.all(color: Colors.transparent),
+                            title: Text(localize.alsoOnThisConnection),
+                            dense: false,
+                            enabled: data.isEmpty ? false : true,
+                            children: List.generate(
+                              data.length,
+                              (int i) => ProfileLinkButton(
+                                user: data[i].user.promoteToUser(),
+                                subTitle:
+                                    "${data[i].checkin.origin.name ?? "???"} -> ${data[i].checkin.destination.name ?? "???"}",
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: rideData.client?.name == "Träwelcross"
-                              ? Column(
-                                  spacing: 4,
-                                  crossAxisAlignment: .start,
-                                  mainAxisSize: .min,
-                                  children: [
-                                    Text(localize.checkedInWithPlain),
-                                    TraewelcrossLogo(value: 1),
-                                  ],
-                                )
-                              : Text(
-                                  localize.checkedInWith(
-                                    rideData.client?.name ?? "Träwelling",
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            rideData.checkin.dataSource?.attribution ?? "N/A",
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Row(
+                        );
+                      }
+                      return SizedBox.shrink();
+                    },
+                  ),
+                  Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Expanded(
-                        child: FilledButton.icon(
-                          onPressed: () {
-                            //print(_evaIdentOrigin);
-                            SharedFunctions.launchURL(
-                              Uri.parse(
-                                "https://bahn.expert/details/${rideData.checkin.journeyNumber}/${rideData.checkin.origin.departurePlanned}?evaNumberAlongRoute=$_evaIdentOrigin",
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              localize.operatedBy(
+                                rideData.checkin.operator?.name ?? "N/A",
                               ),
-                            );
-                          },
-                          label: Text(localize.bahnExpert),
-                          icon: const Icon(Icons.train),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: rideData.client?.name == "Träwelcross"
+                                ? Column(
+                                    spacing: 4,
+                                    crossAxisAlignment: .start,
+                                    mainAxisSize: .min,
+                                    children: [
+                                      Text(localize.checkedInWithPlain),
+                                      TraewelcrossLogo(value: 1),
+                                    ],
+                                  )
+                                : Text(
+                                    localize.checkedInWith(
+                                      rideData.client?.name ?? "Träwelling",
+                                    ),
+                                  ),
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                if (kDebugMode)
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: SelectableText(
-                        "Debug\nID: ${rideData.id.toString()}\n\n${jsonEncode(rideData)}",
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              rideData.checkin.dataSource?.attribution ?? "N/A",
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                        ),
                       ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: FilledButton.icon(
+                            onPressed: () {
+                              //print(_evaIdentOrigin);
+                              SharedFunctions.launchURL(
+                                Uri.parse(
+                                  "https://bahn.expert/details/${rideData.checkin.journeyNumber}/${rideData.checkin.origin.departurePlanned}?evaNumberAlongRoute=$_evaIdentOrigin",
+                                ),
+                              );
+                            },
+                            label: Text(localize.bahnExpert),
+                            icon: const Icon(Icons.train),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                const SizedBox(height: 8),
-              ],
+                  if (kDebugMode)
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: SelectableText(
+                          "Debug\nID: ${rideData.id.toString()}\n\n${jsonEncode(rideData)}",
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 8),
+                ],
+              ),
             ),
           ),
         );
