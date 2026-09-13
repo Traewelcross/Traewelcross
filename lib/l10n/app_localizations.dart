@@ -2167,6 +2167,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hide ticket button'**
   String get hideTicketButton;
+
+  /// No description provided for @alternativePolylineFetcherPreference.
+  ///
+  /// In en, this message translates to:
+  /// **'Use alternative polyline fetcher'**
+  String get alternativePolylineFetcherPreference;
+
+  /// No description provided for @alternativePolylineFetcherPreferenceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use an alternative way to fetch polylines in the statistics tab. Uses more API calls and takes longer, but *might* be more accurate. Only polylines in the statistics tab are affected by this.'**
+  String get alternativePolylineFetcherPreferenceHint;
 }
 
 class _AppLocalizationsDelegate

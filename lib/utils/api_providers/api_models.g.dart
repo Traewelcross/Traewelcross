@@ -861,3 +861,27 @@ const _$MastodonVisibilityEnumMap = {
   MastodonVisibility.notListed: 1,
   MastodonVisibility.private: 3,
 };
+
+RouteMapEntry _$RouteMapEntryFromJson(Map<String, dynamic> json) =>
+    RouteMapEntry(
+      routeSegmentId: json['routeSegmentId'] as String?,
+      polyline: json['polyline'] as String,
+      polylinePrecision: (json['polylinePrecision'] as num).toInt(),
+      distance: (json['distance'] as num?)?.toInt(),
+      pathType: json['pathType'] as String?,
+      categories: (json['categories'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      approximated: json['approximated'] as bool?,
+    );
+
+Map<String, dynamic> _$RouteMapEntryToJson(RouteMapEntry instance) =>
+    <String, dynamic>{
+      'routeSegmentId': instance.routeSegmentId,
+      'polyline': instance.polyline,
+      'polylinePrecision': instance.polylinePrecision,
+      'distance': instance.distance,
+      'pathType': instance.pathType,
+      'categories': instance.categories,
+      'approximated': instance.approximated,
+    };

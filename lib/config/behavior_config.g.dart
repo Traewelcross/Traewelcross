@@ -20,7 +20,9 @@ BehaviorConfig _$BehaviorConfigFromJson(
   ..showActiveRideCard = json['showActiveRideCard'] as bool? ?? true
   ..multiAccountSupport = json['multiAccountSupport'] as bool? ?? false
   ..systemTimeDeviation = (json['systemTimeDeviation'] as num?)?.toInt() ?? -3
-  ..hideTicketButton = json['hideTicketButton'] as bool? ?? false;
+  ..hideTicketButton = json['hideTicketButton'] as bool? ?? false
+  ..alternativePolylineFetcher =
+      json['alternativePolylineFetcher'] as bool? ?? false;
 
 Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
     <String, dynamic>{
@@ -35,4 +37,5 @@ Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
       'multiAccountSupport': instance.multiAccountSupport,
       'systemTimeDeviation': instance.systemTimeDeviation,
       'hideTicketButton': instance.hideTicketButton,
+      'alternativePolylineFetcher': instance.alternativePolylineFetcher,
     };

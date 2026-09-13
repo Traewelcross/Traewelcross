@@ -1,9 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import "package:traewelcross/enums/alert_types.dart";
 import "package:traewelcross/enums/mastodon_visibility.dart";
 import 'package:traewelcross/enums/depart_types.dart';
-import "package:traewelcross/enums/alert_types.dart";
-
 import 'package:traewelcross/enums/trip_type.dart';
 import 'package:traewelcross/enums/trip_visibility.dart';
 import 'package:traewelcross/utils/check_in_info.dart';
@@ -956,6 +955,30 @@ class UserProfileSettings {
   factory UserProfileSettings.fromJson(Map<String, dynamic> json) =>
       _$UserProfileSettingsFromJson(json);
   Map<String, dynamic> toJson() => _$UserProfileSettingsToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class RouteMapEntry {
+  final String? routeSegmentId;
+  //Station? fromStation;
+  //Station? toStation;
+  final String polyline;
+  final int polylinePrecision;
+  final int? distance;
+  final String? pathType;
+  final List<String>? categories;
+  final bool? approximated;
+  RouteMapEntry({
+    this.routeSegmentId,
+    required this.polyline,
+    required this.polylinePrecision,
+    required this.distance,
+    this.pathType,
+    this.categories,
+    this.approximated,
+  });
+  factory RouteMapEntry.fromJson(Map<String, dynamic> json) => _$RouteMapEntryFromJson(json);
+  Map<String, dynamic> toJson() => _$RouteMapEntryToJson(this);
 }
 
 class GenericStatusResponse {

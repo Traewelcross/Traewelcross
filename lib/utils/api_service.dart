@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traewelcross/enums/error_type.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/utils/api_providers/mastodon_api_provider.dart';
+import 'package:traewelcross/utils/api_providers/statistics_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/train_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/trip_api_provider.dart';
 import 'package:traewelcross/utils/api_providers/user_api_provider.dart';
@@ -43,6 +44,7 @@ class ApiService {
   late final trip = TripApiProvider(this);
   late final mastodon = MastodonApiProvider();
   late final operator = OperatorApiProvider(this);
+  late final statistics = StatisticsApiProvider(this);
 
   ApiService(this._authService);
 

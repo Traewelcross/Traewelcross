@@ -1181,4 +1181,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hideTicketButton => 'Hide ticket button';
+
+  @override
+  String get alternativePolylineFetcherPreference =>
+      'Use alternative polyline fetcher';
+
+  @override
+  String get alternativePolylineFetcherPreferenceHint =>
+      'Use an alternative way to fetch polylines in the statistics tab. Uses more API calls and takes longer, but *might* be more accurate. Only polylines in the statistics tab are affected by this.';
 }

@@ -705,5 +705,7 @@
   "ticketViewDisclaimerTitle": "Disclaimer",
   "ticketViewDisclaimer": "This is only a recreation of your actual ticket. Train staff may ask for the actual, official ticket. Use/Present at your own risk!",
   "ticketViewAdditionalDetails": "Additional Details",
-  "hideTicketButton": "Hide ticket button"
+  "hideTicketButton": "Hide ticket button",
+  "alternativePolylineFetcherPreference": "Use alternative polyline fetcher",
+  "alternativePolylineFetcherPreferenceHint": "Use an alternative way to fetch polylines in the statistics tab. Uses more API calls and takes longer, but *might* be more accurate. Only polylines in the statistics tab are affected by this."
 }

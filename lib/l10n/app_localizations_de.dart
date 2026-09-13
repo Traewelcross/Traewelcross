@@ -1190,4 +1190,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get hideTicketButton => 'Fahrscheinknopf verstecken';
+
+  @override
+  String get alternativePolylineFetcherPreference =>
+      'Alternativer Polyline Fetcher';
+
+  @override
+  String get alternativePolylineFetcherPreferenceHint =>
+      'Alternative Methode Polylines vom Server zu holen. Dauert länger und benötigt mehr API-Aufrufe, *könnte* aber genauer sein. Nur die Ansicht in den Statistiken ist hiervon betroffen.';
 }

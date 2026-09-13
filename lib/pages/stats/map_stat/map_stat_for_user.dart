@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/stats/map_stat/map_stat.dart';
@@ -30,59 +31,11 @@ class _MapStatForUserState extends State<MapStatForUser> {
     super.initState();
     rides = _getRidesForUser();
   }
-
-  Future<List<DateTime>> _getRiddenDays() async {
-    // We could also go of prevDate in /statistics/daily, but I only see that after doing this, and also this way we get all available dates in one request
-    final api = getIt<ApiService>();
-    final req = await api.request(
-      "/statistics?from=${statRange.start.toIso8601String()}&until=${statRange.end.toIso8601String()}",
-      HttpRequestTypes.GET,
-    );
-    final times = jsonDecode(req.body)["data"]["time"] as List<dynamic>;
-    List<DateTime> riddenDays = [];
-    for (var date in times) {
-      if (date["count"] > 0) {
-        riddenDays.add(DateTime.parse(date["date"]));
-      }
-    }
-    //print(riddenDays);
-    return riddenDays;
+  Future<List<RideInfo>> _getRidesForUser(){
+    final alt = getIt<Config>().behavior.alternativePolylineFetcher;
+    rides = getIt<ApiService>().statistics.getPolylines(range: statRange, alternative: alt);
+    return rides;
   }
-
-  Future<List<RideInfo>> _getRidesForUser() async {
-    final api = getIt<ApiService>();
-    final List<List<LatLng>> coords = [];
-    LightUser? userDetails;
-    List<DateTime> riddenDays = await _getRiddenDays();
-    for (DateTime date in riddenDays) {
-      final req = await api.request(
-        "/statistics/daily/${date.toIso8601String()}?withPolylines=true",
-        HttpRequestTypes.GET,
-      );
-      final data = jsonDecode(req.body)["data"];
-      if ((data["statuses"] as List<dynamic>).isEmpty ||
-          data["polylines"] == null) {
-        continue;
-      }
-      userDetails ??= LightUser.fromJson(
-        (data["statuses"] as List<dynamic>).first["user"],
-      );
-      final polyFeatures = data["polylines"]["features"] as List<dynamic>;
-      for (var feat in polyFeatures) {
-        var lineCoords = feat["geometry"]["coordinates"] as List<dynamic>;
-        List<LatLng> line = lineCoords.map((point) {
-          return LatLng(point[1], point[0]);
-        }).toList();
-        coords.add(line);
-      }
-      await Future.delayed(Duration(milliseconds: 30));
-    }
-    if (userDetails == null) return [];
-    return coords
-        .map((cords) => RideInfo.fromCoords(userDetails!, cords))
-        .toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
