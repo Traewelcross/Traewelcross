@@ -184,11 +184,11 @@ class _DetailedRideViewState extends State<DetailedRideView> {
           rideData.checkin.routeColor,
           context,
         );
-        return MainScaffold(
-          title: AppBarTitle(title),
-          body: Theme(
-            data: theme,
-            child: RefreshIndicator(
+        return Theme(
+          data: theme,
+          child: MainScaffold(
+            title: AppBarTitle(title),
+            body: RefreshIndicator(
               onRefresh: () async {
                 setState(() {
                   _rideDataFuture = _getRideData();
