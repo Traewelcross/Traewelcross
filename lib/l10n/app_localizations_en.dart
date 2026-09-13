@@ -853,7 +853,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statisticsExperimentalNote =>
-      'The statistics option is not done yet and might be unstable and require you to re-login more often. Enable at your own risk, for here be dragons.';
+      'The statistics option is not done yet and might be unstable.';
 
   @override
   String get volumeBtnCtrl => 'Volume Button Control';

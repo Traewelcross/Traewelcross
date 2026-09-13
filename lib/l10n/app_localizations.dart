@@ -1589,7 +1589,7 @@ abstract class AppLocalizations {
   /// No description provided for @statisticsExperimentalNote.
   ///
   /// In en, this message translates to:
-  /// **'The statistics option is not done yet and might be unstable and require you to re-login more often. Enable at your own risk, for here be dragons.'**
+  /// **'The statistics option is not done yet and might be unstable.'**
   String get statisticsExperimentalNote;
 
   /// No description provided for @volumeBtnCtrl.

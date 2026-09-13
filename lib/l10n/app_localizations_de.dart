@@ -859,7 +859,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get statisticsExperimentalNote =>
-      'Der Statistikentab ist noch nicht fertig und könnte instabil sein oder du musst dich öfter neu anmelden. Anschalten auf eigene Gefahr, du verlässt die makierten Wege.';
+      'Der Statistikentab ist noch nicht fertig und könnte instabil sein.';
 
   @override
   String get volumeBtnCtrl => 'Lautstärketasten überschreiben';

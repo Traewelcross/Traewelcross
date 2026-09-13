@@ -527,7 +527,7 @@
   "openExternal": "Open",
   "experimentalPrefrences": "Experimental",
   "stats": "Statistics",
-  "statisticsExperimentalNote": "The statistics option is not done yet and might be unstable and require you to re-login more often. Enable at your own risk, for here be dragons.",
+  "statisticsExperimentalNote": "The statistics option is not done yet and might be unstable.",
   "volumeBtnCtrl": "Volume Button Control",
   "volumeBtnCtrlNote": "Use basic features using your volume buttons. I.e. when using gloves",
   "reloginRequired": "You haven't used Träwelcross for 30 days or longer. Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.",
