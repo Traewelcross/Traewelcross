@@ -977,7 +977,8 @@ class RouteMapEntry {
     this.categories,
     this.approximated,
   });
-  factory RouteMapEntry.fromJson(Map<String, dynamic> json) => _$RouteMapEntryFromJson(json);
+  factory RouteMapEntry.fromJson(Map<String, dynamic> json) =>
+      _$RouteMapEntryFromJson(json);
   Map<String, dynamic> toJson() => _$RouteMapEntryToJson(this);
 }
 

@@ -174,7 +174,10 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
                     DateFormat.yMMMMEEEEd(
                       Localizations.localeOf(context).languageCode,
                     ).format(currentRideDate),
-                    style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                    ),
                   ),
                   const Spacer(),
                   IconButton(

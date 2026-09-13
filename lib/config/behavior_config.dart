@@ -119,11 +119,12 @@ class BehaviorConfig with ChangeNotifier {
     _hideTicketButton = val;
     notifyListeners();
   }
+
   /// Specifies whether the /route-map endpoint should be used, or if the polylines should be fetched individually
   bool _alternativePolylineFetcher = true;
   @JsonKey(defaultValue: true)
   bool get alternativePolylineFetcher => _alternativePolylineFetcher;
-  set alternativePolylineFetcher(bool val){
+  set alternativePolylineFetcher(bool val) {
     _alternativePolylineFetcher = val;
     notifyListeners();
   }

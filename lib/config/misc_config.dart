@@ -53,7 +53,7 @@ class MiscConfig with ChangeNotifier {
   int _launchCount = 0;
   @JsonKey(defaultValue: 0)
   int get launchCount => _launchCount;
-  set launchCount(int val){
+  set launchCount(int val) {
     _launchCount = val;
     notifyListeners();
   }

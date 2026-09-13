@@ -146,7 +146,8 @@ class _RideQuickViewState extends State<RideQuickView> {
     ).toLocal();
 
     if (_rideData.checkin.duration > 0) {
-      _averageSpeed = ((_rideData.checkin.distance / 1000.0) /
+      _averageSpeed =
+          ((_rideData.checkin.distance / 1000.0) /
           (_rideData.checkin.duration / 60.0));
     } else {
       _averageSpeed = 0.0;
@@ -195,9 +196,7 @@ class _RideQuickViewState extends State<RideQuickView> {
     if (_rideData.bodyMentions.isEmpty) {
       return _getEmojis(_rideData.body);
     }
-    _rideData.bodyMentions.sort(
-      (a, b) => a.position.compareTo(b.position),
-    );
+    _rideData.bodyMentions.sort((a, b) => a.position.compareTo(b.position));
     for (Mention mention in _rideData.bodyMentions) {
       int startPos = mention.position;
       int endPos = mention.position + mention.length;
@@ -537,93 +536,91 @@ class _RideQuickViewState extends State<RideQuickView> {
                       child: LayoutBuilder(
                         builder: (ctx, constraints) {
                           return SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
+                            scrollDirection: Axis.horizontal,
                             child: ConstrainedBox(
                               constraints: BoxConstraints(
                                 minWidth: constraints.maxWidth,
                               ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Row(
-                            children: [
-                              const Icon(Icons.info_outline),
-                              const SizedBox(
-                                height: 24,
-                                child: VerticalDivider(),
-                              ),
-                              RideIconTag(
-                                iconInfo: RideIconTagInfo(
-                                  category: _rideData.checkin.category,
-                                  width: 24,
-                                  lineName: _rideData.checkin.lineName,
-                                  operatorIdentifier:
-                                      _rideData.checkin.operator?.name,
-                                  routeColor:
-                                      SharedFunctions.tryParseColor(
-                                        _rideData.checkin.routeColor,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.info_outline),
+                                    const SizedBox(
+                                      height: 24,
+                                      child: VerticalDivider(),
+                                    ),
+                                    RideIconTag(
+                                      iconInfo: RideIconTagInfo(
+                                        category: _rideData.checkin.category,
+                                        width: 24,
+                                        lineName: _rideData.checkin.lineName,
+                                        operatorIdentifier:
+                                            _rideData.checkin.operator?.name,
+                                        routeColor:
+                                            SharedFunctions.tryParseColor(
+                                              _rideData.checkin.routeColor,
+                                            ),
+                                        routeTextColor:
+                                            SharedFunctions.tryParseColor(
+                                              _rideData.checkin.routeTextColor,
+                                            ),
                                       ),
-                                  routeTextColor:
-                                      SharedFunctions.tryParseColor(
-                                        _rideData
-                                            .checkin
-                                            .routeTextColor,
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                      child: VerticalDivider(),
+                                    ),
+                                    const Icon(Icons.timer_outlined),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      _getNeededTime(
+                                        _rideData.checkin.duration,
                                       ),
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                      child: VerticalDivider(),
+                                    ),
+                                    const Icon(Symbols.distance),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      ((_rideData.checkin.distance / 1000)
+                                                  .toStringAsFixed(0) ==
+                                              "0")
+                                          ? "${_rideData.checkin.distance} m"
+                                          : "${(_rideData.checkin.distance / 1000).toStringAsFixed(0)} km",
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                      child: VerticalDivider(),
+                                    ),
+                                    const Icon(Icons.speed),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      "${_averageSpeed.isInfinite || _averageSpeed.isNaN ? "0" : _averageSpeed.round()} km/h",
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                      child: VerticalDivider(),
+                                    ),
+                                    switch (_rideData.business) {
+                                      .private => const Icon(Icons.home),
+                                      .business => const Icon(Icons.work),
+                                      .commute => const Icon(Icons.home_work),
+                                    },
+                                    if (_rideData.event != null) ...[
+                                      const SizedBox(
+                                        height: 20,
+                                        child: VerticalDivider(),
+                                      ),
+                                      const Icon(Icons.calendar_month),
+                                      const SizedBox(width: 4),
+                                      Text(_rideData.event!.name),
+                                    ],
+                                  ],
                                 ),
                               ),
-                              const SizedBox(
-                                height: 20,
-                                child: VerticalDivider(),
-                              ),
-                              const Icon(Icons.timer_outlined),
-                              const SizedBox(width: 4),
-                              Text(
-                                _getNeededTime(
-                                  _rideData.checkin.duration,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                                child: VerticalDivider(),
-                              ),
-                              const Icon(Symbols.distance),
-                              const SizedBox(width: 4),
-                              Text(
-                                ((_rideData.checkin.distance / 1000)
-                                            .toStringAsFixed(0) ==
-                                        "0")
-                                    ? "${_rideData.checkin.distance} m"
-                                    : "${(_rideData.checkin.distance / 1000).toStringAsFixed(0)} km",
-                              ),
-                              const SizedBox(
-                                height: 20,
-                                child: VerticalDivider(),
-                              ),
-                              const Icon(Icons.speed),
-                              const SizedBox(width: 4),
-                              Text(
-                                "${_averageSpeed.isInfinite || _averageSpeed.isNaN ? "0" : _averageSpeed.round()} km/h",
-                              ),
-                              const SizedBox(
-                                height: 20,
-                                child: VerticalDivider(),
-                              ),
-                              switch (_rideData.business) {
-                                .private => const Icon(Icons.home),
-                                .business => const Icon(Icons.work),
-                                .commute => const Icon(Icons.home_work),
-                              },
-                              if (_rideData.event != null) ...[
-                                const SizedBox(
-                                  height: 20,
-                                  child: VerticalDivider(),
-                                ),
-                                const Icon(Icons.calendar_month),
-                                const SizedBox(width: 4),
-                                Text(_rideData.event!.name),
-                              ],
-                            ],
-                          ),
-                        ),
                             ),
                           );
                         },
@@ -697,9 +694,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                                         MaterialTapTargetSize.shrinkWrap,
                                     shape: WidgetStatePropertyAll(
                                       RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          0,
-                                        ),
+                                        borderRadius: BorderRadius.circular(0),
                                       ),
                                     ),
                                   ),
@@ -817,11 +812,9 @@ class _RideQuickViewState extends State<RideQuickView> {
                                                   body: _rideData.body,
                                                   visibility:
                                                       _rideData.visibility,
-                                                  tripType:
-                                                      _rideData.business,
-                                                  tripId: _rideData
-                                                      .checkin
-                                                      .hafasId,
+                                                  tripType: _rideData.business,
+                                                  tripId:
+                                                      _rideData.checkin.hafasId,
                                                   category: _rideData
                                                       .checkin
                                                       .category,
@@ -890,9 +883,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                                                     _deleteStatus();
                                                   },
                                                   label: Text(localize.yes),
-                                                  icon: const Icon(
-                                                    Icons.check,
-                                                  ),
+                                                  icon: const Icon(Icons.check),
                                                 ),
                                               ],
                                             ),
@@ -1100,16 +1091,12 @@ class _StationText extends StatelessWidget {
     if (isDestination) {
       manualTimeStr = transportData.manualArrival;
       plannedTimeStr = transportData.destination.arrivalPlanned!;
-      isDelayed = transportData
-          .destination
-          .isArrivalDelayed;
+      isDelayed = transportData.destination.isArrivalDelayed;
       realTimeStr = transportData.destination.arrivalReal;
     } else {
       manualTimeStr = transportData.manualDeparture;
       plannedTimeStr = transportData.origin.departurePlanned!;
-      isDelayed = transportData
-          .origin
-          .isDepartureDelayed;
+      isDelayed = transportData.origin.isDepartureDelayed;
       realTimeStr = transportData.origin.departureReal;
     }
     time = DateTime.parse(manualTimeStr ?? realTimeStr ?? plannedTimeStr);

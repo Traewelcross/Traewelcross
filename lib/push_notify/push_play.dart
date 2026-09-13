@@ -140,10 +140,11 @@ class PushPlay implements PushApi {
     getIt<Logger>().t(response.body);
     return false;
   }
+
   @override
   Future<void> askForReview() async {
     final InAppReview inAppReview = InAppReview.instance;
-    if(await inAppReview.isAvailable()){
+    if (await inAppReview.isAvailable()) {
       inAppReview.requestReview();
     }
   }

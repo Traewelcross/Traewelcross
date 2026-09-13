@@ -32,48 +32,52 @@ class StatisticsApiProvider {
       for (var e in entries) {
         polylines.add(_parseEncodedPolyline(e.polyline));
       }
-      final userInfo =  jsonDecode((await SharedPreferencesAsync().getString("userinfo"))!);
+      final userInfo = jsonDecode(
+        (await SharedPreferencesAsync().getString("userinfo"))!,
+      );
       return polylines
-        .map((cords) => RideInfo.fromCoords(LightUser.fromJson(userInfo), cords))
-        .toList();
+          .map(
+            (cords) => RideInfo.fromCoords(LightUser.fromJson(userInfo), cords),
+          )
+          .toList();
     }
     return [];
   }
 
   List<LatLng> _parseEncodedPolyline(String encoded) {
-  List<LatLng> points = [];
-  int index = 0, len = encoded.length;
-  int lat = 0, lng = 0;
+    List<LatLng> points = [];
+    int index = 0, len = encoded.length;
+    int lat = 0, lng = 0;
 
-  while (index < len) {
-    int b, shift = 0, result = 0;
-    do {
-      b = encoded.codeUnitAt(index++) - 63;
-      result |= (b & 0x1f) << shift;
-      shift += 5;
-    } while (b >= 0x20);
-    
-    int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-    lat += dlat;
+    while (index < len) {
+      int b, shift = 0, result = 0;
+      do {
+        b = encoded.codeUnitAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
 
-    shift = 0;
-    result = 0;
-    do {
-      b = encoded.codeUnitAt(index++) - 63;
-      result |= (b & 0x1f) << shift;
-      shift += 5;
-    } while (b >= 0x20);
-    
-    int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-    lng += dlng;
+      int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+      lat += dlat;
 
-    double finalLat = lat / 1e6;
-    double finalLng = lng / 1e6;
+      shift = 0;
+      result = 0;
+      do {
+        b = encoded.codeUnitAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
 
-    points.add(LatLng(finalLat, finalLng));
+      int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+      lng += dlng;
+
+      double finalLat = lat / 1e6;
+      double finalLng = lng / 1e6;
+
+      points.add(LatLng(finalLat, finalLng));
+    }
+    return points;
   }
-  return points;
-}
 
   Future<List<DateTime>> _getRiddenDays(DateTimeRange statRange) async {
     // We could also go of prevDate in /statistics/daily, but I only see that after doing this, and also this way we get all available dates in one request

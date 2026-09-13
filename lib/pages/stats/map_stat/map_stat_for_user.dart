@@ -1,13 +1,9 @@
-import 'dart:convert';
 
 import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:traewelcross/config/config.dart';
-import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/stats/map_stat/map_stat.dart';
-import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/ride_info.dart';
 import 'package:traewelcross/utils/shared.dart';
@@ -31,11 +27,16 @@ class _MapStatForUserState extends State<MapStatForUser> {
     super.initState();
     rides = _getRidesForUser();
   }
-  Future<List<RideInfo>> _getRidesForUser(){
+
+  Future<List<RideInfo>> _getRidesForUser() {
     final alt = getIt<Config>().behavior.alternativePolylineFetcher;
-    rides = getIt<ApiService>().statistics.getPolylines(range: statRange, alternative: alt);
+    rides = getIt<ApiService>().statistics.getPolylines(
+      range: statRange,
+      alternative: alt,
+    );
     return rides;
   }
+
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
