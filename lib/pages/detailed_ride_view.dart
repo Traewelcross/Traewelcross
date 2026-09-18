@@ -108,9 +108,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
     final apiService = getIt<ApiService>();
     final res = await apiService.status.getStationData(
       stationId:
-          widget.rideData!.checkin.destination.station?.id ??
-          widget.rideData!.checkin.destination.id ??
-          0,
+          widget.rideData!.checkin.destination.station.id,
       withIdentifiers: true,
     );
     if (res.identifiers == null) {
@@ -172,13 +170,9 @@ class _DetailedRideViewState extends State<DetailedRideView> {
 
         final rideData = rideSnapshot.data!;
         final originName =
-            rideData.checkin.origin.station?.name ??
-            rideData.checkin.origin.name ??
-            "???";
+            rideData.checkin.origin.station.name;
         final destinationName =
-            rideData.checkin.destination.station?.name ??
-            rideData.checkin.destination.name ??
-            "???";
+            rideData.checkin.destination.station.name;
         final title = "$originName -> $destinationName";
         final theme = SharedFunctions.deriviateThemeFromRouteColor(
           rideData.checkin.routeColor,
@@ -281,7 +275,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                               (int i) => ProfileLinkButton(
                                 user: data[i].user.promoteToUser(),
                                 subTitle:
-                                    "${data[i].checkin.origin.name ?? "???"} -> ${data[i].checkin.destination.name ?? "???"}",
+                                    "${data[i].checkin.origin.station.name} -> ${data[i].checkin.destination.station.name}",
                               ),
                             ),
                           ),

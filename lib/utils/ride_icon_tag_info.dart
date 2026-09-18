@@ -6,6 +6,7 @@ class RideIconTagInfo {
   bool? showCategoryIcon;
   String? operatorIdentifier;
   String? lineName;
+  bool? cancelled;
 
   /// Supplied by API
   Color? routeColor;
@@ -18,6 +19,7 @@ class RideIconTagInfo {
     this.operatorIdentifier,
     this.showCategoryIcon,
     this.lineName,
+    this.cancelled,
     this.routeColor,
     this.routeTextColor,
   });

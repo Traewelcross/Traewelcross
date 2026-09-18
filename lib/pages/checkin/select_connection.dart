@@ -7,6 +7,7 @@ import 'package:traewelcross/components/departure_time.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/ride_icon_tag.dart';
 import 'package:traewelcross/config/config.dart';
+import 'package:traewelcross/dialogs/cancelled_connection_dialog.dart';
 import 'package:traewelcross/dialogs/manual_trip_info.dart';
 import 'package:traewelcross/enums/depart_types.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
@@ -353,7 +354,14 @@ class _DepartureList extends StatelessWidget {
                   return SizedBox(height: 0);
                 }
                 return InkWell(
-                  onTap: () {
+                  onTap: () async {
+                    if(departure.cancelled){
+                      final ignore = await showDialog<bool>(context: context, builder: (ctx) => CancelledConnectionDialog());
+                      if(!context.mounted) return;
+                      if(!ignore!){
+                        return;
+                      }
+                    }
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -384,6 +392,7 @@ class _DepartureList extends StatelessWidget {
                                     iconInfo: RideIconTagInfo(
                                       category: departure.line!.product,
                                       lineName: departure.line!.name,
+                                      cancelled: departure.cancelled,
                                       width: 24,
                                     ),
                                   ),
@@ -399,6 +408,7 @@ class _DepartureList extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       softWrap: false,
+                                      style: TextStyle(decoration: departure.cancelled ? .lineThrough : null, color: departure.cancelled ? Theme.of(context).colorScheme.error : null, decorationColor: departure.cancelled ? Theme.of(context).colorScheme.error : null),
                                     ),
                                   ),
                                 ],
@@ -430,12 +440,14 @@ class _DepartureList extends StatelessWidget {
                             DepartureTime(
                               planned: departure.plannedWhen,
                               real: departure.when,
+                              cancelled: departure.cancelled,
                             ),
                             if (departure.platform?.toString().isNotEmpty ==
                                 true)
                               Platform(
                                 platform: departure.platform!,
                                 plannedPlatform: departure.plannedPlatform!,
+                                cancelled: departure.cancelled,
                               ),
                           ],
                         ),

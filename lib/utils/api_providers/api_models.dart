@@ -157,15 +157,15 @@ class Client {
 
 @JsonSerializable(fieldRename: .none)
 class Stopover {
-  /// Station ID til 2026-11-30, after that stopoverId and removed
-  final int? id;
+  // /// Station ID til 2026-11-30, after that stopoverId and removed
+  // final int? id;
 
-  /// Exists until 2026-11-30, after that removed and moved into id
-  final int? stopoverId;
+  // /// Exists until 2026-11-30, after that removed and moved into id
+  // final int? stopoverId;
 
-  /// Deprecated but needed until https://github.com/Traewelling/traewelling/issues/4960 is resolved
-  final String? name;
-  final Station? station;
+  // /// Deprecated but needed until https://github.com/Traewelling/traewelling/issues/4960 is resolved
+  // final String? name;
+  final Station station;
   final String? arrivalPlanned;
   final String? arrivalReal;
   final String? arrivalPlatformPlanned;
@@ -179,9 +179,6 @@ class Stopover {
   final bool isDepartureDelayed;
   final bool cancelled;
   const Stopover({
-    this.id,
-    this.stopoverId,
-    this.name,
     required this.station,
     this.arrivalPlanned,
     this.arrivalReal,

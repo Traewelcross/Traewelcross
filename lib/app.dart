@@ -185,16 +185,6 @@ class _AppHomeState extends State<AppHome> {
         if (Platform.isAndroid || Platform.isIOS) {
           _coldNotificationBootHandler();
         }
-        //TODO: remove in some future version
-        if (getIt<Config>().dialog.notifyFixInfoDisplayCount <= 4) {
-          SharedFunctions.sendSnackBar(
-            AppLocalizations.of(
-              context,
-            )!.notifyInfo(4 - getIt<Config>().dialog.notifyFixInfoDisplayCount),
-            duration: Duration(seconds: 7),
-          );
-          getIt<Config>().dialog.notifyFixInfoDisplayCount++;
-        }
         // This technically allows for the user to launch the app 15 times and get asked to rate it without ever logging in but eh, who cares
         getIt<Config>().misc.launchCount++;
         if (getIt<Config>().misc.launchCount == 15) {
@@ -596,9 +586,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                     mainAxisSize: .min,
                                     children: [
                                       Text(
-                                        ride.checkin.origin.station?.name ??
-                                            ride.checkin.origin.name ??
-                                            "???",
+                                        ride.checkin.origin.station.name,
                                       ),
                                       const Icon(Icons.arrow_right),
                                     ],
@@ -611,9 +599,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                                   .checkin
                                                   .destination
                                                   .station
-                                                  ?.name ??
-                                              ride.checkin.destination.name ??
-                                              "???",
+                                                  .name,
                                           style: Theme.of(
                                             context,
                                           ).textTheme.headlineSmall,

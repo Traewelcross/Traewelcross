@@ -107,6 +107,9 @@ class _RideIconTagState extends State<RideIconTag> {
                                   color:
                                       widget.iconInfo.routeTextColor ??
                                       Color(int.parse("0xFF${data["text"]}")),
+                                  decoration: widget.iconInfo.cancelled == true
+                                      ? .lineThrough
+                                      : null,
                                 ),
                               ),
                             ],
@@ -114,14 +117,35 @@ class _RideIconTagState extends State<RideIconTag> {
                         ),
                       ),
                     ),
-                  _ => Text(widget.iconInfo.lineName ?? ""),
+                  _ => Text(
+                    widget.iconInfo.lineName ?? "",
+                    style: TextStyle(
+                      decoration: widget.iconInfo.cancelled == true
+                          ? .lineThrough
+                          : null,
+                    ),
+                  ),
                 };
               }
-              return Text(widget.iconInfo.lineName ?? "");
+              return Text(
+                widget.iconInfo.lineName ?? "",
+                style: TextStyle(
+                  decoration: widget.iconInfo.cancelled == true
+                      ? .lineThrough
+                      : null,
+                ),
+              );
             },
           ),
         ] else ...[
-          Text(widget.iconInfo.lineName ?? ""),
+          Text(
+            widget.iconInfo.lineName ?? "",
+            style: TextStyle(
+              decoration: widget.iconInfo.cancelled == true
+                  ? .lineThrough
+                  : null,
+            ),
+          ),
         ],
       ],
     );

@@ -707,5 +707,8 @@
   "ticketViewAdditionalDetails": "Additional Details",
   "hideTicketButton": "Hide ticket button",
   "alternativePolylineFetcherPreference": "Use alternative polyline fetcher",
-  "alternativePolylineFetcherPreferenceHint": "Use an alternative way to fetch polylines in the statistics tab. Uses more API calls and takes longer, but *might* be more accurate. Only polylines in the statistics tab are affected by this."
+  "alternativePolylineFetcherPreferenceHint": "Use an alternative way to fetch polylines in the statistics tab. Uses more API calls and takes longer, but *might* be more accurate. Only polylines in the statistics tab are affected by this.",
+  "connectionOrStationCancelled": "The connection or stop you have selected has been marked as cancelled by the data provider. You're still able to check-in. Check the official data provider for more information.",
+  "warning": "Warning",
+  "ignoreAndProceed": "Ignore and proceed"
 }

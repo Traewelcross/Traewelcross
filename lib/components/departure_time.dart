@@ -2,15 +2,19 @@ import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl.dart';
 
 class DepartureTime extends StatelessWidget {
-  const DepartureTime({super.key, required this.planned, required this.real});
+  const DepartureTime({super.key, required this.planned, required this.real, required this.cancelled});
   final String planned;
   final String? real;
+  final bool cancelled;
 
   @override
   Widget build(BuildContext context) {
-    final stationText = const TextStyle(
+    final stationText = TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.w500,
+      decoration: cancelled ? .lineThrough : null,
+      decorationColor: cancelled ? Colors.red : null,
+      color: cancelled ? Colors.red : null
     );
     final DateTime plannedTime = DateTime.parse(planned);
     final DateTime? realTime = real != null ? DateTime.parse(real!) : null;

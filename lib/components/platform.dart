@@ -6,10 +6,12 @@ class Platform extends StatelessWidget {
     super.key,
     required this.platform,
     required this.plannedPlatform,
+    required this.cancelled
   });
 
   final String platform;
   final String plannedPlatform;
+  final bool cancelled;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class Platform extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: Container(
-        color: platformMoved
+        color: platformMoved || cancelled
             ? Theme.of(context).colorScheme.errorContainer
             : Theme.of(context).colorScheme.primaryContainer,
         child: Padding(
@@ -28,9 +30,11 @@ class Platform extends StatelessWidget {
           child: Text(
             AppLocalizations.of(context)!.platformAbrv(platform),
             style: TextStyle(
-              color: platformMoved
+              color: platformMoved || cancelled
                   ? Theme.of(context).colorScheme.onErrorContainer
                   : Theme.of(context).colorScheme.onPrimaryContainer,
+              decoration: cancelled ? .lineThrough : null,
+              decorationColor: Theme.of(context).colorScheme.error
             ),
           ),
         ),

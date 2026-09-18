@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:material_ui/material_ui.dart';
+import 'package:traewelcross/dialogs/cancelled_connection_dialog.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/checkin/checkin.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
@@ -64,7 +65,7 @@ class _SelectStopState extends State<SelectStop> {
     response.stopovers = response.stopovers.reversed.toList();
     // Workaround https://github.com/Traewelling/traewelling/issues/3791
     for (var i = response.stopovers.length - 1; i >= 0; i--) {
-      if (widget.startStopId == response.stopovers[i].id) {
+      if (widget.startStopId == response.stopovers[i].station.id) {
         break;
       } else {
         response.stopovers.removeAt(i);
@@ -261,13 +262,9 @@ class _SelectStopState extends State<SelectStop> {
                                             tripId: widget.tripId,
                                             lineName: widget.lineName,
                                             destination:
-                                                mainStops[idx].station?.name ??
-                                                mainStops[idx].name ??
-                                                "???",
+                                                mainStops[idx].station.name,
                                             destinationId:
-                                                mainStops[idx].station?.id ??
-                                                mainStops[idx].id ??
-                                                0,
+                                                mainStops[idx].station.id,
                                             category: widget.category,
                                             departureTime: widget.departureTime,
                                             arrivalTime:
@@ -293,13 +290,9 @@ class _SelectStopState extends State<SelectStop> {
                                             tripId: widget.tripId,
                                             lineName: widget.lineName,
                                             destination:
-                                                mainStops.last.station?.name ??
-                                                mainStops.last.name ??
-                                                "???",
+                                                mainStops.last.station.name,
                                             destinationId:
-                                                mainStops.last.station?.id ??
-                                                mainStops.last.id ??
-                                                0,
+                                                mainStops.last.station.id,
                                             category: widget.category,
                                             departureTime: widget.departureTime,
                                             arrivalTime:
@@ -311,12 +304,7 @@ class _SelectStopState extends State<SelectStop> {
                                                     .stopovers
                                                     .first
                                                     .station
-                                                    ?.id ??
-                                                continuation
-                                                    .stopovers
-                                                    .first
-                                                    .id ??
-                                                0,
+                                                    .id,
                                             tripId:
                                                 trip.continuationTrip!.tripId,
                                             lineName:
@@ -439,10 +427,20 @@ class StopoverRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
+        if (stop.cancelled) {
+          final ignore = await showDialog<bool>(
+            context: context,
+            builder: (ctx) => CancelledConnectionDialog(),
+          );
+          if (!context.mounted) return;
+          if (!ignore!) {
+            return;
+          }
+        }
         callback.call(
-          stop.station?.id ?? stop.id ?? 0,
-          stop.station?.name ?? stop.name ?? "???",
+          stop.station.id,
+          stop.station.name,
           stop.arrivalPlanned!,
         );
       },
@@ -450,14 +448,21 @@ class StopoverRow extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            const Icon(Icons.circle, size: 6),
+            Icon(
+              Icons.circle,
+              size: 6,
+              color: stop.cancelled ? Colors.red : null,
+            ),
             const SizedBox(width: 4),
             Expanded(
               child: Text(
-                stop.station?.name ?? stop.name ?? "???",
-                style: const TextStyle(
+                stop.station.name,
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
+                  color: stop.cancelled ? Colors.red : null,
+                  decorationColor: stop.cancelled ? Colors.red : null,
+                  decoration: stop.cancelled ? .lineThrough : null,
                 ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -470,6 +475,7 @@ class StopoverRow extends StatelessWidget {
                 DepartureTime(
                   planned: stop.arrivalPlanned!,
                   real: stop.arrivalReal,
+                  cancelled: stop.cancelled,
                 ),
               ],
             ),

@@ -2179,6 +2179,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Use an alternative way to fetch polylines in the statistics tab. Uses more API calls and takes longer, but *might* be more accurate. Only polylines in the statistics tab are affected by this.'**
   String get alternativePolylineFetcherPreferenceHint;
+
+  /// No description provided for @connectionOrStationCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'The connection or stop you have selected has been marked as cancelled by the data provider. You\'re still able to check-in. Check the official data provider for more information.'**
+  String get connectionOrStationCancelled;
+
+  /// No description provided for @warning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get warning;
+
+  /// No description provided for @ignoreAndProceed.
+  ///
+  /// In en, this message translates to:
+  /// **'Ignore and proceed'**
+  String get ignoreAndProceed;
 }
 
 class _AppLocalizationsDelegate

@@ -22,7 +22,7 @@ BehaviorConfig _$BehaviorConfigFromJson(
   ..systemTimeDeviation = (json['systemTimeDeviation'] as num?)?.toInt() ?? -3
   ..hideTicketButton = json['hideTicketButton'] as bool? ?? false
   ..alternativePolylineFetcher =
-      json['alternativePolylineFetcher'] as bool? ?? false;
+      json['alternativePolylineFetcher'] as bool? ?? true;
 
 Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
     <String, dynamic>{

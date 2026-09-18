@@ -1198,4 +1198,14 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get alternativePolylineFetcherPreferenceHint =>
       'Alternative Methode Polylines vom Server zu holen. Dauert länger und benötigt mehr API-Aufrufe, *könnte* aber genauer sein. Nur die Ansicht in den Statistiken ist hiervon betroffen.';
+
+  @override
+  String get connectionOrStationCancelled =>
+      'Die von dir ausgewählte Verbindung oder Haltestellte wurde vom Datenprovider als \"fällt aus\" makiert. Das hindert dich nicht daran, den Check-In durchzuführen. Überprüfe ggf. beim Transportunternehmen ob dies so stimmt.';
+
+  @override
+  String get warning => 'Achtung!';
+
+  @override
+  String get ignoreAndProceed => 'Ignorieren und fortfahren';
 }

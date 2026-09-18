@@ -469,17 +469,11 @@ class _RideQuickViewState extends State<RideQuickView> {
         builder: (BuildContext context) => CheckIn(
           checkInInfo: CheckInInfo(
             destination:
-                status.checkin.destination.station?.name ??
-                status.checkin.destination.name ??
-                "???",
+                status.checkin.destination.station.name,
             destinationId:
-                status.checkin.destination.station?.id ??
-                status.checkin.destination.id ??
-                0,
+                status.checkin.destination.station.id,
             departureId:
-                status.checkin.origin.station?.id ??
-                status.checkin.origin.id ??
-                0,
+                status.checkin.origin.station.id,
             tripId: status.checkin.hafasId,
             lineName: status.checkin.lineName,
             category: status.checkin.category,
@@ -780,34 +774,19 @@ class _RideQuickViewState extends State<RideQuickView> {
                                                           .checkin
                                                           .origin
                                                           .station
-                                                          ?.id ??
-                                                      _rideData
-                                                          .checkin
-                                                          .origin
-                                                          .id ??
-                                                      0,
+                                                          .id,
                                                   destination:
                                                       _rideData
                                                           .checkin
                                                           .destination
                                                           .station
-                                                          ?.name ??
-                                                      _rideData
-                                                          .checkin
-                                                          .destination
-                                                          .name ??
-                                                      "???",
+                                                          .name,
                                                   destinationId:
                                                       _rideData
                                                           .checkin
                                                           .destination
                                                           .station
-                                                          ?.id ??
-                                                      _rideData
-                                                          .checkin
-                                                          .destination
-                                                          .id ??
-                                                      0,
+                                                          .id,
                                                   rideId: _rideData.id,
                                                   body: _rideData.body,
                                                   visibility:
@@ -1127,21 +1106,15 @@ class _StationText extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (BuildContext context) => SelectConnection(
                       stationId:
-                          transportData.destination.station?.id ??
-                          transportData.destination.id ??
-                          0,
+                          transportData.destination.station.id,
                       stationName:
-                          transportData.destination.station?.name ??
-                          transportData.destination.name ??
-                          "???",
+                          transportData.destination.station.name,
                     ),
                   ),
                 );
               },
               child: Text(
-                transportData.destination.station?.name ??
-                    transportData.destination.name ??
-                    "???",
+                transportData.destination.station.name,
                 style: stationText,
               ),
             ),
@@ -1155,21 +1128,15 @@ class _StationText extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (BuildContext context) => SelectConnection(
                       stationId:
-                          transportData.origin.station?.id ??
-                          transportData.origin.id ??
-                          0,
+                          transportData.origin.station.id,
                       stationName:
-                          transportData.origin.station?.name ??
-                          transportData.origin.name ??
-                          "???",
+                          transportData.origin.station.name,
                     ),
                   ),
                 );
               },
               child: Text(
-                transportData.origin.station?.name ??
-                    transportData.origin.name ??
-                    "???",
+                transportData.origin.station.name,
                 style: stationText,
               ),
             ),
@@ -1231,13 +1198,9 @@ class _StationText extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => SelectConnection(
                           stationId:
-                              transportData.destination.station?.id ??
-                              transportData.destination.id ??
-                              0,
+                              transportData.destination.station.id,
                           stationName:
-                              transportData.destination.station?.name ??
-                              transportData.destination.name ??
-                              "???",
+                              transportData.destination.station.name,
                         ),
                       ),
                     );
@@ -1247,13 +1210,9 @@ class _StationText extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => SelectConnection(
                           stationId:
-                              transportData.origin.station?.id ??
-                              transportData.origin.id ??
-                              0,
+                              transportData.origin.station.id,
                           stationName:
-                              transportData.origin.station?.name ??
-                              transportData.origin.name ??
-                              "???",
+                              transportData.origin.station.name,
                         ),
                       ),
                     );

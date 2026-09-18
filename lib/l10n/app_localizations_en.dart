@@ -1189,4 +1189,14 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get alternativePolylineFetcherPreferenceHint =>
       'Use an alternative way to fetch polylines in the statistics tab. Uses more API calls and takes longer, but *might* be more accurate. Only polylines in the statistics tab are affected by this.';
+
+  @override
+  String get connectionOrStationCancelled =>
+      'The connection or stop you have selected has been marked as cancelled by the data provider. You\'re still able to check-in. Check the official data provider for more information.';
+
+  @override
+  String get warning => 'Warning';
+
+  @override
+  String get ignoreAndProceed => 'Ignore and proceed';
 }
