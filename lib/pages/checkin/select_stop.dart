@@ -38,7 +38,7 @@ class SelectStop extends StatefulWidget {
 
 class _SelectStopState extends State<SelectStop> {
   late Future<TripResource> _trip;
-
+  late String attribution = "";
   @override
   void initState() {
     super.initState();
@@ -75,6 +75,7 @@ class _SelectStopState extends State<SelectStop> {
       response.stopovers.removeLast();
     }
     response.stopovers = response.stopovers.reversed.toList();
+    setState(() => attribution = response.dataSource?.attribution ?? "");
     return response;
   }
 
@@ -344,6 +345,7 @@ class _SelectStopState extends State<SelectStop> {
                         },
                       ),
                     ),
+                    Text(attribution, textAlign: .center, style: .new(fontStyle: .italic),)
                   ],
                 ),
               ),
@@ -375,6 +377,7 @@ class ContinueHint extends StatelessWidget {
             style: Theme.of(
               context,
             ).textTheme.headlineSmall!.copyWith(fontStyle: .italic),
+            textAlign: .center,
           ),
           SizedBox(height: 8),
         ],

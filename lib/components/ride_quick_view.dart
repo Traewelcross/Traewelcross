@@ -8,7 +8,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/masto_emoji.dart';
-import 'package:traewelcross/components/platform.dart';
 import 'package:traewelcross/components/pride_gradient.dart';
 import 'package:traewelcross/components/profile_picture.dart';
 import 'package:traewelcross/components/ride_icon_tag.dart';
