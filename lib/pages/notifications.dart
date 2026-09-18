@@ -44,7 +44,7 @@ class _NotificationsViewState extends State<NotificationsView> {
   }
 
   Future<void> _markAsRead(String id) async {
-    await getIt<ApiService>().notification.markAllRead();
+    await getIt<ApiService>().notification.markAsRead(id);
     _fetchNotifications();
   }
 

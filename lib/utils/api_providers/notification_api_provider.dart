@@ -27,6 +27,10 @@ class NotificationApiProvider {
     await _api.request("/notifications/read/all", HttpRequestTypes.PUT);
   }
 
+  Future<void> markAsRead(String id) async {
+    await _api.request("/notifications/read/$id", HttpRequestTypes.PUT);
+  }
+
   Future<List<models.Notification>> fetchNotifications({
     required int page,
   }) async {
