@@ -1199,4 +1199,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ignoreAndProceed => 'Ignore and proceed';
+
+  @override
+  String get stopCancelled => 'Cancelled';
 }

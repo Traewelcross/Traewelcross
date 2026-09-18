@@ -2197,6 +2197,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ignore and proceed'**
   String get ignoreAndProceed;
+
+  /// No description provided for @stopCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get stopCancelled;
 }
 
 class _AppLocalizationsDelegate

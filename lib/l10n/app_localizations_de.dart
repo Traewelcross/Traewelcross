@@ -1208,4 +1208,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get ignoreAndProceed => 'Ignorieren und fortfahren';
+
+  @override
+  String get stopCancelled => 'fällt aus';
 }

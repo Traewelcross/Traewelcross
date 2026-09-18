@@ -8,6 +8,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/masto_emoji.dart';
+import 'package:traewelcross/components/platform.dart';
 import 'package:traewelcross/components/pride_gradient.dart';
 import 'package:traewelcross/components/profile_picture.dart';
 import 'package:traewelcross/components/ride_icon_tag.dart';
@@ -468,12 +469,9 @@ class _RideQuickViewState extends State<RideQuickView> {
       MaterialPageRoute(
         builder: (BuildContext context) => CheckIn(
           checkInInfo: CheckInInfo(
-            destination:
-                status.checkin.destination.station.name,
-            destinationId:
-                status.checkin.destination.station.id,
-            departureId:
-                status.checkin.origin.station.id,
+            destination: status.checkin.destination.station.name,
+            destinationId: status.checkin.destination.station.id,
+            departureId: status.checkin.origin.station.id,
             tripId: status.checkin.hafasId,
             lineName: status.checkin.lineName,
             category: status.checkin.category,
@@ -520,7 +518,9 @@ class _RideQuickViewState extends State<RideQuickView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _StationText(
-                      transportData: _rideData.checkin,
+                      stopover: _rideData.checkin.origin,
+                      manualArrival: _rideData.checkin.manualArrival,
+                      manualDeparture: _rideData.checkin.manualDeparture,
                       isDestination: false,
                       onUpdateTime: _updateTime,
                       isAuthUser: _isAuthUser(),
@@ -639,7 +639,9 @@ class _RideQuickViewState extends State<RideQuickView> {
                         ),
                       ),
                     _StationText(
-                      transportData: _rideData.checkin,
+                      manualArrival: _rideData.checkin.manualArrival,
+                      manualDeparture: _rideData.checkin.manualDeparture,
+                      stopover: _rideData.checkin.destination,
                       isDestination: true,
                       onUpdateTime: _updateTime,
                       isAuthUser: _isAuthUser(),
@@ -769,24 +771,21 @@ class _RideQuickViewState extends State<RideQuickView> {
                                           builder: (BuildContext context) =>
                                               CheckIn(
                                                 checkInInfo: CheckInInfo(
-                                                  departureId:
-                                                      _rideData
-                                                          .checkin
-                                                          .origin
-                                                          .station
-                                                          .id,
-                                                  destination:
-                                                      _rideData
-                                                          .checkin
-                                                          .destination
-                                                          .station
-                                                          .name,
-                                                  destinationId:
-                                                      _rideData
-                                                          .checkin
-                                                          .destination
-                                                          .station
-                                                          .id,
+                                                  departureId: _rideData
+                                                      .checkin
+                                                      .origin
+                                                      .station
+                                                      .id,
+                                                  destination: _rideData
+                                                      .checkin
+                                                      .destination
+                                                      .station
+                                                      .name,
+                                                  destinationId: _rideData
+                                                      .checkin
+                                                      .destination
+                                                      .station
+                                                      .id,
                                                   rideId: _rideData.id,
                                                   body: _rideData.body,
                                                   visibility:
@@ -1040,17 +1039,20 @@ class _LikeButtonState extends State<LikeButton> {
 
 class _StationText extends StatelessWidget {
   const _StationText({
-    required this.transportData,
     required this.isDestination,
     required this.onUpdateTime,
     required this.isAuthUser,
+    required this.stopover,
+    this.manualArrival,
+    this.manualDeparture,
   });
 
-  final Transport transportData;
   final bool isDestination;
   final Function(TimeOfDay?, bool) onUpdateTime;
   final bool isAuthUser;
-
+  final String? manualArrival;
+  final String? manualDeparture;
+  final Stopover stopover;
   @override
   Widget build(BuildContext context) {
     final hideOnTimeOverride =
@@ -1067,16 +1069,14 @@ class _StationText extends StatelessWidget {
       color: Theme.of(context).colorScheme.primary,
       fontWeight: FontWeight.w600,
     );
+    plannedTimeStr = stopover.arrivalPlanned!;
+    realTimeStr = stopover.arrivalReal;
     if (isDestination) {
-      manualTimeStr = transportData.manualArrival;
-      plannedTimeStr = transportData.destination.arrivalPlanned!;
-      isDelayed = transportData.destination.isArrivalDelayed;
-      realTimeStr = transportData.destination.arrivalReal;
+      manualTimeStr = manualArrival;
+      isDelayed = stopover.isArrivalDelayed;
     } else {
-      manualTimeStr = transportData.manualDeparture;
-      plannedTimeStr = transportData.origin.departurePlanned!;
-      isDelayed = transportData.origin.isDepartureDelayed;
-      realTimeStr = transportData.origin.departureReal;
+      manualTimeStr = manualDeparture;
+      isDelayed = stopover.isDepartureDelayed;
     }
     time = DateTime.parse(manualTimeStr ?? realTimeStr ?? plannedTimeStr);
 
@@ -1097,50 +1097,47 @@ class _StationText extends StatelessWidget {
       children: [
         Icon(Icons.location_on, color: Theme.of(context).colorScheme.primary),
         const SizedBox(width: 4),
-        if (isDestination)
-          Expanded(
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => SelectConnection(
-                      stationId:
-                          transportData.destination.station.id,
-                      stationName:
-                          transportData.destination.station.name,
+        Expanded(
+          child: Row(
+            mainAxisSize: .max,
+            spacing: 8,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => SelectConnection(
+                        stationId: stopover.station.id,
+                        stationName: stopover.station.name,
+                      ),
+                    ),
+                  );
+                },
+                child: Text(stopover.station.name, style: stationText),
+              ),
+              if (stopover.cancelled)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    color: Theme.of(context).colorScheme.errorContainer,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 2,
+                        horizontal: 8,
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.stopCancelled,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onErrorContainer,
+                        ),
+                      ),
                     ),
                   ),
-                );
-              },
-              child: Text(
-                transportData.destination.station.name,
-                style: stationText,
-              ),
-            ),
+                ),
+            ],
           ),
-        if (!isDestination)
-          Expanded(
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => SelectConnection(
-                      stationId:
-                          transportData.origin.station.id,
-                      stationName:
-                          transportData.origin.station.name,
-                    ),
-                  ),
-                );
-              },
-              child: Text(
-                transportData.origin.station.name,
-                style: stationText,
-              ),
-            ),
-          ),
+        ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -1163,8 +1160,8 @@ class _StationText extends StatelessWidget {
                   if (config.behavior.delaySystemTimeOverride >= 0) {
                     final plannedDateTime = DateTime.parse(
                       isDestination
-                          ? transportData.destination.arrivalPlanned!
-                          : transportData.origin.departurePlanned!,
+                          ? stopover.arrivalPlanned!
+                          : stopover.departurePlanned!,
                     ).toLocal();
 
                     final thresholdDateTime = plannedDateTime.add(
@@ -1177,14 +1174,14 @@ class _StationText extends StatelessWidget {
                       initTime = TimeOfDay.fromDateTime(plannedDateTime);
                     }
                   }
-                  if (transportData.manualArrival != null && isDestination) {
+                  if (manualArrival != null && isDestination) {
                     initTime = TimeOfDay.fromDateTime(
-                      DateTime.parse(transportData.manualArrival!).toLocal(),
+                      DateTime.parse(manualArrival!).toLocal(),
                     );
                   }
-                  if (transportData.manualDeparture != null && !isDestination) {
+                  if (manualDeparture != null && !isDestination) {
                     initTime = TimeOfDay.fromDateTime(
-                      DateTime.parse(transportData.manualDeparture!).toLocal(),
+                      DateTime.parse(manualDeparture!).toLocal(),
                     );
                   }
                   showTimePicker(
@@ -1192,31 +1189,15 @@ class _StationText extends StatelessWidget {
                     initialTime: initTime,
                   ).then((val) => onUpdateTime(val, isDestination));
                 } else {
-                  if (isDestination) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SelectConnection(
-                          stationId:
-                              transportData.destination.station.id,
-                          stationName:
-                              transportData.destination.station.name,
-                        ),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SelectConnection(
+                        stationId: stopover.station.id,
+                        stationName: stopover.station.name,
                       ),
-                    );
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SelectConnection(
-                          stationId:
-                              transportData.origin.station.id,
-                          stationName:
-                              transportData.origin.station.name,
-                        ),
-                      ),
-                    );
-                  }
+                    ),
+                  );
                 }
               },
               child: Text(
