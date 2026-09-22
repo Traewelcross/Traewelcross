@@ -2,6 +2,8 @@ import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 
 class CancelledConnectionDialog extends StatelessWidget {
+  const CancelledConnectionDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;

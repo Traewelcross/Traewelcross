@@ -1,5 +1,6 @@
 //TODO: Migrate this to material_ui
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
+import "package:flutter/material.dart" as legacy;
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:traewelcross/utils/shared.dart';
@@ -51,15 +52,19 @@ class LicenseViewer extends StatelessWidget {
               },
             ),
             Divider(),
-            Project(
-              projectVersion: "",
-              projectName: AppLocalizations.of(context)!.fonts,
-              projectLicense: fonts,
+            MaterialUiCompatibilityBridge(
+              child: Project(
+                projectVersion: "",
+                projectName: AppLocalizations.of(context)!.fonts,
+                projectLicense: fonts,
+              ),
             ),
-            Project(
-              projectVersion: "",
-              projectName: AppLocalizations.of(context)!.addNotices,
-              projectLicense: notices,
+            MaterialUiCompatibilityBridge(
+              child: Project(
+                projectVersion: "",
+                projectName: AppLocalizations.of(context)!.addNotices,
+                projectLicense: notices,
+              ),
             ),
           ],
         );
@@ -68,7 +73,7 @@ class LicenseViewer extends StatelessWidget {
   }
 }
 
-class Project extends StatelessWidget {
+class Project extends legacy.StatelessWidget {
   const Project({
     super.key,
     required this.projectName,
@@ -100,7 +105,7 @@ class Project extends StatelessWidget {
                       onTapLink: (text, href, title) =>
                           SharedFunctions.launchURL(Uri.parse(href!)),
                       styleSheet: MarkdownStyleSheet(
-                        code: MarkdownStyleSheet.fromTheme(Theme.of(context)).p,
+                        code: MarkdownStyleSheet.fromTheme(legacy.Theme.of(context)).p,
                       ),
                     ),
                   ),
