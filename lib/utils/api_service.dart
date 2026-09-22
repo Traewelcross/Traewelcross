@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:oauth2/oauth2.dart' as oauth2;
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traewelcross/enums/error_type.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
@@ -31,6 +32,7 @@ class ApiService {
   final AuthService _authService;
   DateTime _lastRequest = DateTime.now();
   Future<dynamic>? _refreshFuture;
+  bool serviceUnavailable = false;
 
   //TODO: provider wide check for common status code like 200, 404, 401, ...
   late final status = StatusApiProvider(this);
@@ -79,11 +81,10 @@ class ApiService {
     Encoding? encoding,
     bool isRetrial = false,
   }) async {
-    // TODO: Maybe do this more elegantly
     headers ??= {};
     headers.addAll({
       "User-Agent":
-          "Traewelcross/1.6.2 (https://github.com/traewelcross/traewelcross; traewelcross.de)",
+          "Traewelcross/${(await PackageInfo.fromPlatform()).version} (https://github.com/traewelcross/traewelcross; traewelcross.de)",
       "Content-Type": "application/json",
     });
     oauth2.Client? client = await getAuthenticatedClient();
@@ -135,6 +136,16 @@ class ApiService {
             .timeout(Duration(seconds: _timeoutDuration));
         break;
     }
+    /*if (res.statusCode == 503 && !serviceUnavailable) {
+      serviceUnavailable = true;
+      final buildCtx = getIt<GlobalKey<NavigatorState>>().currentState?.context;
+      if (!buildCtx!.mounted) return res;
+      Navigator.pushReplacement(
+        buildCtx,
+        MaterialPageRoute(builder: (ctx) => UnavailableService()),
+      );
+      return res;
+    }*/
     _lastRequest = DateTime.now();
     return res;
   }
@@ -177,11 +188,10 @@ class ApiService {
     try {
       res = await client.post(
         SharedFunctions.concatUri(["https://traewelling.de", "/oauth/token"]),
-        // TODO: Maybe do this more elegantly
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           "User-Agent":
-              "Traewelcross/1.5.2 (https://github.com/traewelcross/traewelcross; traewelcross.de)",
+              "Traewelcross/${(await PackageInfo.fromPlatform()).version} (https://github.com/traewelcross/traewelcross; traewelcross.de)",
         },
         body: {
           "refresh_token": oAuthClient.credentials.refreshToken ?? "",

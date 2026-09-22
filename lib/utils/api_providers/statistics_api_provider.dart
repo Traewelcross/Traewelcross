@@ -46,7 +46,6 @@ class StatisticsApiProvider {
         endpoint += "&travelTypes%5B%5D=${d.value}";
       }
     }
-    print(endpoint);
     final response = await _api.request(
       endpoint,
       .GET,
