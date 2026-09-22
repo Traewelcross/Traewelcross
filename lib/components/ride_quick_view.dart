@@ -1097,23 +1097,24 @@ class _StationText extends StatelessWidget {
         Icon(Icons.location_on, color: Theme.of(context).colorScheme.primary),
         const SizedBox(width: 4),
         Expanded(
-          child: Wrap(
-            crossAxisAlignment: .center,
+          child: Row(
             spacing: 8,
             children: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => SelectConnection(
-                        stationId: stopover.station.id,
-                        stationName: stopover.station.name,
+              Flexible(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => SelectConnection(
+                          stationId: stopover.station.id,
+                          stationName: stopover.station.name,
+                        ),
                       ),
-                    ),
-                  );
-                },
-                child: Text(stopover.station.name, style: stationText, softWrap: true,),
+                    );
+                  },
+                  child: Text(stopover.station.name, style: stationText, softWrap: true,),
+                ),
               ),
               if (stopover.cancelled)
                 ClipRRect(
