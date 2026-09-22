@@ -518,7 +518,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                   children: [
                     _StationText(
                       stopover: _rideData.checkin.origin,
-                      manualArrival: _rideData.checkin.manualArrival,
+                      manualArrival: null,
                       manualDeparture: _rideData.checkin.manualDeparture,
                       isDestination: false,
                       onUpdateTime: _updateTime,
@@ -639,7 +639,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                       ),
                     _StationText(
                       manualArrival: _rideData.checkin.manualArrival,
-                      manualDeparture: _rideData.checkin.manualDeparture,
+                      manualDeparture: null,
                       stopover: _rideData.checkin.destination,
                       isDestination: true,
                       onUpdateTime: _updateTime,
@@ -1068,12 +1068,15 @@ class _StationText extends StatelessWidget {
       color: Theme.of(context).colorScheme.primary,
       fontWeight: FontWeight.w600,
     );
-    plannedTimeStr = stopover.arrivalPlanned!;
-    realTimeStr = stopover.arrivalReal;
+
     if (isDestination) {
+      plannedTimeStr = stopover.arrivalPlanned!;
+      realTimeStr = stopover.arrivalReal;
       manualTimeStr = manualArrival;
       isDelayed = stopover.isArrivalDelayed;
     } else {
+      plannedTimeStr = stopover.departurePlanned!;
+      realTimeStr = stopover.departureReal;
       manualTimeStr = manualDeparture;
       isDelayed = stopover.isDepartureDelayed;
     }
@@ -1113,7 +1116,11 @@ class _StationText extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Text(stopover.station.name, style: stationText, softWrap: true,),
+                  child: Text(
+                    stopover.station.name,
+                    style: stationText,
+                    softWrap: true,
+                  ),
                 ),
               ),
               if (stopover.cancelled)
