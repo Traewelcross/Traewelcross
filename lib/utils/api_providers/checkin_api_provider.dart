@@ -34,17 +34,19 @@ class CheckinApiProvider {
       );
     }
     if (response.statusCode == 409) {
-      final errorInfo = jsonDecode(response.body)?["message"];
+      final List<dynamic> errorInfo = jsonDecode(response.body)?["data"]["conflicts"];
+      final List<Status> status = errorInfo
+          .map((e) => Status.fromJson(e))
+          .toList();
       if (_context?.mounted != true) {
         return GenericStatusResponseWithObject(wasSuccess: false, object: null);
       }
-      // TODO CRITICAL: POST /api/v1/trains/checkin 409 response: message.status_id and message.lineName are deprecated. Use data.conflicts (full StatusResource array) instead (#4677)
       showDialog(
         context: _context!,
         builder: (ctx) => CheckinConflict(
           forceCallback: () => checkIn(cir, force: true),
-          lineName: errorInfo?["lineName"],
-          statusID: errorInfo?["status_id"]?.toString(),
+          lineName: status.first.checkin.lineName,
+          statusID: status.first.id.toString(),
         ),
       );
       return GenericStatusResponseWithObject(wasSuccess: false, object: null);

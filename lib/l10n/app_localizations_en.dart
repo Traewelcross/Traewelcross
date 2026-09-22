@@ -932,7 +932,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String checkinConflictBody(String lineName, String statusID) {
-    return 'Sorry, but while trying to check you in, a conflict occured. It\'s highly likely that you already checked into this or another connection. The conflicting status is a ride with $lineName (ID: $statusID). Would you like to force a Check-In? (This won\'t give you any points, but will contribute to your statistics anyway.)';
+    return 'Sorry, but while trying to check you in, a conflict occured. It\'s highly likely that you already checked into this or another connection. The first conflicting status is a ride with $lineName (ID: $statusID). Would you like to force a Check-In? (This won\'t give you any points, but will contribute to your statistics anyway.)';
   }
 
   @override
