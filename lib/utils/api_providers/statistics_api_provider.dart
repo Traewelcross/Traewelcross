@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:latlong2/latlong.dart';
 import 'package:material_ui/material_ui.dart';
@@ -30,7 +31,7 @@ class StatisticsApiProvider {
           .toList();
       final List<List<LatLng>> polylines = .empty(growable: true);
       for (var e in entries) {
-        polylines.add(_parseEncodedPolyline(e.polyline));
+        polylines.add(_parseEncodedPolyline(e.polyline, e.polylinePrecision));
       }
       final userInfo = jsonDecode(
         (await SharedPreferencesAsync().getString("userinfo"))!,
@@ -44,11 +45,11 @@ class StatisticsApiProvider {
     return [];
   }
 
-  List<LatLng> _parseEncodedPolyline(String encoded) {
+  List<LatLng> _parseEncodedPolyline(String encoded, int precision) {
     List<LatLng> points = [];
     int index = 0, len = encoded.length;
     int lat = 0, lng = 0;
-
+    final double factor = math.pow(10, precision).toDouble();
     while (index < len) {
       int b, shift = 0, result = 0;
       do {
@@ -71,8 +72,8 @@ class StatisticsApiProvider {
       int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
       lng += dlng;
 
-      double finalLat = lat / 1e6;
-      double finalLng = lng / 1e6;
+      double finalLat = lat / factor;
+      double finalLng = lng / factor;
 
       points.add(LatLng(finalLat, finalLng));
     }
