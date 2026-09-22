@@ -358,7 +358,8 @@ class _DepartureList extends StatelessWidget {
                     if(departure.cancelled){
                       final ignore = await showDialog<bool>(context: context, builder: (ctx) => CancelledConnectionDialog());
                       if(!context.mounted) return;
-                      if(!ignore!){
+                      if(ignore==null) return;
+                      if(!ignore){
                         return;
                       }
                     }

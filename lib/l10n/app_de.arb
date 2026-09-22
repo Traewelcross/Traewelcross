@@ -350,5 +350,22 @@
     "connectionOrStationCancelled": "Die von dir ausgewählte Verbindung oder Haltestellte wurde vom Datenprovider als \"fällt aus\" makiert. Das hindert dich nicht daran, den Check-In durchzuführen. Überprüfe ggf. beim Transportunternehmen ob dies so stimmt.",
     "warning": "Achtung!",
     "ignoreAndProceed": "Ignorieren und fortfahren",
-    "stopCancelled": "fällt aus"
+    "stopCancelled": "fällt aus",
+      "filter": "Filter",
+  "filterTravelTypes": "Transportmittel",
+  "filterTravelTypesHighSpeed": "Hochgeschwindigkeitszüge",
+  "filterTravelTypesIC": "Intercity- und Eurocityzüge",
+  "filterTravelTypesIR": "Interregio- und Schnellzüge",
+  "filterTravelTypesRegional": "Regionalzüge",
+  "filterTravelTypesSuburban": "S-Bahn",
+  "filterTravelTypesSubway": "U-Bahn",
+  "filterTravelTypesTram": "Straßenbahn",
+  "filterTravelTypesBus": "Bus",
+  "filterTravelTypesFerry": "Fähre",
+  "filterTravelTypesPlane": "Flugzeug",
+  "filterTravelTypesTaxi": "Taxi",
+  "filterTravelTypesFreightTrain": "Güterzug",
+  "filterTravelPurpose": "Grund der Reise",
+  "filterApproxRoutes": "Geschätzte Abschnitte anzeigen",
+  "filterApply": "Filter anwenden"
 }

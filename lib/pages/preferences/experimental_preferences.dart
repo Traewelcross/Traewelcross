@@ -52,20 +52,6 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
               }),
             ),
           ),
-          ListTile(
-            onTap: () => setState(() {
-              config.behavior.alternativePolylineFetcher =
-                  !config.behavior.alternativePolylineFetcher;
-            }),
-            title: Text(localize.alternativePolylineFetcherPreference),
-            subtitle: Text(localize.alternativePolylineFetcherPreferenceHint),
-            trailing: Switch(
-              value: config.behavior.alternativePolylineFetcher,
-              onChanged: (val) => setState(() {
-                config.behavior.alternativePolylineFetcher = val;
-              }),
-            ),
-          ),
           /*ListTile(
             onTap: () => setState(() {
               config.behavior.multiAccountSupport = !config.behavior.multiAccountSupport;

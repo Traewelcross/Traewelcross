@@ -1,5 +1,8 @@
 enum DepartTypes {
   express("express"),
+  nationalExpress("nationalExpress"),
+  national("national"),
+  regionalExp("regionalExp"),
   regional("regional"),
   subUrban("suburban"),
   subway("subway"),

@@ -437,7 +437,8 @@ class StopoverRow extends StatelessWidget {
             builder: (ctx) => CancelledConnectionDialog(),
           );
           if (!context.mounted) return;
-          if (!ignore!) {
+          if(ignore == null) return;
+          if (!ignore) {
             return;
           }
         }

@@ -11,10 +11,10 @@ import 'package:traewelcross/utils/shared.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MapStat extends StatelessWidget {
-  const MapStat({super.key, required this.rides});
+  const MapStat({super.key, required this.rides, this.footer});
 
   final List<RideInfo> rides;
-
+  final Widget? footer;
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
@@ -116,6 +116,7 @@ class MapStat extends StatelessWidget {
                   .toList(),
             ),
           ),
+          ?footer
       ],
     );
   }

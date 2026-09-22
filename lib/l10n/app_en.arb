@@ -711,5 +711,22 @@
   "connectionOrStationCancelled": "The connection or stop you have selected has been marked as cancelled by the data provider. You're still able to check-in. Check the official data provider for more information.",
   "warning": "Warning",
   "ignoreAndProceed": "Ignore and proceed",
-  "stopCancelled": "Cancelled"
+  "stopCancelled": "Cancelled",
+  "filter": "Filter",
+  "filterTravelTypes": "Means of transport",
+  "filterTravelTypesHighSpeed": "High speed trains",
+  "filterTravelTypesIC": "Intercity- and Eurocity trains",
+  "filterTravelTypesIR": "Interregional- and express trains",
+  "filterTravelTypesRegional": "Regional trains",
+  "filterTravelTypesSuburban": "Suburban trains",
+  "filterTravelTypesSubway": "Subway/Metro",
+  "filterTravelTypesTram": "Tram",
+  "filterTravelTypesBus": "Bus",
+  "filterTravelTypesFerry": "Ferry",
+  "filterTravelTypesPlane": "Plane",
+  "filterTravelTypesTaxi": "Taxi",
+  "filterTravelTypesFreightTrain": "Freight train",
+  "filterTravelPurpose": "Reason of travel",
+  "filterApproxRoutes": "Include approximated routes",
+  "filterApply": "Apply filters"
 }

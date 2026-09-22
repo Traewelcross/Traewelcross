@@ -747,6 +747,9 @@ Map<String, dynamic> _$TripDraftToJson(TripDraft instance) => <String, dynamic>{
 
 const _$DepartTypesEnumMap = {
   DepartTypes.express: 'express',
+  DepartTypes.nationalExpress: 'nationalExpress',
+  DepartTypes.national: 'national',
+  DepartTypes.regionalExp: 'regionalExp',
   DepartTypes.regional: 'regional',
   DepartTypes.subUrban: 'subUrban',
   DepartTypes.subway: 'subway',

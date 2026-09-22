@@ -2203,6 +2203,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancelled'**
   String get stopCancelled;
+
+  /// No description provided for @filter.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter'**
+  String get filter;
+
+  /// No description provided for @filterTravelTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Means of transport'**
+  String get filterTravelTypes;
+
+  /// No description provided for @filterTravelTypesHighSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'High speed trains'**
+  String get filterTravelTypesHighSpeed;
+
+  /// No description provided for @filterTravelTypesIC.
+  ///
+  /// In en, this message translates to:
+  /// **'Intercity- and Eurocity trains'**
+  String get filterTravelTypesIC;
+
+  /// No description provided for @filterTravelTypesIR.
+  ///
+  /// In en, this message translates to:
+  /// **'Interregional- and express trains'**
+  String get filterTravelTypesIR;
+
+  /// No description provided for @filterTravelTypesRegional.
+  ///
+  /// In en, this message translates to:
+  /// **'Regional trains'**
+  String get filterTravelTypesRegional;
+
+  /// No description provided for @filterTravelTypesSuburban.
+  ///
+  /// In en, this message translates to:
+  /// **'Suburban trains'**
+  String get filterTravelTypesSuburban;
+
+  /// No description provided for @filterTravelTypesSubway.
+  ///
+  /// In en, this message translates to:
+  /// **'Subway/Metro'**
+  String get filterTravelTypesSubway;
+
+  /// No description provided for @filterTravelTypesTram.
+  ///
+  /// In en, this message translates to:
+  /// **'Tram'**
+  String get filterTravelTypesTram;
+
+  /// No description provided for @filterTravelTypesBus.
+  ///
+  /// In en, this message translates to:
+  /// **'Bus'**
+  String get filterTravelTypesBus;
+
+  /// No description provided for @filterTravelTypesFerry.
+  ///
+  /// In en, this message translates to:
+  /// **'Ferry'**
+  String get filterTravelTypesFerry;
+
+  /// No description provided for @filterTravelTypesPlane.
+  ///
+  /// In en, this message translates to:
+  /// **'Plane'**
+  String get filterTravelTypesPlane;
+
+  /// No description provided for @filterTravelTypesTaxi.
+  ///
+  /// In en, this message translates to:
+  /// **'Taxi'**
+  String get filterTravelTypesTaxi;
+
+  /// No description provided for @filterTravelTypesFreightTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Freight train'**
+  String get filterTravelTypesFreightTrain;
+
+  /// No description provided for @filterTravelPurpose.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason of travel'**
+  String get filterTravelPurpose;
+
+  /// No description provided for @filterApproxRoutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Include approximated routes'**
+  String get filterApproxRoutes;
+
+  /// No description provided for @filterApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply filters'**
+  String get filterApply;
 }
 
 class _AppLocalizationsDelegate

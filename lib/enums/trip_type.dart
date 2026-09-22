@@ -10,7 +10,10 @@ enum TripType {
 
   final int value;
   const TripType(this.value);
-
+  
+  @override
+  String toString() => value.toString();
+  
   static TripType fromValue(int val) {
     return TripType.values.firstWhere((e) => e.value == val);
   }

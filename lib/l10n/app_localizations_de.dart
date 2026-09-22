@@ -1211,4 +1211,55 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get stopCancelled => 'fällt aus';
+
+  @override
+  String get filter => 'Filter';
+
+  @override
+  String get filterTravelTypes => 'Transportmittel';
+
+  @override
+  String get filterTravelTypesHighSpeed => 'Hochgeschwindigkeitszüge';
+
+  @override
+  String get filterTravelTypesIC => 'Intercity- und Eurocityzüge';
+
+  @override
+  String get filterTravelTypesIR => 'Interregio- und Schnellzüge';
+
+  @override
+  String get filterTravelTypesRegional => 'Regionalzüge';
+
+  @override
+  String get filterTravelTypesSuburban => 'S-Bahn';
+
+  @override
+  String get filterTravelTypesSubway => 'U-Bahn';
+
+  @override
+  String get filterTravelTypesTram => 'Straßenbahn';
+
+  @override
+  String get filterTravelTypesBus => 'Bus';
+
+  @override
+  String get filterTravelTypesFerry => 'Fähre';
+
+  @override
+  String get filterTravelTypesPlane => 'Flugzeug';
+
+  @override
+  String get filterTravelTypesTaxi => 'Taxi';
+
+  @override
+  String get filterTravelTypesFreightTrain => 'Güterzug';
+
+  @override
+  String get filterTravelPurpose => 'Grund der Reise';
+
+  @override
+  String get filterApproxRoutes => 'Geschätzte Abschnitte anzeigen';
+
+  @override
+  String get filterApply => 'Filter anwenden';
 }

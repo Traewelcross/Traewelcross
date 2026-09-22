@@ -4,9 +4,23 @@ import 'dart:math' as math;
 import 'package:latlong2/latlong.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:traewelcross/enums/depart_types.dart';
+import 'package:traewelcross/enums/trip_type.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/ride_info.dart';
+
+class MapFilters {
+  Set<DepartTypes> travelTypes;
+  Set<TripType> travelPurpose;
+  bool includeApprox;
+  MapFilters({
+    required this.travelTypes,
+    required this.travelPurpose,
+    this.includeApprox = true
+  });
+}
 
 class StatisticsApiProvider {
   final ApiService _api;
@@ -15,13 +29,26 @@ class StatisticsApiProvider {
   Future<List<RideInfo>> getPolylines({
     bool alternative = false,
     required DateTimeRange range,
+    MapFilters? filter
   }) async {
     if (alternative) {
-      print("using alternative");
       return _getRidesForUser(range);
     }
+    filter ??= MapFilters(travelTypes: {}, travelPurpose: {});
+    String endpoint = "/route-map?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}&includeApproximated=${filter.includeApprox.toString()}";
+    if(filter.travelPurpose.isNotEmpty){
+      for(TripType p in filter.travelPurpose){
+        endpoint += "&travelPurposes%5B%5D=${p.value}";
+      }
+    }
+    if(filter.travelTypes.isNotEmpty){
+      for(DepartTypes d in filter.travelTypes){
+        endpoint += "&travelTypes%5B%5D=${d.value}";
+      }
+    }
+    print(endpoint);
     final response = await _api.request(
-      "/route-map?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}&includeApproximated=true",
+      endpoint,
       .GET,
     );
     if (response.statusCode == 200) {
