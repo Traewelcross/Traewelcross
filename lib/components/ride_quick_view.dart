@@ -1097,8 +1097,8 @@ class _StationText extends StatelessWidget {
         Icon(Icons.location_on, color: Theme.of(context).colorScheme.primary),
         const SizedBox(width: 4),
         Expanded(
-          child: Row(
-            mainAxisSize: .max,
+          child: Wrap(
+            crossAxisAlignment: .center,
             spacing: 8,
             children: [
               InkWell(
@@ -1113,7 +1113,7 @@ class _StationText extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text(stopover.station.name, style: stationText),
+                child: Text(stopover.station.name, style: stationText, softWrap: true,),
               ),
               if (stopover.cancelled)
                 ClipRRect(
