@@ -1,27 +1,19 @@
 import 'dart:convert';
 
 import 'package:material_ui/material_ui.dart';
-import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:traewelcross/components/app_bar_title.dart';
-import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
-import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/stats/map_stat/map_stat.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/ride_info.dart';
 import 'package:traewelcross/utils/shared.dart';
 
 class MapStatForDayPage extends StatefulWidget {
-  const MapStatForDayPage({
-    super.key,
-    required this.rideInfo,
-    required this.date,
-  });
+  const MapStatForDayPage({super.key, required this.rideInfo, this.footer});
   @override
   State<MapStatForDayPage> createState() => _MapStatForDayPageState();
   final List<RideInfo> rideInfo;
-  final DateTime date;
+  final Widget? footer;
 }
 
 class _MapStatForDayPageState extends State<MapStatForDayPage> {
@@ -70,36 +62,26 @@ class _MapStatForDayPageState extends State<MapStatForDayPage> {
 
   @override
   Widget build(BuildContext context) {
-    final localize = AppLocalizations.of(context)!;
-    return MainScaffold(
-      title: AppBarTitle(
-        localize.mapPageTitle(
-          DateFormat.yMMMEd(
-            Localizations.localeOf(context).languageCode,
-          ).format(widget.date),
-        ),
-      ),
-      body: FutureBuilder<List<RideInfo>>(
-        future: _polylineFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return FutureBuilder<List<RideInfo>>(
+      future: _polylineFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          if (snapshot.hasError) {
-            return Center(child: Text(snapshot.error.toString()));
-          }
+        if (snapshot.hasError) {
+          return Center(child: Text(snapshot.error.toString()));
+        }
 
-          final ridesWithCoords =
-              snapshot.data
-                  ?.where(
-                    (r) => r.coordinates != null && r.coordinates!.isNotEmpty,
-                  )
-                  .toList() ??
-              [];
-          return MapStat(rides: ridesWithCoords);
-        },
-      ),
+        final ridesWithCoords =
+            snapshot.data
+                ?.where(
+                  (r) => r.coordinates != null && r.coordinates!.isNotEmpty,
+                )
+                .toList() ??
+            [];
+        return MapStat(rides: ridesWithCoords, footer: widget.footer,);
+      },
     );
   }
 }

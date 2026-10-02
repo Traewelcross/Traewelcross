@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traewelcross/components/ride_quick_view.dart';
+import 'package:traewelcross/pages/stats/day_stats/day_stat.dart';
 import 'package:traewelcross/pages/stats/map_stat/map_stat_for_day_page.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
@@ -191,16 +192,11 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MapStatForDayPage(
-                            rideInfo: ridesOnThisDate
-                                .map((rideItem) => RideInfo.fromRides(rideItem))
-                                .toList(),
-                            date: currentRideDate,
-                          ),
+                          builder: (context) => DayStat(rides: ridesOnThisDate, currentRideDate: currentRideDate,),
                         ),
                       );
                     },
-                    icon: const Icon(Icons.map),
+                    icon: const Icon(Icons.analytics_outlined),
                   ),
                 ],
               ),
