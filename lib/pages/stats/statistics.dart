@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/pages/stats/map_stat/map_stat_for_user.dart';
-
+import 'package:traewelcross/pages/stats/personal_stats/personal_stats_wrap.dart';
+import "package:traewelcross/pages/stats/user_stats/user_stats.dart";
 class Statistics extends StatefulWidget {
   const Statistics({super.key});
 
@@ -29,27 +30,23 @@ class _StatisticsState extends State<Statistics> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Future.value(true),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.hasData) {
-          // TODO: Implement fl_chart
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        }
-        return DefaultTabController(
-          length: 1,
-          child: Column(
-            children: [
-              TabBar.secondary(tabs: [Tab(icon: const Icon(Icons.map))]),
-              SizedBox(height: 8),
-              Expanded(child: TabBarView(children: [MapStatForUser()])),
+    return const DefaultTabController(
+      length: 3,
+      child: Column(
+        children: [
+          TabBar.secondary(
+            tabs: [
+              Tab(icon: Icon(Icons.bar_chart)),
+              Tab(icon: Icon(Icons.data_exploration_outlined)),
+              Tab(icon: Icon(Icons.map)),
             ],
           ),
-        );
-      },
+          SizedBox(height: 8),
+          Expanded(
+            child: TabBarView(children: [PersonalStatsWrap(), UserStats(), MapStatForUser()]),
+          ),
+        ],
+      ),
     );
   }
 }

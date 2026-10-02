@@ -426,7 +426,7 @@ class TravelPurposeFilterChip extends StatelessWidget {
         children: [
           switch (type) {
             .private => const Icon(Icons.person),
-            .commute => const Icon(Icons.commute),
+            .commute => const Icon(Icons.home_work),
             .business => const Icon(Icons.work),
           },
           const SizedBox(width: 8),

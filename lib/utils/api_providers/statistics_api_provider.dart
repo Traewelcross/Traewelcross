@@ -101,4 +101,32 @@ class StatisticsApiProvider {
     }
     return points;
   }
+  Future<StatisticsPersonal> getPersonalStatistics(DateTimeRange<DateTime> range) async{
+    final response = await _api.request("/statistics?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}", .GET);
+    if(response.statusCode == 200){
+      return StatisticsPersonal.fromJson(jsonDecode(response.body)["data"]);
+    }
+    return Future.error(response.statusCode);
+  }
+  Future<StatisticsOverview> getOverviewStatistics(DateTimeRange<DateTime> range) async {
+    final response = await _api.request("/statistics/overview?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}", .GET);
+    if(response.statusCode == 200){
+      return StatisticsOverview.fromJson(jsonDecode(response.body)["data"]["summary"]);
+    }
+    return Future.error(response.statusCode);
+  }
+  Future<StatisticsHistory> getHistoryStatistics() async {
+    final response = await _api.request("/statistics/history", .GET);
+        if(response.statusCode == 200){
+      return StatisticsHistory.fromJson(jsonDecode(response.body)["data"]);
+    }
+    return Future.error(response.statusCode);
+  }
+  Future<StatisticsFavorites> getFavoritesStatistics(DateTimeRange<DateTime> range) async {
+    final response = await _api.request("/statistics/favorites?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}", .GET);
+    if (response.statusCode == 200){
+      return StatisticsFavorites.fromJson(jsonDecode(response.body)["data"]);
+    }
+    return Future.error(response.statusCode);
+  }
 }

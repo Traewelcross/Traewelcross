@@ -256,7 +256,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editStatus => 'Edit Status';
 
   @override
-  String get checkIn => 'Check-In';
+  String get checkIn => 'Check in';
 
   @override
   String get statusText => 'Status';
@@ -917,8 +917,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get waitForStatsMsg =>
-      'Stats are being loaded.\nNote that this may take some time, depending on the timeframe and numbers of journeys. If this request fails, try selecting a smaller timeframe.';
+  String get waitForStatsMsgGeneric => 'Stats are being loaded...';
 
   @override
   String get alwaysUsePride => 'Always use pride-themed accents';
@@ -1253,4 +1252,105 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get filterApply => 'Apply filters';
+
+  @override
+  String statLoadFail(String error) {
+    return 'Sorry, but these stats failed to load ($error)';
+  }
+
+  @override
+  String get statsStatOverviewOverviewTitle => 'Overview';
+
+  @override
+  String statsStatOverviewOverview(DateTime startDate, DateTime endDate) {
+    final intl.DateFormat startDateDateFormat = intl.DateFormat.MMMd(
+      localeName,
+    );
+    final String startDateString = startDateDateFormat.format(startDate);
+    final intl.DateFormat endDateDateFormat = intl.DateFormat.MMMd(localeName);
+    final String endDateString = endDateDateFormat.format(endDate);
+
+    return 'From $startDateString to $endDateString you...';
+  }
+
+  @override
+  String statsStatOverviewOverviewTotalCheckins(num count) {
+    return '...checked in $count times';
+  }
+
+  @override
+  String statsStatOverviewOverviewActiveDays(num count) {
+    return '...were active on $count day(s)';
+  }
+
+  @override
+  String statsStatOverviewOverviewTotalDistance(num count) {
+    return '...traveled $count km';
+  }
+
+  @override
+  String statsStatOverviewOverviewMeanDistance(num count) {
+    return '...traveled $count km/journey on average';
+  }
+
+  @override
+  String get statsStatOverviewLongestDistance =>
+      'This was the longest Check-In (by distance)';
+
+  @override
+  String get statsStatOverviewShortestDistance =>
+      'This was the shortest Check-In (by distance)';
+
+  @override
+  String get statsStatOverviewLongestTime =>
+      'This was the longest Check-In (by time)';
+
+  @override
+  String get statsStatOverviewShortestTime =>
+      'This was the shortest Check-In (by time)';
+
+  @override
+  String get statsStatOverviewStatusNotAvailable =>
+      'Sorry, but you didn\'t do any journeys in this timeframe. Therefore no status can be displayed.';
+
+  @override
+  String get statsStatFavoritesTitle => 'Favorites';
+
+  @override
+  String get statsStatFavoritesSubtitle =>
+      'Your most used stops, routes and lines';
+
+  @override
+  String get statsStatFavortiesStops => 'Favorite stops';
+
+  @override
+  String get statsStatFavortiesLines => 'Favorite lines';
+
+  @override
+  String get statsStatFavortiesRoutes => 'Favorite routes';
+
+  @override
+  String get statsStatFavoritesNotAvailable =>
+      'Sorry, but you didn\'t do any journeys in this timeframe. Therefore, no favorites can be displayed';
+
+  @override
+  String get statsStatHistoryTitle => 'All-Time Statistics';
+
+  @override
+  String checkInCount(num count) {
+    return '$count Check-Ins';
+  }
+
+  @override
+  String monthYear(DateTime monthYear) {
+    final intl.DateFormat monthYearDateFormat = intl.DateFormat.yMMMM(
+      localeName,
+    );
+    final String monthYearString = monthYearDateFormat.format(monthYear);
+
+    return '$monthYearString';
+  }
+
+  @override
+  String get statsStatPersonalTravelType => 'Means of transport';
 }

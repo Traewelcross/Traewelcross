@@ -515,7 +515,7 @@ abstract class AppLocalizations {
   /// No description provided for @checkIn.
   ///
   /// In en, this message translates to:
-  /// **'Check-In'**
+  /// **'Check in'**
   String get checkIn;
 
   /// No description provided for @statusText.
@@ -1694,11 +1694,11 @@ abstract class AppLocalizations {
   /// **'{date1} to {date2}'**
   String dateSpan(String date1, String date2);
 
-  /// No description provided for @waitForStatsMsg.
+  /// No description provided for @waitForStatsMsgGeneric.
   ///
   /// In en, this message translates to:
-  /// **'Stats are being loaded.\nNote that this may take some time, depending on the timeframe and numbers of journeys. If this request fails, try selecting a smaller timeframe.'**
-  String get waitForStatsMsg;
+  /// **'Stats are being loaded...'**
+  String get waitForStatsMsgGeneric;
 
   /// No description provided for @alwaysUsePride.
   ///
@@ -2305,6 +2305,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Apply filters'**
   String get filterApply;
+
+  /// No description provided for @statLoadFail.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, but these stats failed to load ({error})'**
+  String statLoadFail(String error);
+
+  /// No description provided for @statsStatOverviewOverviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get statsStatOverviewOverviewTitle;
+
+  /// No description provided for @statsStatOverviewOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'From {startDate} to {endDate} you...'**
+  String statsStatOverviewOverview(DateTime startDate, DateTime endDate);
+
+  /// No description provided for @statsStatOverviewOverviewTotalCheckins.
+  ///
+  /// In en, this message translates to:
+  /// **'...checked in {count} times'**
+  String statsStatOverviewOverviewTotalCheckins(num count);
+
+  /// No description provided for @statsStatOverviewOverviewActiveDays.
+  ///
+  /// In en, this message translates to:
+  /// **'...were active on {count} day(s)'**
+  String statsStatOverviewOverviewActiveDays(num count);
+
+  /// No description provided for @statsStatOverviewOverviewTotalDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'...traveled {count} km'**
+  String statsStatOverviewOverviewTotalDistance(num count);
+
+  /// No description provided for @statsStatOverviewOverviewMeanDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'...traveled {count} km/journey on average'**
+  String statsStatOverviewOverviewMeanDistance(num count);
+
+  /// No description provided for @statsStatOverviewLongestDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'This was the longest Check-In (by distance)'**
+  String get statsStatOverviewLongestDistance;
+
+  /// No description provided for @statsStatOverviewShortestDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'This was the shortest Check-In (by distance)'**
+  String get statsStatOverviewShortestDistance;
+
+  /// No description provided for @statsStatOverviewLongestTime.
+  ///
+  /// In en, this message translates to:
+  /// **'This was the longest Check-In (by time)'**
+  String get statsStatOverviewLongestTime;
+
+  /// No description provided for @statsStatOverviewShortestTime.
+  ///
+  /// In en, this message translates to:
+  /// **'This was the shortest Check-In (by time)'**
+  String get statsStatOverviewShortestTime;
+
+  /// No description provided for @statsStatOverviewStatusNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, but you didn\'t do any journeys in this timeframe. Therefore no status can be displayed.'**
+  String get statsStatOverviewStatusNotAvailable;
+
+  /// No description provided for @statsStatFavoritesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get statsStatFavoritesTitle;
+
+  /// No description provided for @statsStatFavoritesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your most used stops, routes and lines'**
+  String get statsStatFavoritesSubtitle;
+
+  /// No description provided for @statsStatFavortiesStops.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite stops'**
+  String get statsStatFavortiesStops;
+
+  /// No description provided for @statsStatFavortiesLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite lines'**
+  String get statsStatFavortiesLines;
+
+  /// No description provided for @statsStatFavortiesRoutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite routes'**
+  String get statsStatFavortiesRoutes;
+
+  /// No description provided for @statsStatFavoritesNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorry, but you didn\'t do any journeys in this timeframe. Therefore, no favorites can be displayed'**
+  String get statsStatFavoritesNotAvailable;
+
+  /// No description provided for @statsStatHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'All-Time Statistics'**
+  String get statsStatHistoryTitle;
+
+  /// No description provided for @checkInCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Check-Ins'**
+  String checkInCount(num count);
+
+  /// No description provided for @monthYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{monthYear}'**
+  String monthYear(DateTime monthYear);
+
+  /// No description provided for @statsStatPersonalTravelType.
+  ///
+  /// In en, this message translates to:
+  /// **'Means of transport'**
+  String get statsStatPersonalTravelType;
 }
 
 class _AppLocalizationsDelegate

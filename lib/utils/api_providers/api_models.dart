@@ -619,16 +619,16 @@ class CheckinResponse {
 
 @JsonSerializable(fieldRename: .none)
 class Alert {
-  String id;
-  AlertTypes type;
+  final String id;
+  final AlertTypes type;
   @JsonKey(name: "active_from")
-  String activeFrom;
+  final String activeFrom;
   @JsonKey(name: "active_until")
-  String? activeUntil;
-  String? url;
-  List<AlertTranslation> translations;
+  final String? activeUntil;
+  final String? url;
+  final List<AlertTranslation> translations;
 
-  Alert({
+  const Alert({
     required this.id,
     required this.type,
     required this.activeUntil,
@@ -642,11 +642,11 @@ class Alert {
 
 @JsonSerializable(fieldRename: .none)
 class AlertTranslation {
-  String title;
-  String content;
-  String? url;
-  String locale;
-  AlertTranslation({
+  final String title;
+  final String content;
+  final String? url;
+  final String locale;
+  const AlertTranslation({
     required this.title,
     required this.content,
     this.url,
@@ -659,9 +659,9 @@ class AlertTranslation {
 
 @JsonSerializable(fieldRename: .none)
 class TrustedUser {
-  LightUser user;
-  String? expiresAt;
-  TrustedUser({required this.user, this.expiresAt});
+  final LightUser user;
+  final String? expiresAt;
+  const TrustedUser({required this.user, this.expiresAt});
   factory TrustedUser.fromJson(Map<String, dynamic> json) =>
       _$TrustedUserFromJson(json);
   Map<String, dynamic> toJson() => _$TrustedUserToJson(this);
@@ -678,7 +678,7 @@ class Departure {
   final LineResource? line;
   final bool cancelled;
   final Station station;
-  Departure({
+  const Departure({
     required this.tripId,
     this.when,
     required this.plannedWhen,
@@ -704,7 +704,7 @@ class LineResource {
   final String? textColor;
   final String? mode;
   final String? product;
-  LineResource({
+  const LineResource({
     this.type,
     this.id,
     this.fahrtNr,
@@ -894,7 +894,7 @@ class MastoCustomEmoji {
   @JsonKey(name: "static_url")
   final String staticUrl;
 
-  MastoCustomEmoji({
+  const MastoCustomEmoji({
     required this.shortcode,
     required this.url,
     required this.staticUrl,
@@ -965,7 +965,7 @@ class RouteMapEntry {
   final String? pathType;
   final List<String>? categories;
   final bool? approximated;
-  RouteMapEntry({
+  const RouteMapEntry({
     this.routeSegmentId,
     required this.polyline,
     required this.polylinePrecision,
@@ -977,6 +977,198 @@ class RouteMapEntry {
   factory RouteMapEntry.fromJson(Map<String, dynamic> json) =>
       _$RouteMapEntryFromJson(json);
   Map<String, dynamic> toJson() => _$RouteMapEntryToJson(this);
+}
+
+// Have to rename the fields to snake_case until https://github.com/Traewelling/traewelling/issues/5124 is fixed
+@JsonSerializable(fieldRename: .snake)
+// ["data"]["summary"]
+class StatisticsOverview {
+  final int totalCheckins;
+  final int activeDays;
+  final double totalDistanceKm;
+  final double meanDistanceKm;
+  final Status? longestCheckinByDistance;
+  final Status? shortestCheckinByDistance;
+  final Status? longestCheckinByDuration;
+  final Status? shortestCheckinByDuration;
+  const StatisticsOverview({
+    required this.totalCheckins,
+    required this.activeDays,
+    required this.totalDistanceKm,
+    required this.meanDistanceKm,
+    required this.longestCheckinByDistance,
+    required this.shortestCheckinByDistance,
+    required this.longestCheckinByDuration,
+    required this.shortestCheckinByDuration,
+  });
+  factory StatisticsOverview.fromJson(Map<String, dynamic> json) => _$StatisticsOverviewFromJson(json);
+  Map<String, dynamic> toJson() => _$StatisticsOverviewToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class StatisticsHistory {
+  final List<StatisticsHistoryListEntry>? yearly;
+  final List<StatisticsHistoryListEntry>? monthly;
+  final List<StatisticsHistoryListEntry>? weekly;
+  const StatisticsHistory({
+    this.yearly,
+    this.monthly,
+    this.weekly,
+  });
+  factory StatisticsHistory.fromJson(Map<String, dynamic> json) => _$StatisticsHistoryFromJson(json);
+  Map<String, dynamic> toJson() => _$StatisticsHistoryToJson(this);
+}
+
+@JsonSerializable(fieldRename: .snake)
+class StatisticsHistoryListEntry {
+  final String period;
+  final String periodType;
+  final int checkinCount;
+  final double distanceKm;
+  const StatisticsHistoryListEntry({
+    required this.period,
+    required this.periodType,
+    required this.checkinCount,
+    required this.distanceKm,
+  });
+  factory StatisticsHistoryListEntry.fromJson(Map<String, dynamic> json) => _$StatisticsHistoryListEntryFromJson(json);
+  Map<String, dynamic> toJson() => _$StatisticsHistoryListEntryToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class StatisticsFavorites {
+  final List<StatisticsFavoritesStation>? stations;
+  final List<StatisticsFavoritesLine>? lines;
+  final List<StatisticsFavoritesRoute>? routes;
+  const StatisticsFavorites({
+    this.stations,
+    this.lines,
+    this.routes,
+  });
+  factory StatisticsFavorites.fromJson(Map<String, dynamic> json) => _$StatisticsFavoritesFromJson(json);
+  Map<String, dynamic> toJson() => _$StatisticsFavoritesToJson(this);
+}
+
+@JsonSerializable(fieldRename: .snake)
+class StatisticsFavoritesStation {
+  final int stationId;
+  final String name;
+  final int count;
+  const StatisticsFavoritesStation({
+    required this.stationId,
+    required this.name,
+    required this.count,
+  });
+  factory StatisticsFavoritesStation.fromJson(Map<String, dynamic> json) => _$StatisticsFavoritesStationFromJson(json);
+  Map<String, dynamic> toJson() => _$StatisticsFavoritesStationToJson(this);
+}
+
+@JsonSerializable(fieldRename: .snake)
+class StatisticsFavoritesLine {
+  final String linename;
+  final String number;
+  final int count;
+  final double distanceKm;
+  const StatisticsFavoritesLine({
+    required this.linename,
+    required this.number,
+    required this.count,
+    required this.distanceKm,
+  });
+  factory StatisticsFavoritesLine.fromJson(Map<String, dynamic> json) => _$StatisticsFavoritesLineFromJson(json);
+  Map<String, dynamic> toJson() => _$StatisticsFavoritesLineToJson(this);
+}
+
+@JsonSerializable(fieldRename: .snake)
+class StatisticsFavoritesRoute {
+  final int originId;
+  final String origin;
+  final int destinationId;
+  final String destination;
+  final int count;
+  final double distanceKm;
+  const StatisticsFavoritesRoute({
+    required this.originId,
+    required this.origin,
+    required this.destinationId,
+    required this.destination,
+    required this.count,
+    required this.distanceKm,
+  });
+  factory StatisticsFavoritesRoute.fromJson(Map<String, dynamic> json) => _$StatisticsFavoritesRouteFromJson(json);
+  Map<String, dynamic> toJson() => _$StatisticsFavoritesRouteToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class StatisticsPersonal {
+  final List<StatisticsPersonalPurpose>? purpose;
+  final List<StatisticsPersonalCategory>? categories;
+  final List<StatisticsPersonalOperator>? operators;
+  final List<StatisticsPersonalTime>? time;
+  const StatisticsPersonal({
+    this.purpose,
+    this.categories,
+    this.operators,
+    this.time,
+  });
+  factory StatisticsPersonal.fromJson(Map<String, dynamic> json) => _$StatisticsPersonalFromJson(json);
+  Map<String, dynamic> toJson() => _$StatisticsPersonalToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class StatisticsPersonalPurpose {
+  final int name;
+  final int count;
+  final int duration;
+  const StatisticsPersonalPurpose({
+    required this.name,
+    required this.count,
+    required this.duration,
+  });
+  factory StatisticsPersonalPurpose.fromJson(Map<String, dynamic> json) => _$StatisticsPersonalPurposeFromJson(json);
+  Map<String, dynamic> toJson() => _$StatisticsPersonalPurposeToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class StatisticsPersonalCategory {
+  final DepartTypes name;
+  final int count;
+  final int duration;
+  const StatisticsPersonalCategory({
+    required this.name,
+    required this.count,
+    required this.duration,
+  });
+  factory StatisticsPersonalCategory.fromJson(Map<String, dynamic> json) => _$StatisticsPersonalCategoryFromJson(json);
+  Map<String, dynamic> toJson() => _$StatisticsPersonalCategoryToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class StatisticsPersonalOperator {
+  final String? name;
+  final int count;
+  final int duration;
+  const StatisticsPersonalOperator({
+    this.name,
+    required this.count,
+    required this.duration,
+  });
+  factory StatisticsPersonalOperator.fromJson(Map<String, dynamic> json) => _$StatisticsPersonalOperatorFromJson(json);
+  Map<String, dynamic> toJson() => _$StatisticsPersonalOperatorToJson(this);
+}
+
+@JsonSerializable(fieldRename: .none)
+class StatisticsPersonalTime {
+  final DateTime date;
+  final int count;
+  final int duration;
+  const StatisticsPersonalTime({
+    required this.date,
+    required this.count,
+    required this.duration,
+  });
+  factory StatisticsPersonalTime.fromJson(Map<String, dynamic> json) => _$StatisticsPersonalTimeFromJson(json);
+  Map<String, dynamic> toJson() => _$StatisticsPersonalTimeToJson(this);
 }
 
 class GenericStatusResponse {

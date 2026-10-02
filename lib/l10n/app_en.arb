@@ -224,7 +224,7 @@
   "rideNotFound": "Ride not found",
   "statusDeletedSuccessful": "Status successfully deleted!",
   "editStatus": "Edit Status",
-  "checkIn": "Check-In",
+  "checkIn": "Check in",
   "statusText": "Status",
   "privateTrip": "Personal",
   "commuteTrip": "Commute",
@@ -562,7 +562,7 @@
       }
     }
   },
-  "waitForStatsMsg": "Stats are being loaded.\nNote that this may take some time, depending on the timeframe and numbers of journeys. If this request fails, try selecting a smaller timeframe.",
+  "waitForStatsMsgGeneric": "Stats are being loaded...",
   "alwaysUsePride": "Always use pride-themed accents",
   "alwaysUsePrideSub": "Because queer people don't disappear at the end of June",
   "checkinConflictTitle": "Check-In Conflict",
@@ -728,5 +728,89 @@
   "filterTravelTypesFreightTrain": "Freight train",
   "filterTravelPurpose": "Reason of travel",
   "filterApproxRoutes": "Include approximated routes",
-  "filterApply": "Apply filters"
+  "filterApply": "Apply filters",
+  "statLoadFail": "Sorry, but these stats failed to load ({error})",
+  "@statLoadFail": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "statsStatOverviewOverviewTitle": "Overview",
+  "statsStatOverviewOverview": "From {startDate} to {endDate} you...",
+  "@statsStatOverviewOverview": {
+    "placeholders": {
+      "startDate": {
+        "type": "DateTime",
+        "format": "MMMd"
+      },
+    "endDate": {
+        "type": "DateTime",
+        "format": "MMMd"
+      }
+    }
+  },
+  "statsStatOverviewOverviewTotalCheckins": "...checked in {count} times",
+  "@statsStatOverviewOverviewTotalCheckins": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "statsStatOverviewOverviewActiveDays": "...were active on {count} day(s)",
+  "@statsStatOverviewOverviewActiveDays": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "statsStatOverviewOverviewTotalDistance": "...traveled {count} km",
+  "@statsStatOverviewOverviewTotalDistance": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "statsStatOverviewOverviewMeanDistance": "...traveled {count} km/journey on average", 
+  "@statsStatOverviewOverviewMeanDistance": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "statsStatOverviewLongestDistance": "This was the longest Check-In (by distance)",
+  "statsStatOverviewShortestDistance": "This was the shortest Check-In (by distance)",
+  "statsStatOverviewLongestTime": "This was the longest Check-In (by time)",
+  "statsStatOverviewShortestTime": "This was the shortest Check-In (by time)",
+  "statsStatOverviewStatusNotAvailable": "Sorry, but you didn't do any journeys in this timeframe. Therefore no status can be displayed.",
+  "statsStatFavoritesTitle": "Favorites",
+  "statsStatFavoritesSubtitle": "Your most used stops, routes and lines",
+  "statsStatFavortiesStops": "Favorite stops",
+  "statsStatFavortiesLines": "Favorite lines",
+  "statsStatFavortiesRoutes": "Favorite routes",
+  "statsStatFavoritesNotAvailable": "Sorry, but you didn't do any journeys in this timeframe. Therefore, no favorites can be displayed",
+  "statsStatHistoryTitle": "All-Time Statistics",
+  "checkInCount": "{count} Check-Ins",
+  "@checkInCount": {
+    "placeholders": {
+      "count":{
+        "type": "num"
+      }
+    }
+  },
+  "monthYear": "{monthYear}",
+  "@monthYear": {
+    "placeholders": {
+      "monthYear":{
+        "type": "DateTime",
+        "format": "yMMMM"
+      }
+    }
+  },
+  "statsStatPersonalTravelType": "Means of transport"
 }

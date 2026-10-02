@@ -751,7 +751,7 @@ const _$DepartTypesEnumMap = {
   DepartTypes.national: 'national',
   DepartTypes.regionalExp: 'regionalExp',
   DepartTypes.regional: 'regional',
-  DepartTypes.subUrban: 'subUrban',
+  DepartTypes.subUrban: 'suburban',
   DepartTypes.subway: 'subway',
   DepartTypes.tram: 'tram',
   DepartTypes.bus: 'bus',
@@ -880,3 +880,269 @@ Map<String, dynamic> _$RouteMapEntryToJson(RouteMapEntry instance) =>
       'categories': instance.categories,
       'approximated': instance.approximated,
     };
+
+StatisticsOverview _$StatisticsOverviewFromJson(Map<String, dynamic> json) =>
+    StatisticsOverview(
+      totalCheckins: (json['total_checkins'] as num).toInt(),
+      activeDays: (json['active_days'] as num).toInt(),
+      totalDistanceKm: (json['total_distance_km'] as num).toDouble(),
+      meanDistanceKm: (json['mean_distance_km'] as num).toDouble(),
+      longestCheckinByDistance: json['longest_checkin_by_distance'] == null
+          ? null
+          : Status.fromJson(
+              json['longest_checkin_by_distance'] as Map<String, dynamic>,
+            ),
+      shortestCheckinByDistance: json['shortest_checkin_by_distance'] == null
+          ? null
+          : Status.fromJson(
+              json['shortest_checkin_by_distance'] as Map<String, dynamic>,
+            ),
+      longestCheckinByDuration: json['longest_checkin_by_duration'] == null
+          ? null
+          : Status.fromJson(
+              json['longest_checkin_by_duration'] as Map<String, dynamic>,
+            ),
+      shortestCheckinByDuration: json['shortest_checkin_by_duration'] == null
+          ? null
+          : Status.fromJson(
+              json['shortest_checkin_by_duration'] as Map<String, dynamic>,
+            ),
+    );
+
+Map<String, dynamic> _$StatisticsOverviewToJson(StatisticsOverview instance) =>
+    <String, dynamic>{
+      'total_checkins': instance.totalCheckins,
+      'active_days': instance.activeDays,
+      'total_distance_km': instance.totalDistanceKm,
+      'mean_distance_km': instance.meanDistanceKm,
+      'longest_checkin_by_distance': instance.longestCheckinByDistance,
+      'shortest_checkin_by_distance': instance.shortestCheckinByDistance,
+      'longest_checkin_by_duration': instance.longestCheckinByDuration,
+      'shortest_checkin_by_duration': instance.shortestCheckinByDuration,
+    };
+
+StatisticsHistory _$StatisticsHistoryFromJson(Map<String, dynamic> json) =>
+    StatisticsHistory(
+      yearly: (json['yearly'] as List<dynamic>?)
+          ?.map(
+            (e) =>
+                StatisticsHistoryListEntry.fromJson(e as Map<String, dynamic>),
+          )
+          .toList(),
+      monthly: (json['monthly'] as List<dynamic>?)
+          ?.map(
+            (e) =>
+                StatisticsHistoryListEntry.fromJson(e as Map<String, dynamic>),
+          )
+          .toList(),
+      weekly: (json['weekly'] as List<dynamic>?)
+          ?.map(
+            (e) =>
+                StatisticsHistoryListEntry.fromJson(e as Map<String, dynamic>),
+          )
+          .toList(),
+    );
+
+Map<String, dynamic> _$StatisticsHistoryToJson(StatisticsHistory instance) =>
+    <String, dynamic>{
+      'yearly': instance.yearly,
+      'monthly': instance.monthly,
+      'weekly': instance.weekly,
+    };
+
+StatisticsHistoryListEntry _$StatisticsHistoryListEntryFromJson(
+  Map<String, dynamic> json,
+) => StatisticsHistoryListEntry(
+  period: json['period'] as String,
+  periodType: json['period_type'] as String,
+  checkinCount: (json['checkin_count'] as num).toInt(),
+  distanceKm: (json['distance_km'] as num).toDouble(),
+);
+
+Map<String, dynamic> _$StatisticsHistoryListEntryToJson(
+  StatisticsHistoryListEntry instance,
+) => <String, dynamic>{
+  'period': instance.period,
+  'period_type': instance.periodType,
+  'checkin_count': instance.checkinCount,
+  'distance_km': instance.distanceKm,
+};
+
+StatisticsFavorites _$StatisticsFavoritesFromJson(
+  Map<String, dynamic> json,
+) => StatisticsFavorites(
+  stations: (json['stations'] as List<dynamic>?)
+      ?.map(
+        (e) => StatisticsFavoritesStation.fromJson(e as Map<String, dynamic>),
+      )
+      .toList(),
+  lines: (json['lines'] as List<dynamic>?)
+      ?.map((e) => StatisticsFavoritesLine.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  routes: (json['routes'] as List<dynamic>?)
+      ?.map((e) => StatisticsFavoritesRoute.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
+
+Map<String, dynamic> _$StatisticsFavoritesToJson(
+  StatisticsFavorites instance,
+) => <String, dynamic>{
+  'stations': instance.stations,
+  'lines': instance.lines,
+  'routes': instance.routes,
+};
+
+StatisticsFavoritesStation _$StatisticsFavoritesStationFromJson(
+  Map<String, dynamic> json,
+) => StatisticsFavoritesStation(
+  stationId: (json['station_id'] as num).toInt(),
+  name: json['name'] as String,
+  count: (json['count'] as num).toInt(),
+);
+
+Map<String, dynamic> _$StatisticsFavoritesStationToJson(
+  StatisticsFavoritesStation instance,
+) => <String, dynamic>{
+  'station_id': instance.stationId,
+  'name': instance.name,
+  'count': instance.count,
+};
+
+StatisticsFavoritesLine _$StatisticsFavoritesLineFromJson(
+  Map<String, dynamic> json,
+) => StatisticsFavoritesLine(
+  linename: json['linename'] as String,
+  number: json['number'] as String,
+  count: (json['count'] as num).toInt(),
+  distanceKm: (json['distance_km'] as num).toDouble(),
+);
+
+Map<String, dynamic> _$StatisticsFavoritesLineToJson(
+  StatisticsFavoritesLine instance,
+) => <String, dynamic>{
+  'linename': instance.linename,
+  'number': instance.number,
+  'count': instance.count,
+  'distance_km': instance.distanceKm,
+};
+
+StatisticsFavoritesRoute _$StatisticsFavoritesRouteFromJson(
+  Map<String, dynamic> json,
+) => StatisticsFavoritesRoute(
+  originId: (json['origin_id'] as num).toInt(),
+  origin: json['origin'] as String,
+  destinationId: (json['destination_id'] as num).toInt(),
+  destination: json['destination'] as String,
+  count: (json['count'] as num).toInt(),
+  distanceKm: (json['distance_km'] as num).toDouble(),
+);
+
+Map<String, dynamic> _$StatisticsFavoritesRouteToJson(
+  StatisticsFavoritesRoute instance,
+) => <String, dynamic>{
+  'origin_id': instance.originId,
+  'origin': instance.origin,
+  'destination_id': instance.destinationId,
+  'destination': instance.destination,
+  'count': instance.count,
+  'distance_km': instance.distanceKm,
+};
+
+StatisticsPersonal _$StatisticsPersonalFromJson(Map<String, dynamic> json) =>
+    StatisticsPersonal(
+      purpose: (json['purpose'] as List<dynamic>?)
+          ?.map(
+            (e) =>
+                StatisticsPersonalPurpose.fromJson(e as Map<String, dynamic>),
+          )
+          .toList(),
+      categories: (json['categories'] as List<dynamic>?)
+          ?.map(
+            (e) =>
+                StatisticsPersonalCategory.fromJson(e as Map<String, dynamic>),
+          )
+          .toList(),
+      operators: (json['operators'] as List<dynamic>?)
+          ?.map(
+            (e) =>
+                StatisticsPersonalOperator.fromJson(e as Map<String, dynamic>),
+          )
+          .toList(),
+      time: (json['time'] as List<dynamic>?)
+          ?.map(
+            (e) => StatisticsPersonalTime.fromJson(e as Map<String, dynamic>),
+          )
+          .toList(),
+    );
+
+Map<String, dynamic> _$StatisticsPersonalToJson(StatisticsPersonal instance) =>
+    <String, dynamic>{
+      'purpose': instance.purpose,
+      'categories': instance.categories,
+      'operators': instance.operators,
+      'time': instance.time,
+    };
+
+StatisticsPersonalPurpose _$StatisticsPersonalPurposeFromJson(
+  Map<String, dynamic> json,
+) => StatisticsPersonalPurpose(
+  name: (json['name'] as num).toInt(),
+  count: (json['count'] as num).toInt(),
+  duration: (json['duration'] as num).toInt(),
+);
+
+Map<String, dynamic> _$StatisticsPersonalPurposeToJson(
+  StatisticsPersonalPurpose instance,
+) => <String, dynamic>{
+  'name': instance.name,
+  'count': instance.count,
+  'duration': instance.duration,
+};
+
+StatisticsPersonalCategory _$StatisticsPersonalCategoryFromJson(
+  Map<String, dynamic> json,
+) => StatisticsPersonalCategory(
+  name: $enumDecode(_$DepartTypesEnumMap, json['name']),
+  count: (json['count'] as num).toInt(),
+  duration: (json['duration'] as num).toInt(),
+);
+
+Map<String, dynamic> _$StatisticsPersonalCategoryToJson(
+  StatisticsPersonalCategory instance,
+) => <String, dynamic>{
+  'name': _$DepartTypesEnumMap[instance.name]!,
+  'count': instance.count,
+  'duration': instance.duration,
+};
+
+StatisticsPersonalOperator _$StatisticsPersonalOperatorFromJson(
+  Map<String, dynamic> json,
+) => StatisticsPersonalOperator(
+  name: json['name'] as String?,
+  count: (json['count'] as num).toInt(),
+  duration: (json['duration'] as num).toInt(),
+);
+
+Map<String, dynamic> _$StatisticsPersonalOperatorToJson(
+  StatisticsPersonalOperator instance,
+) => <String, dynamic>{
+  'name': instance.name,
+  'count': instance.count,
+  'duration': instance.duration,
+};
+
+StatisticsPersonalTime _$StatisticsPersonalTimeFromJson(
+  Map<String, dynamic> json,
+) => StatisticsPersonalTime(
+  date: DateTime.parse(json['date'] as String),
+  count: (json['count'] as num).toInt(),
+  duration: (json['duration'] as num).toInt(),
+);
+
+Map<String, dynamic> _$StatisticsPersonalTimeToJson(
+  StatisticsPersonalTime instance,
+) => <String, dynamic>{
+  'date': instance.date.toIso8601String(),
+  'count': instance.count,
+  'duration': instance.duration,
+};

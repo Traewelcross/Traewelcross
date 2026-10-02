@@ -265,4 +265,11 @@ class SharedFunctions {
     final colorInt = int.parse("FF$color", radix: 16);
     return Color(colorInt);
   }
+
+  static String getDurationString(int duration, BuildContext context) {
+    final dur = Duration(minutes: duration);
+    return AppLocalizations.of(
+      context,
+    )!.time_summary(dur.inDays, dur.inHours % 24, dur.inMinutes % 60);
+  }
 }

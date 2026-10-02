@@ -225,7 +225,7 @@ class ProfileStatsCard extends StatelessWidget {
                             children: [
                               const Icon(Icons.timer_outlined),
                               Text(
-                                _getDuration(userInfo.totalDuration, context),
+                                SharedFunctions.getDurationString(userInfo.totalDuration, context),
                               ),
                             ],
                           ),
@@ -316,12 +316,6 @@ class ProfileStatsCard extends StatelessWidget {
     );
   }
 
-  String _getDuration(int duration, BuildContext context) {
-    final dur = Duration(minutes: duration);
-    return AppLocalizations.of(
-      context,
-    )!.time_summary(dur.inDays, dur.inHours % 24, dur.inMinutes % 60);
-  }
 }
 
 class _AuthUserCtrl extends StatelessWidget {
