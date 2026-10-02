@@ -35,10 +35,8 @@ class _MapStatForUserState extends State<MapStatForUser> {
   }
 
   Future<List<RideInfo>> _getRidesForUser() {
-    final alt = false;
     rides = getIt<ApiService>().statistics.getPolylines(
       range: statRange,
-      alternative: alt,
       filter: filters,
     );
     return rides;
@@ -81,7 +79,7 @@ class _MapStatForUserState extends State<MapStatForUser> {
               mainAxisSize: .min,
               children: [
                 CircularProgressIndicator(),
-                Text(localize.waitForStatsMsg, textAlign: .center),
+                Text(localize.waitForStatsMsgGeneric, textAlign: .center),
               ],
             ),
           );
@@ -89,38 +87,10 @@ class _MapStatForUserState extends State<MapStatForUser> {
         if (asyncSnapshot.connectionState == .done) {
           return Column(
             children: [
-              OutlinedButton.icon(
-                onPressed: () async {
-                  final rangeSelect = await showDateRangePicker(
-                    context: context,
-                    firstDate: DateTime.now().subtract(Duration(days: 365*5)),
-                    lastDate: DateTime.now(),
-                    initialDateRange: DateTimeRange(
-                      start: DateTime.now().subtract(Duration(days: 28)),
-                      end: DateTime.now(),
-                    ),
-                    currentDate: DateTime.now(),
-                  );
-                  if (rangeSelect == null) {
-                    return;
-                  }
-                  setState(() {
-                    statRange = rangeSelect;
-                    rides = _getRidesForUser();
-                  });
-                },
-                label: Text(
-                  localize.dateSpan(
-                    DateFormat.yMMMEd(
-                      Localizations.localeOf(context).languageCode,
-                    ).format(statRange.start),
-                    DateFormat.yMMMEd(
-                      Localizations.localeOf(context).languageCode,
-                    ).format(statRange.end),
-                  ),
-                ),
-                icon: const Icon(Icons.calendar_month),
-              ),
+              DateSelectButton(statRange: statRange, onNewDate: (r) {        setState(() {
+          statRange = r;
+          rides = _getRidesForUser();
+        });},),
               SizedBox(height: 8),
               Expanded(
                 child: MapStat(
@@ -352,6 +322,51 @@ class _MapStatForUserState extends State<MapStatForUser> {
         }
         return SizedBox();
       },
+    );
+  }
+}
+
+class DateSelectButton extends StatelessWidget {
+  const DateSelectButton({
+    super.key,
+    required this.statRange,
+    required this.onNewDate
+  });
+
+  final DateTimeRange<DateTime> statRange;
+  final Function(DateTimeRange<DateTime> range) onNewDate;
+
+  @override
+  Widget build(BuildContext context) {
+    final localize = AppLocalizations.of(context)!;
+    return OutlinedButton.icon(
+      onPressed: () async {
+        final rangeSelect = await showDateRangePicker(
+          context: context,
+          firstDate: DateTime.now().subtract(Duration(days: 365*5)),
+          lastDate: DateTime.now(),
+          initialDateRange: DateTimeRange(
+            start: DateTime.now().subtract(Duration(days: 28)),
+            end: DateTime.now(),
+          ),
+          currentDate: DateTime.now(),
+        );
+        if (rangeSelect == null) {
+          return;
+        }
+        onNewDate.call(rangeSelect);
+      },
+      label: Text(
+        localize.dateSpan(
+          DateFormat.yMMMEd(
+            Localizations.localeOf(context).languageCode,
+          ).format(statRange.start),
+          DateFormat.yMMMEd(
+            Localizations.localeOf(context).languageCode,
+          ).format(statRange.end),
+        ),
+      ),
+      icon: const Icon(Icons.calendar_month),
     );
   }
 }

@@ -27,13 +27,9 @@ class StatisticsApiProvider {
   StatisticsApiProvider(this._api);
 
   Future<List<RideInfo>> getPolylines({
-    bool alternative = false,
     required DateTimeRange range,
     MapFilters? filter
   }) async {
-    if (alternative) {
-      return _getRidesForUser(range);
-    }
     filter ??= MapFilters(travelTypes: {}, travelPurpose: {});
     String endpoint = "/route-map?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}&includeApproximated=${filter.includeApprox.toString()}";
     if(filter.travelPurpose.isNotEmpty){
@@ -104,55 +100,5 @@ class StatisticsApiProvider {
       points.add(LatLng(finalLat, finalLng));
     }
     return points;
-  }
-
-  Future<List<DateTime>> _getRiddenDays(DateTimeRange statRange) async {
-    // We could also go of prevDate in /statistics/daily, but I only see that after doing this, and also this way we get all available dates in one request
-    final req = await _api.request(
-      "/statistics?from=${statRange.start.toIso8601String()}&until=${statRange.end.toIso8601String()}",
-      .GET,
-    );
-    final times = jsonDecode(req.body)["data"]["time"] as List<dynamic>;
-    List<DateTime> riddenDays = [];
-    for (var date in times) {
-      if (date["count"] > 0) {
-        riddenDays.add(DateTime.parse(date["date"]));
-      }
-    }
-    //print(riddenDays);
-    return riddenDays;
-  }
-
-  Future<List<RideInfo>> _getRidesForUser(DateTimeRange statRange) async {
-    final List<List<LatLng>> coords = [];
-    LightUser? userDetails;
-    List<DateTime> riddenDays = await _getRiddenDays(statRange);
-    for (DateTime date in riddenDays) {
-      final req = await _api.request(
-        "/statistics/daily/${date.toIso8601String()}?withPolylines=true",
-        .GET,
-      );
-      final data = jsonDecode(req.body)["data"];
-      if ((data["statuses"] as List<dynamic>).isEmpty ||
-          data["polylines"] == null) {
-        continue;
-      }
-      userDetails ??= LightUser.fromJson(
-        (data["statuses"] as List<dynamic>).first["user"],
-      );
-      final polyFeatures = data["polylines"]["features"] as List<dynamic>;
-      for (var feat in polyFeatures) {
-        var lineCoords = feat["geometry"]["coordinates"] as List<dynamic>;
-        List<LatLng> line = lineCoords.map((point) {
-          return LatLng(point[1], point[0]);
-        }).toList();
-        coords.add(line);
-      }
-      await Future.delayed(Duration(milliseconds: 30));
-    }
-    if (userDetails == null) return [];
-    return coords
-        .map((cords) => RideInfo.fromCoords(userDetails!, cords))
-        .toList();
   }
 }
