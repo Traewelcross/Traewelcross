@@ -38,20 +38,7 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
                 }),
               ),
             ),
-          ListTile(
-            onTap: () => setState(() {
-              config.misc.showStats = !config.misc.showStats;
-            }),
-            leading: const Icon(Icons.bar_chart),
-            title: Text(localize.stats),
-            subtitle: Text(localize.statisticsExperimentalNote),
-            trailing: Switch(
-              value: config.misc.showStats,
-              onChanged: (val) => setState(() {
-                config.misc.showStats = val;
-              }),
-            ),
-          ),
+
           /*ListTile(
             onTap: () => setState(() {
               config.behavior.multiAccountSupport = !config.behavior.multiAccountSupport;

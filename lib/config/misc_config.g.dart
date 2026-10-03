@@ -10,7 +10,6 @@ MiscConfig _$MiscConfigFromJson(Map<String, dynamic> json) => MiscConfig()
   ..accountType =
       $enumDecodeNullable(_$AccountTypeEnumEnumMap, json['accountType']) ??
       AccountTypeEnum.traewelling
-  ..showStats = json['showStats'] as bool? ?? false
   ..lastBoot = json['lastBoot'] == null
       ? null
       : DateTime.parse(json['lastBoot'] as String)
@@ -20,7 +19,6 @@ MiscConfig _$MiscConfigFromJson(Map<String, dynamic> json) => MiscConfig()
 Map<String, dynamic> _$MiscConfigToJson(MiscConfig instance) =>
     <String, dynamic>{
       'accountType': _$AccountTypeEnumEnumMap[instance.accountType]!,
-      'showStats': instance.showStats,
       'lastBoot': instance.lastBoot?.toIso8601String(),
       'needsRelogin': instance.needsRelogin,
       'launchCount': instance.launchCount,

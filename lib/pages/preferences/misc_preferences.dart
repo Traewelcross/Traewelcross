@@ -20,20 +20,7 @@ class _MiscPreferencesState extends State<MiscPreferences> {
       title: Text(localize.behavior),
       body: ListView(
         children: [
-          ListTile(
-            onTap: () => setState(() {
-              config.misc.showStats = !config.misc.showStats;
-            }),
-            leading: const Icon(Icons.bar_chart),
-            title: Text(localize.stats),
-            subtitle: Text(localize.statisticsExperimentalNote),
-            trailing: Switch(
-              value: config.misc.showStats,
-              onChanged: (val) => setState(() {
-                config.misc.showStats = val;
-              }),
-            ),
-          ),
+
         ],
       ),
     );

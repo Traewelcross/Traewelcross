@@ -401,7 +401,6 @@ class _ChromeState extends State<Chrome> {
           ),
         ],
       ),
-      if (watchIt<Config>().misc.showStats || kDebugMode)
         _Tab(
           page: const Statistics(),
           title: AppBarTitle(l10n.stats),

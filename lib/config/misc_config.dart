@@ -19,16 +19,6 @@ class MiscConfig with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Is the statistics tab enabled?
-  /// TODO: remove once feature complete
-  bool _showStats = false;
-  @JsonKey(defaultValue: false)
-  bool get showStats => _showStats;
-  set showStats(bool val) {
-    _showStats = val;
-    notifyListeners();
-  }
-
   /// This option is (obivously) not exposed to the user, but used internally
   /// Putting this is the Config is maybe not quite right, but since we have something to persist data,
   /// might as well use it, eh?
