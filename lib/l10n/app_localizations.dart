@@ -2431,12 +2431,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{monthYear}'**
   String monthYear(DateTime monthYear);
-
-  /// No description provided for @statsStatPersonalTravelType.
-  ///
-  /// In en, this message translates to:
-  /// **'Means of transport'**
-  String get statsStatPersonalTravelType;
 }
 
 class _AppLocalizationsDelegate

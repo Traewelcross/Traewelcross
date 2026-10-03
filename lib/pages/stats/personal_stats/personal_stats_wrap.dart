@@ -67,7 +67,7 @@ class _PersonalStatsWrapState extends State<PersonalStatsWrap> {
                   return ListView(
                     children: [
                       Text(
-                        localize.statsStatPersonalTravelType,
+                        localize.filterTravelTypes,
                         style: Theme.of(
                           context,
                         ).textTheme.headlineLarge!.copyWith(fontWeight: .bold),

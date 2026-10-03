@@ -1350,7 +1350,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
     return '$monthYearString';
   }
-
-  @override
-  String get statsStatPersonalTravelType => 'Means of transport';
 }

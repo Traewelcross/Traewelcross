@@ -1264,11 +1264,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String statLoadFail(String error) {
-    return 'Sorry, but these stats failed to load ($error)';
+    return 'Entschuldige, aber diese Statistik konnte nicht geladen werden ($error)';
   }
 
   @override
-  String get statsStatOverviewOverviewTitle => 'Overview';
+  String get statsStatOverviewOverviewTitle => 'Übersicht';
 
   @override
   String statsStatOverviewOverview(DateTime startDate, DateTime endDate) {
@@ -1279,71 +1279,71 @@ class AppLocalizationsDe extends AppLocalizations {
     final intl.DateFormat endDateDateFormat = intl.DateFormat.MMMd(localeName);
     final String endDateString = endDateDateFormat.format(endDate);
 
-    return 'From $startDateString to $endDateString you...';
+    return 'Vom $startDateString bis zum $endDateString...';
   }
 
   @override
   String statsStatOverviewOverviewTotalCheckins(num count) {
-    return '...checked in $count times';
+    return '...hast du $count mal eingecheckt';
   }
 
   @override
   String statsStatOverviewOverviewActiveDays(num count) {
-    return '...were active on $count day(s)';
+    return '...warst du an $count Tag(en) aktiv';
   }
 
   @override
   String statsStatOverviewOverviewTotalDistance(num count) {
-    return '...traveled $count km';
+    return '...hast du $count km zurückgelegt';
   }
 
   @override
   String statsStatOverviewOverviewMeanDistance(num count) {
-    return '...traveled $count km/journey on average';
+    return '...hast du durchschnittlich $count km mit jeder Reise zurückgelegt';
   }
 
   @override
   String get statsStatOverviewLongestDistance =>
-      'This was the longest Check-In (by distance)';
+      'Das war deine längste Reise (Distanz)';
 
   @override
   String get statsStatOverviewShortestDistance =>
-      'This was the shortest Check-In (by distance)';
+      'Das war deine kürzeste Reise (Distanz)';
 
   @override
   String get statsStatOverviewLongestTime =>
-      'This was the longest Check-In (by time)';
+      'Das war deine längste Reise (Zeit)';
 
   @override
   String get statsStatOverviewShortestTime =>
-      'This was the shortest Check-In (by time)';
+      'Das war deine kürzeste Reise (Zeit)';
 
   @override
   String get statsStatOverviewStatusNotAvailable =>
-      'Sorry, but you didn\'t do any journeys in this timeframe. Therefore no status can be displayed.';
+      'Entschuldige, aber für diesen Zeitrahmen hast du keine Reisen eingetragen, daher kann keine angezeigt werden.';
 
   @override
-  String get statsStatFavoritesTitle => 'Favorites';
+  String get statsStatFavoritesTitle => 'Favoriten';
 
   @override
   String get statsStatFavoritesSubtitle =>
-      'Your most used stops, routes and lines';
+      'Deine meistgenutzten Haltestellen, Linien und Verbindungen';
 
   @override
-  String get statsStatFavortiesStops => 'Favorite stops';
+  String get statsStatFavortiesStops => 'Liebste Stationen';
 
   @override
-  String get statsStatFavortiesLines => 'Favorite lines';
+  String get statsStatFavortiesLines => 'Liebste Linien';
 
   @override
-  String get statsStatFavortiesRoutes => 'Favorite routes';
+  String get statsStatFavortiesRoutes => 'Liebste Verbindungen';
 
   @override
   String get statsStatFavoritesNotAvailable =>
-      'Sorry, but you didn\'t do any journeys in this timeframe. Therefore, no favorites can be displayed';
+      'Entschuldige, aber für diesen Zeitrahmen hast du keine Reisen eingetragen, daher können keine Favoriten angezeigt werden.';
 
   @override
-  String get statsStatHistoryTitle => 'All-Time Statistics';
+  String get statsStatHistoryTitle => 'Allzeitstatistiken';
 
   @override
   String checkInCount(num count) {
@@ -1359,7 +1359,4 @@ class AppLocalizationsDe extends AppLocalizations {
 
     return '$monthYearString';
   }
-
-  @override
-  String get statsStatPersonalTravelType => 'Means of transport';
 }
