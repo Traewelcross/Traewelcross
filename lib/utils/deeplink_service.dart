@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:app_links/app_links.dart';
+import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,7 +11,7 @@ import 'package:traewelcross/utils/shared.dart';
 class DeepLinkService {
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
-
+  static const wearOSChannel = MethodChannel("watchChannel");
   Function? onLoginSuccess;
 
   void init({Function? onLoginSuccess}) {
@@ -34,12 +35,21 @@ class DeepLinkService {
 
   void _handleUri(Uri uri) {
     if (uri.host == "oauth.traewelcross.de") {
+      if(uri.pathSegments[0] == "wear"){
+        _handleWearOS(uri);
+        return;
+      }
       _handleOauthCallback(uri);
     } else if (uri.host == "traewelling.de") {
       _handleTraewelling(uri);
     }
   }
-
+  void _handleWearOS(Uri uri) async {
+    final result = await wearOSChannel.invokeMethod<String>("transferToken", {"token": uri.queryParameters["code"]});
+    if(result == "SUCCESS"){
+      SharedFunctions.sendSnackBar("SUCCESS");
+    }
+  }
   void _handleTraewelling(Uri uri) async {
     int userId = 0;
     await SharedPreferencesAsync()

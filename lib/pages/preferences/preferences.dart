@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
@@ -11,6 +12,7 @@ import 'package:traewelcross/pages/preferences/experimental_preferences.dart';
 // ignore: unused_import
 import 'package:traewelcross/pages/preferences/misc_preferences.dart';
 import 'package:traewelcross/pages/preferences/notification_preferences.dart';
+import 'package:traewelcross/utils/authentication.dart';
 import 'package:traewelcross/utils/shared.dart';
 
 class Preferences extends StatelessWidget {
@@ -95,6 +97,12 @@ class Preferences extends StatelessWidget {
             leading: const Icon(Icons.science),
             title: Text(localize.experimentalPrefrences),
           ),
+          if(kDebugMode)
+          ListTile(
+            onTap: () => getIt<AuthService>().createWatchToken(),
+            leading: const Icon(Icons.watch),
+            title: Text("Pair Watch -- UNTRANSLATED")
+          )
           // Nothing to configure here yet
           /*ListTile(
             onTap: () => Navigator.push(

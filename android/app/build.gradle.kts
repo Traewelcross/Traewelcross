@@ -42,7 +42,6 @@ android {
         create("foss") {
             dimension = "default"
             versionNameSuffix = "-foss"
-            // Changing flavors and then returning to the original flavor bricks push notifications and cofuses preferences, so at this time, the foss version will be a seperate package
             applicationIdSuffix = ".foss"
         }
         create("play") {
@@ -57,6 +56,12 @@ android {
             storeFile = file(keyProperties.getProperty("storeFile"))
             storePassword = keyProperties.getProperty("storePassword")
         }
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
     }
 
     buildTypes {
@@ -67,6 +72,7 @@ android {
             isMinifyEnabled = true
         }
         debug {
+            signingConfig = signingConfigs.getByName("debug")
             applicationIdSuffix = ".debug"
         }
     }
@@ -84,4 +90,6 @@ flutter {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    add("playImplementation", "com.google.android.gms:play-services-wearable:20.0.1")
+    add("playImplementation", "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
 }

@@ -40,6 +40,14 @@ class AuthService {
     "read-settings-followers",
     "write-settings-calendar",
   ];
+  static const _watchScopes = <String>[
+    "read-statuses",
+    "read-search",
+    "write-statuses",
+    "write-likes",
+    "write-notifications",
+    "read-settings",
+  ];
   static final _state = _generateState(64);
 
   static const _credentialsKey = 'token';
@@ -120,6 +128,29 @@ class AuthService {
       );
     }
     return _client;
+  }
+
+  Future<void> createWatchToken() async {
+    final pkcePair = PkcePair.generate();
+
+    _grant = oauth2.AuthorizationCodeGrant(
+      "310",
+      Uri.parse(_authEndpoint),
+      Uri.parse(tokenEndpoint),
+      secret: null,
+      codeVerifier: pkcePair.codeVerifier,
+    );
+
+    Uri authUrl = _grant!.getAuthorizationUrl(
+      Uri.parse("https://oauth.traewelcross.de/wear"),
+      scopes: _watchScopes,
+      state: _state,
+    );
+    // It would be nicer to use a In-App Browser View, but I can't get that to work atm and this works good enough.
+    SharedFunctions.launchURL(
+      authUrl,
+      launchMode: LaunchMode.externalApplication,
+    );
   }
 
   Future<void> loginWithPKCE() async {
