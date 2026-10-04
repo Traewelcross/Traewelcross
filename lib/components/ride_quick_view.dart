@@ -258,6 +258,7 @@ class _RideQuickViewState extends State<RideQuickView> {
 
   Future<void> _updateLikes() async {
     final apiService = getIt<ApiService>();
+    bool likeIntend = false;
     try {
       final LikeCountResponse res;
       if (!_rideData.liked) {
@@ -268,11 +269,12 @@ class _RideQuickViewState extends State<RideQuickView> {
           return;
         }
         res = await apiService.status.like(_rideData.id, _rideData.likes);
+        likeIntend = true;
       } else {
         res = await apiService.status.unlike(_rideData.id, _rideData.likes);
       }
       if (!mounted) return;
-      _rideData.liked = res.wasSuccess;
+      _rideData.liked = res.wasSuccess && likeIntend;
       _rideData.likes = res.newCount;
       widget.likeCallback?.call();
       _updateRideData(_rideData);
@@ -953,8 +955,72 @@ class _RideQuickViewState extends State<RideQuickView> {
   }
 }
 
-class LikeButton extends StatefulWidget {
+class LikeButton extends StatelessWidget {
   const LikeButton({
+    super.key,
+    required this.rideData,
+    required this.onUpdateLikes,
+  });
+  final Status rideData;
+  final Function() onUpdateLikes;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (getIt<Config>().appearance.isPrideActive) ...[
+          TextButton.icon(
+            style: const ButtonStyle(
+              padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
+              minimumSize: WidgetStatePropertyAll(Size.zero),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              visualDensity: VisualDensity.compact,
+            ),
+            onPressed: () => rideData.isLikable ? onUpdateLikes() : null,
+            icon: PrideGradient(
+              rotation: 90,
+              child: Icon(
+                rideData.liked
+                    ? Icons.favorite
+                    : Icons.favorite_outline_outlined,
+                color: Colors.red,
+                opticalSize: 24,
+                size: 24,
+              ),
+            ),
+            label: Text(
+              rideData.likes.toString(),
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+        ] else ...[
+          TextButton.icon(
+            style: const ButtonStyle(
+              padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
+              minimumSize: WidgetStatePropertyAll(Size.zero),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              visualDensity: VisualDensity.compact,
+            ),
+            onPressed: () => rideData.isLikable ? onUpdateLikes() : null,
+            icon: Icon(
+              rideData.liked ? Icons.favorite : Icons.favorite_outline_outlined,
+              color: Colors.red,
+              opticalSize: 24,
+              size: 24,
+            ),
+            label: Text(
+              rideData.likes.toString(),
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+/*class _LikeButton extends StatefulWidget {
+  const _LikeButton({
     super.key,
     required this.rideData,
     required this.onUpdateLikes,
@@ -965,7 +1031,7 @@ class LikeButton extends StatefulWidget {
   State<StatefulWidget> createState() => _LikeButtonState();
 }
 
-class _LikeButtonState extends State<LikeButton> {
+class _LikeButtonState extends State<_LikeButton> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -983,19 +1049,12 @@ class _LikeButtonState extends State<LikeButton> {
                 widget.rideData.isLikable ? widget.onUpdateLikes() : null,
             icon: PrideGradient(
               rotation: 90,
-              child: (widget.rideData.liked
-                  ? const Icon(
-                      Icons.favorite,
+              child: Icon(
+                      widget.rideData.liked ? Icons.favorite : Icons.favorite_outline_outlined,
                       color: Colors.red,
                       opticalSize: 24,
                       size: 24,
                     )
-                  : const Icon(
-                      Icons.favorite_outline_outlined,
-                      color: Colors.red,
-                      opticalSize: 24,
-                      size: 24,
-                    )),
             ),
             label: Text(
               widget.rideData.likes.toString(),
@@ -1012,19 +1071,12 @@ class _LikeButtonState extends State<LikeButton> {
             ),
             onPressed: () =>
                 widget.rideData.isLikable ? widget.onUpdateLikes() : null,
-            icon: widget.rideData.liked
-                ? const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                    opticalSize: 24,
-                    size: 24,
-                  )
-                : const Icon(
-                    Icons.favorite_outline_outlined,
-                    color: Colors.red,
-                    opticalSize: 24,
-                    size: 24,
-                  ),
+            icon: Icon(
+                      widget.rideData.liked ? Icons.favorite : Icons.favorite_outline_outlined,
+                      color: Colors.red,
+                      opticalSize: 24,
+                      size: 24,
+                    ),
             label: Text(
               widget.rideData.likes.toString(),
               style: const TextStyle(fontSize: 16),
@@ -1034,7 +1086,7 @@ class _LikeButtonState extends State<LikeButton> {
       ],
     );
   }
-}
+}*/
 
 class _StationText extends StatelessWidget {
   const _StationText({
