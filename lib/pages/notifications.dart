@@ -65,7 +65,7 @@ class _NotificationsViewState extends State<NotificationsView> {
     final response = await apiService.notification.fetchNotifications(
       page: _page,
     );
-
+    if(!mounted) return;
     setState(() {
       _notifications.addAll(response);
       _page++;
@@ -199,7 +199,7 @@ class _NotificationsViewState extends State<NotificationsView> {
                     leading: Icon(notificationIcon),
                     title: Text(notification.lead),
                     subtitle:
-                        notification.notice.toString().isEmpty ||
+                        (notification.notice ?? "").toString().isEmpty ||
                             notification.notice == null
                         ? null
                         : Text(notification.notice!),

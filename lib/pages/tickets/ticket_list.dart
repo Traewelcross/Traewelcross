@@ -55,7 +55,7 @@ class _TicketListState extends State<TicketList> {
           }
           if (snp.connectionState == .done) {
             if (snp.hasError) {
-              return Center(child: Text(snp.error.toString()));
+              return Center(child: Text(snp.error!.toString()));
             }
             if (!snp.hasData || snp.data?.isEmpty == true) {
               return Center(child: Text(localize.ticketListViewNoTickets));
@@ -81,6 +81,7 @@ class _TicketListState extends State<TicketList> {
                   key: Key(tickets[index].uuid),
                   onDismissed: (direction) async {
                     await TicketManager.removeTicket(tickets[index].uuid);
+                    if(!mounted) return;
                     setState(() {
                       _ticketF = TicketManager.getTickets();
                     });
@@ -122,6 +123,7 @@ class _TicketListState extends State<TicketList> {
             context,
             MaterialPageRoute(builder: (ctx) => AddTicket()),
           );
+          if(!mounted) return;
           setState(() {
             _ticketF = TicketManager.getTickets();
           });

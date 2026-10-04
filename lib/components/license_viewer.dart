@@ -35,7 +35,7 @@ class LicenseViewer extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         if (asyncSnapshot.hasError) {
-          return Center(child: Text(asyncSnapshot.error.toString()));
+          return Center(child: Text(asyncSnapshot.error!.toString()));
         }
         final packageInfo = asyncSnapshot.data![0] as PackageInfo;
         final notices = asyncSnapshot.data![1] as String;

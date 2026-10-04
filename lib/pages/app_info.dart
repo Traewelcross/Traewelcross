@@ -52,7 +52,7 @@ class AppInfo extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
-                      onPressed: () async {
+                      onPressed: () {
                         SharedFunctions.launchURL(SharedFunctions.repoURI);
                       },
                       label: Text(localize.viewProjectBtn),
@@ -63,7 +63,7 @@ class AppInfo extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
-                      onPressed: () async {
+                      onPressed: () {
                         SharedFunctions.launchURL(
                           Uri.parse("https://traewelcross.de/privacy.html"),
                           launchMode: LaunchMode.externalApplication,

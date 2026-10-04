@@ -51,7 +51,7 @@ class _ProfileViewState extends State<ProfileView> {
     _userInfo = _fetchUserInfo();
   }
 
-  Future<models.User> _fetchUserInfo() async {
+  Future<models.User> _fetchUserInfo() {
     final apiService = getIt<ApiService>();
     final res = apiService.user.fetchUserInfo(
       username: widget.isOtherUser ? widget.username! : null,
@@ -327,14 +327,13 @@ class _AuthUserCtrl extends StatelessWidget {
         Expanded(
           child: FilledButton.icon(
             icon: const Icon(Icons.group),
-            onPressed: () => {
+            onPressed: () => 
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (BuildContext context) => const FollowerPage(),
                 ),
               ),
-            },
             label: Text("Follower"),
           ),
         ),
@@ -394,7 +393,7 @@ class _OtherUserCtrlState extends State<_OtherUserCtrl> {
     setState(() => _userInfo = response);
   }
 
-  void _blockConfirm() async {
+  void _blockConfirm() {
     _block();
   }
 

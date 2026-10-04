@@ -49,17 +49,18 @@ class _AccountPreferencesState extends State<AccountPreferences> {
       u = res.object;
     } catch (e) {
       SharedFunctions.sendSnackBar(e.toString());
+      if(!mounted) return;
       setState(() {
         _applying = false;
       });
       return;
-    } finally {
+    }
+    if(!mounted) return;
       setState(() {
         _applying = false;
         _changedSetting = false;
         _userConfig = u;
       });
-    }
   }
 
   String _getVisibilityString(
@@ -140,7 +141,7 @@ class _AccountPreferencesState extends State<AccountPreferences> {
                 child: Column(
                   children: [
                     const Icon(Icons.error),
-                    Text(snp.error.toString()),
+                    Text(snp.error!.toString()),
                   ],
                 ),
               );
@@ -302,6 +303,7 @@ class _AccountPreferencesState extends State<AccountPreferences> {
                     contentPadding: EdgeInsets.zero,
                     title: Text(localize.hideCheckIns),
                     trailing: Switch(
+                      // ignore: avoid-unnecessary-conditionals
                       value: userConfig.privacyHideDays == null ? false : true,
                       onChanged: (val) {
                         setState(() {

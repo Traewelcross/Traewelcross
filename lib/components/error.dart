@@ -59,11 +59,11 @@ class ErrorDisplayWidget extends StatelessWidget {
           Card(
             clipBehavior: Clip.hardEdge,
             child: ExpansionTile(
-              shape: Border.all(color: Colors.transparent),
+              shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
               title: Text(localize.errorDetail),
               children: [
                 SelectableText(
-                  errorInfo.exception.toString(),
+                  errorInfo.exception?.toString() ?? "N/A",
                   style: TextStyle(fontFamily: "monospace"),
                 ),
               ],
@@ -109,9 +109,7 @@ class ErrorDisplayWidget extends StatelessWidget {
             ),
             SizedBox(height: 8),
             TextButton.icon(
-              onPressed: () => {
-                SharedFunctions.launchURL(SharedFunctions.repoURI),
-              },
+              onPressed: () => SharedFunctions.launchURL(SharedFunctions.repoURI),
               label: Text(localize.errorTroubleshootButtonGithub),
               icon: const Icon(Icons.open_in_new),
             ),

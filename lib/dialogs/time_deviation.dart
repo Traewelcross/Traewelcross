@@ -25,21 +25,29 @@ class _TimeDeviationDialogState extends State<TimeDeviationDialog> {
     textEdit.text = getIt<Config>().behavior.systemTimeDeviation
         .abs()
         .toString();
-    textEdit.addListener(() {
-      //print(mode);
-      if (textEdit.text.isEmpty) {
-        getIt<Config>().behavior.systemTimeDeviation = 0;
-        setState(() {});
-        return;
-      }
-      if (mode == "add") {
-        getIt<Config>().behavior.systemTimeDeviation = int.parse(textEdit.text);
-      } else {
-        getIt<Config>().behavior.systemTimeDeviation =
-            (int.parse(textEdit.text) / -1).toInt();
-      }
+    textEdit.addListener(textEditListener);
+  }
+
+  void textEditListener() {
+    //print(mode);
+    if (textEdit.text.isEmpty) {
+      getIt<Config>().behavior.systemTimeDeviation = 0;
       setState(() {});
-    });
+      return;
+    }
+    if (mode == "add") {
+      getIt<Config>().behavior.systemTimeDeviation = int.parse(textEdit.text);
+    } else {
+      getIt<Config>().behavior.systemTimeDeviation =
+          (int.parse(textEdit.text) / -1).toInt();
+    }
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    textEdit.removeListener(textEditListener);
+    super.dispose();
   }
 
   @override

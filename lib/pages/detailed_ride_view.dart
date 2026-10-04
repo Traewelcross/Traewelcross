@@ -225,12 +225,12 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                         return Card(
                           clipBehavior: Clip.hardEdge,
                           child: ExpansionTile(
-                            shape: Border.all(color: Colors.transparent),
+                            shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
                             title: Text(
                               "${asyncSnapshot.data!.length.toString()} ${localize.likes(asyncSnapshot.data!.length)}",
                             ),
                             dense: false,
-                            enabled: asyncSnapshot.data!.isEmpty ? false : true,
+                            enabled: asyncSnapshot.data!.isNotEmpty,
                             children: List.generate(
                               asyncSnapshot.data!.length,
                               (int i) => ProfileLinkButton(
@@ -243,7 +243,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                       return Card(
                         clipBehavior: Clip.hardEdge,
                         child: ExpansionTile(
-                          shape: Border.all(color: Colors.transparent),
+                          shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
                           clipBehavior: Clip.hardEdge,
                           title: Text("0 ${localize.likes(0)}"),
                           enabled: false,
@@ -266,10 +266,10 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                         return Card(
                           clipBehavior: Clip.hardEdge,
                           child: ExpansionTile(
-                            shape: Border.all(color: Colors.transparent),
+                            shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
                             title: Text(localize.alsoOnThisConnection),
                             dense: false,
-                            enabled: data.isEmpty ? false : true,
+                            enabled: data.isNotEmpty,
                             children: List.generate(
                               data.length,
                               (int i) => ProfileLinkButton(

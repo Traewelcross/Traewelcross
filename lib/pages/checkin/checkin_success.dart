@@ -106,7 +106,7 @@ class CheckinSuccess extends StatelessWidget {
                     child: ExpansionTile(
                       initiallyExpanded: true,
                       title: Text(localize.alsoOnThisConnection),
-                      shape: Border.all(color: Colors.transparent),
+                      shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
                       children: [
                         for (var user in statusInfo.alsoOnThisConnection!)
                           Padding(

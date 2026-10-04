@@ -62,13 +62,12 @@ class _AddTrustedUserState extends State<AddTrustedUser> {
     });
 
     _debounce = Timer(const Duration(milliseconds: 300), () async {
-      if (!mounted || searchTerm != _userSearchController.text.trim()) {
+      if (!mounted || searchTerm != _userSearchController.text.trim() || searchTerm == "@") {
         return;
       }
-
       final apiService = getIt<ApiService>();
       List<models.User> users;
-      users = await apiService.user.searchUser(searchTerm);
+      users = await apiService.user.searchUser(searchTerm.replaceFirst("@", ""));
       try {} catch (e) {
         users = [];
         //print(e);
@@ -161,13 +160,15 @@ class _AddTrustedUserState extends State<AddTrustedUser> {
                     child: OutlinedButton.icon(
                       onPressed: () async {
                         _trustExpireDate = await showDatePicker(
-                          context: context,
-                          firstDate: DateTime.now().add(Duration(days: 1)),
-                          lastDate: DateTime.now().add(
-                            Duration(days: 365 * 70),
-                          ),
-                        );
+                            context: context,
+                            firstDate: DateTime.now().add(Duration(days: 1)),
+                            lastDate: DateTime.now().add(
+                              Duration(days: 365 * 70),
+                            ),
+                          );
+                          if(!mounted) return;
                         setState(() {
+                          // ignore: avoid-self-assignment
                           _trustExpireDate = _trustExpireDate;
                         });
                       },

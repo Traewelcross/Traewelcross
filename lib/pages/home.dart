@@ -59,6 +59,7 @@ class _HomeState extends State<Home> {
     });
     final pos = await _determinePosition();
     if (pos == null) {
+      if(!mounted) return;
       setState(() {
         isLocating = false;
       });
@@ -89,7 +90,7 @@ class _HomeState extends State<Home> {
       );
       return;
     }
-
+    if(!mounted) return;
     setState(() {
       isLocating = false;
     });
@@ -184,12 +185,13 @@ class _HomeState extends State<Home> {
     final apiService = getIt<ApiService>();
     final response = await apiService.user.getHistory();
     // Refresh User Info to potentially update
+    if(!mounted) return;
     setState(() {
       history.addAll(response);
     });
   }
 
-  void _loadHistory() async {
+  void _loadHistory() {
     setState(() {
       typedText = true;
       gotResults = true;

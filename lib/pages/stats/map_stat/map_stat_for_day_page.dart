@@ -70,7 +70,7 @@ class _MapStatForDayPageState extends State<MapStatForDayPage> {
         }
 
         if (snapshot.hasError) {
-          return Center(child: Text(snapshot.error.toString()));
+          return Center(child: Text(snapshot.error!.toString()));
         }
 
         final ridesWithCoords =

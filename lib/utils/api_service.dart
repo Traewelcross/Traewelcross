@@ -79,7 +79,6 @@ class ApiService {
     Map<String, String>? headers,
     Object? body,
     Encoding? encoding,
-    bool isRetrial = false,
   }) async {
     headers ??= {};
     headers.addAll({
@@ -247,7 +246,7 @@ class ApiService {
     return true;
   }
 
-  Future<String?> fetchUserProfilePicture(String userName) async {
+  Future<String?> fetchUserProfilePicture() async {
     try {
       final response = await request("/auth/user", HttpRequestTypes.GET);
       final jsonRes = jsonDecode(response.body);

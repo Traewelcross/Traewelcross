@@ -105,6 +105,7 @@ class _CheckInState extends State<CheckIn> {
 
   void _getDefault() async {
     userInfo = await SharedFunctions.getUserInfoFromCache();
+    if(!mounted) return;
     setState(() {
       tripVisi = !widget.isEdit
           ? TripVisibilityEnum.fromValue(userInfo["defaultStatusVisibility"])
@@ -112,7 +113,7 @@ class _CheckInState extends State<CheckIn> {
     });
   }
 
-  Future<List<Event>> _getEvents() async {
+  Future<List<Event>> _getEvents() {
     final apiService = getIt<ApiService>();
     return apiService.event.getEvents(
       timestamp: widget.isEdit
@@ -243,10 +244,10 @@ class _CheckInState extends State<CheckIn> {
         });
         Navigator.pop(context);
       } else {
+        if (!mounted) return;
         setState(() {
           waitForRes = false;
         });
-        if (!mounted) return;
         ScaffoldMessenger.of(context).showMaterialBanner(
           MaterialBanner(
             content: Text(
@@ -593,36 +594,47 @@ class TrustedCheckInButton extends StatelessWidget {
                               }
                               if (asyncSnapshot.hasData &&
                                   asyncSnapshot.data!.isNotEmpty) {
-                                return ListView.builder(
+                                return CustomScrollView(
+                                  slivers: [
+                                    SliverList(
+                                      delegate: SliverChildBuilderDelegate(
+                                        childCount: asyncSnapshot.data!.length,
+                                        (BuildContext context, int index) {
+                                          final user =
+                                              asyncSnapshot.data![index].user;
+                                          final isChecked = selectedUsers
+                                              .containsValue(user.id);
+                                          return CheckboxListTile(
+                                            value: isChecked,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                if (value == true) {
+                                                  selectedUsers[user.username] =
+                                                      user.id;
+                                                } else {
+                                                  selectedUsers.removeWhere(
+                                                    (key, val) =>
+                                                        val == user.id,
+                                                  );
+                                                }
+                                              });
+                                            },
+                                            title: ProfileLinkButton(
+                                              user: user.promoteToUser(),
+                                              enableNavigateToProfile: false,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                );
+                                /*return ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: asyncSnapshot.data!.length,
                                   itemBuilder:
-                                      (BuildContext context, int index) {
-                                        final user =
-                                            asyncSnapshot.data![index].user;
-                                        final isChecked = selectedUsers
-                                            .containsValue(user.id);
-                                        return CheckboxListTile(
-                                          value: isChecked,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              if (value == true) {
-                                                selectedUsers[user.username] =
-                                                    user.id;
-                                              } else {
-                                                selectedUsers.removeWhere(
-                                                  (key, val) => val == user.id,
-                                                );
-                                              }
-                                            });
-                                          },
-                                          title: ProfileLinkButton(
-                                            user: user.promoteToUser(),
-                                            enableNavigateToProfile: false,
-                                          ),
-                                        );
-                                      },
-                                );
+                                      ,
+                                );*/
                               }
                               return const SizedBox(height: 0);
                             },
@@ -716,46 +728,56 @@ class EventButton extends StatelessWidget {
                           }
                           if (asyncSnapshot.hasData &&
                               asyncSnapshot.data!.isNotEmpty) {
-                            return ListView.builder(
+                            return CustomScrollView(
+                              slivers: [
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate((
+                                    BuildContext context,
+                                    int index,
+                                  ) {
+                                    if (index == 0) {
+                                      return ListTile(
+                                        leading: const Icon(Icons.block),
+                                        title: Text(localize.deselectEvent),
+                                        subtitle: Text(
+                                          localize.deselectEventSubtitle,
+                                        ),
+                                        onTap: () {
+                                          onEventSelected({
+                                            "isSelected": false,
+                                            "eventName": "",
+                                            "eventId": 0,
+                                          });
+                                          Navigator.of(context).pop();
+                                        },
+                                      );
+                                    }
+                                    final eventData =
+                                        asyncSnapshot.data![index - 1];
+                                    return ListTile(
+                                      leading: const Icon(Icons.calendar_today),
+                                      title: Text(eventData.name),
+                                      subtitle: Text(
+                                        "${DateFormat.yMd(Localizations.localeOf(context).languageCode).format(DateTime.parse(eventData.begin))} - ${DateFormat.yMd(Localizations.localeOf(context).languageCode).format(DateTime.parse(eventData.end))}",
+                                      ),
+                                      onTap: () {
+                                        onEventSelected({
+                                          "isSelected": true,
+                                          "eventName": eventData.name,
+                                          "eventId": eventData.id,
+                                        });
+                                        Navigator.of(context).pop();
+                                      },
+                                    );
+                                  }, childCount: asyncSnapshot.data!.length + 1),
+                                ),
+                              ],
+                            );
+                            /*return ListView.builder(
                               shrinkWrap: true,
                               itemCount: asyncSnapshot.data!.length + 1,
-                              itemBuilder: (BuildContext context, int index) {
-                                if (index == 0) {
-                                  return ListTile(
-                                    leading: const Icon(Icons.block),
-                                    title: Text(localize.deselectEvent),
-                                    subtitle: Text(
-                                      localize.deselectEventSubtitle,
-                                    ),
-                                    onTap: () {
-                                      onEventSelected({
-                                        "isSelected": false,
-                                        "eventName": "",
-                                        "eventId": 0,
-                                      });
-                                      Navigator.of(context).pop();
-                                    },
-                                  );
-                                }
-                                final eventData =
-                                    asyncSnapshot.data![index - 1];
-                                return ListTile(
-                                  leading: const Icon(Icons.calendar_today),
-                                  title: Text(eventData.name),
-                                  subtitle: Text(
-                                    "${DateFormat.yMd(Localizations.localeOf(context).languageCode).format(DateTime.parse(eventData.begin))} - ${DateFormat.yMd(Localizations.localeOf(context).languageCode).format(DateTime.parse(eventData.end))}",
-                                  ),
-                                  onTap: () {
-                                    onEventSelected({
-                                      "isSelected": true,
-                                      "eventName": eventData.name,
-                                      "eventId": eventData.id,
-                                    });
-                                    Navigator.of(context).pop();
-                                  },
-                                );
-                              },
-                            );
+                              itemBuilder: ,
+                            );*/
                           }
                           return const SizedBox(height: 0);
                         },

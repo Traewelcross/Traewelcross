@@ -29,6 +29,7 @@ class _ModifyTrustedUsersState extends State<ModifyTrustedUsers> {
     });
     final response = await getIt<ApiService>().user.stopTrust(id);
     if (response.wasSuccess) {
+      if(!mounted) return;
       setState(() {
         _users = _getTrustedUsers();
       });
@@ -40,6 +41,7 @@ class _ModifyTrustedUsersState extends State<ModifyTrustedUsers> {
   Future<void> _startTrust(int user, DateTime? expire) async {
     final response = await getIt<ApiService>().user.startTrust(user, expire);
     if (response.wasSuccess) {
+      if(!mounted) return;
       setState(() {
         _users = Future<List<TrustedUser>>.value(List<TrustedUser>.empty());
       });
@@ -85,7 +87,7 @@ class _ModifyTrustedUsersState extends State<ModifyTrustedUsers> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(Icons.error),
-                  Text(asyncSnapshot.error.toString()),
+                  Text(asyncSnapshot.error!.toString()),
                 ],
               ),
             );

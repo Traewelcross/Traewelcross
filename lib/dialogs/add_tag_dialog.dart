@@ -229,7 +229,7 @@ class _TagBoxState extends State<TagBox> {
             if (_availableTags.isNotEmpty)
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 1),
+                  border: const Border.fromBorderSide(BorderSide(color: Colors.grey, width: 1)),
                   shape: BoxShape.circle,
                 ),
                 child: PopupMenuButton(

@@ -75,6 +75,7 @@ class _SelectStopState extends State<SelectStop> {
       response.stopovers.removeLast();
     }
     response.stopovers = response.stopovers.reversed.toList();
+    if(!mounted) return response;
     setState(() => attribution = response.dataSource?.attribution ?? "");
     return response;
   }
@@ -189,7 +190,7 @@ class _SelectStopState extends State<SelectStop> {
                                 child: Column(
                                   children: [
                                     Icon(Icons.error, size: 48),
-                                    Text(snapshot.error.toString()),
+                                    Text(snapshot.error!.toString()),
                                   ],
                                 ),
                               );

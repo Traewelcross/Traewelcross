@@ -2,14 +2,9 @@ import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/pages/stats/map_stat/map_stat_for_user.dart';
 import 'package:traewelcross/pages/stats/personal_stats/personal_stats_wrap.dart';
 import "package:traewelcross/pages/stats/user_stats/user_stats.dart";
-class Statistics extends StatefulWidget {
+class Statistics extends StatelessWidget {
   const Statistics({super.key});
 
-  @override
-  State<Statistics> createState() => _StatisticsState();
-}
-
-class _StatisticsState extends State<Statistics> {
   /*late final Future<Map<String, dynamic>> _stats;
   Future<Map<String, dynamic>> _getGlobalStats() async {
     final response = await getIt<ApiService>().request(
@@ -27,7 +22,6 @@ class _StatisticsState extends State<Statistics> {
     super.initState();
     _stats = _getGlobalStats();
   }*/
-
   @override
   Widget build(BuildContext context) {
     return const DefaultTabController(

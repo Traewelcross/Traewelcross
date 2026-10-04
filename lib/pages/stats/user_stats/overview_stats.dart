@@ -36,9 +36,7 @@ class _OverviewStatsState extends State<OverviewStats>
   void didUpdateWidget(covariant OverviewStats oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.statRange != widget.statRange) {
-      setState(() {
-        _loadStats();
-      });
+      _loadStats();
     }
   }
 

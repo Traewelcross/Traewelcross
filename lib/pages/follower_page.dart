@@ -141,7 +141,7 @@ class _FollowerPageState extends State<FollowerPage> {
   }
 }
 
-class _SocialUserList extends StatefulWidget {
+class _SocialUserList extends StatelessWidget {
   const _SocialUserList({
     required this.userlist,
     this.request,
@@ -156,16 +156,11 @@ class _SocialUserList extends StatefulWidget {
   final bool? request;
   final Function(String?) callback;
 
-  @override
-  State<_SocialUserList> createState() => _SocialUserListState();
-}
-
-class _SocialUserListState extends State<_SocialUserList> {
   void _acceptFollowRequest(int id) async {
     final ApiService apiService = getIt<ApiService>();
     final response = await apiService.user.acceptFollowRequest(id);
     if (response.wasSuccess) {
-      widget.callback.call(null);
+      callback.call(null);
     }
   }
 
@@ -173,7 +168,7 @@ class _SocialUserListState extends State<_SocialUserList> {
     final ApiService apiService = getIt<ApiService>();
     final response = await apiService.user.denyFollowRequest(id);
     if (response.wasSuccess) {
-      widget.callback.call(null);
+      callback.call(null);
     }
   }
 
@@ -181,7 +176,7 @@ class _SocialUserListState extends State<_SocialUserList> {
     final ApiService apiService = getIt<ApiService>();
     final response = await apiService.user.unfollow(id: id);
     if (response != null) {
-      widget.callback.call(null);
+      callback.call(null);
     }
   }
 
@@ -189,7 +184,7 @@ class _SocialUserListState extends State<_SocialUserList> {
     final ApiService apiService = getIt<ApiService>();
     final response = await apiService.user.removeFollower(id);
     if (response.wasSuccess) {
-      widget.callback.call(null);
+      callback.call(null);
     }
   }
 
@@ -197,7 +192,7 @@ class _SocialUserListState extends State<_SocialUserList> {
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
     return FutureBuilder(
-      future: widget.userlist,
+      future: userlist,
       builder: (context, asyncSnapshot) {
         if (asyncSnapshot.connectionState == ConnectionState.waiting) {
           return const SliverToBoxAdapter(
@@ -215,7 +210,7 @@ class _SocialUserListState extends State<_SocialUserList> {
         return SliverList.builder(
           itemCount: asyncSnapshot.data!.length,
           itemBuilder: (context, index) {
-            if (widget.isFollower ?? false) {
+            if (isFollower ?? false) {
               return ProfileLinkButton(
                 user: asyncSnapshot.data![index],
                 action: IconButton(
@@ -227,7 +222,7 @@ class _SocialUserListState extends State<_SocialUserList> {
                 ),
               );
             }
-            if (widget.following ?? false) {
+            if (following ?? false) {
               return ProfileLinkButton(
                 user: asyncSnapshot.data![index],
                 action: IconButton(
@@ -239,7 +234,7 @@ class _SocialUserListState extends State<_SocialUserList> {
                 ),
               );
             }
-            if (widget.request ?? false) {
+            if (request ?? false) {
               return ProfileLinkButton(
                 user: asyncSnapshot.data![index],
                 action: Row(

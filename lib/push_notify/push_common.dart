@@ -76,7 +76,7 @@ void onDidReceiveNotificationResponse(
   }
 }
 
-Future<void> processAndShowNotification(Map<String, dynamic> data) async {
+void processAndShowNotification(Map<String, dynamic> data) {
   final notificationsPlugin = FlutterLocalNotificationsPlugin();
   final notification = jsonDecode(data["rawBody"])["notification"];
   final channel = switch (notification["type"]) {

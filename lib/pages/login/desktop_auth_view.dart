@@ -21,6 +21,7 @@ class _DesktopAuthCallbackViewState extends State<DesktopAuthCallbackView> {
     if (_isLoading) return;
 
     ClipboardData? url = await Clipboard.getData("text/plain");
+    if(!mounted) return;
     setState(() {
       _isLoading = true;
       _errorMessage = null;

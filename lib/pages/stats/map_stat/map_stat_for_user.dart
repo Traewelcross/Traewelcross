@@ -98,7 +98,7 @@ class _MapStatForUserState extends State<MapStatForUser> {
                   footer: Card(
                           clipBehavior: .hardEdge,
                           child: ExpansionTile(
-                            shape: Border.all(color: Colors.transparent),
+                            shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
                             clipBehavior: Clip.hardEdge,
                             expandedCrossAxisAlignment: .start,
                             title: Row(

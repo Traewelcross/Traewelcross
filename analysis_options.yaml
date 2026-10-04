@@ -14,3 +14,33 @@ analyzer:
 linter:
   rules:
     unnecessary_this: false
+dcm:
+  rules:
+    - avoid-unnecessary-stateful-widgets
+    - avoid-generics-shadowing
+    - avoid-global-state
+    - avoid-missed-calls
+    - avoid-misused-set-literals
+    - avoid-nested-records
+    - avoid-nullable-tostring
+    #- avoid-passing-async-when-sync-expected
+    - avoid-passing-self-as-argument
+    - avoid-redundant-async
+    - avoid-self-assignment
+    - avoid-self-compare
+    - avoid-unnecessary-conditionals
+    - avoid-unnecessary-type-assertions
+    - avoid-unnecessary-type-casts
+    - avoid-unrelated-type-assertions
+    - avoid-unused-parameters
+    - no-equal-then-else
+    - prefer-iterable-of
+    - always-remove-listener
+    - avoid-returning-widgets
+    - avoid-shrink-wrap-in-lists
+    - avoid-unnecessary-setstate
+    - check-for-equals-in-render-object-setters
+    - consistent-update-render-object
+    #- prefer-single-widget-per-file
+    - use-setstate-synchronously
+    - avoid-border-all

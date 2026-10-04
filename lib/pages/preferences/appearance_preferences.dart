@@ -121,7 +121,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
               Divider(),
               ExpansionTile(
                 title: Text(localize.fontFamilyChooser),
-                shape: Border.all(color: Colors.transparent),
+                shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
                 children: [
                   RadioGroup(
                     groupValue: config.appearance.fontFam,
@@ -318,27 +318,6 @@ class ColorCircleList extends StatelessWidget {
     const Color(0xFF607D8B), // Blue Grey
     Colors.black,
   ];
-  Widget? getIcon(Color color, Config config) {
-    if ((color == tcColorDark || color == tcColorLight) &&
-        color == config.appearance.accentColor) {
-      return SvgPicture.asset(
-        "icons/raw_icon.svg",
-        width: 18,
-        color: ThemeData.estimateBrightnessForColor(color) == Brightness.light
-            ? Colors.black
-            : Colors.white,
-      );
-    }
-    if (color == config.appearance.accentColor) {
-      return Icon(
-        Icons.check,
-        color: ThemeData.estimateBrightnessForColor(color) == Brightness.light
-            ? Colors.black
-            : Colors.white,
-      );
-    }
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -349,7 +328,7 @@ class ColorCircleList extends StatelessWidget {
         .map(
           (color) => ColorCircle(
             color: color,
-            icon: getIcon(color, config),
+            icon: ColorCircleIcon(color: color, config: config),
             width: 48,
             onTap: (color) => config.appearance.accentColor = color,
           ),
@@ -404,5 +383,33 @@ class ColorCircleList extends StatelessWidget {
           Theme.of(context).listTileTheme.contentPadding ?? EdgeInsets.all(0),
       child: Wrap(spacing: 8, runSpacing: 4, children: colorCircles),
     );
+  }
+}
+
+class ColorCircleIcon extends StatelessWidget {
+  const ColorCircleIcon({super.key, required this.color, required this.config});
+  final Config config;
+  final Color color;
+  @override
+  Widget build(BuildContext context) {
+    if ((color == tcColorDark || color == tcColorLight) &&
+        color == config.appearance.accentColor) {
+      return SvgPicture.asset(
+        "icons/raw_icon.svg",
+        width: 18,
+        color: ThemeData.estimateBrightnessForColor(color) == Brightness.light
+            ? Colors.black
+            : Colors.white,
+      );
+    }
+    if (color == config.appearance.accentColor) {
+      return Icon(
+        Icons.check,
+        color: ThemeData.estimateBrightnessForColor(color) == Brightness.light
+            ? Colors.black
+            : Colors.white,
+      );
+    }
+    return const SizedBox(height: 0,);
   }
 }

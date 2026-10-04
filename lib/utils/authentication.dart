@@ -122,15 +122,15 @@ class AuthService {
         credentials,
         identifier: clientId,
         secret: clientSecret,
-        onCredentialsRefreshed: (refreshedCredentials) async {
-          await saveCredentials(refreshedCredentials);
+        onCredentialsRefreshed: (refreshedCredentials) {
+          saveCredentials(refreshedCredentials);
         },
       );
     }
     return _client;
   }
 
-  Future<void> createWatchToken() async {
+  void createWatchToken() {
     final pkcePair = PkcePair.generate();
 
     _grant = oauth2.AuthorizationCodeGrant(

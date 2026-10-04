@@ -35,7 +35,7 @@ class Config with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveCofig() async {
+  void saveCofig() {
     final jString = jsonEncode(this.toJson());
     SharedPreferencesAsync().setString("config", jString);
   }

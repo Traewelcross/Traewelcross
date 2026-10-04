@@ -44,14 +44,12 @@ class _TimeOverrideFieldState extends State<TimeOverrideField> {
   void didUpdateWidget(covariant TimeOverrideField oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.initialDate != oldWidget.initialDate) {
-      setState(() {
-        _selectedDate = widget.initialDate;
-        if (_selectedDate == null) {
-          _controller.text = "";
-        } else {
-          _updateTextField();
-        }
-      });
+      _selectedDate = widget.initialDate;
+      if (_selectedDate == null) {
+        _controller.text = "";
+      } else {
+        _updateTextField();
+      }
     }
   }
 
@@ -102,10 +100,12 @@ class _TimeOverrideFieldState extends State<TimeOverrideField> {
             time.hour,
             time.minute,
           );
+          if(mounted){
           setState(() {
             _selectedDate = newDate;
             _updateTextField();
           });
+          }
           widget.onDateChanged(_selectedDate);
         }
       },

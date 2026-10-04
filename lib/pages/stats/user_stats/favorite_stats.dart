@@ -35,9 +35,7 @@ class _FavoriteStatsState extends State<FavoriteStats>
   void didUpdateWidget(covariant FavoriteStats oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.statRange != widget.statRange) {
-      setState(() {
-        _loadStats();
-      });
+      _loadStats();
     }
   }
 

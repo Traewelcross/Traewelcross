@@ -25,7 +25,7 @@ late final PushManager globalPushManager;
 final getIt = GetIt.instance;
 
 class SharedFunctions {
-  static Uri repoURI = Uri.parse(
+  static final Uri repoURI = Uri.parse(
     "https://github.com/Traewelcross/traewelcross",
   );
 
@@ -122,9 +122,10 @@ class SharedFunctions {
     }
   }
 
+  // ignore: avoid-global-state
   static bool canNotificationsBeUsed = false;
 
-  static Uri pushServer = Uri.parse("https://push.traewelcross.de");
+  static final Uri pushServer = Uri.parse("https://push.traewelcross.de");
 
   static Uri concatUri(List<String> parts) {
     return Uri.parse(

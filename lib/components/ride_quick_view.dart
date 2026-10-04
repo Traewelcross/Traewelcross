@@ -353,7 +353,7 @@ class _RideQuickViewState extends State<RideQuickView> {
     }
   }
 
-  Future<void> _shareRide() async {
+  void _shareRide() {
     SharePlus.instance.share(
       ShareParams(
         text: "https://traewelling.de/status/${_rideData.id} #Träwelling",
@@ -361,7 +361,7 @@ class _RideQuickViewState extends State<RideQuickView> {
     );
   }
 
-  void _openReport(int id) {
+  void _openReport() {
     TextEditingController controller = TextEditingController();
     String reason = "inappropriate";
     showDialog(
@@ -891,7 +891,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                                       ),
                                     ),
                                     PopupMenuItem(
-                                      onTap: () => _openReport(_rideData.id),
+                                      onTap: () => _openReport(),
                                       child: Row(
                                         children: [
                                           const Icon(Icons.report),

@@ -4,6 +4,7 @@ import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/shared.dart';
 
+// ignore: avoid-unnecessary-stateful-widgets
 class MiscPreferences extends StatefulWidget {
   const MiscPreferences({super.key});
 
@@ -15,6 +16,7 @@ class _MiscPreferencesState extends State<MiscPreferences> {
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
+    // ignore: unused_local_variable
     Config config = getIt<Config>();
     return MainScaffold(
       title: Text(localize.behavior),

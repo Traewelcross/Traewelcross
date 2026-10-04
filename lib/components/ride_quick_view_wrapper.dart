@@ -105,12 +105,13 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
       for (final ride in newRides) {
         _parseRideDate(ride);
       }
-
-      setState(() {
-        _userRides.addAll(newRides);
-        _page++;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _userRides.addAll(newRides);
+          _page++;
+          _isLoading = false;
+        });
+      }
     } on TimeoutException {
       if (!mounted) return;
       setState(() {
@@ -190,7 +191,10 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DayStat(rides: ridesOnThisDate, currentRideDate: currentRideDate,),
+                          builder: (context) => DayStat(
+                            rides: ridesOnThisDate,
+                            currentRideDate: currentRideDate,
+                          ),
                         ),
                       );
                     },

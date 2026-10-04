@@ -22,7 +22,7 @@ class TrainApiProvider {
         .GET,
       );
     } on TimeoutException {
-      throw TimeoutException(null);
+      rethrow;
     }
     if (response.statusCode == 200) {
       //print(response.body);

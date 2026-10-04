@@ -74,7 +74,7 @@ class _ManualTripAddStopoverDialogState
                 () => selectedStation.arrival = d?.toIso8601String(),
               ),
               watermark: localize.manualTripArrival,
-              showDelete: widget.isDestination == true ? false : true,
+              showDelete: !widget.isDestination,
             ),
             TimeOverrideField(
               initialDate: DateTime.tryParse(
@@ -85,7 +85,7 @@ class _ManualTripAddStopoverDialogState
                     d?.toIso8601String() ?? DateTime.now().toIso8601String(),
               ),
               watermark: localize.manualTripDeparture,
-              showDelete: widget.isDestination == true ? true : false,
+              showDelete: widget.isDestination,
             ),
             Spacer(),
             Row(

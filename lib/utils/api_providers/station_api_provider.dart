@@ -35,7 +35,7 @@ class StationApiProvider {
         .GET,
       );
     } on TimeoutException {
-      throw TimeoutException("");
+      rethrow;
     }
     if (response.statusCode == 200) {
       return Station.fromJson(jsonDecode(response.body)["data"]);
@@ -55,7 +55,7 @@ class StationApiProvider {
         .GET,
       );
     } on TimeoutException {
-      throw TimeoutException("");
+      rethrow;
     }
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body)["data"];

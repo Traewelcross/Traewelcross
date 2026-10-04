@@ -97,7 +97,7 @@ class MapStat extends StatelessWidget {
           Card(
             clipBehavior: Clip.hardEdge,
             child: ExpansionTile(
-              shape: Border.all(color: Colors.transparent),
+              shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
               clipBehavior: Clip.hardEdge,
               title: Text("${uniqueUsers.length} ${localize.users}"),
               enabled: true,

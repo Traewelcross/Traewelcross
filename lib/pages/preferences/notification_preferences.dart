@@ -18,7 +18,6 @@ class _NotificationPreferencesState extends State<NotificationPreferences> {
   bool changingNotificationState = false;
   void toggleNotifications(
     bool? val,
-    BuildContext context,
     Config config,
   ) async {
     if (val == null) return;
@@ -32,6 +31,7 @@ class _NotificationPreferencesState extends State<NotificationPreferences> {
     } else {
       await globalPushManager.unregisterDevice(client);
     }
+    if(!mounted) return;
     setState(() {
       config.notification.notificationsEnabled = val;
       changingNotificationState = false;
@@ -49,7 +49,6 @@ class _NotificationPreferencesState extends State<NotificationPreferences> {
           ListTile(
             onTap: () => toggleNotifications(
               !config.notification.notificationsEnabled,
-              context,
               config,
             ),
             leading: config.notification.notificationsEnabled
@@ -64,7 +63,7 @@ class _NotificationPreferencesState extends State<NotificationPreferences> {
                 : Switch(
                     value: config.notification.notificationsEnabled,
                     onChanged: (val) =>
-                        toggleNotifications(val, context, config),
+                        toggleNotifications(val, config),
                   ),
           ),
           if (config.notification.notificationsEnabled) ...[

@@ -79,6 +79,7 @@ class _SelectConnectionState extends State<SelectConnection> {
     if (newTime == null) {
       return;
     }
+    if(!mounted) return;
     setState(() {
       departureTime = DateTime(
         newDate.year,
@@ -98,7 +99,7 @@ class _SelectConnectionState extends State<SelectConnection> {
     });
   }
 
-  void _setHome() async {
+  void _setHome() {
     final apiService = getIt<ApiService>();
     apiService.user.setHome(widget.stationId, widget.stationName);
   }
@@ -297,7 +298,7 @@ class _DepartureList extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(Icons.error),
-                Text(asyncSnapshot.error.toString()),
+                Text(asyncSnapshot.error!.toString()),
                 OutlinedButton.icon(
                   onPressed: () => retryTrigger.call(),
                   label: Text(AppLocalizations.of(context)!.retry),

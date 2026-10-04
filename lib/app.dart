@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
@@ -43,7 +42,6 @@ import 'l10n/app_localizations.dart';
 class App extends WatchingWidget {
   const App({super.key});
   ColorScheme getColorScheme(
-    BuildContext context,
     Color? accentColor,
     bool useSystemAccent,
     ColorScheme? dynamicColor,
@@ -101,14 +99,12 @@ class App extends WatchingWidget {
       child: DynamicColorBuilder(
         builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
           final lightColorScheme = getColorScheme(
-            context,
             accentColor,
             useSystemAccent,
             lightDynamic,
             Brightness.light,
           );
           final darkColorScheme = getColorScheme(
-            context,
             accentColor,
             useSystemAccent,
             darkDynamic,
@@ -392,8 +388,8 @@ class _ChromeState extends State<Chrome> {
         ),
         actions: [
           IconButton(
-            onPressed: () async {
-              await getIt<ApiService>().notification.markAllRead();
+            onPressed: () {
+              getIt<ApiService>().notification.markAllRead();
               if (!context.mounted) return;
               getIt<UnreadCountProvider>().reset();
             },

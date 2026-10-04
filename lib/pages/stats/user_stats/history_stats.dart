@@ -62,7 +62,7 @@ class _HistoryStatsState extends State<HistoryStats>
                       clipBehavior: .hardEdge,
                       child: ExpansionTile(
                         clipBehavior: .hardEdge,
-                        shape: Border.all(color: Colors.transparent),
+                        shape: const Border.fromBorderSide(.new(color: Colors.transparent)),
                         title: Text(year.period),
                         children: [
                           ListTile(
@@ -86,7 +86,7 @@ class _HistoryStatsState extends State<HistoryStats>
                               color: SharedFunctions.secondCard(context),
                               child: ExpansionTile(
                                 clipBehavior: .hardEdge,
-                                shape: Border.all(color: Colors.transparent),
+                                shape: Border.fromBorderSide(.new(color: Colors.transparent)),
                                 title: Text(
                                   localize.monthYear(
                                     DateTime(
