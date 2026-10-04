@@ -59,6 +59,7 @@ class _CheckInState extends State<CheckIn> {
   @override
   void initState() {
     super.initState();
+    // ignore: avoid-unnecessary-setstate
     _getDefault();
     checkInInfo = widget.checkInInfo;
     if (widget.isEdit) {
