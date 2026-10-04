@@ -258,6 +258,7 @@ class _RideQuickViewState extends State<RideQuickView> {
 
   Future<void> _updateLikes() async {
     final apiService = getIt<ApiService>();
+    bool likeIntend = false;
     try {
       final LikeCountResponse res;
       if (!_rideData.liked) {
@@ -268,11 +269,12 @@ class _RideQuickViewState extends State<RideQuickView> {
           return;
         }
         res = await apiService.status.like(_rideData.id, _rideData.likes);
+        likeIntend = true;
       } else {
         res = await apiService.status.unlike(_rideData.id, _rideData.likes);
       }
       if (!mounted) return;
-      _rideData.liked = res.wasSuccess;
+      _rideData.liked = res.wasSuccess && likeIntend;
       _rideData.likes = res.newCount;
       widget.likeCallback?.call();
       _updateRideData(_rideData);
