@@ -29,6 +29,7 @@ import 'package:traewelcross/utils/api_providers/status_api_provider.dart';
 import 'dart:async';
 
 import 'package:traewelcross/utils/time_span.dart';
+import 'package:traewelcross/utils/volume_buttons.dart';
 
 class RideQuickView extends StatefulWidget {
   const RideQuickView({
@@ -53,7 +54,7 @@ class _RideQuickViewState extends State<RideQuickView> {
   static final RegExp _emojiPattern = RegExp(r':\w+:');
   InlineSpan? _cachedBody;
   ThemeData? _cachedTheme;
-  static const _volChan = MethodChannel("volume");
+  StreamSubscription<VolumeEvent>? _volumeSubscription;
   final List<TapGestureRecognizer> _recognizers = [];
   Color? _tintColor;
   DateTime? _createdAtDate;
@@ -65,19 +66,14 @@ class _RideQuickViewState extends State<RideQuickView> {
   void initState() {
     super.initState();
     _rideData = widget.rideData;
-    if (widget.detailedView == true) {
-      _volChan.setMethodCallHandler((call) {
-        if (call.method == "volumePressed") {
-          if (call.arguments == "up") {
-            _updateTime(TimeOfDay.now(), false);
-          } else if (call.arguments == "down") {
-            _updateTime(TimeOfDay.now(), true);
-          }
+    _initData();
+    if(widget.detailedView == true){
+      _volumeSubscription = VolumeButtonService().stream.listen((e) {
+        if(e.action == .held){
+          _updateTime(TimeOfDay.now(), e.button == .down);
         }
-        return Future.value(null);
       });
     }
-    _initData();
   }
 
   @override
@@ -106,9 +102,7 @@ class _RideQuickViewState extends State<RideQuickView> {
 
   @override
   void dispose() {
-    if (widget.detailedView == true) {
-      _volChan.setMethodCallHandler(null);
-    }
+    _volumeSubscription?.cancel();
     _clearRecognizers();
     super.dispose();
   }

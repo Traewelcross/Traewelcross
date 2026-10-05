@@ -865,6 +865,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get volumeBtnCtrl => 'Lautstärketasten überschreiben';
 
   @override
+  String get volumeBtnCtrlIndicator => 'Lautstärketastenindikator';
+
+  @override
+  String get volumeBtnCtrlIndicatorNote =>
+      'Zeige einen Indikator an, mit dem du besser unterscheiden kannst, ab wann ein einfaches klicken als gedrückt gehalten gezählt wird. Du kannst in antippen und dir anzeigen lassen, was du auf der jeweiligen Seite damit tun kannst.';
+
+  @override
   String get volumeBtnCtrlNote =>
       'Benutze Grundfeatures der App mit den Lautstärketasten, z.B. wenn du Handschuhe an hast.';
 

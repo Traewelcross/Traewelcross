@@ -13,6 +13,7 @@ Future<Config> loadConfig() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedFunctions.configureGetIt();
+  SharedFunctions.sharedInit();
   final appConfig = await loadConfig();
   getIt.unregister<Config>();
   getIt.registerSingleton<Config>(appConfig);

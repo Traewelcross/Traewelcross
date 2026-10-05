@@ -23,8 +23,19 @@ class MainActivity : FlutterActivity() {
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if(overrideVolumeBtns){
             when (keyCode) {
-                KeyEvent.KEYCODE_VOLUME_DOWN -> volChannel.invokeMethod("volumePressed", "down")
-                KeyEvent.KEYCODE_VOLUME_UP -> volChannel.invokeMethod("volumePressed", "up")
+                KeyEvent.KEYCODE_VOLUME_DOWN -> volChannel.invokeMethod("DP", null)
+                KeyEvent.KEYCODE_VOLUME_UP -> volChannel.invokeMethod("UP", null)
+                else -> super.onKeyDown(keyCode, event)
+            }
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if(overrideVolumeBtns){
+            when (keyCode) {
+                KeyEvent.KEYCODE_VOLUME_DOWN -> volChannel.invokeMethod("DR", null)
+                KeyEvent.KEYCODE_VOLUME_UP -> volChannel.invokeMethod("UR", null)
                 else -> super.onKeyDown(keyCode, event)
             }
             return true

@@ -16,6 +16,7 @@ import 'package:traewelcross/utils/custom_providers.dart';
 import 'package:traewelcross/utils/authentication.dart';
 import 'package:traewelcross/utils/deeplink_service.dart';
 import 'package:traewelcross/utils/time_span.dart';
+import 'package:traewelcross/utils/volume_buttons.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
@@ -79,6 +80,10 @@ class SharedFunctions {
     getIt.registerSingleton<GlobalKey<ScaffoldMessengerState>>(
       GlobalKey<ScaffoldMessengerState>(),
     );
+  }
+
+  static void sharedInit(){
+    VolumeButtonService().init();
   }
 
   /// Refresh the token every time the App is opened, prompting the user to login again if so needed!

@@ -1595,8 +1595,20 @@ abstract class AppLocalizations {
   /// No description provided for @volumeBtnCtrl.
   ///
   /// In en, this message translates to:
-  /// **'Volume Button Control'**
+  /// **'Volume button control'**
   String get volumeBtnCtrl;
+
+  /// No description provided for @volumeBtnCtrlIndicator.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume button control indicator'**
+  String get volumeBtnCtrlIndicator;
+
+  /// No description provided for @volumeBtnCtrlIndicatorNote.
+  ///
+  /// In en, this message translates to:
+  /// **'If activated, an indicator will be displayed on screen to help you differentiate what counts as click and what as held. You may press it to get help on what does what.'**
+  String get volumeBtnCtrlIndicatorNote;
 
   /// No description provided for @volumeBtnCtrlNote.
   ///

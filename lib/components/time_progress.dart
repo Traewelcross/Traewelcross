@@ -63,6 +63,7 @@ class _TimeProgressState extends State<TimeProgress> {
       _startDate = widget.startDate;
       _endDate = widget.endDate;
       _totalDuration = _endDate!.difference(_startDate!).inMilliseconds;
+      // ignore: avoid-unnecessary-setstate
       _updateProgress();
       _startProgressLoop();
     }

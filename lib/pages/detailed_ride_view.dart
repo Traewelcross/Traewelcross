@@ -19,6 +19,7 @@ import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/color_scheme.dart';
 import 'package:traewelcross/utils/pride_flags.dart';
 import 'package:traewelcross/utils/shared.dart';
+import 'package:traewelcross/utils/volume_buttons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<List<LatLng>> _fetchAndParsePolyline(
@@ -182,6 +183,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
           data: theme,
           child: MainScaffold(
             title: AppBarTitle(title),
+            floatingActionButton: getIt<Config>().behavior.showVolBtnIndicator ? FloatingActionButton(onPressed: null, child: VolumeButtonService().buildHoldProgressIndicator(),) : null,
             body: RefreshIndicator(
               onRefresh: () async {
                 setState(() {

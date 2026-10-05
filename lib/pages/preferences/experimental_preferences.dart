@@ -38,7 +38,21 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
                 }),
               ),
             ),
-
+          if (Platform.isAndroid && config.behavior.volumeBtnCtrl)
+            ListTile(
+              onTap: () => setState(() {
+                config.behavior.volumeBtnCtrlShowIndicator = !config.behavior.volumeBtnCtrlShowIndicator;
+              }),
+              leading: const Icon(Icons.music_note),
+              title: Text(localize.volumeBtnCtrlIndicator),
+              subtitle: Text(localize.volumeBtnCtrlIndicatorNote),
+              trailing: Switch(
+                value: config.behavior.volumeBtnCtrlShowIndicator,
+                onChanged: (val) => setState(() {
+                  config.behavior.volumeBtnCtrlShowIndicator = val;
+                }),
+              ),
+            ),
           /*ListTile(
             onTap: () => setState(() {
               config.behavior.multiAccountSupport = !config.behavior.multiAccountSupport;

@@ -79,6 +79,16 @@ class BehaviorConfig with ChangeNotifier {
     notifyListeners();
   }
 
+  bool _volumeBtnCtrlShowIndicator = true;
+  @JsonKey(defaultValue: true)
+  bool get volumeBtnCtrlShowIndicator => _volumeBtnCtrlShowIndicator;
+  set volumeBtnCtrlShowIndicator(bool val) {
+    _volumeBtnCtrlShowIndicator = val;
+    notifyListeners();
+  }
+
+  bool get showVolBtnIndicator => _volumeBtnCtrl && _volumeBtnCtrlShowIndicator;
+
   bool _showAltDepartureStops = true;
   @JsonKey(defaultValue: true)
   bool get showAltDepartureStops => _showAltDepartureStops;

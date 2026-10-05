@@ -16,6 +16,8 @@ BehaviorConfig _$BehaviorConfigFromJson(
   ..hideManualOnTimeOverride = json['hideManualOnTimeOverride'] as bool? ?? true
   ..defaultStatusText = json['defaultStatusText'] as String?
   ..volumeBtnCtrl = json['volumeBtnCtrl'] as bool? ?? false
+  ..volumeBtnCtrlShowIndicator =
+      json['volumeBtnCtrlShowIndicator'] as bool? ?? true
   ..showAltDepartureStops = json['showAltDepartureStops'] as bool? ?? true
   ..showActiveRideCard = json['showActiveRideCard'] as bool? ?? true
   ..multiAccountSupport = json['multiAccountSupport'] as bool? ?? false
@@ -30,6 +32,7 @@ Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
       'hideManualOnTimeOverride': instance.hideManualOnTimeOverride,
       'defaultStatusText': instance.defaultStatusText,
       'volumeBtnCtrl': instance.volumeBtnCtrl,
+      'volumeBtnCtrlShowIndicator': instance.volumeBtnCtrlShowIndicator,
       'showAltDepartureStops': instance.showAltDepartureStops,
       'showActiveRideCard': instance.showActiveRideCard,
       'multiAccountSupport': instance.multiAccountSupport,

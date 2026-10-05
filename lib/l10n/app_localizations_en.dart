@@ -856,7 +856,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'The statistics option is not done yet and might be unstable.';
 
   @override
-  String get volumeBtnCtrl => 'Volume Button Control';
+  String get volumeBtnCtrl => 'Volume button control';
+
+  @override
+  String get volumeBtnCtrlIndicator => 'Volume button control indicator';
+
+  @override
+  String get volumeBtnCtrlIndicatorNote =>
+      'If activated, an indicator will be displayed on screen to help you differentiate what counts as click and what as held. You may press it to get help on what does what.';
 
   @override
   String get volumeBtnCtrlNote =>

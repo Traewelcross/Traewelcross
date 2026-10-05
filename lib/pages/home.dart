@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart' as pkg;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:terminate_restart/terminate_restart.dart';
@@ -20,6 +19,7 @@ import 'package:traewelcross/utils/api_service.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:traewelcross/utils/shared.dart';
+import 'package:traewelcross/utils/volume_buttons.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key, required this.scrollController});
@@ -34,6 +34,7 @@ class _HomeState extends State<Home> {
   final FocusNode _stationFocus = FocusNode();
   final DashboardController _dashboardController = DashboardController();
   List<Station> history = [];
+  StreamSubscription<VolumeEvent>? _volumeSubscription;
 
   bool stationFocus = false;
   bool typedText = false;
@@ -54,12 +55,13 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> _checkInGPSStation() async {
+    if(!mounted) return;
     setState(() {
       isLocating = true;
     });
     final pos = await _determinePosition();
     if (pos == null) {
-      if(!mounted) return;
+      if (!mounted) return;
       setState(() {
         isLocating = false;
       });
@@ -90,7 +92,7 @@ class _HomeState extends State<Home> {
       );
       return;
     }
-    if(!mounted) return;
+    if (!mounted) return;
     setState(() {
       isLocating = false;
     });
@@ -185,7 +187,7 @@ class _HomeState extends State<Home> {
     final apiService = getIt<ApiService>();
     final response = await apiService.user.getHistory();
     // Refresh User Info to potentially update
-    if(!mounted) return;
+    if (!mounted) return;
     setState(() {
       history.addAll(response);
     });
@@ -244,11 +246,15 @@ class _HomeState extends State<Home> {
     // TODO: Display Update SnackBar (give option to view changelog)
   }
 
-  static const _volChan = MethodChannel("volume");
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _volumeSubscription = VolumeButtonService().stream.listen((e) {
+        if (e.action == .pressed) {
+          _checkInGPSStation();
+        }
+      });
       if (!mounted) return;
       if (getIt<Config>().misc.needsRelogin) {
         Navigator.of(context).push(
@@ -284,12 +290,6 @@ class _HomeState extends State<Home> {
       }
     });
     _isAppUpdate();
-    _volChan.setMethodCallHandler((call) {
-      if (call.method == "volumePressed") {
-        _checkInGPSStation();
-      }
-      return Future.value(null);
-    });
   }
 
   @override
@@ -297,6 +297,7 @@ class _HomeState extends State<Home> {
     _scrollController.dispose();
     _stationController.dispose();
     _stationFocus.dispose();
+    _volumeSubscription?.cancel();
     debounce?.cancel();
     super.dispose();
   }

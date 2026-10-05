@@ -35,6 +35,7 @@ import 'package:traewelcross/utils/deeplink_service.dart';
 import 'package:traewelcross/utils/error_info.dart';
 import 'package:traewelcross/utils/ride_icon_tag_info.dart';
 import 'package:traewelcross/utils/shared.dart';
+import 'package:traewelcross/utils/volume_buttons.dart';
 import 'package:watch_it/watch_it.dart';
 import 'pages/app_info.dart';
 import 'l10n/app_localizations.dart';
@@ -447,6 +448,7 @@ class _ChromeState extends State<Chrome> {
 
     return MainScaffold(
       title: selectedTab.title,
+      floatingActionButton: getIt<Config>().behavior.showVolBtnIndicator ? FloatingActionButton(onPressed: null,child: VolumeButtonService().buildHoldProgressIndicator(),) : null,
       bottomNavigationBar: Column(
         mainAxisSize: .min,
         children: [
