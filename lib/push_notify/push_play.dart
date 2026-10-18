@@ -1,4 +1,5 @@
 //TODO: convert to FIDs, couldn't get onRegistered to fire in v7.0.0, waiting for future release and try again
+//reminder to also refactor push server for this
 
 import 'dart:convert';
 
@@ -110,7 +111,7 @@ class PushPlay implements PushApi {
     await client.delete(
       SharedFunctions.concatUri([
         SharedFunctions.pushServer.toString(),
-        "delete",
+        "unregister",
       ]),
       encoding: Encoding.getByName("UTF-8"),
       headers: {"Content-type": "application/json"},
