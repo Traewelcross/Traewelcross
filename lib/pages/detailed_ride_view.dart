@@ -10,6 +10,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
+import 'package:traewelcross/components/profile_picture.dart';
 import 'package:traewelcross/components/ride_quick_view.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
@@ -21,47 +22,6 @@ import 'package:traewelcross/utils/pride_flags.dart';
 import 'package:traewelcross/utils/shared.dart';
 import 'package:traewelcross/utils/volume_buttons.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-Future<List<LatLng>> _fetchAndParsePolyline(
-  ApiService apiService,
-  int rideId,
-) async {
-  final response = await apiService.request(
-    "/polyline/$rideId",
-    HttpRequestTypes.GET,
-  );
-
-  if (response.statusCode != 200) {
-    return Future.error(
-      Exception(
-        'Failed to load polyline for ride $rideId: HTTP ${response.statusCode}',
-      ),
-    );
-  }
-
-  final jsonResponse = jsonDecode(response.body);
-
-  final features = jsonResponse?['data']?['features'];
-  List coordinates = [];
-  if (features is List && features.isNotEmpty) {
-    final feature = features.first;
-    if (feature?['geometry']?['coordinates'] is List) {
-      coordinates = feature['geometry']['coordinates'];
-    }
-  }
-
-  try {
-    return coordinates
-        .whereType<List>()
-        .where(
-          (point) => point.length >= 2 && point[0] is num && point[1] is num,
-        )
-        .map((point) => LatLng(point[1] + .0, point[0] + .0))
-        .toList();
-  } catch (e) {
-    throw Exception('Failed to parse polyline coordinates: $e');
-  }
-}
 
 class DetailedRideView extends StatefulWidget {
   const DetailedRideView({
@@ -85,7 +45,98 @@ class _DetailedRideViewState extends State<DetailedRideView> {
   late final String _evaIdentOrigin;
   late final int _rideId;
   bool isFound = true;
-  
+
+  Future<List<LatLng>> _fetchAndParsePolyline(
+    ApiService apiService,
+    int rideId,
+  ) async {
+    final response = await apiService.request(
+      "/polyline/$rideId",
+      HttpRequestTypes.GET,
+    );
+
+    if (response.statusCode != 200) {
+      return Future.error(
+        Exception(
+          'Failed to load polyline for ride $rideId: HTTP ${response.statusCode}',
+        ),
+      );
+    }
+
+    final jsonResponse = jsonDecode(response.body);
+
+    final features = jsonResponse?['data']?['features'];
+    List coordinates = [];
+    if (features is List && features.isNotEmpty) {
+      final feature = features.first;
+      if (feature?['geometry']?['coordinates'] is List) {
+        coordinates = feature['geometry']['coordinates'];
+      }
+    }
+
+    try {
+      return coordinates
+          .whereType<List>()
+          .where(
+            (point) => point.length >= 2 && point[0] is num && point[1] is num,
+          )
+          .map((point) => LatLng(point[1] + .0, point[0] + .0))
+          .toList();
+    } catch (e) {
+      throw Exception('Failed to parse polyline coordinates: $e');
+    }
+  }
+
+  LatLng? _getPosition(List<LatLng> polyline, DateTime start, DateTime end) {
+    if (!getIt<Config>().appearance.showPredictedPosition) return null;
+    if (polyline.isEmpty) return null;
+    if (polyline.length == 1) return polyline.first;
+    final int duration = end.difference(start).inMinutes;
+    if (duration <= 0) return polyline.first;
+    final int passedTime = DateTime.now().difference(start).inMinutes;
+    final double progress = (passedTime / duration).clamp(0.0, 1.0);
+    final double earthRadius = 6.3781 * math.pow(10, 6);
+    double combinedDistance = 0.0;
+    List<double> segmentDistances = [];
+    for (var i = 0; i < polyline.length - 1; i++) {
+      int nextIndex = i + 1;
+      final double differenceLong =
+          polyline[i].longitudeInRad - polyline[nextIndex].longitudeInRad;
+      final double differenceLat =
+          polyline[i].latitudeInRad - polyline[nextIndex].latitudeInRad;
+
+      num a =
+          math.pow(math.sin(differenceLat / 2), 2) +
+          math.cos(polyline[i].latitudeInRad) *
+              math.cos(polyline[nextIndex].latitudeInRad) *
+              math.pow(math.sin(differenceLong / 2), 2);
+      num c = 2 * math.asin(math.sqrt(a));
+      double distance = earthRadius * c.toDouble();
+
+      segmentDistances.add(distance);
+      combinedDistance += distance;
+    }
+    if (combinedDistance == 0.0) return polyline.first;
+    double passedDistance = combinedDistance * progress;
+    double accumulatedDistance = 0.0;
+    for (var i = 0; i < segmentDistances.length; i++) {
+      double segDist = segmentDistances[i];
+      if (accumulatedDistance + segDist >= passedDistance) {
+        double remainingInSegment = passedDistance - accumulatedDistance;
+        double fraction = segDist > 0 ? remainingInSegment / segDist : 0.0;
+        double lat =
+            polyline[i].latitude +
+            (polyline[i + 1].latitude - polyline[i].latitude) * fraction;
+        double lon =
+            polyline[i].longitude +
+            (polyline[i + 1].longitude - polyline[i].longitude) * fraction;
+        return LatLng(lat, lon);
+      }
+      accumulatedDistance += segDist;
+    }
+    return polyline.last;
+  }
+
   Future<List<User>> _getLikeData() async {
     final apiService = getIt<ApiService>();
     final request = await apiService.status.getLikes(_rideId);
@@ -108,8 +159,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
   Future<String> _getEvaIdent() async {
     final apiService = getIt<ApiService>();
     final res = await apiService.status.getStationData(
-      stationId:
-          widget.rideData!.checkin.destination.station.id,
+      stationId: widget.rideData!.checkin.destination.station.id,
       withIdentifiers: true,
     );
     if (res.identifiers == null) {
@@ -170,10 +220,8 @@ class _DetailedRideViewState extends State<DetailedRideView> {
         }
 
         final rideData = rideSnapshot.data!;
-        final originName =
-            rideData.checkin.origin.station.name;
-        final destinationName =
-            rideData.checkin.destination.station.name;
+        final originName = rideData.checkin.origin.station.name;
+        final destinationName = rideData.checkin.destination.station.name;
         final title = "$originName -> $destinationName";
         final theme = SharedFunctions.deriviateThemeFromRouteColor(
           rideData.checkin.routeColor,
@@ -183,7 +231,12 @@ class _DetailedRideViewState extends State<DetailedRideView> {
           data: theme,
           child: MainScaffold(
             title: AppBarTitle(title),
-            floatingActionButton: getIt<Config>().behavior.showVolBtnIndicator ? FloatingActionButton(onPressed: null, child: VolumeButtonService().buildHoldProgressIndicator(),) : null,
+            floatingActionButton: getIt<Config>().behavior.showVolBtnIndicator
+                ? FloatingActionButton(
+                    onPressed: null,
+                    child: VolumeButtonService().buildHoldProgressIndicator(),
+                  )
+                : null,
             body: RefreshIndicator(
               onRefresh: () async {
                 setState(() {
@@ -207,7 +260,39 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                       if (snapshot.connectionState == ConnectionState.done) {
                         return SizedBox(
                           height: 512,
-                          child: MapDisplay(polylinePoints: snapshot.data!),
+                          child: MapDisplay(
+                            polylinePoints: snapshot.data!,
+                            position: _getPosition(
+                              snapshot.data!,
+                              DateTime.parse(
+                                widget.rideData!.checkin.manualDeparture ??
+                                    widget
+                                        .rideData!
+                                        .checkin
+                                        .origin
+                                        .departureReal ??
+                                    widget
+                                        .rideData!
+                                        .checkin
+                                        .origin
+                                        .departurePlanned!,
+                              ),
+                              DateTime.parse(
+                                widget.rideData!.checkin.manualArrival ??
+                                    widget
+                                        .rideData!
+                                        .checkin
+                                        .destination
+                                        .arrivalReal ??
+                                    widget
+                                        .rideData!
+                                        .checkin
+                                        .destination
+                                        .arrivalPlanned!,
+                              ),
+                            ),
+                            imageUrl: widget.rideData!.user.profilePicture,
+                          ),
                         );
                       }
                       return const SizedBox(height: 0);
@@ -227,7 +312,9 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                         return Card(
                           clipBehavior: Clip.hardEdge,
                           child: ExpansionTile(
-                            shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
+                            shape: const Border.fromBorderSide(
+                              BorderSide(color: Colors.transparent),
+                            ),
                             title: Text(
                               "${asyncSnapshot.data!.length.toString()} ${localize.likes(asyncSnapshot.data!.length)}",
                             ),
@@ -245,7 +332,9 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                       return Card(
                         clipBehavior: Clip.hardEdge,
                         child: ExpansionTile(
-                          shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
+                          shape: const Border.fromBorderSide(
+                            BorderSide(color: Colors.transparent),
+                          ),
                           clipBehavior: Clip.hardEdge,
                           title: Text("0 ${localize.likes(0)}"),
                           enabled: false,
@@ -268,7 +357,9 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                         return Card(
                           clipBehavior: Clip.hardEdge,
                           child: ExpansionTile(
-                            shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
+                            shape: const Border.fromBorderSide(
+                              BorderSide(color: Colors.transparent),
+                            ),
                             title: Text(localize.alsoOnThisConnection),
                             dense: false,
                             enabled: data.isNotEmpty,
@@ -385,9 +476,16 @@ class _DetailedRideViewState extends State<DetailedRideView> {
 }
 
 class MapDisplay extends StatelessWidget {
-  const MapDisplay({super.key, this.polylinePoints});
+  const MapDisplay({
+    super.key,
+    this.polylinePoints,
+    this.position,
+    this.imageUrl,
+  });
 
   final List<LatLng>? polylinePoints;
+  final LatLng? position;
+  final String? imageUrl;
   List<Color> _randomFlag() {
     final random = math.Random();
     final flagList = PrideFlags.getFlags();
@@ -465,6 +563,17 @@ class MapDisplay extends StatelessWidget {
                   alignment: const Alignment(0, -0.6),
                 ),
               ),
+            ),
+          if (position != null)
+            MarkerLayer(
+              markers: [
+                Marker(
+                  point: position!,
+                  child: ProfilePicture(imageUrl: imageUrl, maxWidth: 64),
+                  width: 64,
+                  alignment: const Alignment(0, -0.6),
+                ),
+              ],
             ),
           RichAttributionWidget(
             attributions: [

@@ -4095,6 +4095,34 @@ vdl,30,,,#a0d4db,#ffffff,,circle,,6,Ville de Luxembourg - Service Autobus
 vdl,31,,,#b3a896,#ffffff,,circle,,6,Ville de Luxembourg - Service Autobus
 vdl,32,,,#b3a896,#ffffff,,circle,,6,Ville de Luxembourg - Service Autobus
 vdl,33,,,#a9ce26,#ffffff,,circle,,6,Ville de Luxembourg - Service Autobus
+vej-andreesen,481,,,#ec619f,#ffffff,,circle,,149,Omnibusbetrieb Andreesen
+vej-arendt,440,,,#800000,#ffffff,,circle,,2740,Arendt Busbetrieb GmbH
+vej-edzards,343,,,#3a72b8,#ffffff,,circle,,143,Hermann Edzards Omnibusbetrieb
+vej-edzards,360,,,#e30613,#ffffff,,circle,,143,Hermann Edzards Omnibusbetrieb
+vej-edzards,361,,,#1dabba,#ffffff,,circle,,143,Hermann Edzards Omnibusbetrieb
+vej-edzards,363,,,#c58cbd,#ffffff,,circle,,143,Hermann Edzards Omnibusbetrieb
+vej-edzards,364,,,#3d5f75,#ffffff,,circle,,143,Hermann Edzards Omnibusbetrieb
+vej-edzards,378,,,#d7c91b,#ffffff,,circle,,143,Hermann Edzards Omnibusbetrieb
+vej-edzards,379,,,#dd7500,#ffffff,,circle,,143,Hermann Edzards Omnibusbetrieb
+vej-edzards,413,,,#ce5198,#ffffff,,circle,,143,Hermann Edzards Omnibusbetrieb
+vej-jacobs,445,,,#b09b5c,#ffffff,,circle,,152,Jacobs Reisedienst
+vej-kreisbahn-aurich,460,,,#f07e31,#ffffff,,circle,,150,Kreisbahn Aurich GmbH
+vej-kreisbahn-aurich,462,,,#f1b908,#ffffff,,circle,,150,Kreisbahn Aurich GmbH
+vej-kreisbahn-aurich,480,,,#3fc0f0,#ffffff,,circle,,150,Kreisbahn Aurich GmbH
+vej-kreisbahn-aurich,490,,,#688816,#ffffff,,circle,,150,Kreisbahn Aurich GmbH
+vej-sw-emden,1,,,#e20c15,#ffffff,,rectangle-rounded-corner,,176,Stadtwerke Emden GmbH
+vej-sw-emden,2,,,#f19200,#ffffff,,rectangle-rounded-corner,,176,Stadtwerke Emden GmbH
+vej-sw-emden,3,,,#0069b4,#ffffff,,rectangle-rounded-corner,,176,Stadtwerke Emden GmbH
+vej-uffen,669,,,#dd7500,#ffffff,,circle,,396,Reisedienst Hinrich Uffen
+vej-web,121,,,#1dabba,#ffffff,,circle,,2400,Weser-Ems-Bus Betrieb Ostfriesland
+vej-web,211,,,#d20a11,#ffffff,,circle,,2400,Weser-Ems-Bus Betrieb Ostfriesland
+vej-web,212,,,#3aaa35,#ffffff,,circle,,2400,Weser-Ems-Bus Betrieb Ostfriesland
+vej-web,410,,,#dd7500,#ffffff,,circle,,2400,Weser-Ems-Bus Betrieb Ostfriesland
+vej-web,421,,,#ea5723,#ffffff,,circle,,2400,Weser-Ems-Bus Betrieb Ostfriesland
+vej-web,433,,,#929e6e,#ffffff,,circle,,2400,Weser-Ems-Bus Betrieb Ostfriesland
+vej-web,450,,,#009ba4,#ffffff,,circle,,2400,Weser-Ems-Bus Betrieb Ostfriesland
+vej-web,451,,,#b94d3b,#ffffff,,circle,,2400,Weser-Ems-Bus Betrieb Ostfriesland
+vej-web,621,,,#29a737,#ffffff,,circle,,2400,Weser-Ems-Bus Betrieb Ostfriesland
 vgc-daeuble,668,,,#d0ce11,#231f20,,rectangle,,7593,Calw VPC
 vgc-daeuble,770,,,#ec008c,#ffffff,,rectangle,,7593,Calw VPC
 vgc-eberhardt,715,,,#892b81,#ffffff,,rectangle,,14947,Linienbündel Nordwest
@@ -6435,6 +6463,24 @@ vsn-goevb,73,,,#9591c6,#ffffff,#34388d,rectangle-rounded-corner,,12043,Göttinge
 vsn-goevb,80,,,#ffcc00,#000000,,rectangle-rounded-corner,,12043,Göttinger Verkehrsbetriebe (GöVB)
 vsn-goevb,91,,,#ffffff,#996598,#996598,rectangle-rounded-corner,,12043,Göttinger Verkehrsbetriebe (GöVB)
 vsn-goevb,92,,,#996598,#ffffff,,rectangle-rounded-corner,,12043,Göttinger Verkehrsbetriebe (GöVB)
+vsn-rbb,130,,,#009640,#ffffff,,rectangle-rounded-corner,,12123,Regionalbus Braunschweig GmbH
+vsn-rbb,154,,,#f7ac69,#1e1e1c,,rectangle-rounded-corner,,12123,Regionalbus Braunschweig GmbH
+vsn-rbb,155,,,#4d887c,#ffffff,,rectangle-rounded-corner,,12123,Regionalbus Braunschweig GmbH
+vsn-rbb,185,,,#007937,#ffffff,,rectangle-rounded-corner,,12123,Regionalbus Braunschweig GmbH
+vsn-rbb,501,,,#049947,#ffffff,,rectangle,,12123,Regionalbus Braunschweig GmbH
+vsn-rbb,502,,,#c8201d,#ffffff,,rectangle,,12123,Regionalbus Braunschweig GmbH
+vsn-rbb,520,,,#009741,#ffffff,,rectangle-rounded-corner,,12123,Regionalbus Braunschweig GmbH
+vsn-rbb,521,,,#f07f3c,#ffffff,,rectangle-rounded-corner,,12123,Regionalbus Braunschweig GmbH
+vsn-rbb,528,,,#58a393,#ffffff,,rectangle-rounded-corner,,12123,Regionalbus Braunschweig GmbH
+vsn-rbb,530,,,#6eb74c,#ffffff,,rectangle-rounded-corner,,12123,Regionalbus Braunschweig GmbH
+vsn-rbb,540,,,#826953,#ffffff,,rectangle-rounded-corner,,12123,Regionalbus Braunschweig GmbH
+vsn-uhlendorff,110,,,#183459,#ffffff,,rectangle-rounded-corner,,14091,Regiobus Uhlendorff GmbH & Co. KG
+vsn-uhlendorff,120,,,#e3017c,#ffffff,,rectangle-rounded-corner,,14091,Regiobus Uhlendorff GmbH & Co. KG
+vsn-uhlendorff,121,,,#dea100,#ffffff,,rectangle-rounded-corner,,14091,Regiobus Uhlendorff GmbH & Co. KG
+vsn-uhlendorff,122,,,#748dc7,#ffffff,,rectangle-rounded-corner,,14091,Regiobus Uhlendorff GmbH & Co. KG
+vsn-uhlendorff,210,,,#ec7c00,#ffffff,,rectangle-rounded-corner,,14091,Regiobus Uhlendorff GmbH & Co. KG
+vsn-uhlendorff,510,,,#5baee2,#ffffff,,rectangle-rounded-corner,,14091,Regiobus Uhlendorff GmbH & Co. KG
+vsn-uhlendorff,515,,,#005c8a,#ffffff,,rectangle-rounded-corner,,14091,Regiobus Uhlendorff GmbH & Co. KG
 vst-oebb,S1,osterreichische-bundesbahnen,4-81-1-1714993-5236532,#0fa14a,#ffffff,,rectangle-rounded-corner,,,
 vst-oebb,S3,osterreichische-bundesbahnen,4-81-3-1714993-5236532,#ed028c,#ffffff,,rectangle-rounded-corner,,,
 vst-oebb,S5,osterreichische-bundesbahnen,4-81-5-1714993-5236532,#892890,#ffffff,,rectangle-rounded-corner,,,
@@ -6963,8 +7009,9 @@ wt-argegt,190,,,#925900,#ffffff,,pill,,14381,GTNordwest
 wt-bvo,349,,5-owl021-349,#e20079,#ffffff,,pill,,14357,Lippe1
 wt-bvo,350,,5-owl021-350,#004e2d,#ffffff,,pill,,14357,Lippe1
 wt-bvo,351,,5-owl021-351,#97bf0d,#002650,,pill,,14357,Lippe1
-wt-bvo,410,,,#841d81,#ffffff,,rectangle,,9331,nph-Linienbündel 13
+wt-bvo,410,,,#841d81,#ffffff,,rectangle,,9324,nph-Linienbündel 06
 wt-bvo,411,,,#36b64b,#ffffff,,rectangle,,9324,nph-Linienbündel 06
+wt-bvo,417,,,#254668,#ffffff,,rectangle,,9324,nph-Linienbündel 06
 wt-bvo,431,,,#36b64b,#ffffff,,rectangle,,9331,nph-Linienbündel 13
 wt-bvo,432,,,#878787,#ffffff,,rectangle,,9328,nph-Linienbündel 10
 wt-bvo,470,,,#878787,#ffffff,,rectangle,,9324,nph-Linienbündel 06
@@ -7035,7 +7082,7 @@ wt-go-on,R36,,,#b18dc0,#ffffff,,rectangle,,9329,nph-Linienbündel 11
 wt-go-on,R37,,,#5b2283,#ffffff,,rectangle,,9329,nph-Linienbündel 11
 wt-go-on,R38,,,#009253,#ffffff,,rectangle,,9322,nph-Linienbündel 04
 wt-go-on,R41,,5-vph071-r41,#e08700,#ffffff,,rectangle,,9319,nph-Linienbündel 01
-wt-go-on,R42,,,#007a8a,#ffffff,,rectangle,,9331,nph-Linienbündel 13
+wt-go-on,R42,,,#007a8a,#ffffff,,rectangle,,9319,nph-Linienbündel 01
 wt-go-on,R45,,5-vph071-r45,#583b70,#ffffff,,rectangle,,9319,nph-Linienbündel 01
 wt-go-on,R46,,,#ed2927,#ffffff,,rectangle,,9319,nph-Linienbündel 01
 wt-go-on,R50,,5-vph072-r50,#95944e,#ffffff,,rectangle,,9320,nph-Linienbündel 02
@@ -7049,7 +7096,7 @@ wt-go-on,S30,,5-vph080-s30,#71b8a9,#ffffff,,rectangle,,9328,nph-Linienbündel 10
 wt-go-on,S40,,5-vph071-s40,#93b716,#ffffff,,rectangle,,9319,nph-Linienbündel 01
 wt-gronemann,R27,,,#2c3192,#ffffff,,rectangle-rounded-corner,,7808,Gronemann GmbH
 wt-gronemann,T27,,,#52a277,#ffffff,,rectangle-rounded-corner,,7808,Gronemann GmbH
-wt-holibri,HH1,,,#87b13f,#ffffff,,rectangle,,9331,nph-Linienbündel 13
+wt-holibri,HH1,,,#87b13f,#ffffff,,rectangle,,9320,nph-Linienbündel 02
 wt-holibri,HH2,,,#f07e3b,#ffffff,,rectangle,,9320,nph-Linienbündel 02
 wt-holibri,HW1,,,#1e4888,#ffffff,,rectangle,,9328,nph-Linienbündel 10
 wt-holibri,HW2,,,#00a3bf,#ffffff,,rectangle,,9328,nph-Linienbündel 10

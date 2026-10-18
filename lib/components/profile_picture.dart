@@ -24,7 +24,7 @@ class ProfilePicture extends StatelessWidget {
             fadeOutDuration: Duration.zero,
             httpHeaders: {
               "User-Agent":
-                  "Traewelcross/1.5.2 (https://github.com/traewelcross/traewelcross; traewelcross.de)",
+                  "Traewelcross/1.8.0 (https://github.com/traewelcross/traewelcross; traewelcross.de)",
             },
             imageUrl: imageUrl ?? "",
             errorWidget: (context, url, error) => const Icon(Icons.error),

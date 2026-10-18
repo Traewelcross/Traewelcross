@@ -22,7 +22,8 @@ AppearanceConfig _$AppearanceConfigFromJson(Map<String, dynamic> json) =>
           MapTypeEnum.standard
       ..fontFam = json['fontFam'] as String? ?? 'Outfit'
       ..prideModePreference = json['prideModePreference'] as bool? ?? false
-      ..routeColorColorScheme = json['routeColorColorScheme'] as bool? ?? false;
+      ..routeColorColorScheme = json['routeColorColorScheme'] as bool? ?? false
+      ..showPredictedPosition = json['showPredictedPosition'] as bool? ?? false;
 
 Map<String, dynamic> _$AppearanceConfigToJson(AppearanceConfig instance) =>
     <String, dynamic>{
@@ -37,6 +38,7 @@ Map<String, dynamic> _$AppearanceConfigToJson(AppearanceConfig instance) =>
       'fontFam': instance.fontFam,
       'prideModePreference': instance.prideModePreference,
       'routeColorColorScheme': instance.routeColorColorScheme,
+      'showPredictedPosition': instance.showPredictedPosition,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

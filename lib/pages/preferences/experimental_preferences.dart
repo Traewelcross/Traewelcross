@@ -53,20 +53,19 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
                 }),
               ),
             ),
-          /*ListTile(
+          ListTile(
             onTap: () => setState(() {
-              config.behavior.multiAccountSupport = !config.behavior.multiAccountSupport;
+              config.appearance.showPredictedPosition = !config.appearance.showPredictedPosition;
             }),
-            leading: const Icon(Icons.group),
-            title: Text(localize.multiAccount),
-            subtitle: Text(localize.multiAccountNotice),
+            leading: const Icon(Icons.gps_fixed),
+            title: Text("Show predicted position"),
             trailing: Switch(
-              value: config.behavior.multiAccountSupport,
+              value: config.appearance.showPredictedPosition,
               onChanged: (val) => setState(() {
-                config.behavior.multiAccountSupport = val;
+                config.appearance.showPredictedPosition = val;
               }),
             ),
-          ),*/
+          ),
         ],
       ),
     );
