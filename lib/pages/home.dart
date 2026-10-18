@@ -243,6 +243,11 @@ class _HomeState extends State<Home> {
     await SharedPreferencesAsync(
       options: SharedPreferencesOptions(),
     ).setInt("buildNumber", currentBuildNumber);
+    //TODO: remove in future release
+    if(getIt<Config>().notification.notificationsEnabled && !getIt<Config>().notification.hasMigrated){
+      globalPushManager.registerDevice((await getIt<ApiService>().getAuthenticatedClient()));
+      getIt<Config>().notification.hasMigrated = true;
+    }
     // TODO: Display Update SnackBar (give option to view changelog)
   }
 

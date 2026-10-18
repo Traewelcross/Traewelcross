@@ -40,4 +40,12 @@ class NotificationConfig with ChangeNotifier {
     _hasBeenRegistered = value;
     notifyListeners();
   }
+
+  bool _hasMigrated = false;
+  @JsonKey(defaultValue: false)
+  bool get hasMigrated => _hasMigrated;
+  set hasMigrated(bool value) {
+    _hasMigrated = value;
+    notifyListeners();
+  }
 }

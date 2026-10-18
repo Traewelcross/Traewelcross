@@ -12,7 +12,8 @@ NotificationConfig _$NotificationConfigFromJson(Map<String, dynamic> json) =>
       ..notificationsAvailable =
           json['notificationsAvailable'] as bool? ?? false
       ..fcmToken = json['fcmToken'] as String? ?? ''
-      ..hasBeenRegistered = json['hasBeenRegistered'] as bool? ?? false;
+      ..hasBeenRegistered = json['hasBeenRegistered'] as bool? ?? false
+      ..hasMigrated = json['hasMigrated'] as bool? ?? false;
 
 Map<String, dynamic> _$NotificationConfigToJson(NotificationConfig instance) =>
     <String, dynamic>{
@@ -20,4 +21,5 @@ Map<String, dynamic> _$NotificationConfigToJson(NotificationConfig instance) =>
       'notificationsAvailable': instance.notificationsAvailable,
       'fcmToken': instance.fcmToken,
       'hasBeenRegistered': instance.hasBeenRegistered,
+      'hasMigrated': instance.hasMigrated,
     };
