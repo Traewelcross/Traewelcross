@@ -6,6 +6,7 @@ import 'package:traewelcross/components/profile_link_button.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/app.dart';
 import 'package:traewelcross/components/alert_card.dart';
+import 'package:traewelcross/pages/detailed_ride_view.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 
 class CheckinSuccess extends StatelessWidget {
@@ -13,13 +14,29 @@ class CheckinSuccess extends StatelessWidget {
     super.key,
     required this.statusInfo,
     this.continueSuccess,
+    this.checkedInWithVolume,
   });
   final CheckinResponse statusInfo;
   final bool? continueSuccess;
+  final bool? checkedInWithVolume;
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
     final materialLocalize = MaterialLocalizations.of(context);
+    if (checkedInWithVolume == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_){
+              Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => Chrome()),
+        (Route<dynamic> route) => false,
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (ctx) => DetailedRideView(rideData: statusInfo.status),
+        ),
+      );
+      });
+    }
     return MainScaffold(
       title: AppBarTitle(localize.checkIn),
       backButton: false,
@@ -106,7 +123,9 @@ class CheckinSuccess extends StatelessWidget {
                     child: ExpansionTile(
                       initiallyExpanded: true,
                       title: Text(localize.alsoOnThisConnection),
-                      shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
+                      shape: const Border.fromBorderSide(
+                        BorderSide(color: Colors.transparent),
+                      ),
                       children: [
                         for (var user in statusInfo.alsoOnThisConnection!)
                           Padding(
@@ -134,13 +153,20 @@ class CheckinSuccess extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => Chrome()),
-          (Route<dynamic> route) => false,
-        ),
-        icon: const Icon(Icons.check),
-        label: Text(materialLocalize.closeButtonLabel),
+      floatingActionButton: Column(
+        mainAxisSize: .min,
+        crossAxisAlignment: .end,
+        spacing: 6,
+        children: [
+          FloatingActionButton.extended(
+            onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => Chrome()),
+              (Route<dynamic> route) => false,
+            ),
+            icon: const Icon(Icons.check),
+            label: Text(materialLocalize.closeButtonLabel),
+          ),
+        ],
       ),
     );
   }

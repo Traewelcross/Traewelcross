@@ -22,6 +22,7 @@ import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/check_in_info.dart';
 import 'package:traewelcross/utils/ride_icon_tag_info.dart';
 import 'package:traewelcross/utils/shared.dart';
+import 'package:traewelcross/utils/volume_buttons.dart';
 
 class CheckIn extends StatefulWidget {
   const CheckIn({
@@ -56,6 +57,8 @@ class _CheckInState extends State<CheckIn> {
     "withUsers": false,
     "users": <String, int>{},
   };
+  StreamSubscription<VolumeEvent>? _volumeSubscription;
+
   @override
   void initState() {
     super.initState();
@@ -84,6 +87,15 @@ class _CheckInState extends State<CheckIn> {
         };
       }
     }
+    _volumeSubscription = VolumeButtonService().stream.listen((e) {
+      if (e.action == .held) {
+        if (widget.isEdit) {
+          _edit();
+        } else {
+          _checkIn(checkedInWithVolume: true);
+        }
+      }
+    });
   }
 
   void _prepareStatusText() {
@@ -101,12 +113,13 @@ class _CheckInState extends State<CheckIn> {
   @override
   void dispose() {
     statusController.dispose();
+    _volumeSubscription?.cancel();
     super.dispose();
   }
 
   void _getDefault() async {
     userInfo = await SharedFunctions.getUserInfoFromCache();
-    if(!mounted) return;
+    if (!mounted) return;
     setState(() {
       tripVisi = !widget.isEdit
           ? TripVisibilityEnum.fromValue(userInfo["defaultStatusVisibility"])
@@ -128,7 +141,7 @@ class _CheckInState extends State<CheckIn> {
     return await apiService.user.getTrustedByUsers();
   }
 
-  Future<void> _checkIn({bool? force}) async {
+  Future<void> _checkIn({bool? force, bool? checkedInWithVolume}) async {
     if (waitForRes) return;
     setState(() {
       waitForRes = true;
@@ -149,6 +162,7 @@ class _CheckInState extends State<CheckIn> {
         ),
       );
       if (response.wasSuccess) {
+        _volumeSubscription?.cancel();
         if (widget.continuationCheckInInfo != null) {
           final continueRequest = CheckInRequest.fromCheckInInfo(
             cii: widget.continuationCheckInInfo!,
@@ -176,6 +190,7 @@ class _CheckInState extends State<CheckIn> {
               builder: (BuildContext context) => CheckinSuccess(
                 statusInfo: response.object as CheckinResponse,
                 continueSuccess: continuationResponse.wasSuccess,
+                checkedInWithVolume: checkedInWithVolume,
               ),
             ),
           );
@@ -191,6 +206,7 @@ class _CheckInState extends State<CheckIn> {
             builder: (BuildContext context) => CheckinSuccess(
               statusInfo: response.object as CheckinResponse,
               continueSuccess: null,
+                checkedInWithVolume: checkedInWithVolume,
             ),
           ),
         );
@@ -234,6 +250,7 @@ class _CheckInState extends State<CheckIn> {
         body: jsonEncode(body),
       );
       if (response.statusCode == 200) {
+        _volumeSubscription?.cancel();
         if (!mounted) return;
         if (checkInInfo.rideDataCallback != null) {
           checkInInfo.rideDataCallback!(
@@ -282,6 +299,12 @@ class _CheckInState extends State<CheckIn> {
       title: widget.isEdit
           ? AppBarTitle(localize.editStatus)
           : AppBarTitle(localize.checkIn),
+      floatingActionButton: getIt<Config>().behavior.showVolBtnIndicator
+          ? FloatingActionButton(
+              onPressed: null,
+              child: VolumeButtonService().buildHoldProgressIndicator(),
+            )
+          : null,
       body: SingleChildScrollView(
         child: Row(
           mainAxisSize: MainAxisSize.max,

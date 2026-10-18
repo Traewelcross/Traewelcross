@@ -85,7 +85,7 @@ class _DetailedRideViewState extends State<DetailedRideView> {
   late final String _evaIdentOrigin;
   late final int _rideId;
   bool isFound = true;
-
+  
   Future<List<User>> _getLikeData() async {
     final apiService = getIt<ApiService>();
     final request = await apiService.status.getLikes(_rideId);
