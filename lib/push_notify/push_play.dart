@@ -5,6 +5,7 @@
 
 import 'dart:convert';
 
+import 'package:firebase_app_installations/firebase_app_installations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -27,6 +28,8 @@ Future<void> _fmbBackgroundHandler(RemoteMessage msg) async {
 
 class PushPlay implements PushApi {
   static bool _isInit = false;
+  static final FirebaseMessaging messaging = FirebaseMessaging.instance;
+  static String? _fcmFID;
   @override
   Future<void> initializeNotifications() async {
     if (_isInit) return;
@@ -49,7 +52,9 @@ class PushPlay implements PushApi {
     const InitializationSettings initSettings = InitializationSettings(
       android: androidInit,
     );
-
+    messaging.onRegistered.listen((String id) => _fcmFID = id);
+    messaging.onUnregistered.listen((String id) => _fcmFID = id);
+    _fcmFID = await FirebaseInstallations.instance.getId();
     await flutterLocalNotificationsPlugin.initialize(
       settings: initSettings,
       onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
@@ -75,14 +80,15 @@ class PushPlay implements PushApi {
     String currentSaved,
     oauth2.Client? client,
   ) async {
-    final String? currentToken = await FirebaseMessaging.instance.getToken();
+    final String? currentToken = _fcmFID;
     if (client == null) {
       throw Future.error('User is not authenticated.');
     }
     if (currentToken == null) return currentSaved;
     if (currentSaved == "" || currentSaved != currentToken) {
       final uid = await SharedFunctions.getUserId();
-      final fcm = await FirebaseMessaging.instance.getToken();
+      await messaging.register();
+      final fcm = _fcmFID ?? await FirebaseInstallations.instance.getId();
       final res = await client.patch(
         SharedFunctions.concatUri([
           SharedFunctions.pushServer.toString(),
@@ -109,7 +115,8 @@ class PushPlay implements PushApi {
       throw Future.error('User is not authenticated.');
     }
     final uid = await SharedFunctions.getUserId();
-    final fcm = await FirebaseMessaging.instance.getToken();
+    await FirebaseMessaging.instance.unregister();
+    final fcm = _fcmFID ?? await FirebaseInstallations.instance.getId();
     await client.delete(
       SharedFunctions.concatUri([
         SharedFunctions.pushServer.toString(),
@@ -119,7 +126,6 @@ class PushPlay implements PushApi {
       headers: {"Content-type": "application/json"},
       body: jsonEncode({"fcm_token": fcm, "user_id": uid, "is_firebase": true}),
     );
-    await FirebaseMessaging.instance.deleteToken();
   }
 
   @override
@@ -128,7 +134,8 @@ class PushPlay implements PushApi {
       throw Future.error('User is not authenticated.');
     }
     final uid = await SharedFunctions.getUserId();
-    final fcm = await FirebaseMessaging.instance.getToken();
+    await messaging.register();
+    final fcm = _fcmFID ?? await FirebaseInstallations.instance.getId();
     final response = await client.post(
       SharedFunctions.concatUri([
         SharedFunctions.pushServer.toString(),

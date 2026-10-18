@@ -39,7 +39,7 @@ class Config with ChangeNotifier {
     final jString = jsonEncode(this.toJson());
     SharedPreferencesAsync().setString("config", jString);
   }
-
+  
   static Future<Config> getConfig() async {
     final jString = await SharedPreferencesAsync().getString("config");
     if (jString == null) {

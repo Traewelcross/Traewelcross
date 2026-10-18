@@ -130,7 +130,7 @@ class SharedFunctions {
   // ignore: avoid-global-state
   static bool canNotificationsBeUsed = false;
 
-  static final Uri pushServer = Uri.parse("https://push.traewelcross.de");
+  static final Uri pushServer = Uri.parse("https://push.traewelcross.de/v2");
 
   static Uri concatUri(List<String> parts) {
     return Uri.parse(
