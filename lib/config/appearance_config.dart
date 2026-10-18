@@ -89,11 +89,12 @@ class AppearanceConfig with ChangeNotifier {
     _routeColorColorScheme = val;
     notifyListeners();
   }
+
   /// Experimental
   bool _showPredictedPosition = false;
   @JsonKey(defaultValue: false)
   bool get showPredictedPosition => _showPredictedPosition;
-  set showPredictedPosition(bool val){
+  set showPredictedPosition(bool val) {
     _showPredictedPosition = val;
     notifyListeners();
   }

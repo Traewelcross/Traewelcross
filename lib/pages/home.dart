@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> _checkInGPSStation() async {
-    if(!mounted) return;
+    if (!mounted) return;
     setState(() {
       isLocating = true;
     });
@@ -244,9 +244,12 @@ class _HomeState extends State<Home> {
       options: SharedPreferencesOptions(),
     ).setInt("buildNumber", currentBuildNumber);
     //TODO: remove in future release
-    if(getIt<Config>().notification.notificationsEnabled && !getIt<Config>().notification.hasMigrated){
+    if (getIt<Config>().notification.notificationsEnabled &&
+        !getIt<Config>().notification.hasMigrated) {
       await globalPushManager.initializeNotifications();
-      globalPushManager.registerDevice((await getIt<ApiService>().getAuthenticatedClient()));
+      globalPushManager.registerDevice(
+        (await getIt<ApiService>().getAuthenticatedClient()),
+      );
       getIt<Config>().notification.hasMigrated = true;
     }
     // TODO: Display Update SnackBar (give option to view changelog)

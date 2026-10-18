@@ -121,7 +121,9 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
               Divider(),
               ExpansionTile(
                 title: Text(localize.fontFamilyChooser),
-                shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
+                shape: const Border.fromBorderSide(
+                  BorderSide(color: Colors.transparent),
+                ),
                 children: [
                   RadioGroup(
                     groupValue: config.appearance.fontFam,
@@ -410,6 +412,6 @@ class ColorCircleIcon extends StatelessWidget {
             : Colors.white,
       );
     }
-    return const SizedBox(height: 0,);
+    return const SizedBox(height: 0);
   }
 }

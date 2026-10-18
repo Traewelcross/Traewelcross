@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/pages/stats/map_stat/map_stat_for_user.dart';
 import 'package:traewelcross/pages/stats/personal_stats/personal_stats_wrap.dart';
 import "package:traewelcross/pages/stats/user_stats/user_stats.dart";
+
 class Statistics extends StatelessWidget {
   const Statistics({super.key});
 
@@ -37,7 +38,9 @@ class Statistics extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Expanded(
-            child: TabBarView(children: [PersonalStatsWrap(), UserStats(), MapStatForUser()]),
+            child: TabBarView(
+              children: [PersonalStatsWrap(), UserStats(), MapStatForUser()],
+            ),
           ),
         ],
       ),

@@ -79,7 +79,7 @@ class _SelectConnectionState extends State<SelectConnection> {
     if (newTime == null) {
       return;
     }
-    if(!mounted) return;
+    if (!mounted) return;
     setState(() {
       departureTime = DateTime(
         newDate.year,
@@ -356,11 +356,14 @@ class _DepartureList extends StatelessWidget {
                 }
                 return InkWell(
                   onTap: () async {
-                    if(departure.cancelled){
-                      final ignore = await showDialog<bool>(context: context, builder: (ctx) => CancelledConnectionDialog());
-                      if(!context.mounted) return;
-                      if(ignore==null) return;
-                      if(!ignore){
+                    if (departure.cancelled) {
+                      final ignore = await showDialog<bool>(
+                        context: context,
+                        builder: (ctx) => CancelledConnectionDialog(),
+                      );
+                      if (!context.mounted) return;
+                      if (ignore == null) return;
+                      if (!ignore) {
                         return;
                       }
                     }
@@ -410,7 +413,21 @@ class _DepartureList extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       softWrap: false,
-                                      style: TextStyle(decoration: departure.cancelled ? .lineThrough : null, color: departure.cancelled ? Theme.of(context).colorScheme.error : null, decorationColor: departure.cancelled ? Theme.of(context).colorScheme.error : null),
+                                      style: TextStyle(
+                                        decoration: departure.cancelled
+                                            ? .lineThrough
+                                            : null,
+                                        color: departure.cancelled
+                                            ? Theme.of(
+                                                context,
+                                              ).colorScheme.error
+                                            : null,
+                                        decorationColor: departure.cancelled
+                                            ? Theme.of(
+                                                context,
+                                              ).colorScheme.error
+                                            : null,
+                                      ),
                                     ),
                                   ),
                                 ],

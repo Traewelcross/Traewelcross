@@ -63,9 +63,7 @@ class PersonalStatsOperator extends StatelessWidget {
                         child: Row(
                           spacing: 4,
                           mainAxisSize: .max,
-                          children: [
-                            Text(localize.checkInCount(s.count)),
-                          ],
+                          children: [Text(localize.checkInCount(s.count))],
                         ),
                       ),
                     ),

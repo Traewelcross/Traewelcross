@@ -97,7 +97,9 @@ class MapStat extends StatelessWidget {
           Card(
             clipBehavior: Clip.hardEdge,
             child: ExpansionTile(
-              shape: const Border.fromBorderSide(BorderSide(color: Colors.transparent)),
+              shape: const Border.fromBorderSide(
+                BorderSide(color: Colors.transparent),
+              ),
               clipBehavior: Clip.hardEdge,
               title: Text("${uniqueUsers.length} ${localize.users}"),
               enabled: true,
@@ -116,7 +118,7 @@ class MapStat extends StatelessWidget {
                   .toList(),
             ),
           ),
-          ?footer
+        ?footer,
       ],
     );
   }

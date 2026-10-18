@@ -65,7 +65,7 @@ class _NotificationsViewState extends State<NotificationsView> {
     final response = await apiService.notification.fetchNotifications(
       page: _page,
     );
-    if(!mounted) return;
+    if (!mounted) return;
     setState(() {
       _notifications.addAll(response);
       _page++;

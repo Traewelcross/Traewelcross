@@ -66,9 +66,9 @@ class _RideQuickViewState extends State<RideQuickView> {
     super.initState();
     _rideData = widget.rideData;
     _initData();
-    if(widget.detailedView == true){
+    if (widget.detailedView == true) {
       _volumeSubscription = VolumeButtonService().stream.listen((e) {
-        if(e.action == .held){
+        if (e.action == .held) {
           _updateTime(TimeOfDay.now(), e.button == .down);
         }
       });

@@ -12,7 +12,7 @@ enum DepartTypes {
 
   @JsonValue("regionalExp")
   regionalExp("regionalExp"),
-  
+
   @JsonValue("regional")
   regional("regional"),
 

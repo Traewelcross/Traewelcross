@@ -46,7 +46,7 @@ class _AddTicketState extends State<AddTicket> {
         maxSize: 4096,
       ),
     );
-    if(!mounted) return;
+    if (!mounted) return;
     setState(() {
       processing = false;
     });
@@ -126,7 +126,9 @@ class _AddTicketState extends State<AddTicket> {
                         ),
                         Divider(),
                         ExpansionTile(
-                          shape: Border.fromBorderSide(.new(color: Colors.transparent)),
+                          shape: Border.fromBorderSide(
+                            .new(color: Colors.transparent),
+                          ),
                           title: Text(localize.ticketAddTicketDataManual),
                           children: [
                             AlertCard(

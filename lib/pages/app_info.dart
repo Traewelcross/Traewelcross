@@ -88,9 +88,7 @@ class AppInfo extends StatelessWidget {
 }
 
 class ProviderInfo extends StatefulWidget {
-  const ProviderInfo({
-    super.key,
-  });
+  const ProviderInfo({super.key});
 
   @override
   State<ProviderInfo> createState() => _ProviderInfoState();
@@ -99,10 +97,11 @@ class ProviderInfo extends StatefulWidget {
 class _ProviderInfoState extends State<ProviderInfo> {
   late final Future<ProviderConfigInfo> info;
   @override
-  void initState(){
+  void initState() {
     super.initState();
     info = getIt<ApiService>().misc.getConfiguration();
   }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -121,7 +120,7 @@ class _ProviderInfoState extends State<ProviderInfo> {
                   textAlign: .center,
                   style: TextStyle(fontStyle: .italic),
                 ),
-                const SizedBox(height: 6,)
+                const SizedBox(height: 6),
               ],
             );
           }

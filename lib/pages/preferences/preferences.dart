@@ -97,12 +97,12 @@ class Preferences extends StatelessWidget {
             leading: const Icon(Icons.science),
             title: Text(localize.experimentalPrefrences),
           ),
-          if(kDebugMode)
-          ListTile(
-            onTap: () => getIt<AuthService>().createWatchToken(),
-            leading: const Icon(Icons.watch),
-            title: Text("Pair Watch -- UNTRANSLATED")
-          )
+          if (kDebugMode)
+            ListTile(
+              onTap: () => getIt<AuthService>().createWatchToken(),
+              leading: const Icon(Icons.watch),
+              title: Text("Pair Watch -- UNTRANSLATED"),
+            ),
           // Nothing to configure here yet
           /*ListTile(
             onTap: () => Navigator.push(

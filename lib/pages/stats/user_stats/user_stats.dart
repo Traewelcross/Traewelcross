@@ -31,20 +31,44 @@ class _UserStatsState extends State<UserStats> {
         Expanded(
           child: ListView(
             children: [
-              Text(localize.statsStatOverviewOverviewTitle, style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontWeight: .bold), textAlign: .center,),
-              const Divider(height: 16, thickness: 3,),
+              Text(
+                localize.statsStatOverviewOverviewTitle,
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineLarge!.copyWith(fontWeight: .bold),
+                textAlign: .center,
+              ),
+              const Divider(height: 16, thickness: 3),
               OverviewStats(statRange: statRange),
-              const Divider(height: 16, thickness: 3,),
-              Text(localize.statsStatFavoritesTitle, style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontWeight: .bold), textAlign: .center,),
-              Text(localize.statsStatFavoritesSubtitle, style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant), textAlign: .center,),
-              const Divider(height: 16, thickness: 3,),
+              const Divider(height: 16, thickness: 3),
+              Text(
+                localize.statsStatFavoritesTitle,
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineLarge!.copyWith(fontWeight: .bold),
+                textAlign: .center,
+              ),
+              Text(
+                localize.statsStatFavoritesSubtitle,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+                textAlign: .center,
+              ),
+              const Divider(height: 16, thickness: 3),
               FavoriteStats(statRange: statRange),
-              const Divider(height: 16, thickness: 3,),
-              Text(localize.statsStatHistoryTitle, style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontWeight: .bold), textAlign: .center,),
-              const Divider(height: 16, thickness: 3,),
-              const HistoryStats()
+              const Divider(height: 16, thickness: 3),
+              Text(
+                localize.statsStatHistoryTitle,
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineLarge!.copyWith(fontWeight: .bold),
+                textAlign: .center,
+              ),
+              const Divider(height: 16, thickness: 3),
+              const HistoryStats(),
             ],
-          )
+          ),
         ),
       ],
     );

@@ -398,14 +398,14 @@ class _ChromeState extends State<Chrome> {
           ),
         ],
       ),
-        _Tab(
-          page: const Statistics(),
-          title: AppBarTitle(l10n.stats),
-          destination: NavigationDestination(
-            icon: const Icon(Icons.bar_chart),
-            label: l10n.stats,
-          ),
+      _Tab(
+        page: const Statistics(),
+        title: AppBarTitle(l10n.stats),
+        destination: NavigationDestination(
+          icon: const Icon(Icons.bar_chart),
+          label: l10n.stats,
         ),
+      ),
       _Tab(
         page: ProfileView(
           isOtherUser: false,
@@ -448,7 +448,12 @@ class _ChromeState extends State<Chrome> {
 
     return MainScaffold(
       title: selectedTab.title,
-      floatingActionButton: getIt<Config>().behavior.showVolBtnIndicator ? FloatingActionButton(onPressed: null,child: VolumeButtonService().buildHoldProgressIndicator(),) : null,
+      floatingActionButton: getIt<Config>().behavior.showVolBtnIndicator
+          ? FloatingActionButton(
+              onPressed: null,
+              child: VolumeButtonService().buildHoldProgressIndicator(),
+            )
+          : null,
       bottomNavigationBar: Column(
         mainAxisSize: .min,
         children: [
@@ -582,9 +587,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                   Row(
                                     mainAxisSize: .min,
                                     children: [
-                                      Text(
-                                        ride.checkin.origin.station.name,
-                                      ),
+                                      Text(ride.checkin.origin.station.name),
                                       const Icon(Icons.arrow_right),
                                     ],
                                   ),
@@ -592,11 +595,7 @@ class _ActiveRideCardState extends State<ActiveRideCard> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          ride
-                                                  .checkin
-                                                  .destination
-                                                  .station
-                                                  .name,
+                                          ride.checkin.destination.station.name,
                                           style: Theme.of(
                                             context,
                                           ).textTheme.headlineSmall,

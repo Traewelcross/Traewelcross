@@ -49,18 +49,18 @@ class _AccountPreferencesState extends State<AccountPreferences> {
       u = res.object;
     } catch (e) {
       SharedFunctions.sendSnackBar(e.toString());
-      if(!mounted) return;
+      if (!mounted) return;
       setState(() {
         _applying = false;
       });
       return;
     }
-    if(!mounted) return;
-      setState(() {
-        _applying = false;
-        _changedSetting = false;
-        _userConfig = u;
-      });
+    if (!mounted) return;
+    setState(() {
+      _applying = false;
+      _changedSetting = false;
+      _userConfig = u;
+    });
   }
 
   String _getVisibilityString(

@@ -105,7 +105,9 @@ class Project extends legacy.StatelessWidget {
                       onTapLink: (text, href, title) =>
                           SharedFunctions.launchURL(Uri.parse(href!)),
                       styleSheet: MarkdownStyleSheet(
-                        code: MarkdownStyleSheet.fromTheme(legacy.Theme.of(context)).p,
+                        code: MarkdownStyleSheet.fromTheme(
+                          legacy.Theme.of(context),
+                        ).p,
                       ),
                     ),
                   ),

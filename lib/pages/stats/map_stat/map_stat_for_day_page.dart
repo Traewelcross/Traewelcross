@@ -80,7 +80,7 @@ class _MapStatForDayPageState extends State<MapStatForDayPage> {
                 )
                 .toList() ??
             [];
-        return MapStat(rides: ridesWithCoords, footer: widget.footer,);
+        return MapStat(rides: ridesWithCoords, footer: widget.footer);
       },
     );
   }

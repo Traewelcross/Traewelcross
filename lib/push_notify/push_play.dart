@@ -127,6 +127,7 @@ class PushPlay implements PushApi {
       body: jsonEncode({"fcm_token": fcm, "user_id": uid, "is_firebase": true}),
     );
   }
+
   @override
   Future<bool> registerDevice(oauth2.Client? client) async {
     if (client == null) {

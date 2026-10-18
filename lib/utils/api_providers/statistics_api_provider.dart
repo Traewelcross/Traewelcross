@@ -18,7 +18,7 @@ class MapFilters {
   MapFilters({
     required this.travelTypes,
     required this.travelPurpose,
-    this.includeApprox = true
+    this.includeApprox = true,
   });
 }
 
@@ -28,24 +28,22 @@ class StatisticsApiProvider {
 
   Future<List<RideInfo>> getPolylines({
     required DateTimeRange range,
-    MapFilters? filter
+    MapFilters? filter,
   }) async {
     filter ??= MapFilters(travelTypes: {}, travelPurpose: {});
-    String endpoint = "/route-map?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}&includeApproximated=${filter.includeApprox.toString()}";
-    if(filter.travelPurpose.isNotEmpty){
-      for(TripType p in filter.travelPurpose){
+    String endpoint =
+        "/route-map?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}&includeApproximated=${filter.includeApprox.toString()}";
+    if (filter.travelPurpose.isNotEmpty) {
+      for (TripType p in filter.travelPurpose) {
         endpoint += "&travelPurposes%5B%5D=${p.value}";
       }
     }
-    if(filter.travelTypes.isNotEmpty){
-      for(DepartTypes d in filter.travelTypes){
+    if (filter.travelTypes.isNotEmpty) {
+      for (DepartTypes d in filter.travelTypes) {
         endpoint += "&travelTypes%5B%5D=${d.value}";
       }
     }
-    final response = await _api.request(
-      endpoint,
-      .GET,
-    );
+    final response = await _api.request(endpoint, .GET);
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body)["data"];
       final List<RouteMapEntry> entries = jsonData
@@ -101,30 +99,51 @@ class StatisticsApiProvider {
     }
     return points;
   }
-  Future<StatisticsPersonal> getPersonalStatistics(DateTimeRange<DateTime> range) async{
-    final response = await _api.request("/statistics?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}", .GET);
-    if(response.statusCode == 200){
+
+  Future<StatisticsPersonal> getPersonalStatistics(
+    DateTimeRange<DateTime> range,
+  ) async {
+    final response = await _api.request(
+      "/statistics?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}",
+      .GET,
+    );
+    if (response.statusCode == 200) {
       return StatisticsPersonal.fromJson(jsonDecode(response.body)["data"]);
     }
     return Future.error(response.statusCode);
   }
-  Future<StatisticsOverview> getOverviewStatistics(DateTimeRange<DateTime> range) async {
-    final response = await _api.request("/statistics/overview?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}", .GET);
-    if(response.statusCode == 200){
-      return StatisticsOverview.fromJson(jsonDecode(response.body)["data"]["summary"]);
+
+  Future<StatisticsOverview> getOverviewStatistics(
+    DateTimeRange<DateTime> range,
+  ) async {
+    final response = await _api.request(
+      "/statistics/overview?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}",
+      .GET,
+    );
+    if (response.statusCode == 200) {
+      return StatisticsOverview.fromJson(
+        jsonDecode(response.body)["data"]["summary"],
+      );
     }
     return Future.error(response.statusCode);
   }
+
   Future<StatisticsHistory> getHistoryStatistics() async {
     final response = await _api.request("/statistics/history", .GET);
-        if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       return StatisticsHistory.fromJson(jsonDecode(response.body)["data"]);
     }
     return Future.error(response.statusCode);
   }
-  Future<StatisticsFavorites> getFavoritesStatistics(DateTimeRange<DateTime> range) async {
-    final response = await _api.request("/statistics/favorites?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}", .GET);
-    if (response.statusCode == 200){
+
+  Future<StatisticsFavorites> getFavoritesStatistics(
+    DateTimeRange<DateTime> range,
+  ) async {
+    final response = await _api.request(
+      "/statistics/favorites?from=${range.start.toIso8601String()}&until=${range.end.toIso8601String()}",
+      .GET,
+    );
+    if (response.statusCode == 200) {
       return StatisticsFavorites.fromJson(jsonDecode(response.body)["data"]);
     }
     return Future.error(response.statusCode);

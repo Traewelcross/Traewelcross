@@ -225,7 +225,10 @@ class ProfileStatsCard extends StatelessWidget {
                             children: [
                               const Icon(Icons.timer_outlined),
                               Text(
-                                SharedFunctions.getDurationString(userInfo.totalDuration, context),
+                                SharedFunctions.getDurationString(
+                                  userInfo.totalDuration,
+                                  context,
+                                ),
                               ),
                             ],
                           ),
@@ -315,7 +318,6 @@ class ProfileStatsCard extends StatelessWidget {
       ],
     );
   }
-
 }
 
 class _AuthUserCtrl extends StatelessWidget {
@@ -327,13 +329,12 @@ class _AuthUserCtrl extends StatelessWidget {
         Expanded(
           child: FilledButton.icon(
             icon: const Icon(Icons.group),
-            onPressed: () => 
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const FollowerPage(),
-                ),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => const FollowerPage(),
               ),
+            ),
             label: Text("Follower"),
           ),
         ),

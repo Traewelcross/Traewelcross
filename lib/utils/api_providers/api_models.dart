@@ -1001,7 +1001,8 @@ class StatisticsOverview {
     required this.longestCheckinByDuration,
     required this.shortestCheckinByDuration,
   });
-  factory StatisticsOverview.fromJson(Map<String, dynamic> json) => _$StatisticsOverviewFromJson(json);
+  factory StatisticsOverview.fromJson(Map<String, dynamic> json) =>
+      _$StatisticsOverviewFromJson(json);
   Map<String, dynamic> toJson() => _$StatisticsOverviewToJson(this);
 }
 
@@ -1010,12 +1011,9 @@ class StatisticsHistory {
   final List<StatisticsHistoryListEntry>? yearly;
   final List<StatisticsHistoryListEntry>? monthly;
   final List<StatisticsHistoryListEntry>? weekly;
-  const StatisticsHistory({
-    this.yearly,
-    this.monthly,
-    this.weekly,
-  });
-  factory StatisticsHistory.fromJson(Map<String, dynamic> json) => _$StatisticsHistoryFromJson(json);
+  const StatisticsHistory({this.yearly, this.monthly, this.weekly});
+  factory StatisticsHistory.fromJson(Map<String, dynamic> json) =>
+      _$StatisticsHistoryFromJson(json);
   Map<String, dynamic> toJson() => _$StatisticsHistoryToJson(this);
 }
 
@@ -1031,7 +1029,8 @@ class StatisticsHistoryListEntry {
     required this.checkinCount,
     required this.distanceKm,
   });
-  factory StatisticsHistoryListEntry.fromJson(Map<String, dynamic> json) => _$StatisticsHistoryListEntryFromJson(json);
+  factory StatisticsHistoryListEntry.fromJson(Map<String, dynamic> json) =>
+      _$StatisticsHistoryListEntryFromJson(json);
   Map<String, dynamic> toJson() => _$StatisticsHistoryListEntryToJson(this);
 }
 
@@ -1040,12 +1039,9 @@ class StatisticsFavorites {
   final List<StatisticsFavoritesStation>? stations;
   final List<StatisticsFavoritesLine>? lines;
   final List<StatisticsFavoritesRoute>? routes;
-  const StatisticsFavorites({
-    this.stations,
-    this.lines,
-    this.routes,
-  });
-  factory StatisticsFavorites.fromJson(Map<String, dynamic> json) => _$StatisticsFavoritesFromJson(json);
+  const StatisticsFavorites({this.stations, this.lines, this.routes});
+  factory StatisticsFavorites.fromJson(Map<String, dynamic> json) =>
+      _$StatisticsFavoritesFromJson(json);
   Map<String, dynamic> toJson() => _$StatisticsFavoritesToJson(this);
 }
 
@@ -1059,7 +1055,8 @@ class StatisticsFavoritesStation {
     required this.name,
     required this.count,
   });
-  factory StatisticsFavoritesStation.fromJson(Map<String, dynamic> json) => _$StatisticsFavoritesStationFromJson(json);
+  factory StatisticsFavoritesStation.fromJson(Map<String, dynamic> json) =>
+      _$StatisticsFavoritesStationFromJson(json);
   Map<String, dynamic> toJson() => _$StatisticsFavoritesStationToJson(this);
 }
 
@@ -1075,7 +1072,8 @@ class StatisticsFavoritesLine {
     required this.count,
     required this.distanceKm,
   });
-  factory StatisticsFavoritesLine.fromJson(Map<String, dynamic> json) => _$StatisticsFavoritesLineFromJson(json);
+  factory StatisticsFavoritesLine.fromJson(Map<String, dynamic> json) =>
+      _$StatisticsFavoritesLineFromJson(json);
   Map<String, dynamic> toJson() => _$StatisticsFavoritesLineToJson(this);
 }
 
@@ -1095,7 +1093,8 @@ class StatisticsFavoritesRoute {
     required this.count,
     required this.distanceKm,
   });
-  factory StatisticsFavoritesRoute.fromJson(Map<String, dynamic> json) => _$StatisticsFavoritesRouteFromJson(json);
+  factory StatisticsFavoritesRoute.fromJson(Map<String, dynamic> json) =>
+      _$StatisticsFavoritesRouteFromJson(json);
   Map<String, dynamic> toJson() => _$StatisticsFavoritesRouteToJson(this);
 }
 
@@ -1111,7 +1110,8 @@ class StatisticsPersonal {
     this.operators,
     this.time,
   });
-  factory StatisticsPersonal.fromJson(Map<String, dynamic> json) => _$StatisticsPersonalFromJson(json);
+  factory StatisticsPersonal.fromJson(Map<String, dynamic> json) =>
+      _$StatisticsPersonalFromJson(json);
   Map<String, dynamic> toJson() => _$StatisticsPersonalToJson(this);
 }
 
@@ -1125,7 +1125,8 @@ class StatisticsPersonalPurpose {
     required this.count,
     required this.duration,
   });
-  factory StatisticsPersonalPurpose.fromJson(Map<String, dynamic> json) => _$StatisticsPersonalPurposeFromJson(json);
+  factory StatisticsPersonalPurpose.fromJson(Map<String, dynamic> json) =>
+      _$StatisticsPersonalPurposeFromJson(json);
   Map<String, dynamic> toJson() => _$StatisticsPersonalPurposeToJson(this);
 }
 
@@ -1139,7 +1140,8 @@ class StatisticsPersonalCategory {
     required this.count,
     required this.duration,
   });
-  factory StatisticsPersonalCategory.fromJson(Map<String, dynamic> json) => _$StatisticsPersonalCategoryFromJson(json);
+  factory StatisticsPersonalCategory.fromJson(Map<String, dynamic> json) =>
+      _$StatisticsPersonalCategoryFromJson(json);
   Map<String, dynamic> toJson() => _$StatisticsPersonalCategoryToJson(this);
 }
 
@@ -1153,7 +1155,8 @@ class StatisticsPersonalOperator {
     required this.count,
     required this.duration,
   });
-  factory StatisticsPersonalOperator.fromJson(Map<String, dynamic> json) => _$StatisticsPersonalOperatorFromJson(json);
+  factory StatisticsPersonalOperator.fromJson(Map<String, dynamic> json) =>
+      _$StatisticsPersonalOperatorFromJson(json);
   Map<String, dynamic> toJson() => _$StatisticsPersonalOperatorToJson(this);
 }
 
@@ -1167,7 +1170,8 @@ class StatisticsPersonalTime {
     required this.count,
     required this.duration,
   });
-  factory StatisticsPersonalTime.fromJson(Map<String, dynamic> json) => _$StatisticsPersonalTimeFromJson(json);
+  factory StatisticsPersonalTime.fromJson(Map<String, dynamic> json) =>
+      _$StatisticsPersonalTimeFromJson(json);
   Map<String, dynamic> toJson() => _$StatisticsPersonalTimeToJson(this);
 }
 
@@ -1179,9 +1183,10 @@ class ProviderConfigInfo {
   const ProviderConfigInfo({
     required this.appName,
     required this.appUrl,
-    required this.version
+    required this.version,
   });
-  factory ProviderConfigInfo.fromJson(Map<String, dynamic> json) => _$ProviderConfigInfoFromJson(json);
+  factory ProviderConfigInfo.fromJson(Map<String, dynamic> json) =>
+      _$ProviderConfigInfoFromJson(json);
   Map<String, dynamic> toJson() => _$ProviderConfigInfoToJson(this);
 }
 

@@ -75,7 +75,7 @@ class _SelectStopState extends State<SelectStop> {
       response.stopovers.removeLast();
     }
     response.stopovers = response.stopovers.reversed.toList();
-    if(!mounted) return response;
+    if (!mounted) return response;
     setState(() => attribution = response.dataSource?.attribution ?? "");
     return response;
   }
@@ -301,12 +301,11 @@ class _SelectStopState extends State<SelectStop> {
                                                 mainStops.last.arrivalPlanned,
                                           ),
                                           continuation: .new(
-                                            departureId:
-                                                continuation
-                                                    .stopovers
-                                                    .first
-                                                    .station
-                                                    .id,
+                                            departureId: continuation
+                                                .stopovers
+                                                .first
+                                                .station
+                                                .id,
                                             tripId:
                                                 trip.continuationTrip!.tripId,
                                             lineName:
@@ -346,7 +345,11 @@ class _SelectStopState extends State<SelectStop> {
                         },
                       ),
                     ),
-                    Text(attribution, textAlign: .center, style: .new(fontStyle: .italic),)
+                    Text(
+                      attribution,
+                      textAlign: .center,
+                      style: .new(fontStyle: .italic),
+                    ),
                   ],
                 ),
               ),
@@ -438,16 +441,12 @@ class StopoverRow extends StatelessWidget {
             builder: (ctx) => CancelledConnectionDialog(),
           );
           if (!context.mounted) return;
-          if(ignore == null) return;
+          if (ignore == null) return;
           if (!ignore) {
             return;
           }
         }
-        callback.call(
-          stop.station.id,
-          stop.station.name,
-          stop.arrivalPlanned!,
-        );
+        callback.call(stop.station.id, stop.station.name, stop.arrivalPlanned!);
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

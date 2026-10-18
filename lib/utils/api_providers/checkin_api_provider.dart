@@ -34,7 +34,9 @@ class CheckinApiProvider {
       );
     }
     if (response.statusCode == 409) {
-      final List<dynamic> errorInfo = jsonDecode(response.body)?["data"]["conflicts"];
+      final List<dynamic> errorInfo = jsonDecode(
+        response.body,
+      )?["data"]["conflicts"];
       final List<Status> status = errorInfo
           .map((e) => Status.fromJson(e))
           .toList();

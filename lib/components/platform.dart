@@ -6,7 +6,7 @@ class Platform extends StatelessWidget {
     super.key,
     required this.platform,
     required this.plannedPlatform,
-    required this.cancelled
+    required this.cancelled,
   });
 
   final String platform;
@@ -34,7 +34,7 @@ class Platform extends StatelessWidget {
                   ? Theme.of(context).colorScheme.onErrorContainer
                   : Theme.of(context).colorScheme.onPrimaryContainer,
               decoration: cancelled ? .lineThrough : null,
-              decorationColor: Theme.of(context).colorScheme.error
+              decorationColor: Theme.of(context).colorScheme.error,
             ),
           ),
         ),

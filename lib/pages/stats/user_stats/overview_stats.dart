@@ -124,7 +124,7 @@ class _OverviewStatsState extends State<OverviewStats>
                       rideData: stats.longestCheckinByDistance!,
                       authUserId: 0,
                     )
-                  else 
+                  else
                     Text(
                       localize.statsStatOverviewStatusNotAvailable,
                       textAlign: .center,

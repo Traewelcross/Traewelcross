@@ -100,11 +100,11 @@ class _TimeOverrideFieldState extends State<TimeOverrideField> {
             time.hour,
             time.minute,
           );
-          if(mounted){
-          setState(() {
-            _selectedDate = newDate;
-            _updateTextField();
-          });
+          if (mounted) {
+            setState(() {
+              _selectedDate = newDate;
+              _updateTextField();
+            });
           }
           widget.onDateChanged(_selectedDate);
         }

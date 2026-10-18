@@ -12,10 +12,10 @@ enum TripType {
   final int value;
   final IconData icon;
   const TripType(this.value, this.icon);
-  
+
   @override
   String toString() => value.toString();
-  
+
   static TripType fromValue(int val) {
     return TripType.values.firstWhere((e) => e.value == val);
   }

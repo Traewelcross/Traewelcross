@@ -21,7 +21,7 @@ class _PersonalStatsWrapState extends State<PersonalStatsWrap> {
     end: DateTime.now(),
   );
   late Future<StatisticsPersonal> statistic;
-    @override
+  @override
   void initState() {
     super.initState();
     _loadStats();
@@ -30,6 +30,7 @@ class _PersonalStatsWrapState extends State<PersonalStatsWrap> {
   void _loadStats() {
     statistic = getIt<ApiService>().statistics.getPersonalStatistics(statRange);
   }
+
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
@@ -38,7 +39,10 @@ class _PersonalStatsWrapState extends State<PersonalStatsWrap> {
         DateSelectButton(
           statRange: statRange,
           onNewDate: (r) {
-            setState((){statRange = r; _loadStats();});
+            setState(() {
+              statRange = r;
+              _loadStats();
+            });
           },
         ),
         Expanded(
@@ -86,7 +90,7 @@ class _PersonalStatsWrapState extends State<PersonalStatsWrap> {
                       const Divider(height: 16, thickness: 3),
                       PersonalStatsPurpose(stats: stats),
                       const Divider(height: 16, thickness: 3),
-                                            Text(
+                      Text(
                         localize.operator,
                         style: Theme.of(
                           context,
@@ -94,7 +98,7 @@ class _PersonalStatsWrapState extends State<PersonalStatsWrap> {
                         textAlign: .center,
                       ),
                       const Divider(height: 16, thickness: 3),
-PersonalStatsOperator(stats: stats)
+                      PersonalStatsOperator(stats: stats),
                     ],
                   );
                 }

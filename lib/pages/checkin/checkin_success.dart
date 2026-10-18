@@ -24,17 +24,17 @@ class CheckinSuccess extends StatelessWidget {
     final localize = AppLocalizations.of(context)!;
     final materialLocalize = MaterialLocalizations.of(context);
     if (checkedInWithVolume == true) {
-      WidgetsBinding.instance.addPostFrameCallback((_){
-              Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => Chrome()),
-        (Route<dynamic> route) => false,
-      );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (ctx) => DetailedRideView(rideData: statusInfo.status),
-        ),
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => Chrome()),
+          (Route<dynamic> route) => false,
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (ctx) => DetailedRideView(rideData: statusInfo.status),
+          ),
+        );
       });
     }
     return MainScaffold(

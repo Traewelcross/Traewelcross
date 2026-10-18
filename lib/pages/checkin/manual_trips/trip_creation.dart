@@ -37,7 +37,7 @@ class _TripCreationState extends State<TripCreation> {
     if (stop?.stationId == -1 || stop == null) {
       return;
     }
-    if(!mounted) return;
+    if (!mounted) return;
     setState(() {
       stopovers.add(stop);
     });
@@ -54,7 +54,7 @@ class _TripCreationState extends State<TripCreation> {
       ),
     );
     if (stop == null) return;
-    if(!mounted) return;
+    if (!mounted) return;
     setState(() {
       if (stop.stationId == -2) {
         stopovers.removeAt(idx);
@@ -74,7 +74,7 @@ class _TripCreationState extends State<TripCreation> {
       ),
     );
     if (stop == null || stop.stationId == -2) return;
-    if(!mounted) return;
+    if (!mounted) return;
     setState(() {
       originStop = stop;
     });
@@ -90,7 +90,7 @@ class _TripCreationState extends State<TripCreation> {
       ),
     );
     if (stop == null || stop.stationId == -2) return;
-    if(!mounted) return;
+    if (!mounted) return;
     setState(() {
       destinationStop = stop;
     });

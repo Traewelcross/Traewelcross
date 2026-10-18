@@ -20,11 +20,7 @@ class _MiscPreferencesState extends State<MiscPreferences> {
     Config config = getIt<Config>();
     return MainScaffold(
       title: Text(localize.behavior),
-      body: ListView(
-        children: [
-
-        ],
-      ),
+      body: ListView(children: []),
     );
   }
 }

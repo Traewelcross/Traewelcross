@@ -35,7 +35,7 @@ class DeepLinkService {
 
   void _handleUri(Uri uri) {
     if (uri.host == "oauth.traewelcross.de") {
-      if(uri.pathSegments.isNotEmpty && uri.pathSegments[0] == "wear"){
+      if (uri.pathSegments.isNotEmpty && uri.pathSegments[0] == "wear") {
         _handleWearOS(uri);
         return;
       }
@@ -44,12 +44,16 @@ class DeepLinkService {
       _handleTraewelling(uri);
     }
   }
+
   void _handleWearOS(Uri uri) async {
-    final result = await wearOSChannel.invokeMethod<String>("transferToken", {"token": uri.queryParameters["code"]});
-    if(result == "SUCCESS"){
+    final result = await wearOSChannel.invokeMethod<String>("transferToken", {
+      "token": uri.queryParameters["code"],
+    });
+    if (result == "SUCCESS") {
       SharedFunctions.sendSnackBar("SUCCESS");
     }
   }
+
   void _handleTraewelling(Uri uri) async {
     int userId = 0;
     await SharedPreferencesAsync()

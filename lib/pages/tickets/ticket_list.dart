@@ -81,7 +81,7 @@ class _TicketListState extends State<TicketList> {
                   key: Key(tickets[index].uuid),
                   onDismissed: (direction) async {
                     await TicketManager.removeTicket(tickets[index].uuid);
-                    if(!mounted) return;
+                    if (!mounted) return;
                     setState(() {
                       _ticketF = TicketManager.getTickets();
                     });
@@ -123,7 +123,7 @@ class _TicketListState extends State<TicketList> {
             context,
             MaterialPageRoute(builder: (ctx) => AddTicket()),
           );
-          if(!mounted) return;
+          if (!mounted) return;
           setState(() {
             _ticketF = TicketManager.getTickets();
           });

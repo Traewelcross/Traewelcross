@@ -41,7 +41,8 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
           if (Platform.isAndroid && config.behavior.volumeBtnCtrl)
             ListTile(
               onTap: () => setState(() {
-                config.behavior.volumeBtnCtrlShowIndicator = !config.behavior.volumeBtnCtrlShowIndicator;
+                config.behavior.volumeBtnCtrlShowIndicator =
+                    !config.behavior.volumeBtnCtrlShowIndicator;
               }),
               leading: const Icon(Icons.music_note),
               title: Text(localize.volumeBtnCtrlIndicator),
@@ -55,7 +56,8 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
             ),
           ListTile(
             onTap: () => setState(() {
-              config.appearance.showPredictedPosition = !config.appearance.showPredictedPosition;
+              config.appearance.showPredictedPosition =
+                  !config.appearance.showPredictedPosition;
             }),
             leading: const Icon(Icons.gps_fixed),
             title: Text("Show predicted position"),

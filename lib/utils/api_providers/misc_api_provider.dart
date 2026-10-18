@@ -10,7 +10,7 @@ class MiscApiProvider {
   Future<ProviderConfigInfo> getConfiguration() async {
     final response = await _api.request("/app/configuration", .GET);
     if (response.statusCode == 200) {
-    return ProviderConfigInfo.fromJson(jsonDecode(response.body));
+      return ProviderConfigInfo.fromJson(jsonDecode(response.body));
     }
     return ProviderConfigInfo(appName: "", appUrl: "", version: "");
   }

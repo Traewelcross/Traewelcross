@@ -82,7 +82,7 @@ class SharedFunctions {
     );
   }
 
-  static void sharedInit(){
+  static void sharedInit() {
     VolumeButtonService().init();
   }
 

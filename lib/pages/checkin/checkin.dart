@@ -206,7 +206,7 @@ class _CheckInState extends State<CheckIn> {
             builder: (BuildContext context) => CheckinSuccess(
               statusInfo: response.object as CheckinResponse,
               continueSuccess: null,
-                checkedInWithVolume: checkedInWithVolume,
+              checkedInWithVolume: checkedInWithVolume,
             ),
           ),
         );
