@@ -1,3 +1,5 @@
+//TODO: convert to FIDs, couldn't get onRegistered to fire in v7.0.0, waiting for future release and try again
+
 import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';

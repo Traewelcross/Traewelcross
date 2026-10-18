@@ -34,8 +34,9 @@ class DeepLinkService {
   }
 
   void _handleUri(Uri uri) {
+    print(uri);
     if (uri.host == "oauth.traewelcross.de") {
-      if(uri.pathSegments[0] == "wear"){
+      if(uri.pathSegments.isNotEmpty && uri.pathSegments[0] == "wear"){
         _handleWearOS(uri);
         return;
       }
