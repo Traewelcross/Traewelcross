@@ -2,6 +2,8 @@ import 'package:material_ui/material_ui.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
+import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/shared.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -73,12 +75,59 @@ class AppInfo extends StatelessWidget {
                       icon: const Icon(Icons.privacy_tip),
                     ),
                   ),
+                  const Spacer(),
+                  ProviderInfo(),
                 ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class ProviderInfo extends StatefulWidget {
+  const ProviderInfo({
+    super.key,
+  });
+
+  @override
+  State<ProviderInfo> createState() => _ProviderInfoState();
+}
+
+class _ProviderInfoState extends State<ProviderInfo> {
+  late final Future<ProviderConfigInfo> info;
+  @override
+  void initState(){
+    super.initState();
+    info = getIt<ApiService>().misc.getConfiguration();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: info,
+      builder: (ctx, snp) {
+        if (snp.connectionState == .done) {
+          if (snp.hasData) {
+            return Column(
+              children: [
+                Text(
+                  AppLocalizations.of(ctx)!.appInfo(
+                    snp.data!.appName,
+                    Uri.parse(snp.data!.appUrl).host,
+                    snp.data!.version,
+                  ),
+                  textAlign: .center,
+                  style: TextStyle(fontStyle: .italic),
+                ),
+                const SizedBox(height: 6,)
+              ],
+            );
+          }
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 }

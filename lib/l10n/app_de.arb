@@ -390,5 +390,6 @@
     "statsStatFavoritesNotAvailable": "Entschuldige, aber für diesen Zeitrahmen hast du keine Reisen eingetragen, daher können keine Favoriten angezeigt werden.",
     "statsStatHistoryTitle": "Allzeitstatistiken",
     "checkInCount": "{count} Check-Ins",
-    "monthYear": "{monthYear}"
+    "monthYear": "{monthYear}",
+    "appInfo": "Benutze {appName} auf {appUrl} mit Version {version}"
 }

@@ -1146,3 +1146,17 @@ Map<String, dynamic> _$StatisticsPersonalTimeToJson(
   'count': instance.count,
   'duration': instance.duration,
 };
+
+ProviderConfigInfo _$ProviderConfigInfoFromJson(Map<String, dynamic> json) =>
+    ProviderConfigInfo(
+      appName: json['appName'] as String,
+      appUrl: json['appUrl'] as String,
+      version: json['version'] as String,
+    );
+
+Map<String, dynamic> _$ProviderConfigInfoToJson(ProviderConfigInfo instance) =>
+    <String, dynamic>{
+      'appName': instance.appName,
+      'appUrl': instance.appUrl,
+      'version': instance.version,
+    };

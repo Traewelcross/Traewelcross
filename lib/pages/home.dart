@@ -245,6 +245,7 @@ class _HomeState extends State<Home> {
     ).setInt("buildNumber", currentBuildNumber);
     //TODO: remove in future release
     if(getIt<Config>().notification.notificationsEnabled && !getIt<Config>().notification.hasMigrated){
+      await globalPushManager.initializeNotifications();
       globalPushManager.registerDevice((await getIt<ApiService>().getAuthenticatedClient()));
       getIt<Config>().notification.hasMigrated = true;
     }

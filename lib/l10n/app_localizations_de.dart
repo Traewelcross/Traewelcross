@@ -1366,4 +1366,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
     return '$monthYearString';
   }
+
+  @override
+  String appInfo(String appName, String appUrl, String version) {
+    return 'Benutze $appName auf $appUrl mit Version $version';
+  }
 }

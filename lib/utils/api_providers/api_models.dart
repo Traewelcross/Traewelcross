@@ -1171,6 +1171,20 @@ class StatisticsPersonalTime {
   Map<String, dynamic> toJson() => _$StatisticsPersonalTimeToJson(this);
 }
 
+@JsonSerializable(fieldRename: .none)
+class ProviderConfigInfo {
+  final String appName;
+  final String appUrl;
+  final String version;
+  const ProviderConfigInfo({
+    required this.appName,
+    required this.appUrl,
+    required this.version
+  });
+  factory ProviderConfigInfo.fromJson(Map<String, dynamic> json) => _$ProviderConfigInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$ProviderConfigInfoToJson(this);
+}
+
 class GenericStatusResponse {
   final bool wasSuccess;
   final String? body;

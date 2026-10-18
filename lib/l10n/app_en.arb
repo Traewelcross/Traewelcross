@@ -813,5 +813,13 @@
         "format": "yMMMM"
       }
     }
+  },
+  "appInfo": "Using {appName} at {appUrl} running version {version}",
+  "@appInfo":{
+    "placeholders": {
+      "appName":{"type": "String"},
+      "appUrl":{"type": "String"},
+      "version":{"type": "String"}
+    }
   }
 }

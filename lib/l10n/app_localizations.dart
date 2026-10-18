@@ -2443,6 +2443,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{monthYear}'**
   String monthYear(DateTime monthYear);
+
+  /// No description provided for @appInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Using {appName} at {appUrl} running version {version}'**
+  String appInfo(String appName, String appUrl, String version);
 }
 
 class _AppLocalizationsDelegate

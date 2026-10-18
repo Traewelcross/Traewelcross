@@ -1357,4 +1357,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
     return '$monthYearString';
   }
+
+  @override
+  String appInfo(String appName, String appUrl, String version) {
+    return 'Using $appName at $appUrl running version $version';
+  }
 }
