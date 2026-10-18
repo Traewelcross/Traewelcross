@@ -505,6 +505,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                         ),
                       );
                     },
+              onDoubleTap: _updateLikes,
               borderRadius: const BorderRadius.all(Radius.circular(12)),
               child: Padding(
                 padding: const EdgeInsets.all(16),
