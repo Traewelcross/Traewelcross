@@ -71,9 +71,6 @@ flutter:
     - assets/notices/
     - assets/line_colors/line_colors.json
   fonts:
-    - family: NotoEmoji
-      fonts: 
-        - asset: fonts/NotoColorEmoji.ttf
     - family: Outfit
       fonts:
         - asset: fonts/Outfit/Outfit-VariableFont_wght.ttf
