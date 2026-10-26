@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> _checkInGPSStation() async {
-    if (!mounted) return;
+    if (!mounted || isLocating) return;
     setState(() {
       isLocating = true;
     });
@@ -259,12 +259,13 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       _volumeSubscription = VolumeButtonService().stream.listen((e) {
-        if (e.action == .pressed) {
+        if (!mounted || ModalRoute.of(context)?.isCurrent != true) return;
+        if (e.action == .held) {
           _checkInGPSStation();
         }
       });
-      if (!mounted) return;
       if (getIt<Config>().misc.needsRelogin) {
         Navigator.of(context).push(
           MaterialPageRoute(
