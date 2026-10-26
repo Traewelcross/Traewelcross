@@ -80,36 +80,6 @@ class _SelectStopState extends State<SelectStop> {
     return response;
   }
 
-  /*void _checkIn(int id, String name, String arrivalTime, String tripId) {
-    if (widget.editCallback != null) {
-      widget.editCallback!({
-        "name": name,
-        "id": id,
-        "arrivalTime": arrivalTime,
-      });
-      Navigator.pop(context);
-      return;
-    }
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => CheckIn(
-          checkInInfo: CheckInInfo(
-            departureId: widget.startStopId,
-            tripId: tripId,
-            lineName: widget.lineName,
-            destination: name,
-            destinationId: id,
-            category: widget.category,
-            departureTime: widget.departureTime,
-            arrivalTime: arrivalTime,
-          ),
-          isEdit: false,
-        ),
-      ),
-    );
-  }*/
-
   void _navigateToCheckIn({
     required CheckInInfo primary,
     CheckInInfo? continuation,
