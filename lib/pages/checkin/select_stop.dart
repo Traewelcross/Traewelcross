@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:material_ui/material_ui.dart';
+import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/dialogs/cancelled_connection_dialog.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/checkin/checkin.dart';
@@ -13,6 +14,7 @@ import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/check_in_info.dart';
 import 'package:traewelcross/utils/ride_icon_tag_info.dart';
 import 'package:traewelcross/utils/shared.dart';
+import 'package:traewelcross/utils/volume_buttons.dart';
 
 class SelectStop extends StatefulWidget {
   const SelectStop({
@@ -38,11 +40,38 @@ class SelectStop extends StatefulWidget {
 
 class _SelectStopState extends State<SelectStop> {
   late Future<TripResource> _trip;
+  TripResource? _loadedTrip;
   late String attribution = "";
+  StreamSubscription<VolumeEvent>? _volumeSubscription;
+  int _selectedIndex = 0;
+  final ScrollController _listScrollController = .new();
+
+  void _scrollToSelected() {
+    if (!_listScrollController.hasClients) return;
+    const double estimatedHeight = 50;
+    _listScrollController.animateTo(
+      _selectedIndex * estimatedHeight,
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     _trip = _fetchTrip();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _volumeSubscription = VolumeButtonService().stream.listen(_listener);
+    });
+  }
+
+  @override
+  void dispose() {
+    _volumeSubscription?.cancel();
+    _listScrollController.dispose();
+    super.dispose();
   }
 
   Future<TripResource> _fetchTrip() async {
@@ -76,7 +105,10 @@ class _SelectStopState extends State<SelectStop> {
     }
     response.stopovers = response.stopovers.reversed.toList();
     if (!mounted) return response;
-    setState(() => attribution = response.dataSource?.attribution ?? "");
+    setState(() {
+      _loadedTrip = response;
+      attribution = response.dataSource?.attribution ?? "";
+    });
     return response;
   }
 
@@ -110,10 +142,126 @@ class _SelectStopState extends State<SelectStop> {
     );
   }
 
+  int _getTotalItems(TripResource? trip) {
+    if (trip == null) return 0;
+    final mainCount = trip.stopovers.length;
+    final hasContinuation =
+        trip.continuationTrip != null && widget.editCallback == null;
+    final continuationCount = hasContinuation
+        ? trip.continuationTrip!.stopovers.length
+        : 0;
+    return mainCount + (hasContinuation ? 1 + continuationCount : 0);
+  }
+
+  Future<void> _handleStopSelect(int index) async {
+    final trip = _loadedTrip;
+    if (trip == null) return;
+    final mainStops = trip.stopovers;
+    final continuation = trip.continuationTrip;
+    final hasContinuation = continuation != null && widget.editCallback == null;
+    final mainCount = mainStops.length;
+
+    Stopover stop;
+    CheckInInfo primary;
+    CheckInInfo? cont;
+
+    if (index < mainCount) {
+      stop = mainStops[index];
+      primary = CheckInInfo(
+        departureId: widget.startStopId,
+        tripId: widget.tripId,
+        lineName: widget.lineName,
+        destination: stop.station.name,
+        destinationId: stop.station.id,
+        category: widget.category,
+        departureTime: widget.departureTime,
+        arrivalTime: stop.arrivalPlanned,
+      );
+    } else if (hasContinuation && index > mainCount) {
+      final continueIdx = index - mainCount - 1;
+      stop = continuation.stopovers[continueIdx];
+      primary = CheckInInfo(
+        departureId: widget.startStopId,
+        tripId: widget.tripId,
+        lineName: widget.lineName,
+        destination: mainStops.last.station.name,
+        destinationId: mainStops.last.station.id,
+        category: widget.category,
+        departureTime: widget.departureTime,
+        arrivalTime: mainStops.last.arrivalPlanned,
+      );
+      cont = CheckInInfo(
+        departureId: continuation.stopovers.first.station.id,
+        tripId: trip.continuationTrip!.tripId,
+        lineName: trip.continuationTrip!.lineName,
+        destination: stop.station.name,
+        destinationId: stop.station.id,
+        category: trip.continuationTrip!.category,
+        departureTime: continuation.stopovers.first.departurePlanned,
+        arrivalTime: stop.arrivalPlanned,
+      );
+    } else {
+      return;
+    }
+
+    _volumeSubscription?.cancel();
+    try {
+      if (stop.cancelled) {
+        final ignore = await showDialog<bool>(
+          context: context,
+          builder: (ctx) => CancelledConnectionDialog(),
+        );
+        if (!context.mounted) return;
+        if (ignore != true) return;
+      }
+      if (!mounted) return;
+      _navigateToCheckIn(primary: primary, continuation: cont);
+    } finally {
+      if (mounted) {
+        _volumeSubscription = VolumeButtonService().stream.listen(_listener);
+      }
+    }
+  }
+
+  void _listener(VolumeEvent e) {
+    if (!mounted || ModalRoute.of(context)?.isCurrent != true) {
+      return;
+    }
+
+    final totalCount = _getTotalItems(_loadedTrip);
+    if (totalCount == 0) return;
+
+    if (e.action == .pressed) {
+      setState(() {
+        if (e.button == .up) {
+          if (_selectedIndex > 0) {
+            _selectedIndex--;
+            _scrollToSelected();
+          }
+        } else if (e.button == .down) {
+          if (_selectedIndex < totalCount - 1) {
+            _selectedIndex++;
+            _scrollToSelected();
+          }
+        }
+      });
+    } else if (e.action == .held) {
+      if (_selectedIndex < totalCount) {
+        _handleStopSelect(_selectedIndex);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //TODO: Move FutureBuilder up and apply trip routeColor
     return MainScaffold(
+      floatingActionButton: getIt<Config>().behavior.showVolBtnIndicator
+          ? FloatingActionButton(
+              onPressed: null,
+              child: VolumeButtonService().buildHoldProgressIndicator(),
+            )
+          : null,
       title: AppBarTitle("${widget.lineName} -> ${widget.destination}"),
       body: Row(
         children: [
@@ -222,11 +370,18 @@ class _SelectStopState extends State<SelectStop> {
                                   ),
                                 );
                               }
+                              final isVolumeCtrl =
+                                  getIt<Config>().behavior.volumeBtnCtrl;
+
                               return ListView.builder(
+                                controller: _listScrollController,
                                 itemCount: totalItems,
                                 itemBuilder: (ctx, idx) {
+                                  final bool isSelected =
+                                      idx == _selectedIndex && isVolumeCtrl;
                                   if (idx < mainCount) {
                                     return StopoverRow(
+                                      isSelected: isSelected,
                                       callback: (id, name, arrival) {
                                         _navigateToCheckIn(
                                           primary: .new(
@@ -255,6 +410,7 @@ class _SelectStopState extends State<SelectStop> {
                                   } else {
                                     final continueIdx = idx - mainCount - 1;
                                     return StopoverRow(
+                                      isSelected: isSelected,
                                       callback: (id, name, arrival) {
                                         _navigateToCheckIn(
                                           primary: .new(
@@ -395,11 +551,13 @@ class StopoverRow extends StatelessWidget {
     required this.callback,
     required this.stop,
     required this.tripId,
+    this.isSelected = false,
   });
 
   final Function(int, String, String) callback;
   final Stopover stop;
   final String tripId;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -418,42 +576,58 @@ class StopoverRow extends StatelessWidget {
         }
         callback.call(stop.station.id, stop.station.name, stop.arrivalPlanned!);
       },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Icon(
-              Icons.circle,
-              size: 6,
-              color: stop.cancelled ? Colors.red : null,
-            ),
-            const SizedBox(width: 4),
-            Expanded(
-              child: Text(
-                stop.station.name,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: stop.cancelled ? Colors.red : null,
-                  decorationColor: stop.cancelled ? Colors.red : null,
-                  decoration: stop.cancelled ? .lineThrough : null,
-                ),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                softWrap: false,
+      child: Container(
+        decoration: BoxDecoration(
+          color: isSelected
+              ? Theme.of(
+                  context,
+                ).colorScheme.primaryContainer.withValues(alpha: 0.9)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: isSelected
+                ? Theme.of(context).colorScheme.primary
+                : Colors.transparent,
+            width: 2,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Icon(
+                Icons.circle,
+                size: 6,
+                color: stop.cancelled ? Colors.red : null,
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                DepartureTime(
-                  planned: stop.arrivalPlanned!,
-                  real: stop.arrivalReal,
-                  cancelled: stop.cancelled,
+              const SizedBox(width: 4),
+              Expanded(
+                child: Text(
+                  stop.station.name,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: stop.cancelled ? Colors.red : null,
+                    decorationColor: stop.cancelled ? Colors.red : null,
+                    decoration: stop.cancelled ? .lineThrough : null,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  softWrap: false,
                 ),
-              ],
-            ),
-          ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  DepartureTime(
+                    planned: stop.arrivalPlanned!,
+                    real: stop.arrivalReal,
+                    cancelled: stop.cancelled,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

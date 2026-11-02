@@ -403,7 +403,7 @@ class UserApiProvider {
     );
     //print(response.body);
     return GenericStatusResponseWithObject(
-      wasSuccess: response.statusCode == 200 ? true : false,
+      wasSuccess: response.statusCode == 200,
       object: UserProfileSettings.fromJson(jsonDecode(response.body)["data"]),
     );
   }
