@@ -253,7 +253,7 @@
     "volumeBtnCtrlNote": "Benutze Grundfeatures der App mit den Lautstärketasten, z.B. wenn du Handschuhe an hast.",
     "volumeBtnCtrlIndicator": "Lautstärketastenindikator",
     "volumeBtnCtrlIndicatorNote": "Zeige einen Indikator an, mit dem du besser unterscheiden kannst, ab wann ein einfaches klicken als gedrückt gehalten gezählt wird. Du kannst in antippen und dir anzeigen lassen, was du auf der jeweiligen Seite damit tun kannst.",
-    "reloginRequired": "Du hast Träwelcross länger als 30 Tage nicht mehr verwendet. Aufgrund der begrenzten Laufzeit der Tokens musst du dich jetzt neu anmelden. Wenn du das in Zukunft vermeiden willst, stelle bitte sicher, Träwelcross mindestens einmal alle 30 Tage zu starten",
+    "reloginRequired": "Du hast Träwelcross länger als 30 Tage nicht mehr verwendet (wahrscheinlich. Es kann auch sein, dass der Token aus anderen Gründen nicht mehr verwendbar ist, z.B. wenn du ihn manuell in den Accounteinstellungen zurückgezogen hast). Aufgrund der begrenzten Laufzeit der Tokens musst du dich jetzt neu anmelden. Wenn du das in Zukunft vermeiden willst, stelle bitte sicher, Träwelcross mindestens einmal alle 30 Tage zu starten",
     "fontFamilyChooser": "Schriftart",
     "systemFont": "System/Standard",
     "systemFontDesc": "Die Schriftart die dein System nutzt wenn verfügbar, sonst Roboto",
@@ -391,5 +391,6 @@
     "statsStatHistoryTitle": "Allzeitstatistiken",
     "checkInCount": "{count} Check-Ins",
     "monthYear": "{monthYear}",
-    "appInfo": "Benutze {appName} auf {appUrl} mit Version {version}"
+    "appInfo": "Benutze {appName} auf {appUrl} mit Version {version}",
+    "likeOwnPostAllowed": "Like-Button bei eigenen Fahrten anzeigen"
 }

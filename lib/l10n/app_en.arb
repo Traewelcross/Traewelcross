@@ -532,7 +532,7 @@
   "volumeBtnCtrlIndicator":"Volume button control indicator",
   "volumeBtnCtrlIndicatorNote":"If activated, an indicator will be displayed on screen to help you differentiate what counts as click and what as held. You may press it to get help on what does what.",
   "volumeBtnCtrlNote": "Use basic features using your volume buttons. I.e. when using gloves",
-  "reloginRequired": "You haven't used Träwelcross for 30 days or longer. Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.",
+  "reloginRequired": "You haven't used Träwelcross for 30 days or longer (most probable. The saved tokens might also have become invalid through other means i.e. by revoking them in the account settings). Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.",
   "fontFamilyChooser": "Which font to use?",
   "systemFont": "System/Default",
   "systemFontDesc": "The font your System uses if available, else Flutter Default (Roboto)",
@@ -821,5 +821,6 @@
       "appUrl":{"type": "String"},
       "version":{"type": "String"}
     }
-  }
+  },
+  "likeOwnPostAllowed": "Show the like button on your own rides"
 }

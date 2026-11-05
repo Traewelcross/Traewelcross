@@ -129,4 +129,12 @@ class BehaviorConfig with ChangeNotifier {
     _hideTicketButton = val;
     notifyListeners();
   }
+
+  bool _showLikeButtonForOwnRides = true;
+  @JsonKey(defaultValue: true)
+  bool get showLikeButtonForOwnRides => _showLikeButtonForOwnRides;
+  set showLikeButtonForOwnRides(bool val){
+    _showLikeButtonForOwnRides = val;
+    notifyListeners();
+  }
 }

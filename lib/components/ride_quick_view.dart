@@ -662,6 +662,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                         LikeButton(
                           rideData: _rideData,
                           onUpdateLikes: _updateLikes,
+                          likesAvailable: _rideData.isLikable && (!_isAuthUser() || getIt<Config>().behavior.showLikeButtonForOwnRides),
                         ),
                         Expanded(
                           child: Row(
@@ -954,26 +955,52 @@ class LikeButton extends StatelessWidget {
     super.key,
     required this.rideData,
     required this.onUpdateLikes,
+    required this.likesAvailable,
   });
   final Status rideData;
   final Function() onUpdateLikes;
+  final bool likesAvailable;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (getIt<Config>().appearance.isPrideActive) ...[
-          TextButton.icon(
-            style: const ButtonStyle(
-              padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
-              minimumSize: WidgetStatePropertyAll(Size.zero),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              visualDensity: VisualDensity.compact,
+    if (likesAvailable) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (getIt<Config>().appearance.isPrideActive) ...[
+            TextButton.icon(
+              style: const ButtonStyle(
+                padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
+                minimumSize: WidgetStatePropertyAll(Size.zero),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                visualDensity: VisualDensity.compact,
+              ),
+              onPressed: onUpdateLikes,
+              icon: PrideGradient(
+                rotation: 90,
+                child: Icon(
+                  rideData.liked
+                      ? Icons.favorite
+                      : Icons.favorite_outline_outlined,
+                  color: Colors.red,
+                  opticalSize: 24,
+                  size: 24,
+                ),
+              ),
+              label: Text(
+                rideData.likes.toString(),
+                style: const TextStyle(fontSize: 16),
+              ),
             ),
-            onPressed: () => rideData.isLikable ? onUpdateLikes() : null,
-            icon: PrideGradient(
-              rotation: 90,
-              child: Icon(
+          ] else ...[
+            TextButton.icon(
+              style: const ButtonStyle(
+                padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
+                minimumSize: WidgetStatePropertyAll(Size.zero),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                visualDensity: VisualDensity.compact,
+              ),
+              onPressed: onUpdateLikes,
+              icon: Icon(
                 rideData.liked
                     ? Icons.favorite
                     : Icons.favorite_outline_outlined,
@@ -981,35 +1008,16 @@ class LikeButton extends StatelessWidget {
                 opticalSize: 24,
                 size: 24,
               ),
+              label: Text(
+                rideData.likes.toString(),
+                style: const TextStyle(fontSize: 16),
+              ),
             ),
-            label: Text(
-              rideData.likes.toString(),
-              style: const TextStyle(fontSize: 16),
-            ),
-          ),
-        ] else ...[
-          TextButton.icon(
-            style: const ButtonStyle(
-              padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
-              minimumSize: WidgetStatePropertyAll(Size.zero),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              visualDensity: VisualDensity.compact,
-            ),
-            onPressed: () => rideData.isLikable ? onUpdateLikes() : null,
-            icon: Icon(
-              rideData.liked ? Icons.favorite : Icons.favorite_outline_outlined,
-              color: Colors.red,
-              opticalSize: 24,
-              size: 24,
-            ),
-            label: Text(
-              rideData.likes.toString(),
-              style: const TextStyle(fontSize: 16),
-            ),
-          ),
+          ],
         ],
-      ],
-    );
+      );
+    }
+    return const SizedBox.shrink();
   }
 }
 

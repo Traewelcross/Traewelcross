@@ -288,6 +288,19 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                   }),
                 ),
               ),
+              ListTile(
+            onTap: () => setState(() {
+              config.behavior.showLikeButtonForOwnRides =
+                  !config.behavior.showLikeButtonForOwnRides;
+            }),
+            title: Text(localize.likeOwnPostAllowed),
+            trailing: Switch(
+              value: config.behavior.showLikeButtonForOwnRides,
+              onChanged: (val) => setState(() {
+                config.behavior.showLikeButtonForOwnRides = val;
+              }),
+            ),
+          ),
               const SizedBox(height: 48),
             ],
           );

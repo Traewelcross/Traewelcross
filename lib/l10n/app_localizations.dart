@@ -1619,7 +1619,7 @@ abstract class AppLocalizations {
   /// No description provided for @reloginRequired.
   ///
   /// In en, this message translates to:
-  /// **'You haven\'t used Träwelcross for 30 days or longer. Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.'**
+  /// **'You haven\'t used Träwelcross for 30 days or longer (most probable. The saved tokens might also have become invalid through other means i.e. by revoking them in the account settings). Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.'**
   String get reloginRequired;
 
   /// No description provided for @fontFamilyChooser.
@@ -2449,6 +2449,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Using {appName} at {appUrl} running version {version}'**
   String appInfo(String appName, String appUrl, String version);
+
+  /// No description provided for @likeOwnPostAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the like button on your own rides'**
+  String get likeOwnPostAllowed;
 }
 
 class _AppLocalizationsDelegate

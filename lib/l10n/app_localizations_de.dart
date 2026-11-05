@@ -877,7 +877,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get reloginRequired =>
-      'Du hast Träwelcross länger als 30 Tage nicht mehr verwendet. Aufgrund der begrenzten Laufzeit der Tokens musst du dich jetzt neu anmelden. Wenn du das in Zukunft vermeiden willst, stelle bitte sicher, Träwelcross mindestens einmal alle 30 Tage zu starten';
+      'Du hast Träwelcross länger als 30 Tage nicht mehr verwendet (wahrscheinlich. Es kann auch sein, dass der Token aus anderen Gründen nicht mehr verwendbar ist, z.B. wenn du ihn manuell in den Accounteinstellungen zurückgezogen hast). Aufgrund der begrenzten Laufzeit der Tokens musst du dich jetzt neu anmelden. Wenn du das in Zukunft vermeiden willst, stelle bitte sicher, Träwelcross mindestens einmal alle 30 Tage zu starten';
 
   @override
   String get fontFamilyChooser => 'Schriftart';
@@ -1371,4 +1371,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String appInfo(String appName, String appUrl, String version) {
     return 'Benutze $appName auf $appUrl mit Version $version';
   }
+
+  @override
+  String get likeOwnPostAllowed => 'Like-Button bei eigenen Fahrten anzeigen';
 }
