@@ -23,7 +23,10 @@ Config _$ConfigFromJson(Map<String, dynamic> json) => Config()
         )
   ..dialog = json['dialog'] == null
       ? DialogConfig()
-      : DialogConfig.fromJson(json['dialog'] as Map<String, dynamic>);
+      : DialogConfig.fromJson(json['dialog'] as Map<String, dynamic>)
+  ..language = json['language'] == null
+      ? LanguageConfig()
+      : LanguageConfig.fromJson(json['language'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
   'appearance': instance.appearance,
@@ -31,4 +34,5 @@ Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
   'misc': instance.misc,
   'notification': instance.notification,
   'dialog': instance.dialog,
+  'language': instance.language,
 };

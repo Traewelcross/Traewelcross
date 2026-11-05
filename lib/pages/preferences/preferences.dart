@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/config/config.dart';
+import 'package:traewelcross/dialogs/language_switcher.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/pages/app_info.dart';
 import 'package:traewelcross/pages/preferences/account_preferences.dart';
@@ -96,6 +97,11 @@ class Preferences extends StatelessWidget {
             ),
             leading: const Icon(Icons.science),
             title: Text(localize.experimentalPrefrences),
+          ),
+          ListTile(
+            onTap: () => showDialog(context: context, builder: (ctx) => LanguageSwitcher(), barrierDismissible: false),
+            leading: const Icon(Icons.language),
+            title: Text(localize.language)
           ),
           if (kDebugMode)
             ListTile(

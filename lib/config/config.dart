@@ -8,6 +8,7 @@ import 'package:traewelcross/config/behavior_config.dart';
 import 'package:traewelcross/config/misc_config.dart';
 import 'package:traewelcross/config/notification_config.dart';
 import 'package:traewelcross/config/dialog_config.dart';
+import 'package:traewelcross/config/language_config.dart';
 
 part 'config.g.dart';
 
@@ -18,6 +19,7 @@ class Config with ChangeNotifier {
     behavior.addListener(_onConfigChanged);
     misc.addListener(_onConfigChanged);
     notification.addListener(_onConfigChanged);
+    language.addListener(_onConfigChanged);
   }
   @JsonKey(defaultValue: AppearanceConfig.new)
   AppearanceConfig appearance = AppearanceConfig();
@@ -29,6 +31,8 @@ class Config with ChangeNotifier {
   NotificationConfig notification = NotificationConfig();
   @JsonKey(defaultValue: DialogConfig.new)
   DialogConfig dialog = DialogConfig();
+  @JsonKey(defaultValue: LanguageConfig.new)
+  LanguageConfig language = LanguageConfig();
 
   void _onConfigChanged() {
     saveCofig();
@@ -56,6 +60,7 @@ class Config with ChangeNotifier {
     misc.removeListener(_onConfigChanged);
     notification.removeListener(_onConfigChanged);
     dialog.removeListener(_onConfigChanged);
+    language.removeListener(_onConfigChanged);
     super.dispose();
   }
 
@@ -66,6 +71,7 @@ class Config with ChangeNotifier {
     config.misc.addListener(config._onConfigChanged);
     config.notification.addListener(config._onConfigChanged);
     config.dialog.addListener(config._onConfigChanged);
+    config.language.addListener(config._onConfigChanged);
     return config;
   }
   Map<String, dynamic> toJson() => _$ConfigToJson(this);

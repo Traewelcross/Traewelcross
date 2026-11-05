@@ -1374,4 +1374,16 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get likeOwnPostAllowed => 'Like-Button bei eigenen Fahrten anzeigen';
+
+  @override
+  String get language => 'Sprache';
+
+  @override
+  String get lang_en => 'English - Englisch';
+
+  @override
+  String get lang_de => 'Deutsch - Deutsch';
+
+  @override
+  String get lang_sys => 'System';
 }

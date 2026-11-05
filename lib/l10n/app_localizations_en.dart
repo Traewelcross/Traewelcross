@@ -1365,4 +1365,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get likeOwnPostAllowed => 'Show the like button on your own rides';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get lang_en => 'English - English';
+
+  @override
+  String get lang_de => 'Deutsch - German';
+
+  @override
+  String get lang_sys => 'System';
 }

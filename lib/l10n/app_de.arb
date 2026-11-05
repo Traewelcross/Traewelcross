@@ -392,5 +392,9 @@
     "checkInCount": "{count} Check-Ins",
     "monthYear": "{monthYear}",
     "appInfo": "Benutze {appName} auf {appUrl} mit Version {version}",
-    "likeOwnPostAllowed": "Like-Button bei eigenen Fahrten anzeigen"
+    "likeOwnPostAllowed": "Like-Button bei eigenen Fahrten anzeigen",
+    "language": "Sprache",
+    "lang_en": "English - Englisch",
+    "lang_de": "Deutsch - Deutsch",
+    "lang_sys": "System"
 }

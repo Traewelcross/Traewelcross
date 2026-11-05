@@ -2455,6 +2455,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show the like button on your own rides'**
   String get likeOwnPostAllowed;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @lang_en.
+  ///
+  /// In en, this message translates to:
+  /// **'English - English'**
+  String get lang_en;
+
+  /// No description provided for @lang_de.
+  ///
+  /// In en, this message translates to:
+  /// **'Deutsch - German'**
+  String get lang_de;
+
+  /// No description provided for @lang_sys.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get lang_sys;
 }
 
 class _AppLocalizationsDelegate

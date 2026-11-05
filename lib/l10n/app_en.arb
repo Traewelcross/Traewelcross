@@ -822,5 +822,9 @@
       "version":{"type": "String"}
     }
   },
-  "likeOwnPostAllowed": "Show the like button on your own rides"
+  "likeOwnPostAllowed": "Show the like button on your own rides",
+  "language": "Language",
+  "lang_en": "English - English",
+  "lang_de": "Deutsch - German",
+  "lang_sys": "System"
 }

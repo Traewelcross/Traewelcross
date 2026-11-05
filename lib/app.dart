@@ -113,6 +113,7 @@ class App extends WatchingWidget {
           );
           return MaterialApp(
             navigatorKey: getIt<GlobalKey<NavigatorState>>(),
+            locale: getIt<Config>().language.langCode == null ? null : Locale(getIt<Config>().language.langCode!),
             scaffoldMessengerKey: getIt<GlobalKey<ScaffoldMessengerState>>(),
             title: "Träwelcross",
             localizationsDelegates: [
