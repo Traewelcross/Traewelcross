@@ -38,12 +38,14 @@ class RideQuickView extends StatefulWidget {
     this.detailedView,
     this.likeCallback,
     this.onDelete,
+    this.onUpdate
   });
   final Status rideData;
   final int authUserId;
   final bool? detailedView;
   final Function()? likeCallback;
   final Function()? onDelete;
+  final ValueChanged<Status>? onUpdate;
   @override
   State<RideQuickView> createState() => _RideQuickViewState();
 }
@@ -247,6 +249,7 @@ class _RideQuickViewState extends State<RideQuickView> {
       _initData();
       _cachedBody = _parseBodyText();
     });
+    widget.onUpdate?.call(newRideData);
   }
 
   Future<void> _updateLikes() async {

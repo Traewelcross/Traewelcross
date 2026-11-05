@@ -209,11 +209,21 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
         Widget rideView = RepaintBoundary(
           child: RideQuickView(
             rideData: ride,
+            onUpdate: (updatedRide) {
+              setState(() {
+                final index = _userRides.indexWhere((r) => r.id == updatedRide.id);
+                if (index != -1){
+                  _userRides[index] = updatedRide;
+                  _rideDates.remove(updatedRide.id);
+                }
+              });
+            },
             authUserId: _userIdAuthUser,
             onDelete: () {
               setState(() {
                 _rideDates.remove(ride.id);
                 _userRides.removeWhere((item) => item.id == ride.id);
+                _parseRideDate(ride);
               });
             },
           ),

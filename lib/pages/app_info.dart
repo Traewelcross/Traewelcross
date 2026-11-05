@@ -111,14 +111,16 @@ class _ProviderInfoState extends State<ProviderInfo> {
           if (snp.hasData) {
             return Column(
               children: [
-                Text(
-                  AppLocalizations.of(ctx)!.appInfo(
-                    snp.data!.appName,
-                    Uri.parse(snp.data!.appUrl).host,
-                    snp.data!.version,
+                Center(
+                  child: Text(
+                    AppLocalizations.of(ctx)!.appInfo(
+                      snp.data!.appName,
+                      Uri.parse(snp.data!.appUrl).host,
+                      snp.data!.version,
+                    ),
+                    textAlign: .center,
+                    style: TextStyle(fontStyle: .italic),
                   ),
-                  textAlign: .center,
-                  style: TextStyle(fontStyle: .italic),
                 ),
                 const SizedBox(height: 6),
               ],
