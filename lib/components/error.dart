@@ -1,5 +1,4 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:terminate_restart/terminate_restart.dart';
@@ -49,12 +48,11 @@ class ErrorDisplayWidget extends StatelessWidget {
               ),
             ),
           const SizedBox(height: 8),
-          MarkdownBody(
-            data: localize.errorText(
+          Text(
+            localize.errorText(
               errorTypeText,
               "${errorInfo.message}${errorInfo.httpStatusCode != null ? " (${errorInfo.httpStatusCode})" : ""}",
             ),
-            styleSheet: MarkdownStyleSheet(textAlign: WrapAlignment.center),
           ),
           Card(
             clipBehavior: Clip.hardEdge,

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:package_info_plus/package_info_plus.dart' as pkg;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -586,7 +587,8 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          Alerts(),
+          Alerts(appAlerts: false,),
+          Alerts(appAlerts: true,),
           Dashboard(
             controller: _dashboardController,
             scrollController: widget.scrollController,
@@ -598,8 +600,8 @@ class _HomeState extends State<Home> {
 }
 
 class Alerts extends StatefulWidget {
-  const Alerts({super.key});
-
+  const Alerts({super.key, required this.appAlerts});
+  final bool appAlerts;
   @override
   State<Alerts> createState() => _AlertsState();
 }
@@ -610,11 +612,14 @@ class _AlertsState extends State<Alerts> {
     final apiService = getIt<ApiService>();
     return await apiService.alert.get();
   }
-
+  Future<List<Alert>> _getAppAlerts() async {
+    final apiService = getIt<ApiService>();
+    return await apiService.alert.getAppAlerts();
+  }
   @override
   void initState() {
     super.initState();
-    _alerts = _getAlerts();
+    _alerts = widget.appAlerts ? _getAppAlerts() : _getAlerts();
   }
 
   @override
@@ -629,78 +634,11 @@ class _AlertsState extends State<Alerts> {
             itemBuilder: (context, index) {
               final alert = asyncSnapshot.data![index];
               return AlertCard(
-                text: alert.translations.first.content,
-                title: alert.translations.first.title,
+                text: alert.translations.firstWhere((e) => e.locale == Localizations.localeOf(context).languageCode, orElse: () => alert.translations.first,).content,
+                title: alert.translations.firstWhere((e) => e.locale == Localizations.localeOf(context).languageCode, orElse: () => alert.translations.first,).title,
                 type: alert.type,
                 url: alert.url,
               );
-              /*return Card.filled(
-                color: switch (alert.type) {
-                  "info" => Color.alphaBlend(
-                    Colors.blue.withValues(alpha: 0.2),
-                    Theme.of(context).colorScheme.surface,
-                  ),
-                  "warning" => Color.alphaBlend(
-                    Colors.yellow.withValues(alpha: 0.2),
-                    Theme.of(context).colorScheme.surface,
-                  ),
-                  "danger" => Color.alphaBlend(
-                    Colors.red.withValues(alpha: 0.2),
-                    Theme.of(context).colorScheme.surface,
-                  ),
-                  "success" => Color.alphaBlend(
-                    Colors.greenAccent.shade400.withValues(alpha: 0.2),
-                    Theme.of(context).colorScheme.surface,
-                  ),
-                  _ => Theme.of(context).cardColor,
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    spacing: 8,
-                    children: [
-                      Row(
-                        children: [
-                          switch (alert.type) {
-                            "info" => Icon(Icons.info, size: 32),
-                            "warning" => Icon(Icons.warning, size: 32),
-                            "danger" => Icon(Icons.dangerous, size: 32),
-                            "success" => Icon(Icons.check),
-                            _ => const SizedBox(width: 0),
-                          },
-                          SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              alert.translations[0].title,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Divider(height: 0),
-                      Row(
-                        children: [
-                          Expanded(child: Text(alert.translations[0].content)),
-                        ],
-                      ),
-                      if (alert.translations[0].url != null)
-                        Row(
-                          children: [
-                            FilledButton.icon(
-                              onPressed: () => SharedFunctions.launchURL(
-                                Uri.parse(alert.translations[0].url!),
-                              ),
-                              icon: const Icon(Icons.open_in_new),
-                              label: Text(
-                                AppLocalizations.of(context)!.openExternal,
-                              ),
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
-              );*/
             },
           );
         }

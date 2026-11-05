@@ -172,6 +172,8 @@ class ApiService {
     _refreshFuture = _doRefreshToken(secondTry: secondTry);
     try {
       return await _refreshFuture;
+    } catch (e){
+      rethrow;
     } finally {
       _refreshFuture = null;
     }
