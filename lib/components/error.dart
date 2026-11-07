@@ -98,10 +98,10 @@ class ErrorDisplayWidget extends StatelessWidget {
             ),
             OutlinedButton.icon(
               onPressed: () {
-                FlutterSecureStorage().deleteAll();
                 getIt<ApiService>().logOut();
+                FlutterSecureStorage().deleteAll();
                 TerminateRestart.instance.restartApp(
-                  options: TerminateRestartOptions(clearData: true),
+                  options: TerminateRestartOptions(terminate: true),
                 );
               },
               label: Text(localize.logOut),
