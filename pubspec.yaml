@@ -1,7 +1,7 @@
 name: traewelcross
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.9.0+64
+version: 1.9.1+65
 
 environment:
   sdk: ^3.12.0
