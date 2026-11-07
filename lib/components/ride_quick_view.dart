@@ -508,7 +508,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                         ),
                       );
                     },
-              onDoubleTap: _isAuthUser() ? (getIt<Config>().behavior.showLikeButtonForOwnRides ? _updateLikes : null) : _updateLikes,
+              onDoubleTap: !_rideData.liked ? (_isAuthUser() ? (getIt<Config>().behavior.showLikeButtonForOwnRides ? _updateLikes : null) : _updateLikes) : null,
               borderRadius: const BorderRadius.all(Radius.circular(12)),
               child: Padding(
                 padding: const EdgeInsets.all(16),
