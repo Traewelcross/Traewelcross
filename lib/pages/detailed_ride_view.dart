@@ -522,7 +522,7 @@ class MapDisplay extends StatelessWidget {
                 polylines: [
                   Polyline(
                     points: polylinePoints!,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: HSLColor.fromColor(Theme.of(context).colorScheme.primary).withLightness(math.min(HSLColor.fromColor(Theme.of(context).colorScheme.primary).lightness, 0.4)).toColor(),
                     strokeWidth: 5.0,
                   ),
                 ],
