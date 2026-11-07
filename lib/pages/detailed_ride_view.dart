@@ -91,45 +91,42 @@ class _DetailedRideViewState extends State<DetailedRideView> {
     if (!getIt<Config>().appearance.showPredictedPosition) return null;
     if (polyline.isEmpty) return null;
     if (polyline.length == 1) return polyline.first;
+
     final int duration = end.difference(start).inMinutes;
     if (duration <= 0) return polyline.first;
+
     final int passedTime = DateTime.now().difference(start).inMinutes;
     final double progress = (passedTime / duration).clamp(0.0, 1.0);
-    final double earthRadius = 6.3781 * math.pow(10, 6);
+
     double combinedDistance = 0.0;
     List<double> segmentDistances = [];
-    for (var i = 0; i < polyline.length - 1; i++) {
-      int nextIndex = i + 1;
-      final double differenceLong =
-          polyline[i].longitudeInRad - polyline[nextIndex].longitudeInRad;
-      final double differenceLat =
-          polyline[i].latitudeInRad - polyline[nextIndex].latitudeInRad;
 
-      num a =
-          math.pow(math.sin(differenceLat / 2), 2) +
-          math.cos(polyline[i].latitudeInRad) *
-              math.cos(polyline[nextIndex].latitudeInRad) *
-              math.pow(math.sin(differenceLong / 2), 2);
-      num c = 2 * math.asin(math.sqrt(a));
-      double distance = earthRadius * c.toDouble();
+    for (var i = 0; i < polyline.length - 1; i++) {
+      final p1 = polyline[i];
+      final p2 = polyline[i + 1];
+
+      final double dLat = p2.latitude - p1.latitude;
+      final double dLon = p2.longitude - p1.longitude;
+      final double distance = math.sqrt(dLat * dLat + dLon * dLon);
 
       segmentDistances.add(distance);
       combinedDistance += distance;
     }
+
     if (combinedDistance == 0.0) return polyline.first;
+
     double passedDistance = combinedDistance * progress;
     double accumulatedDistance = 0.0;
+
     for (var i = 0; i < segmentDistances.length; i++) {
       double segDist = segmentDistances[i];
       if (accumulatedDistance + segDist >= passedDistance) {
         double remainingInSegment = passedDistance - accumulatedDistance;
         double fraction = segDist > 0 ? remainingInSegment / segDist : 0.0;
-        double lat =
-            polyline[i].latitude +
-            (polyline[i + 1].latitude - polyline[i].latitude) * fraction;
-        double lon =
-            polyline[i].longitude +
-            (polyline[i + 1].longitude - polyline[i].longitude) * fraction;
+        final p1 = polyline[i];
+        final p2 = polyline[i + 1];
+        double lat = p1.latitude + (p2.latitude - p1.latitude) * fraction;
+        double lon = p1.longitude + (p2.longitude - p1.longitude) * fraction;
         return LatLng(lat, lon);
       }
       accumulatedDistance += segDist;
@@ -158,8 +155,9 @@ class _DetailedRideViewState extends State<DetailedRideView> {
   // Workaround for Traewelling/traewelling/discussions/4511 until identifiers are provided in check in again
   Future<String> _getEvaIdent() async {
     final apiService = getIt<ApiService>();
+    final rd = await _rideDataFuture;
     final res = await apiService.status.getStationData(
-      stationId: widget.rideData!.checkin.destination.station.id,
+      stationId: rd.checkin.destination.station.id,
       withIdentifiers: true,
     );
     if (res.identifiers == null) {
@@ -265,33 +263,20 @@ class _DetailedRideViewState extends State<DetailedRideView> {
                             position: _getPosition(
                               snapshot.data!,
                               DateTime.parse(
-                                widget.rideData!.checkin.manualDeparture ??
-                                    widget
-                                        .rideData!
-                                        .checkin
-                                        .origin
-                                        .departureReal ??
-                                    widget
-                                        .rideData!
-                                        .checkin
-                                        .origin
-                                        .departurePlanned!,
+                                rideData.checkin.manualDeparture ??
+                                    rideData.checkin.origin.departureReal ??
+                                    rideData.checkin.origin.departurePlanned!,
                               ),
                               DateTime.parse(
-                                widget.rideData!.checkin.manualArrival ??
-                                    widget
-                                        .rideData!
-                                        .checkin
-                                        .destination
-                                        .arrivalReal ??
-                                    widget
-                                        .rideData!
+                                rideData.checkin.manualArrival ??
+                                    rideData.checkin.destination.arrivalReal ??
+                                    rideData
                                         .checkin
                                         .destination
                                         .arrivalPlanned!,
                               ),
                             ),
-                            imageUrl: widget.rideData!.user.profilePicture,
+                            imageUrl: rideData.user.profilePicture,
                           ),
                         );
                       }
