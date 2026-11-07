@@ -508,7 +508,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                         ),
                       );
                     },
-              onDoubleTap: _updateLikes,
+              onDoubleTap: _isAuthUser() ? (getIt<Config>().behavior.showLikeButtonForOwnRides ? _updateLikes : null) : _updateLikes,
               borderRadius: const BorderRadius.all(Radius.circular(12)),
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -665,7 +665,8 @@ class _RideQuickViewState extends State<RideQuickView> {
                         LikeButton(
                           rideData: _rideData,
                           onUpdateLikes: _updateLikes,
-                          likesAvailable: _rideData.isLikable && (!_isAuthUser() || getIt<Config>().behavior.showLikeButtonForOwnRides),
+                          likesAvailable: _rideData.isLikable,
+                          isOwnRide: _isAuthUser(),
                         ),
                         Expanded(
                           child: Row(
@@ -959,10 +960,12 @@ class LikeButton extends StatelessWidget {
     required this.rideData,
     required this.onUpdateLikes,
     required this.likesAvailable,
+    required this.isOwnRide,
   });
   final Status rideData;
   final Function() onUpdateLikes;
   final bool likesAvailable;
+  final bool isOwnRide;
   @override
   Widget build(BuildContext context) {
     if (likesAvailable) {
@@ -977,7 +980,7 @@ class LikeButton extends StatelessWidget {
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 visualDensity: VisualDensity.compact,
               ),
-              onPressed: onUpdateLikes,
+              onPressed: isOwnRide ? (getIt<Config>().behavior.showLikeButtonForOwnRides ? onUpdateLikes : null) : onUpdateLikes,
               icon: PrideGradient(
                 rotation: 90,
                 child: Icon(
@@ -1002,7 +1005,7 @@ class LikeButton extends StatelessWidget {
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 visualDensity: VisualDensity.compact,
               ),
-              onPressed: onUpdateLikes,
+              onPressed: isOwnRide ? (getIt<Config>().behavior.showLikeButtonForOwnRides ? onUpdateLikes : null) : onUpdateLikes,
               icon: Icon(
                 rideData.liked
                     ? Icons.favorite
