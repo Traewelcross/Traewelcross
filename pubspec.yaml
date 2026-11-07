@@ -50,6 +50,10 @@ dependencies:
   barcode: ^2.2.9
   in_app_review: ^2.0.12
   firebase_app_installations: ^0.5.0
+  path: ^1.9.1
+  saf_stream: ^4.0.3
+  saf_util: ^3.1.1
+  file_picker: ^13.3.2
 
 dependency_overrides:
   oauth2:

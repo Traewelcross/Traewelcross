@@ -1377,4 +1377,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lang_sys => 'System';
+
+  @override
+  String get loggerSettings => 'Logging';
+
+  @override
+  String get loggerSettingsRestart =>
+      'Note that changes here will only become active after a restart of the app. The app restarts automatically when a change has occured.';
+
+  @override
+  String get loggerActivateTitle => 'Enable logging';
+
+  @override
+  String get loggerActivateSubtitle =>
+      'Enable logging to make debugging easier.';
+
+  @override
+  String get loggerActivateAlertContent =>
+      'Caution: You\'re about to enable logging. Every request that is made and (possibly) it\'s response will now be written to a file. Due to the nature of using a Check-In Service, this will likely save sensitive data to these logs. The logs are not redacted. Be careful when sharing and be mindful of your privacy, and especially the privacy of others.\nNote: unless explicitly turned on, the response of successful requests will NOT be logged.';
+
+  @override
+  String get loggingActive =>
+      'Logging active. Check settings to configure and disable.';
+
+  @override
+  String get loggerAlsoSuccessTitle =>
+      'Also log the response of successful requests';
+
+  @override
+  String get loggerAlsoSuccessSubtitle => 'The responses will NOT be redacted';
+
+  @override
+  String get loggerAlsoSuccessAlertContent =>
+      'You\'re about to turn on the logging of responses of successful requests. Due to the nature of using a Check-In service, sharing this log unredacted can negatively affect your privacy. It can also negatively affect the privacy of others, i.e. when accessing a hidden status that isn\'t yours. Still proceed?';
+
+  @override
+  String get loggerAlsoBodyTitle => 'Also log request body';
+
+  @override
+  String get loggerAlsoBodySubtitle =>
+      'Log what exactly is being sent to the server';
+
+  @override
+  String get loggerAlsoBodyAlertContent =>
+      'You\'re about to add to the logs what is sent to the server (besides the URL). Note that while this isn\'t affecting the privacy of others that much, when you enable this, refresh and access tokens will be logged (among other things). These tokens might give other people access to your account. Be very careful.';
+
+  @override
+  String get loggerDisclaimer =>
+      'Always be careful before sharing these logs. They likely contain sensitive data.';
 }

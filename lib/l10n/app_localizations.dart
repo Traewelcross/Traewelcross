@@ -2479,6 +2479,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'System'**
   String get lang_sys;
+
+  /// No description provided for @loggerSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Logging'**
+  String get loggerSettings;
+
+  /// No description provided for @loggerSettingsRestart.
+  ///
+  /// In en, this message translates to:
+  /// **'Note that changes here will only become active after a restart of the app. The app restarts automatically when a change has occured.'**
+  String get loggerSettingsRestart;
+
+  /// No description provided for @loggerActivateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable logging'**
+  String get loggerActivateTitle;
+
+  /// No description provided for @loggerActivateSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable logging to make debugging easier.'**
+  String get loggerActivateSubtitle;
+
+  /// No description provided for @loggerActivateAlertContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Caution: You\'re about to enable logging. Every request that is made and (possibly) it\'s response will now be written to a file. Due to the nature of using a Check-In Service, this will likely save sensitive data to these logs. The logs are not redacted. Be careful when sharing and be mindful of your privacy, and especially the privacy of others.\nNote: unless explicitly turned on, the response of successful requests will NOT be logged.'**
+  String get loggerActivateAlertContent;
+
+  /// No description provided for @loggingActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Logging active. Check settings to configure and disable.'**
+  String get loggingActive;
+
+  /// No description provided for @loggerAlsoSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Also log the response of successful requests'**
+  String get loggerAlsoSuccessTitle;
+
+  /// No description provided for @loggerAlsoSuccessSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The responses will NOT be redacted'**
+  String get loggerAlsoSuccessSubtitle;
+
+  /// No description provided for @loggerAlsoSuccessAlertContent.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re about to turn on the logging of responses of successful requests. Due to the nature of using a Check-In service, sharing this log unredacted can negatively affect your privacy. It can also negatively affect the privacy of others, i.e. when accessing a hidden status that isn\'t yours. Still proceed?'**
+  String get loggerAlsoSuccessAlertContent;
+
+  /// No description provided for @loggerAlsoBodyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Also log request body'**
+  String get loggerAlsoBodyTitle;
+
+  /// No description provided for @loggerAlsoBodySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log what exactly is being sent to the server'**
+  String get loggerAlsoBodySubtitle;
+
+  /// No description provided for @loggerAlsoBodyAlertContent.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re about to add to the logs what is sent to the server (besides the URL). Note that while this isn\'t affecting the privacy of others that much, when you enable this, refresh and access tokens will be logged (among other things). These tokens might give other people access to your account. Be very careful.'**
+  String get loggerAlsoBodyAlertContent;
+
+  /// No description provided for @loggerDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Always be careful before sharing these logs. They likely contain sensitive data.'**
+  String get loggerDisclaimer;
 }
 
 class _AppLocalizationsDelegate

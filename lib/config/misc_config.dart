@@ -47,4 +47,36 @@ class MiscConfig with ChangeNotifier {
     _launchCount = val;
     notifyListeners();
   }
+
+  bool _enableLogging = false;
+  @JsonKey(defaultValue: false)
+  bool get enableLogging => _enableLogging && _logFile != null;
+  set enableLogging(bool val){
+    _enableLogging = val;
+    notifyListeners();
+  }
+
+  String? _logFile;
+  @JsonKey(defaultValue: null)
+  String? get logFile => _logFile;
+  set logFile(String? val){
+    _logFile = val;
+    notifyListeners();
+  }
+
+  bool _logSuccessFull = false;
+  @JsonKey(defaultValue: false)
+  bool get logSuccessFull => _logSuccessFull;
+  set logSuccessFull(bool val){
+    _logSuccessFull = val;
+    notifyListeners();
+  }
+
+  bool _logBody = false;
+  @JsonKey(defaultValue: false)
+  bool get logBody => _logBody;
+  set logBody(bool val){
+    _logBody = val;
+    notifyListeners();
+  }
 }

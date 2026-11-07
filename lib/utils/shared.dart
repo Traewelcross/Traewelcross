@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:saf_stream/saf_stream.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
@@ -20,10 +21,25 @@ import 'package:traewelcross/utils/volume_buttons.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
+import "package:path/path.dart" as p;
 
 late final PushManager globalPushManager;
 
 final getIt = GetIt.instance;
+
+class _ReleaseLogger extends LogFilter {
+  @override
+  bool shouldLog(LogEvent event) {
+    Level targetLevel = Level.info;
+    if (getIt<Config>().misc.logSuccessFull) {
+      targetLevel = Level.debug;
+    }
+    if (event.level >= targetLevel) {
+      return true;
+    }
+    return false;
+  }
+}
 
 class SharedFunctions {
   static final Uri repoURI = Uri.parse(
@@ -49,6 +65,65 @@ class SharedFunctions {
         ],
       ),
     );
+  }
+
+  static void setupLogging() {
+    if (!getIt<Config>().misc.enableLogging) return;
+    if (getIt<Config>().misc.logFile == null) return;
+    getIt.unregister<Logger>();
+    getIt.registerLazySingleton<Logger>(() {
+      LogOutput out = FileOutput(
+        file: File(
+          p.join(
+            getIt<Config>().misc.logFile!,
+            "app-${getIt<Config>().misc.launchCount}.log",
+          ),
+        ),
+      );
+      if (Platform.isAndroid) {
+        out = StreamOutput();
+        _initLogStream(out as StreamOutput, getIt<Config>().misc.logFile!);
+      }
+      try {
+        final log = Logger(
+          printer: SimplePrinter(printTime: true, colors: false),
+          filter: _ReleaseLogger(),
+          output: out,
+        );
+        log.i("Log initialized");
+        return log;
+      } catch (e, st) {
+        Logger().e(
+          "Failed to initialize logging into file.",
+          error: e,
+          stackTrace: st,
+        );
+        return Logger(printer: SimplePrinter(printTime: true, colors: true));
+      }
+    });
+  }
+
+  static void _initLogStream(StreamOutput streamOut, String treeUri) async {
+    final saf = SafStream();
+    final file = "app-${getIt<Config>().misc.launchCount}.log";
+    try {
+      final sessionInfo = await saf.startWriteStream(
+        treeUri,
+        file,
+        "text/plain",
+      );
+      final sessionId = sessionInfo.session;
+      streamOut.stream.listen((List<String> e) async {
+        try {
+          final content = "${e.join("\n")}\n";
+          await saf.writeChunk(sessionId, utf8.encode(content));
+        } catch (e) {
+          "";
+        }
+      }, onDone: () async => await saf.endWriteStream(sessionId));
+    } catch (e, st) {
+      Logger().e("Failed to init SAF stream logger", error: e, stackTrace: st);
+    }
   }
 
   static final stableSeed = Random().nextInt(1 << 32);

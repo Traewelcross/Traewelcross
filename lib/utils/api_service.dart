@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/error_type.dart';
 import 'package:traewelcross/enums/http_request_types.dart';
 import 'package:traewelcross/utils/api_providers/mastodon_api_provider.dart';
@@ -82,21 +83,29 @@ class ApiService {
     Object? body,
     Encoding? encoding,
   }) async {
+    final requesthash = url.hashCode + type.hashCode;
     headers ??= {};
     headers.addAll({
       "User-Agent":
           "Traewelcross/${(await PackageInfo.fromPlatform()).version} (https://github.com/traewelcross/traewelcross; traewelcross.de)",
       "Content-Type": "application/json",
     });
+    final logger = getIt<Logger>();
+    logger.i("($requesthash) Trying to request $url with method ${type.toString()}");
+    if(getIt<Config>().misc.logBody){
+
+    logger.i("($requesthash) Body for this request is: $body");
+    }
     oauth2.Client? client = await getAuthenticatedClient();
     if (DateTime.now().difference(_lastRequest).inMinutes >= 55 ||
         client?.credentials.isExpired == true) {
-      if (kDebugMode) print("Refresh Token (stale or expired)");
+      logger.i("Refresh Token (stale or expired)");
       await refreshToken();
     }
     encoding ??= Encoding.getByName("UTF-8");
     client = await getAuthenticatedClient();
     if (client == null) {
+      logger.e("($requesthash) User is not authenticated. This is bad, when you consider that we tried to make an authenticated request.");
       throw Future.error("User is not authenticated.");
     }
     late http.Response res;
@@ -137,6 +146,16 @@ class ApiService {
             .timeout(Duration(seconds: _timeoutDuration));
         break;
     }
+    logger.i("($requesthash) The request for $url finished with ${res.statusCode}.");
+    if(res.statusCode == 200 || res.statusCode == 201 || res.statusCode == 204){
+      if(getIt<Config>().misc.logSuccessFull){
+        logger.i("($requesthash) The request for $url returned ${res.body}");
+      } else {
+        logger.i("($requesthash) The request for $url seems to have finished without error. Since the option to log the response when a request was successful is turned off, no body is displayed here.");
+      }
+    } else {
+      logger.w("($requesthash) The request for $url has seemingly failed. The response was: ${res.body}");
+    }
     /*if (res.statusCode == 503 && !serviceUnavailable) {
       serviceUnavailable = true;
       final buildCtx = getIt<GlobalKey<NavigatorState>>().currentState?.context;
@@ -165,14 +184,18 @@ class ApiService {
   }
 
   Future<dynamic> refreshToken({bool secondTry = false}) async {
+    final logger = getIt<Logger>();
+    logger.i("Received Request to refresh token. Second Try? $secondTry");
     if (_refreshFuture != null) {
+      logger.i("Already trying to refresh token, no new request started");
       return _refreshFuture;
     }
 
     _refreshFuture = _doRefreshToken(secondTry: secondTry);
     try {
       return await _refreshFuture;
-    } catch (e){
+    } catch (e,st) {
+      logger.w("Token failed to refresh :(", error: e, stackTrace: st);
       rethrow;
     } finally {
       _refreshFuture = null;
@@ -180,6 +203,7 @@ class ApiService {
   }
 
   Future<dynamic> _doRefreshToken({bool secondTry = false}) async {
+    final logger = getIt<Logger>();
     final oAuthClient = await getAuthenticatedClient();
     if (oAuthClient == null) {
       return false;
@@ -203,6 +227,11 @@ class ApiService {
         },
         encoding: Encoding.getByName("UTF-8"),
       );
+      logger.i("Requested new token.");
+      if(getIt<Config>().misc.logBody){
+
+      logger.i("Body for this token request: ${res.body}");
+      }
       //print(res.request);
       if (res.statusCode == 200) {
         final json = jsonDecode(res.body);
@@ -212,12 +241,17 @@ class ApiService {
           expiration: DateTime.now().add(Duration(seconds: json["expires_in"])),
           tokenEndpoint: Uri.parse(AuthService.tokenEndpoint),
         );
+        logger.i("Refreshed the Token. Great success!");
+        if(getIt<Config>().misc.logSuccessFull){
+          logger.d("Token data received was: $json");
+        }
       } else if (res.statusCode == 429) {
         if (!oAuthClient.credentials.isExpired) {
-          if (kDebugMode) print("Refresh Rate Limited, but token still valid");
+          logger.i("Refresh Rate Limited, but token should still be valid");
           return true;
         }
         if (secondTry) {
+          logger.e("We got rate limited at our second try and couldn't fetch a new Token. Unfortunate!");
           return await Future.error(
             ErrorInfo(
               "rate limit",
@@ -230,12 +264,12 @@ class ApiService {
         await Future.delayed(const Duration(seconds: 10));
         return await refreshToken(secondTry: true);
       }
-    } catch (e) {
+    } catch (e, st) {
+      logger.e("An error occured while trying to refresh the token.", error: e, stackTrace: st);
       return Future.error(e);
     } finally {
       client.close();
     }
-
     if (creds == null) {
       return Future.error(
         ErrorInfo(

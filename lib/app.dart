@@ -188,6 +188,9 @@ class _AppHomeState extends State<AppHome> {
         if (getIt<Config>().misc.launchCount == 15) {
           globalPushManager.askForReview();
         } else {}
+        if(getIt<Config>().misc.enableLogging){
+          SharedFunctions.sendSnackBar(AppLocalizations.of(context)!.loggingActive, duration: .new(seconds: 5));
+        }
       }
     });
   }

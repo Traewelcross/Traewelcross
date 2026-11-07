@@ -190,6 +190,7 @@ class AuthService {
     Map<String, String> queryParameters,
   ) async {
     if (queryParameters['state'] != _state) {
+      getIt<Logger>().e("Invalid state parameter in authorization response. Got ${queryParameters['state']} but expected $_state");
       throw Exception('Invalid state parameter in authorization response.');
     }
 
@@ -197,6 +198,7 @@ class AuthService {
     if (_grant == null) {
       final codeVerifier = await _secureStorage.read(key: _codeVerifierKey);
       if (codeVerifier == null) {
+        getIt<Logger>().e( 'Code verifier not found. Authentication flow might have been interrupted.');
         throw Exception(
           'Code verifier not found. Authentication flow might have been interrupted.',
         );

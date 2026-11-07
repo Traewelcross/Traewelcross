@@ -90,14 +90,7 @@ class Preferences extends StatelessWidget {
             leading: const Icon(Icons.psychology),
             title: Text(localize.behavior),
           ),
-          ListTile(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (ctx) => ExperimentalPreferences()),
-            ),
-            leading: const Icon(Icons.science),
-            title: Text(localize.experimentalPrefrences),
-          ),
+
           ListTile(
             onTap: () => showDialog(context: context, builder: (ctx) => LanguageSwitcher(), barrierDismissible: false),
             leading: const Icon(Icons.language),
@@ -109,15 +102,22 @@ class Preferences extends StatelessWidget {
               leading: const Icon(Icons.watch),
               title: Text("Pair Watch -- UNTRANSLATED"),
             ),
-          // Nothing to configure here yet
-          /*ListTile(
+          ListTile(
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => MiscPreferences()),
             ),
             leading: const Icon(Icons.more),
             title: Text(localize.misc),
-          ),*/
+          ),
+                              ListTile(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (ctx) => ExperimentalPreferences()),
+            ),
+            leading: const Icon(Icons.science),
+            title: Text(localize.experimentalPrefrences),
+          ),
         ],
       ),
     );

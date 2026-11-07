@@ -1386,4 +1386,52 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get lang_sys => 'System';
+
+  @override
+  String get loggerSettings => 'Protokoll';
+
+  @override
+  String get loggerSettingsRestart =>
+      'Beachte, dass Änderungen hier erst nach einem Appneustart aktiv werden. Die App startet bei allen Änderungen automatisch neu.';
+
+  @override
+  String get loggerActivateTitle => 'Protokollieren aktivieren';
+
+  @override
+  String get loggerActivateSubtitle =>
+      'Protokollierung von Serveranfragen aktivieren, um debugging zu erleichtern.';
+
+  @override
+  String get loggerActivateAlertContent =>
+      'Achtung: Du bist dabei, die Protokollierung einzuschalten. Jede Anfrage an den Server und ggf. die Antwort des Servers wird nun in einer Datei gespeichert. Es liegt in der Natur der Sache/eines Check-In Dienstes, dass dies sehr wahrscheinlich dazu führt, dass diese Datei sensible Daten enthalten wird. Die Protokolle werden nicht zensiert. Sei vorsichtig und denke an deine Privatsphäre, aber INSBESONDERE an die Privatsphäre von anderen.\nAnmerkung: ist eine Anfrage erfolgreich, wird die Antwort des Servers standardmäßig nicht mit protokolliert.';
+
+  @override
+  String get loggingActive =>
+      'Protokollierung aktiv. Überprüfe die Einstellungen zur Anpassung und Abschaltung';
+
+  @override
+  String get loggerAlsoSuccessTitle =>
+      'Antworten von erfolgreichen Anfragen protokollieren';
+
+  @override
+  String get loggerAlsoSuccessSubtitle => 'Antworten sind NICHT zensiert.';
+
+  @override
+  String get loggerAlsoSuccessAlertContent =>
+      'Du bist dabei, die Protokollierung von Antworten einzuschalten, wenn die Anfrage beim Server erfolgreich hatte. Es liegt in der Natur der Sache/eines Check-In Dienstes, dass das teilen dieses Protokolls ohne Zensur wahrscheinlich negative Auswirkungen auf deine Privatsphäre hat. Es kann außerdem die Privatsphäre von anderen verletzten, z.B. wenn du einen versteckten Status aufrufst, der nicht deiner ist. Trotzdem fortfahren?';
+
+  @override
+  String get loggerAlsoBodyTitle => 'Anfragedaten genauer protokollieren';
+
+  @override
+  String get loggerAlsoBodySubtitle =>
+      'Protokolliert was außer der URL zum Server gesendet wird';
+
+  @override
+  String get loggerAlsoBodyAlertContent =>
+      'Du bist dabei, auch zu protokollieren, was genau zum Server gesendet wird. Beachte, dass das zwar nicht so sehr Einfluss auf die Privatsphäre von anderen hat, allerdings tauchen so unter anderem refresh und access Token im Protokoll auf. Diese Tokens können anderen Leuten ggf. Zugriff auf deinen Account geben. Sei sehr vorsichtig.';
+
+  @override
+  String get loggerDisclaimer =>
+      'Sei vorsichtig bevor du diese Logs teilst. Sie enthalten wahrscheinlich sensible Daten.';
 }

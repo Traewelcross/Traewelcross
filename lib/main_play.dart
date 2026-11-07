@@ -19,6 +19,7 @@ void main() async {
   final appConfig = await loadConfig();
   getIt.unregister<Config>();
   getIt.registerSingleton<Config>(appConfig);
+  SharedFunctions.setupLogging();
   // Refresh Token on every boot, see request() in utils/api_service.dart for why
   await SharedFunctions.refreshToken();
   final pushManager = PushManager(PushPlay());
