@@ -415,6 +415,7 @@ Map<String, dynamic> _$LightUserToJson(LightUser instance) => <String, dynamic>{
 
 Status _$StatusFromJson(Map<String, dynamic> json) => Status(
   id: (json['id'] as num).toInt(),
+  uuid: json['uuid'] as String,
   body: json['body'] as String,
   bodyMentions: (json['bodyMentions'] as List<dynamic>)
       .map((e) => Mention.fromJson(e as Map<String, dynamic>))
@@ -443,6 +444,7 @@ Status _$StatusFromJson(Map<String, dynamic> json) => Status(
 
 Map<String, dynamic> _$StatusToJson(Status instance) => <String, dynamic>{
   'id': instance.id,
+  'uuid': instance.uuid,
   'body': instance.body,
   'bodyMentions': instance.bodyMentions,
   'business': _$TripTypeEnumMap[instance.business]!,

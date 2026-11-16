@@ -441,6 +441,8 @@ class LightUser {
 @JsonSerializable(fieldRename: .none)
 class Status {
   final int id;
+  //TODO: Eventually only use UUIDs, but not yet, since not every endpoint supports them for whatever reason
+  final String uuid;
   final String body;
   final List<Mention> bodyMentions;
   final TripType business;
@@ -457,6 +459,7 @@ class Status {
   final String createdAt;
   Status({
     required this.id,
+    required this.uuid,
     required this.body,
     required this.bodyMentions,
     required this.business,
