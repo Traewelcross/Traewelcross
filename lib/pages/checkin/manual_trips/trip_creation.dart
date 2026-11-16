@@ -153,6 +153,7 @@ class _TripCreationState extends State<TripCreation> {
                 mainAxisSize: .min,
                 crossAxisAlignment: .start,
                 children: [
+                  //TOOD: Not every category is allowed
                   DropdownMenu(
                     selectOnly: true,
                     initialSelection: tD.category,
