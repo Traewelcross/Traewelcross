@@ -98,4 +98,13 @@ class AppearanceConfig with ChangeNotifier {
     _showPredictedPosition = val;
     notifyListeners();
   }
+
+  @MapStringIterableColorConverter()
+  Map<String, List<Color>?>? _selectedPrideFlags;
+  @MapStringIterableColorConverter()
+  Map<String, List<Color>?>? get selectedPrideFlags => _selectedPrideFlags;
+  set selectedPrideFlags(Map<String, List<Color>?>? val){
+    _selectedPrideFlags = val;
+    notifyListeners();
+  }
 }

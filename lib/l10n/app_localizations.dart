@@ -2489,7 +2489,7 @@ abstract class AppLocalizations {
   /// No description provided for @loggerSettingsRestart.
   ///
   /// In en, this message translates to:
-  /// **'Note that changes here will only become active after a restart of the app. The app restarts automatically when a change has occured.'**
+  /// **'Note that changes here will only become active after a restart of the app. The app restarts when leaving this page.'**
   String get loggerSettingsRestart;
 
   /// No description provided for @loggerActivateTitle.
@@ -2557,6 +2557,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Always be careful before sharing these logs. They likely contain sensitive data.'**
   String get loggerDisclaimer;
+
+  /// No description provided for @customizePride.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust which flags to display'**
+  String get customizePride;
+
+  /// No description provided for @customizePrideDialogSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'If none are selected, no preference is taken into account.'**
+  String get customizePrideDialogSubtitle;
+
+  /// No description provided for @rainbowFlag.
+  ///
+  /// In en, this message translates to:
+  /// **'Rainbow'**
+  String get rainbowFlag;
+
+  /// No description provided for @transFlag.
+  ///
+  /// In en, this message translates to:
+  /// **'Transgender'**
+  String get transFlag;
+
+  /// No description provided for @interFlag.
+  ///
+  /// In en, this message translates to:
+  /// **'Intersex'**
+  String get interFlag;
+
+  /// No description provided for @lesbianFlag.
+  ///
+  /// In en, this message translates to:
+  /// **'Gay WLW'**
+  String get lesbianFlag;
+
+  /// No description provided for @gayFlag.
+  ///
+  /// In en, this message translates to:
+  /// **'Gay MLM'**
+  String get gayFlag;
+
+  /// No description provided for @nbFlag.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-binary'**
+  String get nbFlag;
+
+  /// No description provided for @panFlag.
+  ///
+  /// In en, this message translates to:
+  /// **'Pansexual'**
+  String get panFlag;
+
+  /// No description provided for @biFlag.
+  ///
+  /// In en, this message translates to:
+  /// **'Bisexual'**
+  String get biFlag;
+
+  /// No description provided for @asexFlag.
+  ///
+  /// In en, this message translates to:
+  /// **'Asexual'**
+  String get asexFlag;
+
+  /// No description provided for @aromFlag.
+  ///
+  /// In en, this message translates to:
+  /// **'Aromantic'**
+  String get aromFlag;
 }
 
 class _AppLocalizationsDelegate

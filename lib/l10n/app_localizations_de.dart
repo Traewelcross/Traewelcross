@@ -1392,7 +1392,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get loggerSettingsRestart =>
-      'Beachte, dass Änderungen hier erst nach einem Appneustart aktiv werden. Die App startet bei allen Änderungen automatisch neu.';
+      'Beachte, dass Änderungen hier erst nach einem Appneustart aktiv werden. Die App startet beim verlassen der Seite neu.';
 
   @override
   String get loggerActivateTitle => 'Protokollieren aktivieren';
@@ -1434,4 +1434,41 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get loggerDisclaimer =>
       'Sei vorsichtig bevor du diese Logs teilst. Sie enthalten wahrscheinlich sensible Daten.';
+
+  @override
+  String get customizePride => 'Flaggen anpassen';
+
+  @override
+  String get customizePrideDialogSubtitle =>
+      'Wenn keine ausgewählt ist, wird keine Präferenz gesetzt';
+
+  @override
+  String get rainbowFlag => 'Regenbogen';
+
+  @override
+  String get transFlag => 'Transgender';
+
+  @override
+  String get interFlag => 'Intersex';
+
+  @override
+  String get lesbianFlag => 'Homosexuell (FLF)';
+
+  @override
+  String get gayFlag => 'Homosexuell (MLM)';
+
+  @override
+  String get nbFlag => 'Nicht-binär';
+
+  @override
+  String get panFlag => 'Pansexuell';
+
+  @override
+  String get biFlag => 'Bisexuell';
+
+  @override
+  String get asexFlag => 'Asexuell';
+
+  @override
+  String get aromFlag => 'Aromantisch';
 }

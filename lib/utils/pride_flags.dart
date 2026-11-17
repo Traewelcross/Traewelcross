@@ -1,4 +1,7 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:traewelcross/config/config.dart';
+import 'package:traewelcross/utils/color_scheme.dart';
+import 'package:traewelcross/utils/shared.dart';
 
 class PrideFlags {
   static const List<Color> trans = [
@@ -65,6 +68,18 @@ class PrideFlags {
     Colors.black,
   ];
   static List<List<Color>> getFlags() {
+    final selectedPrideFlags = getIt<Config>().appearance.selectedPrideFlags;
+    if(selectedPrideFlags != null && selectedPrideFlags.isNotEmpty == true){
+      List<List<Color>> availableFlags = [];
+      for (var flag in selectedPrideFlags.keys) {
+        if(flag.startsWith("_")){
+          availableFlags.add(selectedPrideFlags[flag]?.toList() ?? [tcColorLight]);
+        } else {
+          availableFlags.add(getFlagByName(flag));
+        }
+      }
+      return availableFlags;
+    }
     return const [
       trans,
       rainbow,
@@ -78,7 +93,32 @@ class PrideFlags {
       arom,
     ];
   }
-
+  static List<Color> getFlagByName(String name){
+    switch (name) {
+      case "trans":
+        return trans;
+      case "rainbow":
+        return rainbow;
+      case "inter":
+        return inter;
+      case "lesbian":
+        return lesbian;
+      case "gay":
+        return gay;
+      case "nb":
+        return nonbinary;
+      case "pan":
+        return pan;
+      case "bi":
+        return bi;
+      case "asex":
+        return asex;
+      case "arom":
+        return arom;
+      default:
+        return rainbow;
+    }
+  }
   static Iterable<Color> getColors(List<Color> sF) => sF.expand((c) => [c, c]);
   static List<double> getStops(List<Color> sF) {
     return [

@@ -8,17 +8,17 @@ class ColorCircle extends StatelessWidget {
     required this.color,
     this.icon,
     required this.width,
-    required this.onTap,
+    this.onTap,
   });
   final Color color;
   final Widget? icon;
   final double width;
-  final Function(Color color) onTap;
+  final Function(Color color)? onTap;
   @override
   Widget build(BuildContext context) {
     final hsl = HSLColor.fromColor(color);
     return GestureDetector(
-      onTap: () => onTap.call(color),
+      onTap: () => onTap?.call(color),
       child: Container(
         width: width,
         height: width,

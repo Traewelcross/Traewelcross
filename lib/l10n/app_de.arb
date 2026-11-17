@@ -398,7 +398,7 @@
     "lang_de": "Deutsch - Deutsch",
     "lang_sys": "System",
     "loggerSettings": "Protokoll",
-    "loggerSettingsRestart": "Beachte, dass Änderungen hier erst nach einem Appneustart aktiv werden. Die App startet bei allen Änderungen automatisch neu.",
+    "loggerSettingsRestart": "Beachte, dass Änderungen hier erst nach einem Appneustart aktiv werden. Die App startet beim verlassen der Seite neu.",
     "loggerActivateTitle": "Protokollieren aktivieren",
     "loggerActivateSubtitle": "Protokollierung von Serveranfragen aktivieren, um debugging zu erleichtern.",
     "loggerActivateAlertContent": "Achtung: Du bist dabei, die Protokollierung einzuschalten. Jede Anfrage an den Server und ggf. die Antwort des Servers wird nun in einer Datei gespeichert. Es liegt in der Natur der Sache/eines Check-In Dienstes, dass dies sehr wahrscheinlich dazu führt, dass diese Datei sensible Daten enthalten wird. Die Protokolle werden nicht zensiert. Sei vorsichtig und denke an deine Privatsphäre, aber INSBESONDERE an die Privatsphäre von anderen.\nAnmerkung: ist eine Anfrage erfolgreich, wird die Antwort des Servers standardmäßig nicht mit protokolliert.",
@@ -409,5 +409,17 @@
     "loggerAlsoBodyTitle": "Anfragedaten genauer protokollieren",
     "loggerAlsoBodySubtitle": "Protokolliert was außer der URL zum Server gesendet wird",
     "loggerAlsoBodyAlertContent": "Du bist dabei, auch zu protokollieren, was genau zum Server gesendet wird. Beachte, dass das zwar nicht so sehr Einfluss auf die Privatsphäre von anderen hat, allerdings tauchen so unter anderem refresh und access Token im Protokoll auf. Diese Tokens können anderen Leuten ggf. Zugriff auf deinen Account geben. Sei sehr vorsichtig.",
-    "loggerDisclaimer": "Sei vorsichtig bevor du diese Logs teilst. Sie enthalten wahrscheinlich sensible Daten."
+    "loggerDisclaimer": "Sei vorsichtig bevor du diese Logs teilst. Sie enthalten wahrscheinlich sensible Daten.",
+    "customizePride": "Flaggen anpassen",
+    "customizePrideDialogSubtitle": "Wenn keine ausgewählt ist, wird keine Präferenz gesetzt",
+    "rainbowFlag": "Regenbogen",
+    "transFlag": "Transgender",
+    "interFlag": "Intersex",
+    "lesbianFlag": "Homosexuell (FLF)",
+    "gayFlag": "Homosexuell (MLM)",
+    "nbFlag": "Nicht-binär",
+    "panFlag": "Pansexuell",
+    "biFlag": "Bisexuell",
+    "asexFlag": "Asexuell",
+    "aromFlag": "Aromantisch"
 }

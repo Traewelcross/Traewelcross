@@ -6,40 +6,52 @@ part of 'appearance_config.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AppearanceConfig _$AppearanceConfigFromJson(Map<String, dynamic> json) =>
-    AppearanceConfig()
-      ..useSystemAccent = json['useSystemAccent'] as bool? ?? true
-      ..accentColor = _$JsonConverterFromJson<int, Color>(
-        json['accentColor'],
-        const ColorConverter().fromJson,
-      )
-      ..themeMode =
-          $enumDecodeNullable(_$ThemeModeEnumMap, json['themeMode']) ??
-          ThemeMode.system
-      ..customLineIcons = json['customLineIcons'] as bool? ?? true
-      ..mapType =
-          $enumDecodeNullable(_$MapTypeEnumEnumMap, json['mapType']) ??
-          MapTypeEnum.standard
-      ..fontFam = json['fontFam'] as String? ?? 'Outfit'
-      ..prideModePreference = json['prideModePreference'] as bool? ?? false
-      ..routeColorColorScheme = json['routeColorColorScheme'] as bool? ?? false
-      ..showPredictedPosition = json['showPredictedPosition'] as bool? ?? false;
+AppearanceConfig _$AppearanceConfigFromJson(
+  Map<String, dynamic> json,
+) => AppearanceConfig()
+  ..useSystemAccent = json['useSystemAccent'] as bool? ?? true
+  ..accentColor = _$JsonConverterFromJson<int, Color>(
+    json['accentColor'],
+    const ColorConverter().fromJson,
+  )
+  ..themeMode =
+      $enumDecodeNullable(_$ThemeModeEnumMap, json['themeMode']) ??
+      ThemeMode.system
+  ..customLineIcons = json['customLineIcons'] as bool? ?? true
+  ..mapType =
+      $enumDecodeNullable(_$MapTypeEnumEnumMap, json['mapType']) ??
+      MapTypeEnum.standard
+  ..fontFam = json['fontFam'] as String? ?? 'Outfit'
+  ..prideModePreference = json['prideModePreference'] as bool? ?? false
+  ..routeColorColorScheme = json['routeColorColorScheme'] as bool? ?? false
+  ..showPredictedPosition = json['showPredictedPosition'] as bool? ?? false
+  ..selectedPrideFlags =
+      _$JsonConverterFromJson<Map<String, dynamic>, Map<String, List<Color>?>>(
+        json['selectedPrideFlags'],
+        const MapStringIterableColorConverter().fromJson,
+      );
 
-Map<String, dynamic> _$AppearanceConfigToJson(AppearanceConfig instance) =>
-    <String, dynamic>{
-      'useSystemAccent': instance.useSystemAccent,
-      'accentColor': _$JsonConverterToJson<int, Color>(
-        instance.accentColor,
-        const ColorConverter().toJson,
+Map<String, dynamic> _$AppearanceConfigToJson(
+  AppearanceConfig instance,
+) => <String, dynamic>{
+  'useSystemAccent': instance.useSystemAccent,
+  'accentColor': _$JsonConverterToJson<int, Color>(
+    instance.accentColor,
+    const ColorConverter().toJson,
+  ),
+  'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
+  'customLineIcons': instance.customLineIcons,
+  'mapType': _$MapTypeEnumEnumMap[instance.mapType]!,
+  'fontFam': instance.fontFam,
+  'prideModePreference': instance.prideModePreference,
+  'routeColorColorScheme': instance.routeColorColorScheme,
+  'showPredictedPosition': instance.showPredictedPosition,
+  'selectedPrideFlags':
+      _$JsonConverterToJson<Map<String, dynamic>, Map<String, List<Color>?>>(
+        instance.selectedPrideFlags,
+        const MapStringIterableColorConverter().toJson,
       ),
-      'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
-      'customLineIcons': instance.customLineIcons,
-      'mapType': _$MapTypeEnumEnumMap[instance.mapType]!,
-      'fontFam': instance.fontFam,
-      'prideModePreference': instance.prideModePreference,
-      'routeColorColorScheme': instance.routeColorColorScheme,
-      'showPredictedPosition': instance.showPredictedPosition,
-    };
+};
 
 Value? _$JsonConverterFromJson<Json, Value>(
   Object? json,
