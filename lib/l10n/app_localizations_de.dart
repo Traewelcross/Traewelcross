@@ -1476,17 +1476,17 @@ class AppLocalizationsDe extends AppLocalizations {
   String get customFlag => 'Eigene Flagge hinzufügen';
 
   @override
-  String get customFlagAddColor => 'Add color';
+  String get customFlagAddColor => 'Farbe hinzufügen';
 
   @override
-  String get customFlagTapToMod => 'Tap to change';
+  String get customFlagTapToMod => 'Tippen zum ändern';
 
   @override
   String customFlagTitle(int count) {
-    return 'Custom flag #$count';
+    return 'Eigene Flagge Nr. $count';
   }
 
   @override
   String get customFlagNote =>
-      'Custom flags are always active and cannot be hidden, only removed';
+      'Eigene Flaggen sind immer aktiv und können nur durch entfernen versteckt werden';
 }
