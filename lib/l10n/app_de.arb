@@ -422,5 +422,9 @@
     "biFlag": "Bisexuell",
     "asexFlag": "Asexuell",
     "aromFlag": "Aromantisch",
-    "customFlag": "Eigene Flagge hinzufügen"
+    "customFlag": "Eigene Flagge hinzufügen",
+    "customFlagAddColor": "Farbe hinzufügen",
+    "customFlagTapToMod": "Tippen zum ändern",
+    "customFlagTitle": "Eigene Flagge Nr. {count}",
+    "customFlagNote": "Eigene Flaggen sind immer aktiv und können nur durch entfernen versteckt werden"
 }
