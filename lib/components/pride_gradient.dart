@@ -12,8 +12,10 @@ class PrideGradient extends StatefulWidget {
     this.progress,
     this.rotation,
     this.seed,
-    this.name
+    this.name,
+    this.gradient
   });
+  final List<Color>? gradient;
   final String? name;
   final Widget child;
   final double? progress;
@@ -31,6 +33,9 @@ class _PrideGradientState extends State<PrideGradient> {
   List<Color> _randomFlag() {
     if(widget.name != null){
       return PrideFlags.getFlagByName(widget.name!);
+    }
+    if(widget.gradient != null){
+      return widget.gradient!;
     }
     final random = math.Random(widget.seed);
     final flagList = PrideFlags.getFlags();

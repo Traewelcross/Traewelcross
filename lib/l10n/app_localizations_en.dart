@@ -1462,4 +1462,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aromFlag => 'Aromantic';
+
+  @override
+  String get customFlag => 'Add own flag';
+
+  @override
+  String get customFlagAddColor => 'Add color';
+
+  @override
+  String get customFlagTapToMod => 'Tap to change';
+
+  @override
+  String customFlagTitle(int count) {
+    return 'Custom flag #$count';
+  }
+
+  @override
+  String get customFlagNote =>
+      'Custom flags are always active and cannot be hidden, only removed';
 }

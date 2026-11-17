@@ -100,10 +100,19 @@ class AppearanceConfig with ChangeNotifier {
   }
 
   @MapStringIterableColorConverter()
-  Map<String, List<Color>?>? _selectedPrideFlags;
+  Map<String, List<Color>> _customPrideFlags = {};
   @MapStringIterableColorConverter()
-  Map<String, List<Color>?>? get selectedPrideFlags => _selectedPrideFlags;
-  set selectedPrideFlags(Map<String, List<Color>?>? val){
+  @JsonKey(defaultValue: {})
+  Map<String, List<Color>> get customPrideFlags => _customPrideFlags;
+  set customPrideFlags(Map<String, List<Color>> val){
+    _customPrideFlags = val;
+    notifyListeners();
+  }
+
+  List<String> _selectedPrideFlags = [];
+  @JsonKey(defaultValue: [])
+  List<String> get selectedPrideFlags => _selectedPrideFlags;
+  set selectedPrideFlags(List<String> val){
     _selectedPrideFlags = val;
     notifyListeners();
   }

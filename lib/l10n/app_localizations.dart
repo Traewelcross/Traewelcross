@@ -2629,6 +2629,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Aromantic'**
   String get aromFlag;
+
+  /// No description provided for @customFlag.
+  ///
+  /// In en, this message translates to:
+  /// **'Add own flag'**
+  String get customFlag;
+
+  /// No description provided for @customFlagAddColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Add color'**
+  String get customFlagAddColor;
+
+  /// No description provided for @customFlagTapToMod.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to change'**
+  String get customFlagTapToMod;
+
+  /// No description provided for @customFlagTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom flag #{count}'**
+  String customFlagTitle(int count);
+
+  /// No description provided for @customFlagNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom flags are always active and cannot be hidden, only removed'**
+  String get customFlagNote;
 }
 
 class _AppLocalizationsDelegate

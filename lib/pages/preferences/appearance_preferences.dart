@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:traewelcross/components/color_circle.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
@@ -119,8 +119,16 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                       : null,
                 ),
               ),
-              if(config.appearance.isPrideActive)
-              Center(child: TextButton(onPressed: () => showDialog(context: context, builder: (ctx) => PrideFlagSelector()), child: Text(localize.customizePride)),),
+              if (config.appearance.isPrideActive)
+                Center(
+                  child: TextButton(
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (ctx) => PrideFlagSelector(),
+                    ),
+                    child: Text(localize.customizePride),
+                  ),
+                ),
               Divider(),
               ExpansionTile(
                 title: Text(localize.fontFamilyChooser),
@@ -373,8 +381,21 @@ class ColorCircleList extends StatelessWidget {
               title: Text(localize.selectAccent),
               content: SingleChildScrollView(
                 child: ColorPicker(
-                  pickerColor: pickerColor,
+                  color: pickerColor,
                   onColorChanged: (color) => pickerColor = color,
+                  pickersEnabled: const {
+                    ColorPickerType.both: false,
+                    ColorPickerType.primary: false,
+                    ColorPickerType.accent: false,
+                    ColorPickerType.bw: false,
+                    ColorPickerType.custom: false,
+                    ColorPickerType.customSecondary: false,
+                    ColorPickerType.wheel: true,
+                  },
+                  enableShadesSelection: false,
+                  enableTooltips: false,
+                  showColorCode: true,
+                  colorCodeHasColor: true,
                 ),
               ),
               actions: [

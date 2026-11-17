@@ -1,6 +1,5 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/config/config.dart';
-import 'package:traewelcross/utils/color_scheme.dart';
 import 'package:traewelcross/utils/shared.dart';
 
 class PrideFlags {
@@ -67,20 +66,7 @@ class PrideFlags {
     Color.fromRGBO(169, 169, 169, 1),
     Colors.black,
   ];
-  static List<List<Color>> getFlags() {
-    final selectedPrideFlags = getIt<Config>().appearance.selectedPrideFlags;
-    if(selectedPrideFlags != null && selectedPrideFlags.isNotEmpty == true){
-      List<List<Color>> availableFlags = [];
-      for (var flag in selectedPrideFlags.keys) {
-        if(flag.startsWith("_")){
-          availableFlags.add(selectedPrideFlags[flag]?.toList() ?? [tcColorLight]);
-        } else {
-          availableFlags.add(getFlagByName(flag));
-        }
-      }
-      return availableFlags;
-    }
-    return const [
+  static const List<List<Color>> everyFlag = [
       trans,
       rainbow,
       inter,
@@ -92,6 +78,19 @@ class PrideFlags {
       asex,
       arom,
     ];
+  static List<List<Color>> getFlags() {
+    final selectedPrideFlags = getIt<Config>().appearance.selectedPrideFlags;
+    final customPrideFlags = getIt<Config>().appearance.customPrideFlags;
+    List<List<Color>> availableFlags = [];
+    if(selectedPrideFlags.isEmpty){
+      availableFlags.addAll(everyFlag);
+    } else {
+      for (var k in selectedPrideFlags) {
+        availableFlags.add(getFlagByName(k));
+      }
+    }
+    availableFlags.addAll(customPrideFlags.values);
+    return availableFlags;
   }
   static List<Color> getFlagByName(String name){
     switch (name) {

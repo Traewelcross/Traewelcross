@@ -851,5 +851,17 @@
   "panFlag": "Pansexual",
   "biFlag": "Bisexual",
   "asexFlag": "Asexual",
-  "aromFlag": "Aromantic"
+  "aromFlag": "Aromantic",
+  "customFlag": "Add own flag",
+  "customFlagAddColor": "Add color",
+  "customFlagTapToMod": "Tap to change",
+  "customFlagTitle": "Custom flag #{count}",
+  "@customFlagTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "customFlagNote": "Custom flags are always active and cannot be hidden, only removed"
 }

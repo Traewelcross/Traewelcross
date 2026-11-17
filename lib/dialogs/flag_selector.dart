@@ -2,8 +2,10 @@ import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/components/color_circle.dart';
 import 'package:traewelcross/components/pride_gradient.dart';
 import 'package:traewelcross/config/config.dart';
+import 'package:traewelcross/dialogs/flag_creator.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import 'package:traewelcross/utils/shared.dart';
+import 'package:uuid/v4.dart';
 
 class PrideFlagSelector extends StatefulWidget {
   const PrideFlagSelector({super.key});
@@ -13,8 +15,7 @@ class PrideFlagSelector extends StatefulWidget {
 }
 
 class _PrideFlagSelectorState extends State<PrideFlagSelector> {
-  final Map<String, List<Color>?> selected =
-      getIt<Config>().appearance.selectedPrideFlags ?? {};
+  final List<String> selected = getIt<Config>().appearance.selectedPrideFlags;
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
@@ -34,11 +35,11 @@ class _PrideFlagSelectorState extends State<PrideFlagSelector> {
               ),
               title: Text(localize.rainbowFlag),
               trailing: Checkbox(
-                value: selected.containsKey("rainbow"),
+                value: selected.contains("rainbow"),
                 onChanged: (val) {
                   setState(() {
                     if (val!) {
-                      selected["rainbow"] = null;
+                      selected.add("rainbow");
                     } else {
                       selected.remove("rainbow");
                     }
@@ -54,11 +55,11 @@ class _PrideFlagSelectorState extends State<PrideFlagSelector> {
               ),
               title: Text(localize.transFlag),
               trailing: Checkbox(
-                value: selected.containsKey("trans"),
+                value: selected.contains("trans"),
                 onChanged: (val) {
                   setState(() {
                     if (val!) {
-                      selected["trans"] = null;
+                      selected.add("trans");
                     } else {
                       selected.remove("trans");
                     }
@@ -74,11 +75,11 @@ class _PrideFlagSelectorState extends State<PrideFlagSelector> {
               ),
               title: Text(localize.interFlag),
               trailing: Checkbox(
-                value: selected.containsKey("inter"),
+                value: selected.contains("inter"),
                 onChanged: (val) {
                   setState(() {
                     if (val!) {
-                      selected["inter"] = null;
+                      selected.add("inter");
                     } else {
                       selected.remove("inter");
                     }
@@ -94,11 +95,11 @@ class _PrideFlagSelectorState extends State<PrideFlagSelector> {
               ),
               title: Text(localize.lesbianFlag),
               trailing: Checkbox(
-                value: selected.containsKey("lesbian"),
+                value: selected.contains("lesbian"),
                 onChanged: (val) {
                   setState(() {
                     if (val!) {
-                      selected["lesbian"] = null;
+                      selected.add("lesbian");
                     } else {
                       selected.remove("lesbian");
                     }
@@ -114,11 +115,11 @@ class _PrideFlagSelectorState extends State<PrideFlagSelector> {
               ),
               title: Text(localize.gayFlag),
               trailing: Checkbox(
-                value: selected.containsKey("gay"),
+                value: selected.contains("gay"),
                 onChanged: (val) {
                   setState(() {
                     if (val!) {
-                      selected["gay"] = null;
+                      selected.add("gay");
                     } else {
                       selected.remove("gay");
                     }
@@ -134,11 +135,11 @@ class _PrideFlagSelectorState extends State<PrideFlagSelector> {
               ),
               title: Text(localize.nbFlag),
               trailing: Checkbox(
-                value: selected.containsKey("nb"),
+                value: selected.contains("nb"),
                 onChanged: (val) {
                   setState(() {
                     if (val!) {
-                      selected["nb"] = null;
+                      selected.add("nb");
                     } else {
                       selected.remove("nb");
                     }
@@ -154,11 +155,11 @@ class _PrideFlagSelectorState extends State<PrideFlagSelector> {
               ),
               title: Text(localize.panFlag),
               trailing: Checkbox(
-                value: selected.containsKey("pan"),
+                value: selected.contains("pan"),
                 onChanged: (val) {
                   setState(() {
                     if (val!) {
-                      selected["pan"] = null;
+                      selected.add("pan");
                     } else {
                       selected.remove("pan");
                     }
@@ -174,11 +175,11 @@ class _PrideFlagSelectorState extends State<PrideFlagSelector> {
               ),
               title: Text(localize.biFlag),
               trailing: Checkbox(
-                value: selected.containsKey("bi"),
+                value: selected.contains("bi"),
                 onChanged: (val) {
                   setState(() {
                     if (val!) {
-                      selected["bi"] = null;
+                      selected.add("bi");
                     } else {
                       selected.remove("bi");
                     }
@@ -194,11 +195,11 @@ class _PrideFlagSelectorState extends State<PrideFlagSelector> {
               ),
               title: Text(localize.asexFlag),
               trailing: Checkbox(
-                value: selected.containsKey("asex"),
+                value: selected.contains("asex"),
                 onChanged: (val) {
                   setState(() {
                     if (val!) {
-                      selected["asex"] = null;
+                      selected.add("asex");
                     } else {
                       selected.remove("asex");
                     }
@@ -214,11 +215,11 @@ class _PrideFlagSelectorState extends State<PrideFlagSelector> {
               ),
               title: Text(localize.aromFlag),
               trailing: Checkbox(
-                value: selected.containsKey("arom"),
+                value: selected.contains("arom"),
                 onChanged: (val) {
                   setState(() {
                     if (val!) {
-                      selected["arom"] = null;
+                      selected.add("arom");
                     } else {
                       selected.remove("arom");
                     }
@@ -226,10 +227,36 @@ class _PrideFlagSelectorState extends State<PrideFlagSelector> {
                 },
               ),
             ),
+            Divider(),
             ListTile(
               leading: const Icon(Icons.add, size: 32),
-              title: Text("Eigene Flagge hinzufügen"),
+              title: Text(localize.customFlag),
+              onTap: () async {
+                final colorList = await showDialog<List<Color>>(
+                  context: context,
+                  builder: (ctx) => FlagCreator(),
+                );
+                if (colorList == null || colorList.isEmpty) return;
+                if (!mounted) return;
+                getIt<Config>().appearance.customPrideFlags[UuidV4()
+                        .generate()] =
+                    colorList;
+                setState(() {});
+              },
             ),
+            for (var (idx, flag)
+                in getIt<Config>().appearance.customPrideFlags.keys.indexed)
+              ListTile(
+                key: ValueKey(flag),
+                leading: PrideGradient(
+                  rotation: 90,
+                  gradient: getIt<Config>().appearance.customPrideFlags[flag],
+                  child: ColorCircle(color: Colors.black, width: 32),
+                ),
+                trailing: IconButton(onPressed: () => setState(() => getIt<Config>().appearance.customPrideFlags.remove(flag)), icon: const Icon(Icons.delete)),
+                title: Text(localize.customFlagTitle(idx + 1)),
+              ),
+            Text(localize.customFlagNote, textAlign: .center),
           ],
         ),
       ),

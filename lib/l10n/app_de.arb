@@ -421,5 +421,6 @@
     "panFlag": "Pansexuell",
     "biFlag": "Bisexuell",
     "asexFlag": "Asexuell",
-    "aromFlag": "Aromantisch"
+    "aromFlag": "Aromantisch",
+    "customFlag": "Eigene Flagge hinzufügen"
 }
