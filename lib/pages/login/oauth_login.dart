@@ -61,7 +61,7 @@ class _OauthLoginState extends State<OauthLogin> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    widget.relogin
+                    widget.relogin || getIt<Config>().misc.needsRelogin
                         ? localize.reloginRequired
                         : localize.introText,
                     style: TextStyle(

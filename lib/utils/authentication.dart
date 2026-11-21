@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:async';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
@@ -63,10 +62,18 @@ class AuthService {
   AuthService._internal();
 
   Future<void> saveCredentials(oauth2.Credentials credentials) async {
-    await _secureStorage.write(
-      key: _credentialsKey,
-      value: json.encode(credentials.toJson()),
-    );
+    try {
+      await _secureStorage.write(
+        key: _credentialsKey,
+        value: json.encode(credentials.toJson()),
+      );
+    } catch (e, st) {
+      getIt<Logger>().e(
+        "Failed to write credentials",
+        error: e,
+        stackTrace: st,
+      );
+    }
     // try to reset _client
     _client = await getAuthenticatedClient(forceRenewal: true);
   }
@@ -76,8 +83,12 @@ class AuthService {
     if (jsonCredentials != null) {
       try {
         return oauth2.Credentials.fromJson(json.decode(jsonCredentials));
-      } catch (e) {
-        debugPrint('Error decoding credentials: $e');
+      } catch (e, st) {
+        getIt<Logger>().e(
+          'Error decoding credentials, deleting...',
+          error: e,
+          stackTrace: st,
+        );
         await _deleteCredentials();
         return null;
       }
@@ -118,6 +129,7 @@ class AuthService {
     if (_client == null || forceRenewal) {
       /*final httpClient = HttpClient();
       httpClient.userAgent = "";*/
+
       _client = oauth2.Client(
         credentials,
         identifier: clientId,
@@ -190,7 +202,9 @@ class AuthService {
     Map<String, String> queryParameters,
   ) async {
     if (queryParameters['state'] != _state) {
-      getIt<Logger>().e("Invalid state parameter in authorization response. Got ${queryParameters['state']} but expected $_state");
+      getIt<Logger>().e(
+        "Invalid state parameter in authorization response. Got ${queryParameters['state']} but expected $_state",
+      );
       throw Exception('Invalid state parameter in authorization response.');
     }
 
@@ -198,7 +212,9 @@ class AuthService {
     if (_grant == null) {
       final codeVerifier = await _secureStorage.read(key: _codeVerifierKey);
       if (codeVerifier == null) {
-        getIt<Logger>().e( 'Code verifier not found. Authentication flow might have been interrupted.');
+        getIt<Logger>().e(
+          'Code verifier not found. Authentication flow might have been interrupted.',
+        );
         throw Exception(
           'Code verifier not found. Authentication flow might have been interrupted.',
         );
@@ -216,6 +232,7 @@ class AuthService {
       final client = await _grant!.handleAuthorizationResponse(queryParameters);
       await saveCredentials(client.credentials);
       getIt<Config>().misc.needsRelogin = false;
+    getIt<Config>().misc.lastBoot = DateTime.now();
       return client;
     } catch (e) {
       getIt<Logger>().e('Error handling authorization response: $e');
@@ -229,7 +246,7 @@ class AuthService {
 
 String _generateState(int len) {
   final rand = Random.secure();
-  final chars =
+  const chars =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   return List.generate(len, (_) => chars[rand.nextInt(chars.length)]).join();
 }

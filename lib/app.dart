@@ -224,7 +224,7 @@ class _AppHomeState extends State<AppHome> {
   Future<bool> _setupData() async {
     final authService = getIt<AuthService>();
     final isLoggedIn = await authService.isLoggedIn();
-
+    if(getIt<Config>().misc.needsRelogin) return false;
     if (isLoggedIn) {
       try {
         final apiService = getIt<ApiService>();
