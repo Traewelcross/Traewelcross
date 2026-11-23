@@ -1,4 +1,4 @@
-![](/readme_asset/gp-vorstellung.png)
+![](/fastlane/metadata/android/en-US/images/featureGraphic.png)
 # Träwelcross
 
 [Bei Google Play downloaden](https://play.google.com/store/apps/details?id=de.traewelcross)

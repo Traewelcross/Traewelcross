@@ -1,0 +1,14 @@
+Track your trips with public transport - now on F-Droid too! You need a Träwelling account.
+
+With this app, you can (among other things):
+- Track your trips with public transport in Germany and other (european) countries
+- Add an event to your trips
+- Automatically share your trips on the fediverse
+- Use your fediverse emojis
+- See trips from friends and travel with them
+- Set arrival/departure time
+- Look at the route of the trip
+- Easy check-in flow when wearing gloves through control with volume buttons
+
+This app is a hobby project and in no association with Träwelling. This is not an official app by Träwelling.
+Träwelcross is inspired by Träwelldroid.

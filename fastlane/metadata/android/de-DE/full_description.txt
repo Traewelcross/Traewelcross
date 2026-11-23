@@ -1,0 +1,14 @@
+Tracke deine Fahrten mit dem ÖPNV - jetzt auch bei F-Droid. Zur Nutzung brauchst du ein Träwelling-Konto.
+
+Du kannst unter anderem:
+- In ganz Deutschland und vielen Ländern Europas in deine Reisen mit Nah- und Fernverkehr einchecken
+- Events zu deinen Fahrten hinzufügen
+- Deine Check-Ins auf Mastodon teilen
+- Emojis deiner Mastodoninstanz benutzen
+- Fahrten von deinen Freunden ansehen und gemeinsam mit ihnen fahren und einchecken
+- Manuell die Abfahrts-/Ankunfszeit setzen
+- Die Reiseroute anschauen
+- Mit Hilfe der Lautstärketasten einchecken, z.B. wenn du Handschuhe trägst
+
+Diese App ist ein Hobbyprojekt und ist keine offizielle App von Träwelling.
+Träwelcross ist durch Inspiration durch Träwelldroid entstanden.
