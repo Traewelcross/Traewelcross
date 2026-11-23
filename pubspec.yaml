@@ -60,7 +60,7 @@ dependency_overrides:
     git:
       url: https://github.com/Traewelcross/oauth2
       ref: main
-  shared_preferences_android: 2.4.28
+  #shared_preferences_android: 2.4.28
 
 dev_dependencies:
   build_runner: ^2.9.0
