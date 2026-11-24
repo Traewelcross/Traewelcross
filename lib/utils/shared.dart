@@ -16,6 +16,7 @@ import 'package:traewelcross/utils/api_service.dart';
 import 'package:traewelcross/utils/custom_providers.dart';
 import 'package:traewelcross/utils/authentication.dart';
 import 'package:traewelcross/utils/deeplink_service.dart';
+import 'package:traewelcross/utils/line_colors.dart';
 import 'package:traewelcross/utils/time_span.dart';
 import 'package:traewelcross/utils/volume_buttons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -138,6 +139,7 @@ class SharedFunctions {
     getIt.registerLazySingleton<ApiService>(
       () => ApiService(getIt<AuthService>()),
     );
+    getIt.registerLazySingleton<LineColors>(() => LineColors());
     getIt.registerLazySingleton<AppBarState>(() => AppBarState());
     getIt.registerLazySingleton<UnreadCountProvider>(
       () => UnreadCountProvider(),

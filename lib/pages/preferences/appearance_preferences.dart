@@ -10,6 +10,7 @@ import 'package:traewelcross/dialogs/flag_selector.dart';
 import 'package:traewelcross/enums/map_type_enum.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
 import "package:traewelcross/utils/color_scheme.dart";
+import 'package:traewelcross/utils/line_colors.dart';
 import 'package:traewelcross/utils/shared.dart';
 
 class AppearancePreferences extends StatefulWidget {
@@ -21,12 +22,26 @@ class AppearancePreferences extends StatefulWidget {
 
 class _AppearancePreferencesState extends State<AppearancePreferences> {
   late Future<bool> dynamicSupportFuture;
+  bool updatingLineIcons = false;
   @override
   void initState() {
     super.initState();
     dynamicSupportFuture = SharedFunctions.dynamicColorSupport();
   }
-
+  void _updateLineColors(AppLocalizations localize) async {
+    if(updatingLineIcons) return;
+    setState(() {
+      updatingLineIcons = true;
+    });
+    //SharedFunctions.sendSnackBar(localize.updatingLineIcons);
+    await getIt<LineColors>().updateLineColors();
+    SharedFunctions.sendSnackBar(localize.updatingLineIconsDone);
+    if(!mounted) return;
+    setState(() {
+      updatingLineIcons = false;
+      getIt<Config>().misc.lastLineIconUpdate = DateTime.now();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
@@ -221,8 +236,18 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                   value: config.appearance.customLineIcons,
                   onChanged: (val) => setState(() {
                     config.appearance.customLineIcons = val;
+                    if(val){
+                      _updateLineColors(localize);
+                    }
                   }),
                 ),
+              ),
+              if(config.appearance.customLineIcons)
+              ListTile (
+                onTap: () => _updateLineColors(localize),
+                leading: updatingLineIcons ? const CircularProgressIndicator() : const Icon(Icons.update),
+                title: Text(localize.updateLineIcons),
+                subtitle: Text(localize.updateLineIconsLastUpdate(config.misc.lastLineIconUpdate ?? DateTime(1970))),
               ),
               ListTile(
                 onTap: () => setState(() {

@@ -2659,6 +2659,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Custom flags are always active and cannot be hidden, only removed'**
   String get customFlagNote;
+
+  /// No description provided for @updateLineIcons.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Line icons'**
+  String get updateLineIcons;
+
+  /// No description provided for @updatingLineIcons.
+  ///
+  /// In en, this message translates to:
+  /// **'Line icons are being updated...'**
+  String get updatingLineIcons;
+
+  /// No description provided for @updatingLineIconsDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Line icons successfully updated'**
+  String get updatingLineIconsDone;
+
+  /// No description provided for @updateLineIconsLastUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: {date}'**
+  String updateLineIconsLastUpdate(DateTime date);
 }
 
 class _AppLocalizationsDelegate

@@ -1,10 +1,10 @@
-import 'dart:convert';
-
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:traewelcross/config/config.dart';
+import 'package:traewelcross/utils/api_providers/api_models.dart';
+import 'package:traewelcross/utils/line_colors.dart';
 import 'package:traewelcross/utils/ride_icon_tag_info.dart';
+import 'package:traewelcross/utils/shared.dart';
 import 'package:watch_it/watch_it.dart';
 
 class RideIconTag extends WatchingStatefulWidget {
@@ -16,12 +16,15 @@ class RideIconTag extends WatchingStatefulWidget {
 }
 
 class _RideIconTagState extends State<RideIconTag> {
-  Future<dynamic>? _lineDataFuture;
+  Future<LineColor?>? _lineDataFuture;
   @override
   void initState() {
     super.initState();
     if (widget.iconInfo.operatorIdentifier != null) {
-      _lineDataFuture = _getLineData();
+      _lineDataFuture = getIt<LineColors>().getLineData(
+        operatorIdentifier: widget.iconInfo.operatorIdentifier,
+        lineName: widget.iconInfo.lineName,
+      );
     }
   }
 
@@ -62,13 +65,14 @@ class _RideIconTagState extends State<RideIconTag> {
           },
         const SizedBox(width: 6),
         if (customLineIcons) ...[
-          FutureBuilder(
+          FutureBuilder<LineColor?>(
             future: _lineDataFuture,
             builder: (context, asyncSnapshot) {
               if (asyncSnapshot.connectionState == ConnectionState.done &&
-                  asyncSnapshot.hasData) {
+                  asyncSnapshot.hasData &&
+                  asyncSnapshot.data != null) {
                 final data = asyncSnapshot.data!;
-                return switch (data["shape"]) {
+                return switch (data.shape) {
                   final shape
                       when shape == "rectangle" ||
                           shape == "rectangle-rounded-corner" ||
@@ -85,12 +89,12 @@ class _RideIconTagState extends State<RideIconTag> {
                           borderRadius: _getRadius(shape),
                           color:
                               widget.iconInfo.routeColor ??
-                              Color(int.parse("0xFF${data["background"]}")),
+                              Color(int.parse("0xFF${data.background}")),
                           border: Border.all(
                             width: 1.5,
                             color: Color(
                               int.parse(
-                                "0xFF${data["border"] ?? data["background"]}",
+                                "0xFF${data.border.isNotEmpty ? data.border : data.background}",
                               ),
                             ),
                           ),
@@ -106,7 +110,7 @@ class _RideIconTagState extends State<RideIconTag> {
                                 style: TextStyle(
                                   color:
                                       widget.iconInfo.routeTextColor ??
-                                      Color(int.parse("0xFF${data["text"]}")),
+                                      Color(int.parse("0xFF${data.text}")),
                                   decoration: widget.iconInfo.cancelled == true
                                       ? .lineThrough
                                       : null,
@@ -149,15 +153,6 @@ class _RideIconTagState extends State<RideIconTag> {
         ],
       ],
     );
-  }
-
-  Future<dynamic> _getLineData() async {
-    return jsonDecode(
-      await rootBundle.loadString("assets/line_colors/line_colors.json"),
-    )[widget.iconInfo.operatorIdentifier?.toLowerCase()]?[widget
-        .iconInfo
-        .lineName
-        ?.replaceAll(" ", "")];
   }
 
   BorderRadius? _getRadius(String shape) {

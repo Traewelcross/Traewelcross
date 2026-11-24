@@ -54,6 +54,8 @@ dependencies:
   saf_util: ^3.1.1
   file_picker: ^13.3.2
   flex_color_picker: ^4.0.0
+  csv: ^8.0.0
+  path_provider: ^2.1.6
 
 dependency_overrides:
   oauth2:

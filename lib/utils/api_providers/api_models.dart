@@ -1193,6 +1193,22 @@ class ProviderConfigInfo {
   Map<String, dynamic> toJson() => _$ProviderConfigInfoToJson(this);
 }
 
+@JsonSerializable(fieldRename: .none)
+class LineColor {
+  final String background;
+  final String text;
+  final String border;
+  final String shape;
+  LineColor({
+    required this.background,
+    required this.text,
+    required this.border,
+    required this.shape,
+  });
+  factory LineColor.fromJson(Map<String, dynamic> json) => _$LineColorFromJson(json);
+  Map<String, dynamic> toJson() => _$LineColorToJson(this);
+}
+
 class GenericStatusResponse {
   final bool wasSuccess;
   final String? body;

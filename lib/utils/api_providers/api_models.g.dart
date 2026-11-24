@@ -1162,3 +1162,17 @@ Map<String, dynamic> _$ProviderConfigInfoToJson(ProviderConfigInfo instance) =>
       'appUrl': instance.appUrl,
       'version': instance.version,
     };
+
+LineColor _$LineColorFromJson(Map<String, dynamic> json) => LineColor(
+  background: json['background'] as String,
+  text: json['text'] as String,
+  border: json['border'] as String,
+  shape: json['shape'] as String,
+);
+
+Map<String, dynamic> _$LineColorToJson(LineColor instance) => <String, dynamic>{
+  'background': instance.background,
+  'text': instance.text,
+  'border': instance.border,
+  'shape': instance.shape,
+};

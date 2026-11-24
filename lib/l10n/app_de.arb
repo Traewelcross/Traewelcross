@@ -426,5 +426,16 @@
     "customFlagAddColor": "Farbe hinzufügen",
     "customFlagTapToMod": "Tippen zum Ändern",
     "customFlagTitle": "Eigene Flagge Nr. {count}",
-    "customFlagNote": "Eigene Flaggen sind immer aktiv und können nur durch Entfernen versteckt werden"
+    "customFlagNote": "Eigene Flaggen sind immer aktiv und können nur durch Entfernen versteckt werden",
+    "updateLineIcons": "Linienicons updaten",
+    "updatingLineIcons": "Linienicons werden geupdated...",
+    "updatingLineIconsDone" : "Linienicons erfolgreich aktualisiert",
+    "updateLineIconsLastUpdate": "Letztes Update: {date}",
+    "@updateLineIconsLastUpdate": {
+        "placeholders": {"date": {
+            "format": "d.M.y H:m",
+            "type": "DateTime",
+            "isCustomDateFormat": true
+        }}
+    }
 }

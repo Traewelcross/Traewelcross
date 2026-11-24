@@ -1489,4 +1489,24 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get customFlagNote =>
       'Eigene Flaggen sind immer aktiv und können nur durch Entfernen versteckt werden';
+
+  @override
+  String get updateLineIcons => 'Linienicons updaten';
+
+  @override
+  String get updatingLineIcons => 'Linienicons werden geupdated...';
+
+  @override
+  String get updatingLineIconsDone => 'Linienicons erfolgreich geupdated...';
+
+  @override
+  String updateLineIconsLastUpdate(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat(
+      'd.M,y H:m',
+      localeName,
+    );
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Letztes Update: $dateString';
+  }
 }

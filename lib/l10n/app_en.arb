@@ -769,5 +769,18 @@
       }
     }
   },
-  "customFlagNote": "Custom flags are always active and cannot be hidden, only removed"
+  "customFlagNote": "Custom flags are always active and cannot be hidden, only removed",
+  "updateLineIcons": "Update Line icons",
+  "updatingLineIcons": "Line icons are being updated...",
+  "updatingLineIconsDone": "Line icons successfully updated",
+  "updateLineIconsLastUpdate": "Last updated: {date}",
+  "@updateLineIconsLastUpdate": {
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "M/d/y H:m",
+        "isCustomDateFormat": "true"
+      }
+    }
+  }
 }
