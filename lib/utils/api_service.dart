@@ -233,7 +233,7 @@ class ApiService {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           "User-Agent":
-              "Traewelcross/${(await PackageInfo.fromPlatform()).version} (https://github.com/traewelcross/traewelcross; traewelcross.de)",
+              "Traewelcross/${const String.fromEnvironment("TC_VERSION")} (https://github.com/traewelcross/traewelcross; traewelcross.de)",
         },
         body: body,
         encoding: Encoding.getByName("UTF-8"),

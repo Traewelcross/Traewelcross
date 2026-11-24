@@ -33,6 +33,7 @@ class _MiscPreferencesState extends State<MiscPreferences> {
       if (res!) {
         final String? selectedDir;
         if (!Platform.isAndroid) {
+          // ignore: deprecated_member_use
           selectedDir = await FilePicker.getDirectoryPath();
         } else {
           final dir = await SafUtil().pickDirectory(

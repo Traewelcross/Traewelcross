@@ -82,7 +82,6 @@ class LineColors {
     final dir = (await getApplicationSupportDirectory()).path;
     final file = File(join(dir, "line_colors.json"));
     await file.writeAsString(jsonEncode(lineData));
-    print(dir);
     cachedLineColors = lineData;
   }
 }

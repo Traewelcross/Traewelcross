@@ -3,9 +3,10 @@
 GOOGLE_SERVICES_JSON := android/app/src/play/google-services.json
 
 FLUTTER := flutter
+TC_VERSION := $(shell yq -r '.version' pubspec.yaml | cut -d+ -f1)
 
-FOSS_ARGS := build apk --flavor foss --dart-define=BUILD_TYPE=foss -t lib/main_foss.dart --split-per-abi
-PLAY_APK_ARGS := build apk --flavor play --dart-define=BUILD_TYPE=play -t lib/main_play.dart --split-per-abi
+FOSS_ARGS := build apk --flavor foss --dart-define=BUILD_TYPE=foss --dart-define=TC_VERSION=$(TC_VERSION) -t lib/main_foss.dart --split-per-abi
+PLAY_APK_ARGS := build apk --flavor play --dart-define=BUILD_TYPE=play --dart-define=TC_VERSION=$(TC_VERSION) -t lib/main_play.dart --split-per-abi
 PLAY_BUNDLE_ARGS := build appbundle --flavor play --dart-define=BUILD_TYPE=play -t lib/main_play.dart
 
 

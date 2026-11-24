@@ -1157,7 +1157,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "829dcf513ff106a928f19a0fa7cfc3a277759439"
+      resolved-ref: bede51af40381ea44adbd101ca101178ca92027a
       url: "https://github.com/Traewelcross/oauth2"
     source: git
     version: "2.0.5"
