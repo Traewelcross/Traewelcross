@@ -38,7 +38,7 @@ class RideQuickView extends StatefulWidget {
     this.detailedView,
     this.likeCallback,
     this.onDelete,
-    this.onUpdate
+    this.onUpdate,
   });
   final Status rideData;
   final int authUserId;
@@ -62,6 +62,15 @@ class _RideQuickViewState extends State<RideQuickView> {
   DateTime? _startDate;
   DateTime? _endDate;
   double _averageSpeed = 0.0;
+  String _distanceString = "";
+  String _durationString = "";
+  String _averageSpeedString = "";
+  DateTime? _originTime;
+  DateTime? _originPlannedTime;
+  bool _originHasTimeDifference = false;
+  DateTime? _destinationTime;
+  DateTime? _destinationPlannedTime;
+  bool _destinationHasTimeDifference = false;
 
   @override
   void initState() {
@@ -85,6 +94,7 @@ class _RideQuickViewState extends State<RideQuickView> {
       context,
     );
     _cachedBody = _parseBodyText();
+    _durationString = _getNeededTime(_rideData.checkin.duration);
   }
 
   @override
@@ -98,6 +108,7 @@ class _RideQuickViewState extends State<RideQuickView> {
         context,
       );
       _cachedBody = _parseBodyText();
+      _durationString = _getNeededTime(_rideData.checkin.duration);
     }
   }
 
@@ -116,6 +127,7 @@ class _RideQuickViewState extends State<RideQuickView> {
   }
 
   void _initData() {
+    // Calculate Theme/Tint Color
     final rawHex = _rideData.checkin.routeColor;
     if (rawHex != null && getIt<Config>().appearance.routeColorColorScheme) {
       _tintColor = Color(
@@ -124,6 +136,8 @@ class _RideQuickViewState extends State<RideQuickView> {
     } else {
       _tintColor = null;
     }
+
+    // Parse dates needed for Strings
     _createdAtDate = DateTime.parse(_rideData.createdAt).toLocal();
 
     _startDate = DateTime.parse(
@@ -140,12 +154,63 @@ class _RideQuickViewState extends State<RideQuickView> {
           "1970-01-01"),
     ).toLocal();
 
+    // Build Strings
     if (_rideData.checkin.duration > 0) {
       _averageSpeed =
           ((_rideData.checkin.distance / 1000.0) /
           (_rideData.checkin.duration / 60.0));
     } else {
       _averageSpeed = 0.0;
+    }
+    _averageSpeedString =
+        "${_averageSpeed.isInfinite || _averageSpeed.isNaN ? "0" : _averageSpeed.round()} km/h";
+    final distanceKilometer = _rideData.checkin.distance / 1000;
+    if (distanceKilometer < 1) {
+      _distanceString = "${_rideData.checkin.distance} m";
+    } else {
+      _distanceString = "${(_rideData.checkin.distance / 1000).round()} km";
+    }
+
+    // Calculate/Parse Times for _StationText
+    final hideOnTimeOverride =
+        getIt<Config>().behavior.hideManualOnTimeOverride;
+    // Origin times
+    final originPlannedStr = _rideData.checkin.origin.departurePlanned!;
+    final originRealStr = _rideData.checkin.origin.departureReal;
+    final originManualStr = _rideData.checkin.manualDeparture;
+    _originTime = DateTime.parse(
+      originManualStr ?? originRealStr ?? originPlannedStr,
+    );
+    if (originManualStr != null) {
+      _originHasTimeDifference =
+          !(hideOnTimeOverride && originManualStr == originPlannedStr);
+    } else {
+      _originHasTimeDifference = _rideData.checkin.origin.isDepartureDelayed;
+    }
+    if (_originHasTimeDifference) {
+      _originPlannedTime = DateTime.parse(originPlannedStr);
+    } else {
+      _originPlannedTime = null;
+    }
+
+    // Destination times
+    final destPlannedStr = _rideData.checkin.destination.arrivalPlanned!;
+    final destRealStr = _rideData.checkin.destination.arrivalReal;
+    final destManualStr = _rideData.checkin.manualArrival;
+    _destinationTime = DateTime.parse(
+      destManualStr ?? destRealStr ?? destPlannedStr,
+    );
+    if (destManualStr != null) {
+      _destinationHasTimeDifference =
+          !(hideOnTimeOverride && destManualStr == destPlannedStr);
+    } else {
+      _destinationHasTimeDifference =
+          _rideData.checkin.destination.isArrivalDelayed;
+    }
+    if (_destinationHasTimeDifference) {
+      _destinationPlannedTime = DateTime.parse(destPlannedStr);
+    } else {
+      _destinationPlannedTime = null;
     }
   }
 
@@ -486,6 +551,7 @@ class _RideQuickViewState extends State<RideQuickView> {
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
     final theme = _cachedTheme ?? Theme.of(context);
+    final dfHm = DateFormat.Hm(Localizations.localeOf(context).languageCode);
 
     return Theme(
       data: theme,
@@ -508,7 +574,13 @@ class _RideQuickViewState extends State<RideQuickView> {
                         ),
                       );
                     },
-              onDoubleTap: !_rideData.liked ? (_isAuthUser() ? (getIt<Config>().behavior.showLikeButtonForOwnRides ? _updateLikes : null) : _updateLikes) : null,
+              onDoubleTap: !_rideData.liked
+                  ? (_isAuthUser()
+                        ? (getIt<Config>().behavior.showLikeButtonForOwnRides
+                              ? _updateLikes
+                              : null)
+                        : _updateLikes)
+                  : null,
               borderRadius: const BorderRadius.all(Radius.circular(12)),
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -517,6 +589,9 @@ class _RideQuickViewState extends State<RideQuickView> {
                   children: [
                     _StationText(
                       stopover: _rideData.checkin.origin,
+                      time: _originTime!,
+                      plannedTime: _originPlannedTime,
+                      hasTimeDifference: _originHasTimeDifference,
                       manualArrival: null,
                       manualDeparture: _rideData.checkin.manualDeparture,
                       isDestination: false,
@@ -565,23 +640,18 @@ class _RideQuickViewState extends State<RideQuickView> {
                                     ),
                                     const Icon(Icons.timer_outlined),
                                     const SizedBox(width: 4),
-                                    Text(
-                                      _getNeededTime(
-                                        _rideData.checkin.duration,
-                                      ),
-                                    ),
+                                    Text(_durationString),
                                     const SizedBox(
                                       height: 20,
                                       child: VerticalDivider(),
                                     ),
                                     const Icon(Symbols.distance),
                                     const SizedBox(width: 4),
-                                    Text(
-                                      ((_rideData.checkin.distance / 1000)
-                                                  .toStringAsFixed(0) ==
-                                              "0")
-                                          ? "${_rideData.checkin.distance} m"
-                                          : "${(_rideData.checkin.distance / 1000).toStringAsFixed(0)} km",
+                                    Tooltip(
+                                      message:
+                                          "${_rideData.checkin.distance.toString()} m",
+                                      triggerMode: .tap,
+                                      child: Text(_distanceString),
                                     ),
                                     const SizedBox(
                                       height: 20,
@@ -589,9 +659,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                                     ),
                                     const Icon(Icons.speed),
                                     const SizedBox(width: 4),
-                                    Text(
-                                      "${_averageSpeed.isInfinite || _averageSpeed.isNaN ? "0" : _averageSpeed.round()} km/h",
-                                    ),
+                                    Text(_averageSpeedString),
                                     const SizedBox(
                                       height: 20,
                                       child: VerticalDivider(),
@@ -637,9 +705,12 @@ class _RideQuickViewState extends State<RideQuickView> {
                         ),
                       ),
                     _StationText(
+                      stopover: _rideData.checkin.destination,
+                      time: _destinationTime!,
+                      plannedTime: _destinationPlannedTime,
+                      hasTimeDifference: _destinationHasTimeDifference,
                       manualArrival: _rideData.checkin.manualArrival,
                       manualDeparture: null,
-                      stopover: _rideData.checkin.destination,
                       isDestination: true,
                       onUpdateTime: _updateTime,
                       isAuthUser: _isAuthUser(),
@@ -714,7 +785,7 @@ class _RideQuickViewState extends State<RideQuickView> {
                                     );
                                   },
                                   child: Text(
-                                    "${_rideData.user.displayName}, ${DateFormat.Hm(Localizations.localeOf(context).languageCode).format(_createdAtDate!)}",
+                                    "${_rideData.user.displayName}, ${dfHm.format(_createdAtDate!)}",
                                     overflow: TextOverflow.fade,
                                     maxLines: 1,
                                     softWrap: false,
@@ -980,7 +1051,11 @@ class LikeButton extends StatelessWidget {
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 visualDensity: VisualDensity.compact,
               ),
-              onPressed: isOwnRide ? (getIt<Config>().behavior.showLikeButtonForOwnRides ? onUpdateLikes : null) : onUpdateLikes,
+              onPressed: isOwnRide
+                  ? (getIt<Config>().behavior.showLikeButtonForOwnRides
+                        ? onUpdateLikes
+                        : null)
+                  : onUpdateLikes,
               icon: PrideGradient(
                 rotation: 90,
                 child: Icon(
@@ -1005,7 +1080,11 @@ class LikeButton extends StatelessWidget {
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 visualDensity: VisualDensity.compact,
               ),
-              onPressed: isOwnRide ? (getIt<Config>().behavior.showLikeButtonForOwnRides ? onUpdateLikes : null) : onUpdateLikes,
+              onPressed: isOwnRide
+                  ? (getIt<Config>().behavior.showLikeButtonForOwnRides
+                        ? onUpdateLikes
+                        : null)
+                  : onUpdateLikes,
               icon: Icon(
                 rideData.liked
                     ? Icons.favorite
@@ -1102,6 +1181,9 @@ class _StationText extends StatelessWidget {
     required this.onUpdateTime,
     required this.isAuthUser,
     required this.stopover,
+    required this.time,
+    required this.plannedTime,
+    required this.hasTimeDifference,
     this.manualArrival,
     this.manualDeparture,
   });
@@ -1112,48 +1194,19 @@ class _StationText extends StatelessWidget {
   final String? manualArrival;
   final String? manualDeparture;
   final Stopover stopover;
+  final DateTime time;
+  final DateTime? plannedTime;
+  final bool hasTimeDifference;
+
   @override
   Widget build(BuildContext context) {
-    final hideOnTimeOverride =
-        getIt<Config>().behavior.hideManualOnTimeOverride;
-    DateTime time;
-    DateTime? plannedTime;
-    bool timeDifference;
-    String? manualTimeStr;
-    String plannedTimeStr;
-    String? realTimeStr;
-    bool isDelayed;
+    final dfHm = DateFormat.Hm(Localizations.localeOf(context).languageCode);
     final stationText = TextStyle(
       fontSize: 21,
       color: Theme.of(context).colorScheme.primary,
       fontWeight: FontWeight.w600,
     );
 
-    if (isDestination) {
-      plannedTimeStr = stopover.arrivalPlanned!;
-      realTimeStr = stopover.arrivalReal;
-      manualTimeStr = manualArrival;
-      isDelayed = stopover.isArrivalDelayed;
-    } else {
-      plannedTimeStr = stopover.departurePlanned!;
-      realTimeStr = stopover.departureReal;
-      manualTimeStr = manualDeparture;
-      isDelayed = stopover.isDepartureDelayed;
-    }
-    time = DateTime.parse(manualTimeStr ?? realTimeStr ?? plannedTimeStr);
-
-    if (manualTimeStr != null) {
-      if (hideOnTimeOverride && manualTimeStr == plannedTimeStr) {
-        timeDifference = false;
-      } else {
-        timeDifference = true;
-      }
-    } else {
-      timeDifference = isDelayed;
-    }
-    if (timeDifference) {
-      plannedTime = DateTime.parse(plannedTimeStr);
-    }
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -1267,18 +1320,11 @@ class _StationText extends StatelessWidget {
                   );
                 }
               },
-              child: Text(
-                DateFormat.Hm(
-                  Localizations.localeOf(context).languageCode,
-                ).format(time.toLocal()),
-                style: stationText,
-              ),
+              child: Text(dfHm.format(time.toLocal()), style: stationText),
             ),
-            if (timeDifference)
+            if (hasTimeDifference && plannedTime != null)
               Text(
-                DateFormat.Hm(
-                  Localizations.localeOf(context).languageCode,
-                ).format(plannedTime!.toLocal()),
+                dfHm.format(plannedTime!.toLocal()),
                 style: const TextStyle(decoration: TextDecoration.lineThrough),
               ),
           ],
