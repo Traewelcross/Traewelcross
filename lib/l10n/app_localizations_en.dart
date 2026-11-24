@@ -25,13 +25,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get introText =>
-      'Great that you\'re here! To use this app, you need to link it with your Träwelling account. Use the Button below to do just that. If you don\'t have a Träwelling account yet, you can register one there as well.';
+      'Great that you\'re here! To use this app, you need to link it with your Träwelling account. Use the button below to do just that. If you don\'t have a Träwelling account yet, you can register one there as well.';
 
   @override
   String get titleInfo => 'Information';
 
   @override
-  String get viewLicensesBtn => 'View Open-Source Licensens';
+  String get viewLicensesBtn => 'View Open-Source Licenses';
 
   @override
   String licenses(int count) {
@@ -318,7 +318,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noTrustedUsers => 'Nobody has allowed for you to check them in';
 
   @override
-  String get checkInOtherUsersTitle => 'Select users to check-in';
+  String get checkInOtherUsersTitle => 'Select users to check in';
 
   @override
   String operatedBy(String operator) {
@@ -735,7 +735,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hideManualOnTimeOverrideExplain =>
-      'If the manual override is equal to the planned time, it will be displayed as if no override has happend.';
+      'If the manual override is equal to the planned time, it will be displayed as if no override has happened.';
 
   @override
   String get activateNotifications => 'Enable push notifications?';
@@ -780,7 +780,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String errorText(String errorType, String errorMsg) {
-    return 'Snap! While trying to do this: **$errorType**, this error occured: **$errorMsg**.';
+    return 'Snap! While trying to do this: **$errorType**, this error occurred: **$errorMsg**.';
   }
 
   @override
@@ -871,7 +871,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reloginRequired =>
-      'You haven\'t used Träwelcross for 30 days or longer (most probable. The saved tokens might also have become invalid through other means i.e. by revoking them in the account settings). Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.';
+      'You haven\'t used Träwelcross for 30 days or longer (most probable. The saved tokens might also have become invalid through other means i.e. by revoking them in the account settings). Since the duration of the authentication tokens are limited, you now need to log in again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.';
 
   @override
   String get fontFamilyChooser => 'Which font to use?';
@@ -905,7 +905,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get showAltDepStation =>
-      'Show connections from other stops in close proximity to the selected one';
+      'Show connections from other stops in proximity to the selected one';
 
   @override
   String get openDysFontDesc => 'Aims to help with symptoms of dyslexia';
@@ -938,7 +938,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String checkinConflictBody(String lineName, String statusID) {
-    return 'Sorry, but while trying to check you in, a conflict occured. It\'s highly likely that you already checked into this or another connection. The first conflicting status is a ride with $lineName (ID: $statusID). Would you like to force a Check-In? (This won\'t give you any points, but will contribute to your statistics anyway.)';
+    return 'Sorry, but while trying to check you in, a conflict occurred. It\'s highly likely that you already checked into this or another connection. The first conflicting status is a ride with $lineName (ID: $statusID). Would you like to force a Check-In? (This won\'t give you any points, but will contribute to your statistics anyway.)';
   }
 
   @override
@@ -1031,7 +1031,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get manualTripCreationDialogContent =>
-      'Your about to create your trip manually. That means that you have to enter some additional information besides the usual stop selection. Please note that you won\'t receive any point at all for checkins into manually created trips!';
+      'Your about to create your trip manually. That means that you have to enter some additional information besides the usual stop selection. Please note that you won\'t receive any point at all for check-ins into manually created trips!';
 
   @override
   String get gotIt => 'Got it!';
@@ -1098,7 +1098,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noStationsFound =>
-      'Sorry, no stopovers could be found for this ride. You can either try to reopen the departure board and selecting this ride again, or try and use the offical Träwelling page.';
+      'Sorry, no stopovers could be found for this ride. You can either try to reopen the departure board and selecting this ride again, or try and use the official Träwelling page.';
 
   @override
   String get returnToDashboard => 'Return to dashboard';
@@ -1198,7 +1198,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get connectionOrStationCancelled =>
-      'The connection or stop you have selected has been marked as cancelled by the data provider. You\'re still able to check-in. Check the official data provider for more information.';
+      'The connection or stop you have selected has been marked as cancelled by the data provider. You\'re still able to check in. Check the official data provider for more information.';
 
   @override
   String get warning => 'Warning';
@@ -1318,7 +1318,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statsStatOverviewStatusNotAvailable =>
-      'Sorry, but you didn\'t do any journeys in this timeframe. Therefore no status can be displayed.';
+      'Sorry, but you didn\'t do any journeys in this timeframe. Therefore, no status can be displayed.';
 
   @override
   String get statsStatFavoritesTitle => 'Favorites';

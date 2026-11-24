@@ -31,7 +31,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get titleInfo => 'Informationen';
 
   @override
-  String get viewLicensesBtn => 'Open-Source Lizenzen einsehen';
+  String get viewLicensesBtn => 'Open-Source-Lizenzen einsehen';
 
   @override
   String licenses(int count) {
@@ -232,7 +232,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get blockFinalConfirm =>
-      'Bitte beachte, dass ein entblocken in Träwelcross nicht möglich ist.';
+      'Bitte beachte, dass ein Entblocken in Träwelcross nicht möglich ist.';
 
   @override
   String get yes => 'Ja';
@@ -259,7 +259,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get editStatus => 'Status bearbeiten';
 
   @override
-  String get checkIn => 'Check-In';
+  String get checkIn => 'Check-in';
 
   @override
   String get statusText => 'Status';
@@ -323,7 +323,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get checkInOtherUsersTitle =>
-      'Wähle Benutzer:innen zum einchecken aus';
+      'Wähle Benutzer:innen zum Einchecken aus';
 
   @override
   String operatedBy(String operator) {
@@ -340,7 +340,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get homeCheckInPlaceholder =>
-      'Haltestelle (über Namen oder RIL 100) oder @benutzer finden';
+      'Haltestelle (über Namen oder RIL100) oder @benutzer finden';
 
   @override
   String get stops => 'Haltestellen';
@@ -350,14 +350,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get locationDisabled =>
-      'Der GPS-Dienst auf deinem Gerät ist deaktivert';
+      'Der GPS-Dienst auf deinem Gerät ist deaktiviert';
 
   @override
   String get locationNotAllowed =>
       'Du hast Träwelcross nicht erlaubt auf deinen Standort zuzugreifen';
 
   @override
-  String get locationDenyForever => 'Einstellungen öffnen um GPS zu erlauben?';
+  String get locationDenyForever => 'Einstellungen öffnen, um GPS zu erlauben?';
 
   @override
   String departuresFrom(String stop) {
@@ -407,7 +407,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String newHomeSuccessful(String station) {
-    return 'Erfolreich $station als zuhause festgelegt';
+    return 'Erfolgreich $station als Zuhause festgelegt';
   }
 
   @override
@@ -463,7 +463,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get reportConfirm => 'Melden!';
 
   @override
-  String get reportSending => 'Deine Bericht wird gesendet...';
+  String get reportSending => 'Dein Bericht wird gesendet...';
 
   @override
   String get reportSuccess => 'Dein Bericht wurde gesendet!';
@@ -512,7 +512,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tagTipPassengerRightsExample => 'Angefragt, ausgezahlt, ...';
 
   @override
-  String get tagTipPriceExample => '69€';
+  String get tagTipPriceExample => '69 €';
 
   @override
   String get tagTipRoleExample => 'Tf, Zugchef';
@@ -545,7 +545,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get tagNoTagsLeft =>
-      'Du hast bereits alle Tags die du hinzufügen kannst hinzugefügt. Um einen Tag zu löschen/editieren, drücke auf das jeweilige Tag.';
+      'Du hast bereits alle Tags, die du hinzufügen kannst, hinzugefügt. Um einen Tag zu löschen/editieren, drücke auf das jeweilige Tag.';
 
   @override
   String get settings => 'Einstellungen';
@@ -618,7 +618,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get unsavedChanges =>
-      'Du hast evtl. ungespeicherte Änderungen. Bist du sicher, dass zurück willst?';
+      'Du hast evtl. ungespeicherte Änderungen. Bist du sicher, dass zurückwillst?';
 
   @override
   String get trustedUsers => 'Vertraute Benutzer:innen';
@@ -633,7 +633,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get noTrustedCheckIn => 'Keine:r';
 
   @override
-  String get trustedUsersSelectTitle => 'Wer darf dich miteinchecken?';
+  String get trustedUsersSelectTitle => 'Wer darf dich mit Einchecken?';
 
   @override
   String get defaultVisibilitySelectTitle =>
@@ -691,7 +691,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get selectMode => 'Design auswählen';
 
   @override
-  String get useLineIcons => 'Linienicons anzeigen wenn verfügbar';
+  String get useLineIcons => 'Linienicons anzeigen, wenn verfügbar';
 
   @override
   String get selectMapType =>
@@ -723,11 +723,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get delaySystemTimeOverrideExplain =>
-      'Die Zeit die verstreichen muss, dass die vorausgefüllte Zeit nicht Systemzeit, sondern die geplante Zeit ist. Leer lassen um imemr Systemzeit zu nutzen. Tippen zum ändern.';
+      'Die Zeit die verstreichen muss, dass die vorausgefüllte Zeit nicht Systemzeit, sondern die geplante Zeit ist. Leer lassen, um immer Systemzeit zu nutzen. Tippen zum Ändern.';
 
   @override
   String get delaySystemTimeOverrideTextField =>
-      'Zeit in Minuten eingeben. Leer zum deaktivieren';
+      'Zeit in Minuten eingeben. Leer zum Deaktivieren';
 
   @override
   String get confirmDelete => 'Löschen bestätigen?';
@@ -741,7 +741,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get hideManualOnTimeOverrideExplain =>
-      'Wenn die überschriebene Zeit gleich mit der geplanten Zeit ist, wird es so angezeigt, als hätte kein überschreiben stattgefunden';
+      'Wenn die überschriebene Zeit gleich mit der geplanten Zeit ist, wird es so angezeigt, als hätte kein Überschreiben stattgefunden';
 
   @override
   String get activateNotifications => 'Benachrichtigungen aktivieren';
@@ -750,7 +750,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get notificationChannelLikes => 'Likes';
 
   @override
-  String get notificationChannelCheckIns => 'Check-Ins';
+  String get notificationChannelCheckIns => 'Check-ins';
 
   @override
   String get notificationChannelTravelTogether => 'Mit in der Verbindung';
@@ -780,7 +780,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get defaultTextPreferenceSubtitle =>
-      'Der Text, der standardmäßig eingetragen werden soll, wenn du eincheckst. Zum ändern tippen.';
+      'Der Text, der standardmäßig eingetragen werden soll, wenn du eincheckst. Zum Ändern tippen.';
 
   @override
   String get errorTitle => 'Oh nein! :(';
@@ -791,11 +791,11 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get errorDetail => 'Tippe hier um den genauen Fehler zu sehen';
+  String get errorDetail => 'Tippe hier, um den genauen Fehler zu sehen';
 
   @override
   String get errorTroubleshoot =>
-      'Du kannst einen dieser Schritte probieren um das Problem zu lösen:';
+      'Du kannst einen dieser Schritte probieren, um das Problem zu lösen:';
 
   @override
   String get errorTypeLogin => 'Dich einloggen';
@@ -805,17 +805,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get errorTypeLoginTroubleshoot =>
-      '1. Überprüfe ob du Internet hast\n2. Überprüfe ob der Authentifizierungstoken nicht abgelaufen ist\n3. Zurücksetzen und neu anmelden';
+      '1. Überprüfe ob du Internet hast\n2. Überprüfe, ob der Authentifizierungstoken nicht abgelaufen ist\n3. Zurücksetzen und neu anmelden';
 
   @override
   String get errorTroubleshootSuffix =>
-      'Wenn dieser Fehler bestehen bleibt, scheue dich nicht einen Issue auf GitHub zu öfnen';
+      'Wenn dieser Fehler bestehen bleibt, scheue dich nicht ein Issue auf GitHub zu öffnen';
 
   @override
   String get errorTypeUnknown => 'Nicht verfügbar';
 
   @override
-  String get errorTroubleshootButtonRestart => 'App neustarten';
+  String get errorTroubleshootButtonRestart => 'App neu starten';
 
   @override
   String get errorTroubleshootButtonLogout => 'Abmelden & App zurücksetzen';
@@ -828,7 +828,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String refreshTokenSubtitle(String date) {
-    return 'Der aktuelle Token läuft ab am: $date. Hier tippen um ihn zu erneuern.';
+    return 'Der aktuelle Token läuft ab am: $date. Hier tippen, um ihn zu erneuern.';
   }
 
   @override
@@ -869,11 +869,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get volumeBtnCtrlIndicatorNote =>
-      'Zeige einen Indikator an, mit dem du besser unterscheiden kannst, ab wann ein einfaches klicken als gedrückt gehalten gezählt wird. Du kannst in antippen und dir anzeigen lassen, was du auf der jeweiligen Seite damit tun kannst.';
+      'Zeige einen Indikator an, mit dem du besser unterscheiden kannst, ab wann ein einfaches klicken als gedrückt gehalten gilt. Du kannst ihn antippen und dir anzeigen lassen, was du auf der jeweiligen Seite tun kannst.';
 
   @override
   String get volumeBtnCtrlNote =>
-      'Benutze Grundfeatures der App mit den Lautstärketasten, z.B. wenn du Handschuhe an hast.';
+      'Benutze Grundfeatures der App mit den Lautstärketasten, z.B. wenn du Handschuhe anhast.';
 
   @override
   String get reloginRequired =>
@@ -944,7 +944,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String checkinConflictBody(String lineName, String statusID) {
-    return 'Entschuldige, aber während dem Versuch dich einzuchecken, kam es zu einem Konflikt. Es ist sehr wahrscheinlich, dass du bereits in diese oder eine andere Verbindung eingecheckt bist. Der erste Konfliktauslöser war eine Fahrt mit der Linie $lineName (ID: $statusID). Möchtest du einen Check-In erzwingen? (Du wirst keine Punkte erhalten, allerdings wird die Fahrt mit in die Statistik eingehen)';
+    return 'Entschuldige, aber während dem Versuch dich einzuchecken, kam es zu einem Konflikt. Es ist sehr wahrscheinlich, dass du bereits in diese oder eine andere Verbindung eingecheckt bist. Der erste Konfliktauslöser war eine Fahrt mit der Linie $lineName (ID: $statusID). Möchtest du einen Check-in erzwingen? (Du wirst keine Punkte erhalten, trotzdem wird die Fahrt mit in die Statistik einbezogen)';
   }
 
   @override
@@ -960,7 +960,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get showActiveRideCardDesc =>
-      'Deine aktuell stattfindene Fahrt wird an die Navigationsleiste angepinnt';
+      'Deine aktuell stattfindende Fahrt wird an die Navigationsleiste angepinnt';
 
   @override
   String get multiAccount => 'Mehrere Accounts';
@@ -971,7 +971,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get noStopoversFound =>
-      'Entschuldige, aber beim abfragen der Haltestellen kam ein leeres Ergebnis zurück';
+      'Entschuldige, aber beim Abfragen der Haltestellen kam ein leeres Ergebnis zurück';
 
   @override
   String continuationTrip(String lineName, String destination) {
@@ -980,18 +980,18 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get serviceUnavailable =>
-      'Entschuldige, aber bei dem Versuch, deinen Check-In Provider zu kontaktieren, kam der Code 503 zurück. Vermutlich werden gerade Wartungsarbeiten durchgeführt, die in ein paar Minuten vorbei sein sollten. Komme später wieder.';
+      'Entschuldige, aber bei dem Versuch, deinen Check-in Provider zu kontaktieren, kam der Code 503 zurück. Vermutlich werden gerade Wartungsarbeiten durchgeführt, die in ein paar Minuten vorbei sein sollten. Komme später wieder.';
 
   @override
   String get checkOnTheWeb => 'Im Web anzeigen';
 
   @override
   String get secondCheckInSuccess =>
-      'Dieser Check-In wurde in zwei Teilen durchgeführt. Beide Teile deiner Reise wurden erfolgreich eingecheckt. Bitte beachte, dass du für deinen zweiten Teil eventuell nicht die volle Punktzahl erreicht hast, je nach dem, wann die Linie sich ändert und der zweite Check-In anfängt';
+      'Dieser Check-in wurde in zwei Teilen durchgeführt. Beide Teile deiner Reise wurden erfolgreich eingecheckt. Bitte beachte, dass du für deinen zweiten Teil eventuell nicht die volle Punktzahl erreicht hast, je nachdem, wann die Linie sich ändert und der zweite Check-in anfängt';
 
   @override
   String get secondCheckInFailure =>
-      'Dieser Check-In sollte in zwei Teilen durchgeführt werden. Allerdings kam es beim Check-In des zweiten Teils deiner Reise zu einem Fehler. Bitte checke diesen Teil manuell ein.';
+      'Dieser Check-in sollte in zwei Teilen durchgeführt werden. Allerdings kam es beim Check-in des zweiten Teils deiner Reise zu einem Fehler. Bitte checke diesen Teil manuell ein.';
 
   @override
   String get replaceWithDefaultText => 'Mit Standardtext ersetzen';
@@ -1038,7 +1038,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get manualTripCreationDialogContent =>
-      'Du bist davor, deine Fahrt manuell zu erstellen. Das bedeutet, dass du einige Zusatzinformationen angeben musst. Bitte beachte das dir auf manuell erstellte Fahrten keine Punkte angerechnet werden.';
+      'Du bist davor, deine Fahrt manuell zu erstellen. Das bedeutet, dass du einige Zusatzinformationen angeben musst. Bitte beachte, dass dir auf manuell erstellte Fahrten keine Punkte angerechnet werden.';
 
   @override
   String get gotIt => 'Verstanden!';
@@ -1157,7 +1157,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get ticketAddTicketDataData => 'Fahrscheindaten';
 
   @override
-  String get ticketAddOptionalDataFieldset => 'Optionale Infos';
+  String get ticketAddOptionalDataFieldset => 'Optionale Informationen';
 
   @override
   String get ticketAddOptionalDataValidBegin => 'Gültigkeitsbeginn';
@@ -1189,10 +1189,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get ticketViewDisclaimer =>
-      'Dies ist ein neuerzeugter Fahrschein. Das Zugpersonal wird dich eventuell nach dem orginalen Fahrschein aus App/auf Papier fragen. Benutze/Zeige dieses Ticket auf eigene Gefahr!';
+      'Dies ist ein neu erzeugter Fahrschein. Das Zugpersonal wird dich eventuell nach dem originalen Fahrschein aus App/auf Papier fragen. Benutze/Zeige den neu erzeugten Fahrschein auf eigene Gefahr!';
 
   @override
-  String get ticketViewAdditionalDetails => 'Weitere Infos';
+  String get ticketViewAdditionalDetails => 'Weitere Informationen';
 
   @override
   String get hideTicketButton => 'Fahrscheinknopf verstecken';
@@ -1207,7 +1207,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get connectionOrStationCancelled =>
-      'Die von dir ausgewählte Verbindung oder Haltestellte wurde vom Datenprovider als \"fällt aus\" makiert. Das hindert dich nicht daran, den Check-In durchzuführen. Überprüfe ggf. beim Transportunternehmen ob dies so stimmt.';
+      'Die von dir ausgewählte Verbindung oder Haltestelle wurde vom Datenprovider als \"fällt aus\" markiert. Das hindert dich nicht daran, den Check-in durchzuführen. Überprüfe ggf. beim Transportunternehmen, ob diese Verbindung/Haltestelle tatsächlich entfällt.';
 
   @override
   String get warning => 'Achtung!';
@@ -1354,7 +1354,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String checkInCount(num count) {
-    return '$count Check-Ins';
+    return '$count Check-ins';
   }
 
   @override
@@ -1392,18 +1392,18 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get loggerSettingsRestart =>
-      'Beachte, dass Änderungen hier erst nach einem Appneustart aktiv werden. Die App startet beim verlassen der Seite neu.';
+      'Beachte, dass Änderungen hier erst nach einem Appneustart aktiv werden. Die App startet beim Verlassen der Seite neu.';
 
   @override
   String get loggerActivateTitle => 'Protokollieren aktivieren';
 
   @override
   String get loggerActivateSubtitle =>
-      'Protokollierung von Serveranfragen aktivieren, um debugging zu erleichtern.';
+      'Protokollierung von Serveranfragen aktivieren, um Debugging zu erleichtern.';
 
   @override
   String get loggerActivateAlertContent =>
-      'Achtung: Du bist dabei, die Protokollierung einzuschalten. Jede Anfrage an den Server und ggf. die Antwort des Servers wird nun in einer Datei gespeichert. Es liegt in der Natur der Sache/eines Check-In Dienstes, dass dies sehr wahrscheinlich dazu führt, dass diese Datei sensible Daten enthalten wird. Die Protokolle werden nicht zensiert. Sei vorsichtig und denke an deine Privatsphäre, aber INSBESONDERE an die Privatsphäre von anderen.\nAnmerkung: ist eine Anfrage erfolgreich, wird die Antwort des Servers standardmäßig nicht mit protokolliert.';
+      'Achtung: Du bist dabei, die Protokollierung einzuschalten. Jede Anfrage an den Server und ggf. die Antwort des Servers wird nun in einer Datei gespeichert. Es liegt in der Natur der Sache/eines Check-in Dienstes, dass dies sehr wahrscheinlich dazu führt, dass diese Datei sensible Daten enthalten wird. Die Protokolle werden nicht zensiert. Sei vorsichtig und denke an deine Privatsphäre, aber INSBESONDERE an die Privatsphäre von anderen.\nAnmerkung: ist eine Anfrage erfolgreich, wird die Antwort des Servers standardmäßig nicht mit protokolliert.';
 
   @override
   String get loggingActive =>
@@ -1418,7 +1418,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get loggerAlsoSuccessAlertContent =>
-      'Du bist dabei, die Protokollierung von Antworten einzuschalten, wenn die Anfrage beim Server erfolgreich hatte. Es liegt in der Natur der Sache/eines Check-In Dienstes, dass das teilen dieses Protokolls ohne Zensur wahrscheinlich negative Auswirkungen auf deine Privatsphäre hat. Es kann außerdem die Privatsphäre von anderen verletzten, z.B. wenn du einen versteckten Status aufrufst, der nicht deiner ist. Trotzdem fortfahren?';
+      'Du bist dabei, die Protokollierung von Antworten einzuschalten, wenn die Anfrage beim Server erfolgreich hatte. Es liegt in der Natur der Sache/eines Check-in Dienstes, dass das Teilen dieses Protokolls ohne Zensur wahrscheinlich negative Auswirkungen auf deine Privatsphäre hat. Es kann außerdem die Privatsphäre von anderen verletzten, z.B. wenn du einen versteckten Status aufrufst, der nicht deiner ist. Trotzdem fortfahren?';
 
   @override
   String get loggerAlsoBodyTitle => 'Anfragedaten genauer protokollieren';
@@ -1479,7 +1479,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get customFlagAddColor => 'Farbe hinzufügen';
 
   @override
-  String get customFlagTapToMod => 'Tippen zum ändern';
+  String get customFlagTapToMod => 'Tippen zum Ändern';
 
   @override
   String customFlagTitle(int count) {
@@ -1488,5 +1488,5 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get customFlagNote =>
-      'Eigene Flaggen sind immer aktiv und können nur durch entfernen versteckt werden';
+      'Eigene Flaggen sind immer aktiv und können nur durch Entfernen versteckt werden';
 }

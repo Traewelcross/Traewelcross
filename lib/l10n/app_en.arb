@@ -20,7 +20,7 @@
   "@welcome": {
     "description": "The word welcome"
   },
-  "introText": "Great that you're here! To use this app, you need to link it with your Träwelling account. Use the Button below to do just that. If you don't have a Träwelling account yet, you can register one there as well.",
+  "introText": "Great that you're here! To use this app, you need to link it with your Träwelling account. Use the button below to do just that. If you don't have a Träwelling account yet, you can register one there as well.",
   "@introText": {
     "description": "Introduction text for on-boarding"
   },
@@ -28,7 +28,7 @@
   "@titleInfo": {
     "description": "Title Bar Heading for app_info.dart"
   },
-  "viewLicensesBtn": "View Open-Source Licensens",
+  "viewLicensesBtn": "View Open-Source Licenses",
   "@viewLicensesBtn": {
     "description": "Text for the Button on the AppInfo page to view licenses of used libraries/projects"
   },
@@ -83,7 +83,6 @@
   },
   "points": "{points} {count, plural, =0{points} =1{point} other{points}}",
   "@points": {
-    "description": "The word point (also available pluralized)",
     "placeholders": {
       "points": {
         "type": "String"
@@ -97,72 +96,23 @@
   "logOut": "Log out",
   "logOutNotice": "You will be logged out, all data will be reset including preferences. Your account (settings) will not be affected",
   "abrvHour": "h",
-  "@abrvHour": {
-    "description": "The abbreviation for hour(s)"
-  },
   "abrvDay": "d",
-  "@abrvDay": {
-    "description": "The abbreviation for day(s)"
-  },
   "abrvMinute": "min",
-  "@abrvMinute": {
-    "description": "The abbreviation for minute(s)"
-  },
   "offerAlt": "If, after the authorization, this app didn't automatically open again, please press the button below. If it did, please wait up to 3 seconds to let it process your request. Depending on your network speed, this might take a bit longer",
-  "@offerAlt": {
-    "description": "Offer desktop auth to mobile"
-  },
   "altLoginBtn": "Use alternative",
-  "@altLoginBtn": {
-    "description": "Button for manually open alternative login"
-  },
   "noModifcationAllowed": "You are not allowed to edit this!",
-  "@noModifcationAllowed": {
-    "description": "Snackbar text to display when editing fails due to permissions"
-  },
   "noModifcationAllowedGeneric": "You are not allowed to do this!",
-  "@noModifcationAllowedGeneric": {
-    "description": "Snackbar text to display when something fails due to permissions"
-  },
   "statusNotFound": "This status does not exist, make sure it's not deleted!",
-  "@statusNotFound": {
-    "description": "Snackbar text to display when editing fails due to wrong status id"
-  },
   "rateLimit": "You are too fast. Slow down",
-  "@rateLimit": {
-    "description": "Snackbar text to display when rate limit"
-  },
   "genericErrorSnackBar": "Oops! That didn't work:",
-  "@genericErrorSnackBar": {
-    "description": "Snackbar text to display when error is unknown"
-  },
   "notLikeable": "Sorry, you can't like this status!",
-  "@notLikeable": {
-    "description": "Snackbar text to display when isLikable is false for whatever reason"
-  },
   "share": "Share",
-  "@share": {
-    "description": "share"
-  },
   "edit": "Edit",
-  "@edit": {
-    "description": "edit"
-  },
   "delete": "Delete",
-  "@delete": {
-    "description": "delete"
-  },
   "join_ride": "Join Ride",
-  "@join_ride": {
-    "description": "Text for when a user wants to copy another users checkin"
-  },
   "report": "Report",
-  "@report": {
-    "description": "report"
-  },
   "likes": "{count, plural, =0{likes} =1{like} other{likes}}",
   "@likes": {
-    "description": "The word likes (also available pluralized)",
     "placeholders": {
       "count": {
         "type": "int"
@@ -171,7 +121,6 @@
   },
   "privateOrBlocked": "Sorry, you can't view this profile. This is either because @{username} blocked you (or you blocked them), or put their profile on private. If you want, you can send a follow request.",
   "@privateOrBlocked": {
-    "description": "error 403",
     "placeholders": {
       "username": {
         "type": "String"
@@ -179,14 +128,8 @@
     }
   },
   "followRequest": "Send a follow request",
-  "@followRequest": {
-    "description": ""
-  },
   "alreadyFollowRequest": "You already sent a follow request",
   "followRequestSent": "Follow request sent!",
-  "@followRequestSent": {
-    "description": ""
-  },
   "followRequestPending": "Follow request pending",
   "followingSnack": "You are now following @{username}!",
   "@followingSnack": {
@@ -197,9 +140,6 @@
     }
   },
   "followFailBlocked": "This user blocked you or you blocked them. You can't follow them.",
-  "@followFailBlocked": {
-    "description": ""
-  },
   "acceptFollowTooltip": "Accept follow request",
   "denyFollowTooltip": "Deny follow request",
   "remove": "Remove",
@@ -230,9 +170,6 @@
   "commuteTrip": "Commute",
   "businessTrip": "Business",
   "private": "Private",
-  "@private": {
-    "description": "Visibility = private, only for logged in user"
-  },
   "notListed": "Unlisted",
   "followerOnly": "Follower Only",
   "public": "Public",
@@ -247,7 +184,7 @@
   "now": "Now",
   "checkInOtherUsers": "Add other users",
   "noTrustedUsers": "Nobody has allowed for you to check them in",
-  "checkInOtherUsersTitle": "Select users to check-in",
+  "checkInOtherUsersTitle": "Select users to check in",
   "operatedBy": "Operated By:\n{operator}",
   "@operatedBy": {
     "placeholders": {
@@ -264,15 +201,9 @@
       }
     }
   },
-    "checkedInWithPlain": "Checked in with:",
+  "checkedInWithPlain": "Checked in with:",
   "homeCheckInPlaceholder": "Find Stop (via Name or RIL 100) or @user",
-  "@homeCheckInPlaceholder": {
-    "description": "The next the gets displayed in the top most card on the Homepage"
-  },
   "stops": "Stops",
-  "@stops": {
-    "description": "The general word for the place where public transport holds to pick-up passengers"
-  },
   "users": "Users",
   "locationDisabled": "Location services are disabled on your device. You can't use this feature",
   "locationNotAllowed": "You didn't allow Träwelcross to access your position",
@@ -287,7 +218,6 @@
   },
   "platformAbrv": "Pl. {platform}",
   "@platformAbrv": {
-    "description": "Prefix for the displayed platform",
     "placeholders": {
       "platform": {
         "type": "String"
@@ -296,7 +226,6 @@
   },
   "startsAtDifferentStop": "From: {stop}",
   "@startsAtDifferentStop": {
-    "description": "Displays when connection starts at diffrent stop than selected",
     "placeholders": {
       "stop": {
         "type": "String"
@@ -324,9 +253,6 @@
   "postOnFediverse": "Share ride on Mastodon",
   "attachToLastToot": "Attach to last toot",
   "save": "Save",
-  "@save": {
-    "description": "Confirm text for saving ride on edit"
-  },
   "checkInSuccessful": "You are Träwelling!",
   "alsoOnThisConnection": "Also in this connection",
   "changeDestination": "Change Destination",
@@ -404,26 +330,14 @@
   "unsavedChangesTitle": "Unsaved Changes",
   "unsavedChanges": "You might have unsaved changes. Are you sure you want to go back?",
   "trustedUsers": "Trusted Users",
-  "@trustedUsers": {
-    "description": "Only selected users may check the user in"
-  },
   "friends": "Friends",
-  "@friends": {
-    "description": "If a follower is a followee, they may check the user in"
-  },
   "friendsExplanation": "Friends (Follow each other)",
   "noTrustedCheckIn": "No one",
-  "@noTrustedCheckIn": {
-    "description": "No one may check the user in"
-  },
   "trustedUsersSelectTitle": "Who may check you in?",
   "defaultVisibilitySelectTitle": "Who may see your check in by default?",
   "mastodonVisibilitySelectTitle": "Who may see your Mastodon posts?",
   "setupTrustedUsers": "Modify Trusted Users",
   "bio": "Bio",
-  "@bio": {
-    "description": "Biography for account"
-  },
   "expiresAt": "Expires At: {exp}",
   "@expiresAt": {
     "placeholders": {
@@ -434,13 +348,7 @@
   },
   "stopTrust": "Don't trust this user anymore",
   "addTrust": "Add User",
-  "@addTrust": {
-    "description": "Add a new user to trust"
-  },
   "searchUser": "Search for username",
-  "@searchUser": {
-    "description": "User may search for a user by username"
-  },
   "shouldTrustExpire": "Should trusting this user expire?",
   "trustExpireWhen": "When should trusting this user expire?",
   "useSystemAccent": "Use system accent color",
@@ -457,7 +365,6 @@
   "selectMapMaxSpeed": "Max speeds",
   "userMuted": "Sorry, you can't view this profile. This is because you muted @{username}. If you want, you can unmute them.",
   "@userMuted": {
-    "description": "error 403",
     "placeholders": {
       "username": {
         "type": "String"
@@ -472,7 +379,7 @@
   "confirmDelete": "Confirm deletion?",
   "confirmDeleteExplain": "If enabled, you are prompted to confirm the deletion.",
   "hideManualOnTimeOverride": "Hide redundant overrides",
-  "hideManualOnTimeOverrideExplain": "If the manual override is equal to the planned time, it will be displayed as if no override has happend.",
+  "hideManualOnTimeOverrideExplain": "If the manual override is equal to the planned time, it will be displayed as if no override has happened.",
   "activateNotifications": "Enable push notifications?",
   "notificationChannelLikes": "Likes",
   "notificationChannelCheckIns": "Checked in by other user",
@@ -486,10 +393,7 @@
   "defaultTextPreferenceTitle": "Default Text",
   "defaultTextPreferenceSubtitle": "You can choose a text that should be inserted by default when checking in. Tap to change.",
   "errorTitle": "Oh No! :(",
-  "@errorTitle": {
-    "description": "Title for the error page"
-  },
-  "errorText": "Snap! While trying to do this: **{errorType}**, this error occured: **{errorMsg}**.",
+  "errorText": "Snap! While trying to do this: **{errorType}**, this error occurred: **{errorMsg}**.",
   "@errorText": {
     "placeholders": {
       "errorType": {
@@ -529,10 +433,10 @@
   "stats": "Statistics",
   "statisticsExperimentalNote": "The statistics option is not done yet and might be unstable.",
   "volumeBtnCtrl": "Volume button control",
-  "volumeBtnCtrlIndicator":"Volume button control indicator",
-  "volumeBtnCtrlIndicatorNote":"If activated, an indicator will be displayed on screen to help you differentiate what counts as click and what as held. You may press it to get help on what does what.",
+  "volumeBtnCtrlIndicator": "Volume button control indicator",
+  "volumeBtnCtrlIndicatorNote": "If activated, an indicator will be displayed on screen to help you differentiate what counts as click and what as held. You may press it to get help on what does what.",
   "volumeBtnCtrlNote": "Use basic features using your volume buttons. I.e. when using gloves",
-  "reloginRequired": "You haven't used Träwelcross for 30 days or longer (most probable. The saved tokens might also have become invalid through other means i.e. by revoking them in the account settings). Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.",
+  "reloginRequired": "You haven't used Träwelcross for 30 days or longer (most probable. The saved tokens might also have become invalid through other means i.e. by revoking them in the account settings). Since the duration of the authentication tokens are limited, you now need to log in again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.",
   "fontFamilyChooser": "Which font to use?",
   "systemFont": "System/Default",
   "systemFontDesc": "The font your System uses if available, else Flutter Default (Roboto)",
@@ -542,7 +446,7 @@
   "rubikFontDesc": "Modern font",
   "suseFontDesc": "A healthy mix of Sans Serif and Monospace, used for the titles and the Träwelcross icon",
   "linefontFontDesc": "It's like the doctor gave you a prescription",
-  "showAltDepStation": "Show connections from other stops in close proximity to the selected one",
+  "showAltDepStation": "Show connections from other stops in proximity to the selected one",
   "openDysFontDesc": "Aims to help with symptoms of dyslexia",
   "enableOpenDysAtLogin": "Enable a more dyslexia-friendly font",
   "mapPageTitle": "Rides on {date}",
@@ -556,10 +460,10 @@
   "dateSpan": "{date1} to {date2}",
   "@dateSpan": {
     "placeholders": {
-      "date1":{
+      "date1": {
         "type": "String"
       },
-      "date2":{
+      "date2": {
         "type": "String"
       }
     }
@@ -568,13 +472,13 @@
   "alwaysUsePride": "Always use pride-themed accents",
   "alwaysUsePrideSub": "Because queer people don't disappear at the end of June",
   "checkinConflictTitle": "Check-In Conflict",
-  "checkinConflictBody": "Sorry, but while trying to check you in, a conflict occured. It's highly likely that you already checked into this or another connection. The first conflicting status is a ride with {lineName} (ID: {statusID}). Would you like to force a Check-In? (This won't give you any points, but will contribute to your statistics anyway.)",
-  "@checkinConflictBody":{
+  "checkinConflictBody": "Sorry, but while trying to check you in, a conflict occurred. It's highly likely that you already checked into this or another connection. The first conflicting status is a ride with {lineName} (ID: {statusID}). Would you like to force a Check-In? (This won't give you any points, but will contribute to your statistics anyway.)",
+  "@checkinConflictBody": {
     "placeholders": {
-      "lineName":{
+      "lineName": {
         "type": "String"
       },
-      "statusID":{
+      "statusID": {
         "type": "String"
       }
     }
@@ -583,10 +487,12 @@
   "arrivalIn": "Arrival in {h} h and {min} min",
   "@arrivalIn": {
     "placeholders": {
-      "h":{
+      "h": {
         "type": "String"
       },
-      "min":{"type": "String"}
+      "min": {
+        "type": "String"
+      }
     }
   },
   "showActiveRideCard": "Pin active ride",
@@ -597,10 +503,10 @@
   "continuationTrip": "From here on: continues as {lineName} to {destination}",
   "@continuationTrip": {
     "placeholders": {
-      "lineName":{
+      "lineName": {
         "type": "String"
       },
-      "destination":{
+      "destination": {
         "type": "String"
       }
     }
@@ -613,20 +519,14 @@
   "systemTimeDeviationPreferenceTitle": "Departure time deviation",
   "systemTimeDeviationPreferenceExplanation": "The time to add/subtract from the system time when opening the departures for a station",
   "mathAddFirstPerson": "Add",
-  "@mathAddFirstPerson": {
-    "description": "The word for the mathematical operation of addition in the first person"
-  },
   "mathSubtractFirstPerson": "Subtract",
-    "@mathSubtractFirstPerson": {
-    "description": "The word for the mathematical operation of subtraction in the first person"
-  },
   "systemTimeDeviationExample": "Instead of the departures for {orgTime}, the departures for {modTime} will be shown",
-  "@systemTimeDeviationExample":{
+  "@systemTimeDeviationExample": {
     "placeholders": {
-      "orgTime":{
+      "orgTime": {
         "type": "String"
       },
-      "modTime":{
+      "modTime": {
         "type": "String"
       }
     }
@@ -634,7 +534,7 @@
   "done": "Done",
   "usernameCopied": "Username copied to clipboard!",
   "followedByNote": "{displayName} follows you",
-  "@followedByNote":{
+  "@followedByNote": {
     "placeholders": {
       "displayName": {
         "type": "String"
@@ -644,7 +544,7 @@
   "routeColorColorSchemeTitle": "Use route color as color accent",
   "routeColorColorSchemeSubtitle": "If a route color is available, display the card with that color accent",
   "manualTripCreationTile": "Manually create trip",
-  "manualTripCreationDialogContent": "Your about to create your trip manually. That means that you have to enter some additional information besides the usual stop selection. Please note that you won't receive any point at all for checkins into manually created trips!",
+  "manualTripCreationDialogContent": "Your about to create your trip manually. That means that you have to enter some additional information besides the usual stop selection. Please note that you won't receive any point at all for check-ins into manually created trips!",
   "gotIt": "Got it!",
   "gotItDontShow": "Got it, don't show again!",
   "manualTripOverviewTitle": "Trips",
@@ -666,7 +566,7 @@
   "manualTripArrival": "Arrival (optional)",
   "manualTripDeparture": "Departure",
   "manualTripCreateTrip": "Create Trip",
-  "noStationsFound": "Sorry, no stopovers could be found for this ride. You can either try to reopen the departure board and selecting this ride again, or try and use the offical Träwelling page.",
+  "noStationsFound": "Sorry, no stopovers could be found for this ride. You can either try to reopen the departure board and selecting this ride again, or try and use the official Träwelling page.",
   "returnToDashboard": "Return to dashboard",
   "openTraewelling": "Open Träwelling",
   "notifyInfo": "Have had troubles with push notifications recently? Please try to disable them and then enable them again. This hint will appear {counter} more times",
@@ -710,7 +610,7 @@
   "hideTicketButton": "Hide ticket button",
   "alternativePolylineFetcherPreference": "Use alternative polyline fetcher",
   "alternativePolylineFetcherPreferenceHint": "Use an alternative way to fetch polylines in the statistics tab. Uses more API calls and takes longer, but *might* be more accurate. Only polylines in the statistics tab are affected by this.",
-  "connectionOrStationCancelled": "The connection or stop you have selected has been marked as cancelled by the data provider. You're still able to check-in. Check the official data provider for more information.",
+  "connectionOrStationCancelled": "The connection or stop you have selected has been marked as cancelled by the data provider. You're still able to check in. Check the official data provider for more information.",
   "warning": "Warning",
   "ignoreAndProceed": "Ignore and proceed",
   "stopCancelled": "Cancelled",
@@ -747,7 +647,7 @@
         "type": "DateTime",
         "format": "MMMd"
       },
-    "endDate": {
+      "endDate": {
         "type": "DateTime",
         "format": "MMMd"
       }
@@ -777,7 +677,7 @@
       }
     }
   },
-  "statsStatOverviewOverviewMeanDistance": "...traveled {count} km/journey on average", 
+  "statsStatOverviewOverviewMeanDistance": "...traveled {count} km/journey on average",
   "@statsStatOverviewOverviewMeanDistance": {
     "placeholders": {
       "count": {
@@ -789,7 +689,7 @@
   "statsStatOverviewShortestDistance": "This was the shortest Check-In (by distance)",
   "statsStatOverviewLongestTime": "This was the longest Check-In (by time)",
   "statsStatOverviewShortestTime": "This was the shortest Check-In (by time)",
-  "statsStatOverviewStatusNotAvailable": "Sorry, but you didn't do any journeys in this timeframe. Therefore no status can be displayed.",
+  "statsStatOverviewStatusNotAvailable": "Sorry, but you didn't do any journeys in this timeframe. Therefore, no status can be displayed.",
   "statsStatFavoritesTitle": "Favorites",
   "statsStatFavoritesSubtitle": "Your most used stops, routes and lines",
   "statsStatFavortiesStops": "Favorite stops",
@@ -800,7 +700,7 @@
   "checkInCount": "{count} Check-Ins",
   "@checkInCount": {
     "placeholders": {
-      "count":{
+      "count": {
         "type": "num"
       }
     }
@@ -808,18 +708,24 @@
   "monthYear": "{monthYear}",
   "@monthYear": {
     "placeholders": {
-      "monthYear":{
+      "monthYear": {
         "type": "DateTime",
         "format": "yMMMM"
       }
     }
   },
   "appInfo": "Using {appName} at {appUrl} running version {version}",
-  "@appInfo":{
+  "@appInfo": {
     "placeholders": {
-      "appName":{"type": "String"},
-      "appUrl":{"type": "String"},
-      "version":{"type": "String"}
+      "appName": {
+        "type": "String"
+      },
+      "appUrl": {
+        "type": "String"
+      },
+      "version": {
+        "type": "String"
+      }
     }
   },
   "likeOwnPostAllowed": "Show the like button on your own rides",

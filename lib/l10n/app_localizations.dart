@@ -131,7 +131,7 @@ abstract class AppLocalizations {
   /// Introduction text for on-boarding
   ///
   /// In en, this message translates to:
-  /// **'Great that you\'re here! To use this app, you need to link it with your Träwelling account. Use the Button below to do just that. If you don\'t have a Träwelling account yet, you can register one there as well.'**
+  /// **'Great that you\'re here! To use this app, you need to link it with your Träwelling account. Use the button below to do just that. If you don\'t have a Träwelling account yet, you can register one there as well.'**
   String get introText;
 
   /// Title Bar Heading for app_info.dart
@@ -143,7 +143,7 @@ abstract class AppLocalizations {
   /// Text for the Button on the AppInfo page to view licenses of used libraries/projects
   ///
   /// In en, this message translates to:
-  /// **'View Open-Source Licensens'**
+  /// **'View Open-Source Licenses'**
   String get viewLicensesBtn;
 
   /// The word license (also available pluralized)
@@ -200,7 +200,7 @@ abstract class AppLocalizations {
   /// **'{days}d {hours}h {minutes}min'**
   String time_summary(int days, int hours, int minutes);
 
-  /// The word point (also available pluralized)
+  /// No description provided for @points.
   ///
   /// In en, this message translates to:
   /// **'{points} {count, plural, =0{points} =1{point} other{points}}'**
@@ -224,115 +224,115 @@ abstract class AppLocalizations {
   /// **'You will be logged out, all data will be reset including preferences. Your account (settings) will not be affected'**
   String get logOutNotice;
 
-  /// The abbreviation for hour(s)
+  /// No description provided for @abrvHour.
   ///
   /// In en, this message translates to:
   /// **'h'**
   String get abrvHour;
 
-  /// The abbreviation for day(s)
+  /// No description provided for @abrvDay.
   ///
   /// In en, this message translates to:
   /// **'d'**
   String get abrvDay;
 
-  /// The abbreviation for minute(s)
+  /// No description provided for @abrvMinute.
   ///
   /// In en, this message translates to:
   /// **'min'**
   String get abrvMinute;
 
-  /// Offer desktop auth to mobile
+  /// No description provided for @offerAlt.
   ///
   /// In en, this message translates to:
   /// **'If, after the authorization, this app didn\'t automatically open again, please press the button below. If it did, please wait up to 3 seconds to let it process your request. Depending on your network speed, this might take a bit longer'**
   String get offerAlt;
 
-  /// Button for manually open alternative login
+  /// No description provided for @altLoginBtn.
   ///
   /// In en, this message translates to:
   /// **'Use alternative'**
   String get altLoginBtn;
 
-  /// Snackbar text to display when editing fails due to permissions
+  /// No description provided for @noModifcationAllowed.
   ///
   /// In en, this message translates to:
   /// **'You are not allowed to edit this!'**
   String get noModifcationAllowed;
 
-  /// Snackbar text to display when something fails due to permissions
+  /// No description provided for @noModifcationAllowedGeneric.
   ///
   /// In en, this message translates to:
   /// **'You are not allowed to do this!'**
   String get noModifcationAllowedGeneric;
 
-  /// Snackbar text to display when editing fails due to wrong status id
+  /// No description provided for @statusNotFound.
   ///
   /// In en, this message translates to:
   /// **'This status does not exist, make sure it\'s not deleted!'**
   String get statusNotFound;
 
-  /// Snackbar text to display when rate limit
+  /// No description provided for @rateLimit.
   ///
   /// In en, this message translates to:
   /// **'You are too fast. Slow down'**
   String get rateLimit;
 
-  /// Snackbar text to display when error is unknown
+  /// No description provided for @genericErrorSnackBar.
   ///
   /// In en, this message translates to:
   /// **'Oops! That didn\'t work:'**
   String get genericErrorSnackBar;
 
-  /// Snackbar text to display when isLikable is false for whatever reason
+  /// No description provided for @notLikeable.
   ///
   /// In en, this message translates to:
   /// **'Sorry, you can\'t like this status!'**
   String get notLikeable;
 
-  /// share
+  /// No description provided for @share.
   ///
   /// In en, this message translates to:
   /// **'Share'**
   String get share;
 
-  /// edit
+  /// No description provided for @edit.
   ///
   /// In en, this message translates to:
   /// **'Edit'**
   String get edit;
 
-  /// delete
+  /// No description provided for @delete.
   ///
   /// In en, this message translates to:
   /// **'Delete'**
   String get delete;
 
-  /// Text for when a user wants to copy another users checkin
+  /// No description provided for @join_ride.
   ///
   /// In en, this message translates to:
   /// **'Join Ride'**
   String get join_ride;
 
-  /// report
+  /// No description provided for @report.
   ///
   /// In en, this message translates to:
   /// **'Report'**
   String get report;
 
-  /// The word likes (also available pluralized)
+  /// No description provided for @likes.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, =0{likes} =1{like} other{likes}}'**
   String likes(int count);
 
-  /// error 403
+  /// No description provided for @privateOrBlocked.
   ///
   /// In en, this message translates to:
   /// **'Sorry, you can\'t view this profile. This is either because @{username} blocked you (or you blocked them), or put their profile on private. If you want, you can send a follow request.'**
   String privateOrBlocked(String username);
 
-  ///
+  /// No description provided for @followRequest.
   ///
   /// In en, this message translates to:
   /// **'Send a follow request'**
@@ -344,7 +344,7 @@ abstract class AppLocalizations {
   /// **'You already sent a follow request'**
   String get alreadyFollowRequest;
 
-  ///
+  /// No description provided for @followRequestSent.
   ///
   /// In en, this message translates to:
   /// **'Follow request sent!'**
@@ -362,7 +362,7 @@ abstract class AppLocalizations {
   /// **'You are now following @{username}!'**
   String followingSnack(String username);
 
-  ///
+  /// No description provided for @followFailBlocked.
   ///
   /// In en, this message translates to:
   /// **'This user blocked you or you blocked them. You can\'t follow them.'**
@@ -542,7 +542,7 @@ abstract class AppLocalizations {
   /// **'Business'**
   String get businessTrip;
 
-  /// Visibility = private, only for logged in user
+  /// No description provided for @private.
   ///
   /// In en, this message translates to:
   /// **'Private'**
@@ -635,7 +635,7 @@ abstract class AppLocalizations {
   /// No description provided for @checkInOtherUsersTitle.
   ///
   /// In en, this message translates to:
-  /// **'Select users to check-in'**
+  /// **'Select users to check in'**
   String get checkInOtherUsersTitle;
 
   /// No description provided for @operatedBy.
@@ -656,13 +656,13 @@ abstract class AppLocalizations {
   /// **'Checked in with:'**
   String get checkedInWithPlain;
 
-  /// The next the gets displayed in the top most card on the Homepage
+  /// No description provided for @homeCheckInPlaceholder.
   ///
   /// In en, this message translates to:
   /// **'Find Stop (via Name or RIL 100) or @user'**
   String get homeCheckInPlaceholder;
 
-  /// The general word for the place where public transport holds to pick-up passengers
+  /// No description provided for @stops.
   ///
   /// In en, this message translates to:
   /// **'Stops'**
@@ -698,13 +698,13 @@ abstract class AppLocalizations {
   /// **'Departures from: {stop}'**
   String departuresFrom(String stop);
 
-  /// Prefix for the displayed platform
+  /// No description provided for @platformAbrv.
   ///
   /// In en, this message translates to:
   /// **'Pl. {platform}'**
   String platformAbrv(String platform);
 
-  /// Displays when connection starts at diffrent stop than selected
+  /// No description provided for @startsAtDifferentStop.
   ///
   /// In en, this message translates to:
   /// **'From: {stop}'**
@@ -788,7 +788,7 @@ abstract class AppLocalizations {
   /// **'Attach to last toot'**
   String get attachToLastToot;
 
-  /// Confirm text for saving ride on edit
+  /// No description provided for @save.
   ///
   /// In en, this message translates to:
   /// **'Save'**
@@ -1160,13 +1160,13 @@ abstract class AppLocalizations {
   /// **'You might have unsaved changes. Are you sure you want to go back?'**
   String get unsavedChanges;
 
-  /// Only selected users may check the user in
+  /// No description provided for @trustedUsers.
   ///
   /// In en, this message translates to:
   /// **'Trusted Users'**
   String get trustedUsers;
 
-  /// If a follower is a followee, they may check the user in
+  /// No description provided for @friends.
   ///
   /// In en, this message translates to:
   /// **'Friends'**
@@ -1178,7 +1178,7 @@ abstract class AppLocalizations {
   /// **'Friends (Follow each other)'**
   String get friendsExplanation;
 
-  /// No one may check the user in
+  /// No description provided for @noTrustedCheckIn.
   ///
   /// In en, this message translates to:
   /// **'No one'**
@@ -1208,7 +1208,7 @@ abstract class AppLocalizations {
   /// **'Modify Trusted Users'**
   String get setupTrustedUsers;
 
-  /// Biography for account
+  /// No description provided for @bio.
   ///
   /// In en, this message translates to:
   /// **'Bio'**
@@ -1226,13 +1226,13 @@ abstract class AppLocalizations {
   /// **'Don\'t trust this user anymore'**
   String get stopTrust;
 
-  /// Add a new user to trust
+  /// No description provided for @addTrust.
   ///
   /// In en, this message translates to:
   /// **'Add User'**
   String get addTrust;
 
-  /// User may search for a user by username
+  /// No description provided for @searchUser.
   ///
   /// In en, this message translates to:
   /// **'Search for username'**
@@ -1322,7 +1322,7 @@ abstract class AppLocalizations {
   /// **'Max speeds'**
   String get selectMapMaxSpeed;
 
-  /// error 403
+  /// No description provided for @userMuted.
   ///
   /// In en, this message translates to:
   /// **'Sorry, you can\'t view this profile. This is because you muted @{username}. If you want, you can unmute them.'**
@@ -1379,7 +1379,7 @@ abstract class AppLocalizations {
   /// No description provided for @hideManualOnTimeOverrideExplain.
   ///
   /// In en, this message translates to:
-  /// **'If the manual override is equal to the planned time, it will be displayed as if no override has happend.'**
+  /// **'If the manual override is equal to the planned time, it will be displayed as if no override has happened.'**
   String get hideManualOnTimeOverrideExplain;
 
   /// No description provided for @activateNotifications.
@@ -1454,7 +1454,7 @@ abstract class AppLocalizations {
   /// **'You can choose a text that should be inserted by default when checking in. Tap to change.'**
   String get defaultTextPreferenceSubtitle;
 
-  /// Title for the error page
+  /// No description provided for @errorTitle.
   ///
   /// In en, this message translates to:
   /// **'Oh No! :('**
@@ -1463,7 +1463,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorText.
   ///
   /// In en, this message translates to:
-  /// **'Snap! While trying to do this: **{errorType}**, this error occured: **{errorMsg}**.'**
+  /// **'Snap! While trying to do this: **{errorType}**, this error occurred: **{errorMsg}**.'**
   String errorText(String errorType, String errorMsg);
 
   /// No description provided for @errorDetail.
@@ -1619,7 +1619,7 @@ abstract class AppLocalizations {
   /// No description provided for @reloginRequired.
   ///
   /// In en, this message translates to:
-  /// **'You haven\'t used Träwelcross for 30 days or longer (most probable. The saved tokens might also have become invalid through other means i.e. by revoking them in the account settings). Since the duration of the authentication tokens are limited, you now need to login again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.'**
+  /// **'You haven\'t used Träwelcross for 30 days or longer (most probable. The saved tokens might also have become invalid through other means i.e. by revoking them in the account settings). Since the duration of the authentication tokens are limited, you now need to log in again. To prevent that happening in the future, make sure to open Träwelcross at least once every 30 days.'**
   String get reloginRequired;
 
   /// No description provided for @fontFamilyChooser.
@@ -1679,7 +1679,7 @@ abstract class AppLocalizations {
   /// No description provided for @showAltDepStation.
   ///
   /// In en, this message translates to:
-  /// **'Show connections from other stops in close proximity to the selected one'**
+  /// **'Show connections from other stops in proximity to the selected one'**
   String get showAltDepStation;
 
   /// No description provided for @openDysFontDesc.
@@ -1733,7 +1733,7 @@ abstract class AppLocalizations {
   /// No description provided for @checkinConflictBody.
   ///
   /// In en, this message translates to:
-  /// **'Sorry, but while trying to check you in, a conflict occured. It\'s highly likely that you already checked into this or another connection. The first conflicting status is a ride with {lineName} (ID: {statusID}). Would you like to force a Check-In? (This won\'t give you any points, but will contribute to your statistics anyway.)'**
+  /// **'Sorry, but while trying to check you in, a conflict occurred. It\'s highly likely that you already checked into this or another connection. The first conflicting status is a ride with {lineName} (ID: {statusID}). Would you like to force a Check-In? (This won\'t give you any points, but will contribute to your statistics anyway.)'**
   String checkinConflictBody(String lineName, String statusID);
 
   /// No description provided for @unknown.
@@ -1826,13 +1826,13 @@ abstract class AppLocalizations {
   /// **'The time to add/subtract from the system time when opening the departures for a station'**
   String get systemTimeDeviationPreferenceExplanation;
 
-  /// The word for the mathematical operation of addition in the first person
+  /// No description provided for @mathAddFirstPerson.
   ///
   /// In en, this message translates to:
   /// **'Add'**
   String get mathAddFirstPerson;
 
-  /// The word for the mathematical operation of subtraction in the first person
+  /// No description provided for @mathSubtractFirstPerson.
   ///
   /// In en, this message translates to:
   /// **'Subtract'**
@@ -1883,7 +1883,7 @@ abstract class AppLocalizations {
   /// No description provided for @manualTripCreationDialogContent.
   ///
   /// In en, this message translates to:
-  /// **'Your about to create your trip manually. That means that you have to enter some additional information besides the usual stop selection. Please note that you won\'t receive any point at all for checkins into manually created trips!'**
+  /// **'Your about to create your trip manually. That means that you have to enter some additional information besides the usual stop selection. Please note that you won\'t receive any point at all for check-ins into manually created trips!'**
   String get manualTripCreationDialogContent;
 
   /// No description provided for @gotIt.
@@ -2015,7 +2015,7 @@ abstract class AppLocalizations {
   /// No description provided for @noStationsFound.
   ///
   /// In en, this message translates to:
-  /// **'Sorry, no stopovers could be found for this ride. You can either try to reopen the departure board and selecting this ride again, or try and use the offical Träwelling page.'**
+  /// **'Sorry, no stopovers could be found for this ride. You can either try to reopen the departure board and selecting this ride again, or try and use the official Träwelling page.'**
   String get noStationsFound;
 
   /// No description provided for @returnToDashboard.
@@ -2195,7 +2195,7 @@ abstract class AppLocalizations {
   /// No description provided for @connectionOrStationCancelled.
   ///
   /// In en, this message translates to:
-  /// **'The connection or stop you have selected has been marked as cancelled by the data provider. You\'re still able to check-in. Check the official data provider for more information.'**
+  /// **'The connection or stop you have selected has been marked as cancelled by the data provider. You\'re still able to check in. Check the official data provider for more information.'**
   String get connectionOrStationCancelled;
 
   /// No description provided for @warning.
@@ -2387,7 +2387,7 @@ abstract class AppLocalizations {
   /// No description provided for @statsStatOverviewStatusNotAvailable.
   ///
   /// In en, this message translates to:
-  /// **'Sorry, but you didn\'t do any journeys in this timeframe. Therefore no status can be displayed.'**
+  /// **'Sorry, but you didn\'t do any journeys in this timeframe. Therefore, no status can be displayed.'**
   String get statsStatOverviewStatusNotAvailable;
 
   /// No description provided for @statsStatFavoritesTitle.
