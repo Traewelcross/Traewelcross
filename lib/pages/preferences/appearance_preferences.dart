@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:traewelcross/components/color_circle.dart';
@@ -34,7 +35,14 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
       updatingLineIcons = true;
     });
     //SharedFunctions.sendSnackBar(localize.updatingLineIcons);
+    try {
+
     await getIt<LineColors>().updateLineColors();
+    } catch (e, st){
+      getIt<Logger>().w("Failed to update line icons", error: e, stackTrace: st);
+      SharedFunctions.sendSnackBar(e.toString());
+      return;
+    }
     SharedFunctions.sendSnackBar(localize.updatingLineIconsDone);
     if(!mounted) return;
     setState(() {

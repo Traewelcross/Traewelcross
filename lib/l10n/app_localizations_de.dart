@@ -1497,12 +1497,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get updatingLineIcons => 'Linienicons werden geupdated...';
 
   @override
-  String get updatingLineIconsDone => 'Linienicons erfolgreich geupdated...';
+  String get updatingLineIconsDone => 'Linienicons erfolgreich aktualisiert';
 
   @override
   String updateLineIconsLastUpdate(DateTime date) {
     final intl.DateFormat dateDateFormat = intl.DateFormat(
-      'd.M,y H:m',
+      'd.M.y H:m',
       localeName,
     );
     final String dateString = dateDateFormat.format(date);
