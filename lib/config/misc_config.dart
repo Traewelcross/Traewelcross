@@ -79,12 +79,4 @@ class MiscConfig with ChangeNotifier {
     _logBody = val;
     notifyListeners();
   }
-
-  DateTime? _lastLineIconUpdate;
-  @JsonKey(defaultValue: null)
-  DateTime? get lastLineIconUpdate => _lastLineIconUpdate;
-  set lastLineIconUpdate(DateTime? val){
-    _lastLineIconUpdate = val;
-    notifyListeners();
-  }
 }

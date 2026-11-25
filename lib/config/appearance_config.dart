@@ -50,6 +50,14 @@ class AppearanceConfig with ChangeNotifier {
     notifyListeners();
   }
 
+  DateTime? _lastLineIconUpdate;
+  @JsonKey(defaultValue: null)
+  DateTime? get lastLineIconUpdate => _lastLineIconUpdate;
+  set lastLineIconUpdate(DateTime? val){
+    _lastLineIconUpdate = val;
+    notifyListeners();
+  }
+
   /// The style of OpenRailwayMap to use
   MapTypeEnum _mapType = MapTypeEnum.standard;
   @JsonKey(defaultValue: MapTypeEnum.standard)

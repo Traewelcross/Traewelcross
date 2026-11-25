@@ -18,10 +18,7 @@ MiscConfig _$MiscConfigFromJson(Map<String, dynamic> json) => MiscConfig()
   ..enableLogging = json['enableLogging'] as bool? ?? false
   ..logFile = json['logFile'] as String?
   ..logSuccessFull = json['logSuccessFull'] as bool? ?? false
-  ..logBody = json['logBody'] as bool? ?? false
-  ..lastLineIconUpdate = json['lastLineIconUpdate'] == null
-      ? null
-      : DateTime.parse(json['lastLineIconUpdate'] as String);
+  ..logBody = json['logBody'] as bool? ?? false;
 
 Map<String, dynamic> _$MiscConfigToJson(MiscConfig instance) =>
     <String, dynamic>{
@@ -33,7 +30,6 @@ Map<String, dynamic> _$MiscConfigToJson(MiscConfig instance) =>
       'logFile': instance.logFile,
       'logSuccessFull': instance.logSuccessFull,
       'logBody': instance.logBody,
-      'lastLineIconUpdate': instance.lastLineIconUpdate?.toIso8601String(),
     };
 
 const _$AccountTypeEnumEnumMap = {

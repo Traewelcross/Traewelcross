@@ -47,7 +47,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
     if(!mounted) return;
     setState(() {
       updatingLineIcons = false;
-      getIt<Config>().misc.lastLineIconUpdate = DateTime.now();
+      getIt<Config>().appearance.lastLineIconUpdate = DateTime.now();
     });
   }
   @override
@@ -255,7 +255,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                 onTap: () => _updateLineColors(localize),
                 leading: updatingLineIcons ? const CircularProgressIndicator() : const Icon(Icons.update),
                 title: Text(localize.updateLineIcons),
-                subtitle: Text(localize.updateLineIconsLastUpdate(config.misc.lastLineIconUpdate ?? DateTime(1970))),
+                subtitle: Text(localize.updateLineIconsLastUpdate(config.appearance.lastLineIconUpdate ?? DateTime(2026,11,24,18,46))),
               ),
               ListTile(
                 onTap: () => setState(() {

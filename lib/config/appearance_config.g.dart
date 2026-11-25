@@ -17,6 +17,9 @@ AppearanceConfig _$AppearanceConfigFromJson(Map<String, dynamic> json) =>
           $enumDecodeNullable(_$ThemeModeEnumMap, json['themeMode']) ??
           ThemeMode.system
       ..customLineIcons = json['customLineIcons'] as bool? ?? true
+      ..lastLineIconUpdate = json['lastLineIconUpdate'] == null
+          ? null
+          : DateTime.parse(json['lastLineIconUpdate'] as String)
       ..mapType =
           $enumDecodeNullable(_$MapTypeEnumEnumMap, json['mapType']) ??
           MapTypeEnum.standard
@@ -44,6 +47,7 @@ Map<String, dynamic> _$AppearanceConfigToJson(AppearanceConfig instance) =>
       ),
       'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
       'customLineIcons': instance.customLineIcons,
+      'lastLineIconUpdate': instance.lastLineIconUpdate?.toIso8601String(),
       'mapType': _$MapTypeEnumEnumMap[instance.mapType]!,
       'fontFam': instance.fontFam,
       'prideModePreference': instance.prideModePreference,

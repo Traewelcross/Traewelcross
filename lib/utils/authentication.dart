@@ -62,6 +62,9 @@ class AuthService {
   AuthService._internal();
 
   Future<void> saveCredentials(oauth2.Credentials credentials) async {
+    if(credentials.refreshToken == null){
+      getIt<Logger>().e("Refresh token is null");
+    }
     try {
       await _secureStorage.write(
         key: _credentialsKey,
