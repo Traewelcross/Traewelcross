@@ -12,7 +12,7 @@ class LanguageSwitcher extends StatefulWidget {
 }
 
 class _LanguageSwitcherState extends State<LanguageSwitcher> {
-    String? selectedLanguage = getIt<Config>().language.langCode;
+  String? selectedLanguage = getIt<Config>().language.langCode;
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
@@ -32,11 +32,20 @@ class _LanguageSwitcherState extends State<LanguageSwitcher> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: Text(localize.cancel)),
-        FilledButton.icon(onPressed: () {
-          getIt<Config>().language.langCode = selectedLanguage;
-          TerminateRestart.instance.restartApp(options: .new(terminate: false));
-        }, label: Text(localize.save), icon: const Icon(Icons.save)),
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(localize.cancel),
+        ),
+        FilledButton.icon(
+          onPressed: () {
+            getIt<Config>().language.langCode = selectedLanguage;
+            TerminateRestart.instance.restartApp(
+              options: .new(terminate: false),
+            );
+          },
+          label: Text(localize.save),
+          icon: const Icon(Icons.save),
+        ),
       ],
     );
   }

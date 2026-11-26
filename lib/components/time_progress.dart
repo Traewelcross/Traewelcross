@@ -35,7 +35,7 @@ class _TimeProgressState extends State<TimeProgress> {
                 _totalDuration!)
             .clamp(0.0, 1.0);
     //_updateProgress();
-    if(progress >= 1.0) return;
+    if (progress >= 1.0) return;
     _startProgressLoop();
   }
 

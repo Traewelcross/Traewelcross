@@ -32,7 +32,7 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
               title: Text(localize.volumeBtnCtrl),
               subtitle: Text(localize.volumeBtnCtrlNote),
               trailing: Switch(
-                  key: const ValueKey("volumeBtnCtrl"),
+                key: const ValueKey("volumeBtnCtrl"),
                 value: config.behavior.volumeBtnCtrl,
                 onChanged: (val) => setState(() {
                   config.behavior.volumeBtnCtrl = val;
@@ -49,7 +49,7 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
               title: Text(localize.volumeBtnCtrlIndicator),
               subtitle: Text(localize.volumeBtnCtrlIndicatorNote),
               trailing: Switch(
-                  key: const ValueKey("volumeBtnCtrlShowIndicator"),
+                key: const ValueKey("volumeBtnCtrlShowIndicator"),
                 value: config.behavior.volumeBtnCtrlShowIndicator,
                 onChanged: (val) => setState(() {
                   config.behavior.volumeBtnCtrlShowIndicator = val;
@@ -64,7 +64,7 @@ class _ExperimentalPreferencesState extends State<ExperimentalPreferences> {
             leading: const Icon(Icons.gps_fixed),
             title: Text("Show predicted position"),
             trailing: Switch(
-                  key: const ValueKey("showPredictedPosition"),
+              key: const ValueKey("showPredictedPosition"),
               value: config.appearance.showPredictedPosition,
               onChanged: (val) => setState(() {
                 config.appearance.showPredictedPosition = val;

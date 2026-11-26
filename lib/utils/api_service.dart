@@ -54,7 +54,9 @@ class ApiService {
   ApiService(this._authService);
 
   Future<oauth2.Client?> getAuthenticatedClient({bool? forceRenewal}) async {
-    return await _authService.getAuthenticatedClient(forceRenewal: forceRenewal ?? false);
+    return await _authService.getAuthenticatedClient(
+      forceRenewal: forceRenewal ?? false,
+    );
   }
 
   Future<int> getUserFull({required bool withId}) async {

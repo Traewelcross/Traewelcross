@@ -113,7 +113,9 @@ class App extends WatchingWidget {
           );
           return MaterialApp(
             navigatorKey: getIt<GlobalKey<NavigatorState>>(),
-            locale: getIt<Config>().language.langCode == null ? null : Locale(getIt<Config>().language.langCode!),
+            locale: getIt<Config>().language.langCode == null
+                ? null
+                : Locale(getIt<Config>().language.langCode!),
             scaffoldMessengerKey: getIt<GlobalKey<ScaffoldMessengerState>>(),
             title: "Träwelcross",
             localizationsDelegates: [
@@ -188,8 +190,11 @@ class _AppHomeState extends State<AppHome> {
         if (getIt<Config>().misc.launchCount == 15) {
           globalPushManager.askForReview();
         } else {}
-        if(getIt<Config>().misc.enableLogging){
-          SharedFunctions.sendSnackBar(AppLocalizations.of(context)!.loggingActive, duration: .new(seconds: 5));
+        if (getIt<Config>().misc.enableLogging) {
+          SharedFunctions.sendSnackBar(
+            AppLocalizations.of(context)!.loggingActive,
+            duration: .new(seconds: 5),
+          );
         }
       }
     });
@@ -224,7 +229,7 @@ class _AppHomeState extends State<AppHome> {
   Future<bool> _setupData() async {
     final authService = getIt<AuthService>();
     final isLoggedIn = await authService.isLoggedIn();
-    if(getIt<Config>().misc.needsRelogin) return false;
+    if (getIt<Config>().misc.needsRelogin) return false;
     if (isLoggedIn) {
       try {
         final apiService = getIt<ApiService>();

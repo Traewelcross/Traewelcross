@@ -1512,5 +1512,5 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get stationRadius =>
-      'Radius in meters around the station in which departures are searched';
+      'Der Radius in Metern, um die Station, in dem Abfahrten gesucht werden';
 }

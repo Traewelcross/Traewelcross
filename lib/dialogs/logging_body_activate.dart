@@ -7,13 +7,13 @@ class LoggingBodyActivate extends StatelessWidget {
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
     return AlertDialog(
-      icon: const Icon(Icons.warning,),
+      icon: const Icon(Icons.warning),
       title: Text(localize.loggerAlsoBodyTitle),
       content: Text(localize.loggerAlsoBodyAlertContent, textAlign: .center),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, true),
-          child: Text(localize.loggerAlsoBodyTitle, textAlign: .center,),
+          child: Text(localize.loggerAlsoBodyTitle, textAlign: .center),
         ),
         FilledButton(
           onPressed: () => Navigator.pop(context, false),

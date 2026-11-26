@@ -558,9 +558,16 @@ class _DepartureList extends StatelessWidget {
                                         category: departure.line!.product,
                                         lineName: departure.line!.name,
                                         cancelled: departure.cancelled,
-                                        operatorIdentifier: departure.operator?.name,
-                                        routeColor: SharedFunctions.tryParseColor(departure.line?.color),
-                                        routeTextColor: SharedFunctions.tryParseColor(departure.line?.textColor),
+                                        operatorIdentifier:
+                                            departure.operator?.name,
+                                        routeColor:
+                                            SharedFunctions.tryParseColor(
+                                              departure.line?.color,
+                                            ),
+                                        routeTextColor:
+                                            SharedFunctions.tryParseColor(
+                                              departure.line?.textColor,
+                                            ),
                                         width: 24,
                                       ),
                                     ),

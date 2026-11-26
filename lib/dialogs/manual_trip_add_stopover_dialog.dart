@@ -82,7 +82,8 @@ class _ManualTripAddStopoverDialogState
               ),
               onDateChanged: (d) => setState(
                 () => selectedStation.departure =
-                    d?.toUtc().toIso8601String() ?? DateTime.now().toIso8601String(),
+                    d?.toUtc().toIso8601String() ??
+                    DateTime.now().toIso8601String(),
               ),
               watermark: localize.manualTripDeparture,
               showDelete: widget.isDestination,

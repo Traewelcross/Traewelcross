@@ -53,7 +53,7 @@ class AppearanceConfig with ChangeNotifier {
   DateTime? _lastLineIconUpdate;
   @JsonKey(defaultValue: null)
   DateTime? get lastLineIconUpdate => _lastLineIconUpdate;
-  set lastLineIconUpdate(DateTime? val){
+  set lastLineIconUpdate(DateTime? val) {
     _lastLineIconUpdate = val;
     notifyListeners();
   }
@@ -112,7 +112,7 @@ class AppearanceConfig with ChangeNotifier {
   @MapStringIterableColorConverter()
   @JsonKey(defaultValue: {})
   Map<String, List<Color>> get customPrideFlags => _customPrideFlags;
-  set customPrideFlags(Map<String, List<Color>> val){
+  set customPrideFlags(Map<String, List<Color>> val) {
     _customPrideFlags = val;
     notifyListeners();
   }
@@ -120,7 +120,7 @@ class AppearanceConfig with ChangeNotifier {
   List<String> _selectedPrideFlags = [];
   @JsonKey(defaultValue: [])
   List<String> get selectedPrideFlags => _selectedPrideFlags;
-  set selectedPrideFlags(List<String> val){
+  set selectedPrideFlags(List<String> val) {
     _selectedPrideFlags = val;
     notifyListeners();
   }

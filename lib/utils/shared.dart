@@ -172,9 +172,9 @@ class SharedFunctions {
       DateTime? lastBootUp = misc.lastBoot;
       lastBootUp ??= DateTime.now();
       if ((lastBootUp.difference(DateTime.now()).inDays).abs() >= 29) {
-          getIt<Logger>().i(
-            "lastboot: $lastBootUp / Now: ${DateTime.now()}, relogin required",
-          );
+        getIt<Logger>().i(
+          "lastboot: $lastBootUp / Now: ${DateTime.now()}, relogin required",
+        );
         misc.needsRelogin = true;
         return;
       }

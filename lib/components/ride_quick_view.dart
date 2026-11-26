@@ -1237,8 +1237,7 @@ class _StationText extends StatelessWidget {
                   ),
                 ),
               ),
-              if (stopover.cancelled)
-                CancelChip(),
+              if (stopover.cancelled) CancelChip(),
             ],
           ),
         ),

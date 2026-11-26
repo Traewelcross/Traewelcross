@@ -100,7 +100,7 @@ class BehaviorConfig with ChangeNotifier {
   int _stopSearchRadius = 500;
   @JsonKey(defaultValue: 500)
   int get stopSearchRadius => _stopSearchRadius;
-  set stopSearchRadius(int val){
+  set stopSearchRadius(int val) {
     _stopSearchRadius = val;
     notifyListeners();
   }
@@ -141,7 +141,7 @@ class BehaviorConfig with ChangeNotifier {
   bool _showLikeButtonForOwnRides = true;
   @JsonKey(defaultValue: true)
   bool get showLikeButtonForOwnRides => _showLikeButtonForOwnRides;
-  set showLikeButtonForOwnRides(bool val){
+  set showLikeButtonForOwnRides(bool val) {
     _showLikeButtonForOwnRides = val;
     notifyListeners();
   }

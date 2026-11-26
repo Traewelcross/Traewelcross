@@ -586,8 +586,8 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          Alerts(appAlerts: false,),
-          Alerts(appAlerts: true,),
+          Alerts(appAlerts: false),
+          Alerts(appAlerts: true),
           Dashboard(
             controller: _dashboardController,
             scrollController: widget.scrollController,
@@ -611,10 +611,12 @@ class _AlertsState extends State<Alerts> {
     final apiService = getIt<ApiService>();
     return await apiService.alert.get();
   }
+
   Future<List<Alert>> _getAppAlerts() async {
     final apiService = getIt<ApiService>();
     return await apiService.alert.getAppAlerts();
   }
+
   @override
   void initState() {
     super.initState();
@@ -633,8 +635,22 @@ class _AlertsState extends State<Alerts> {
             itemBuilder: (context, index) {
               final alert = asyncSnapshot.data![index];
               return AlertCard(
-                text: alert.translations.firstWhere((e) => e.locale == Localizations.localeOf(context).languageCode, orElse: () => alert.translations.first,).content,
-                title: alert.translations.firstWhere((e) => e.locale == Localizations.localeOf(context).languageCode, orElse: () => alert.translations.first,).title,
+                text: alert.translations
+                    .firstWhere(
+                      (e) =>
+                          e.locale ==
+                          Localizations.localeOf(context).languageCode,
+                      orElse: () => alert.translations.first,
+                    )
+                    .content,
+                title: alert.translations
+                    .firstWhere(
+                      (e) =>
+                          e.locale ==
+                          Localizations.localeOf(context).languageCode,
+                      orElse: () => alert.translations.first,
+                    )
+                    .title,
                 type: alert.type,
                 url: alert.url,
               );

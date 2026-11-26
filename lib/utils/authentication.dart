@@ -62,7 +62,7 @@ class AuthService {
   AuthService._internal();
 
   Future<void> saveCredentials(oauth2.Credentials credentials) async {
-    if(credentials.refreshToken == null){
+    if (credentials.refreshToken == null) {
       getIt<Logger>().e("Refresh token is null");
     }
     try {
@@ -235,7 +235,7 @@ class AuthService {
       final client = await _grant!.handleAuthorizationResponse(queryParameters);
       await saveCredentials(client.credentials);
       getIt<Config>().misc.needsRelogin = false;
-    getIt<Config>().misc.lastBoot = DateTime.now();
+      getIt<Config>().misc.lastBoot = DateTime.now();
       return client;
     } catch (e) {
       getIt<Logger>().e('Error handling authorization response: $e');

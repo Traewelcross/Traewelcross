@@ -1207,7 +1207,8 @@ class LineColor {
     required this.border,
     required this.shape,
   });
-  factory LineColor.fromJson(Map<String, dynamic> json) => _$LineColorFromJson(json);
+  factory LineColor.fromJson(Map<String, dynamic> json) =>
+      _$LineColorFromJson(json);
   Map<String, dynamic> toJson() => _$LineColorToJson(this);
 }
 

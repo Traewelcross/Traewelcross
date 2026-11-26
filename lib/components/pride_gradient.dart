@@ -13,7 +13,7 @@ class PrideGradient extends StatefulWidget {
     this.rotation,
     this.seed,
     this.name,
-    this.gradient
+    this.gradient,
   });
   final List<Color>? gradient;
   final String? name;
@@ -31,10 +31,10 @@ class PrideGradient extends StatefulWidget {
 class _PrideGradientState extends State<PrideGradient> {
   late List<Color> _selectedFlag;
   List<Color> _randomFlag() {
-    if(widget.name != null){
+    if (widget.name != null) {
       return PrideFlags.getFlagByName(widget.name!);
     }
-    if(widget.gradient != null){
+    if (widget.gradient != null) {
       return widget.gradient!;
     }
     final random = math.Random(widget.seed);

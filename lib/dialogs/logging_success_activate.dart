@@ -7,13 +7,13 @@ class LoggingSuccessActivate extends StatelessWidget {
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
     return AlertDialog(
-      icon: const Icon(Icons.warning, size: 42,),
+      icon: const Icon(Icons.warning, size: 42),
       title: Text(localize.loggerAlsoSuccessTitle),
       content: Text(localize.loggerAlsoSuccessAlertContent, textAlign: .center),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, true),
-          child: Text(localize.loggerAlsoSuccessTitle, textAlign: .center,),
+          child: Text(localize.loggerAlsoSuccessTitle, textAlign: .center),
         ),
         FilledButton(
           onPressed: () => Navigator.pop(context, false),

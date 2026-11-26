@@ -253,7 +253,14 @@ class _PrideFlagSelectorState extends State<PrideFlagSelector> {
                   gradient: getIt<Config>().appearance.customPrideFlags[flag],
                   child: ColorCircle(color: Colors.black, width: 32),
                 ),
-                trailing: IconButton(onPressed: () => setState(() => getIt<Config>().appearance.customPrideFlags.remove(flag)), icon: const Icon(Icons.delete)),
+                trailing: IconButton(
+                  onPressed: () => setState(
+                    () => getIt<Config>().appearance.customPrideFlags.remove(
+                      flag,
+                    ),
+                  ),
+                  icon: const Icon(Icons.delete),
+                ),
                 title: Text(localize.customFlagTitle(idx + 1)),
               ),
             Text(localize.customFlagNote, textAlign: .center),

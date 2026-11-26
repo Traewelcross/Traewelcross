@@ -92,9 +92,13 @@ class Preferences extends StatelessWidget {
           ),
 
           ListTile(
-            onTap: () => showDialog(context: context, builder: (ctx) => LanguageSwitcher(), barrierDismissible: false),
+            onTap: () => showDialog(
+              context: context,
+              builder: (ctx) => LanguageSwitcher(),
+              barrierDismissible: false,
+            ),
             leading: const Icon(Icons.language),
-            title: Text(localize.language)
+            title: Text(localize.language),
           ),
           if (kDebugMode)
             ListTile(
@@ -110,7 +114,7 @@ class Preferences extends StatelessWidget {
             leading: const Icon(Icons.more),
             title: Text(localize.misc),
           ),
-                              ListTile(
+          ListTile(
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (ctx) => ExperimentalPreferences()),

@@ -211,8 +211,10 @@ class _RideQuickViewWrapperState extends State<RideQuickViewWrapper> {
             rideData: ride,
             onUpdate: (updatedRide) {
               setState(() {
-                final index = _userRides.indexWhere((r) => r.id == updatedRide.id);
-                if (index != -1){
+                final index = _userRides.indexWhere(
+                  (r) => r.id == updatedRide.id,
+                );
+                if (index != -1) {
                   _userRides[index] = updatedRide;
                   _rideDates.remove(updatedRide.id);
                 }

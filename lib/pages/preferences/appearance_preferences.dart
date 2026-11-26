@@ -29,27 +29,32 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
     super.initState();
     dynamicSupportFuture = SharedFunctions.dynamicColorSupport();
   }
+
   void _updateLineColors(AppLocalizations localize) async {
-    if(updatingLineIcons) return;
+    if (updatingLineIcons) return;
     setState(() {
       updatingLineIcons = true;
     });
     //SharedFunctions.sendSnackBar(localize.updatingLineIcons);
     try {
-
-    await getIt<LineColors>().updateLineColors();
-    } catch (e, st){
-      getIt<Logger>().w("Failed to update line icons", error: e, stackTrace: st);
+      await getIt<LineColors>().updateLineColors();
+    } catch (e, st) {
+      getIt<Logger>().w(
+        "Failed to update line icons",
+        error: e,
+        stackTrace: st,
+      );
       SharedFunctions.sendSnackBar(e.toString());
       return;
     }
     SharedFunctions.sendSnackBar(localize.updatingLineIconsDone);
-    if(!mounted) return;
+    if (!mounted) return;
     setState(() {
       updatingLineIcons = false;
       getIt<Config>().appearance.lastLineIconUpdate = DateTime.now();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final localize = AppLocalizations.of(context)!;
@@ -247,19 +252,26 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                   value: config.appearance.customLineIcons,
                   onChanged: (val) => setState(() {
                     config.appearance.customLineIcons = val;
-                    if(val){
+                    if (val) {
                       _updateLineColors(localize);
                     }
                   }),
                 ),
               ),
-              if(config.appearance.customLineIcons)
-              ListTile (
-                onTap: () => _updateLineColors(localize),
-                leading: updatingLineIcons ? const CircularProgressIndicator() : const Icon(Icons.update),
-                title: Text(localize.updateLineIcons),
-                subtitle: Text(localize.updateLineIconsLastUpdate(config.appearance.lastLineIconUpdate ?? DateTime(2026,11,24,18,46))),
-              ),
+              if (config.appearance.customLineIcons)
+                ListTile(
+                  onTap: () => _updateLineColors(localize),
+                  leading: updatingLineIcons
+                      ? const CircularProgressIndicator()
+                      : const Icon(Icons.update),
+                  title: Text(localize.updateLineIcons),
+                  subtitle: Text(
+                    localize.updateLineIconsLastUpdate(
+                      config.appearance.lastLineIconUpdate ??
+                          DateTime(2026, 11, 24, 18, 46),
+                    ),
+                  ),
+                ),
               ListTile(
                 onTap: () => setState(() {
                   config.appearance.routeColorColorScheme =

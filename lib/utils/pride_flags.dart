@@ -67,22 +67,22 @@ class PrideFlags {
     Colors.black,
   ];
   static const List<List<Color>> everyFlag = [
-      trans,
-      rainbow,
-      inter,
-      lesbian,
-      gay,
-      nonbinary,
-      pan,
-      bi,
-      asex,
-      arom,
-    ];
+    trans,
+    rainbow,
+    inter,
+    lesbian,
+    gay,
+    nonbinary,
+    pan,
+    bi,
+    asex,
+    arom,
+  ];
   static List<List<Color>> getFlags() {
     final selectedPrideFlags = getIt<Config>().appearance.selectedPrideFlags;
     final customPrideFlags = getIt<Config>().appearance.customPrideFlags;
     List<List<Color>> availableFlags = [];
-    if(selectedPrideFlags.isEmpty){
+    if (selectedPrideFlags.isEmpty) {
       availableFlags.addAll(everyFlag);
     } else {
       for (var k in selectedPrideFlags) {
@@ -92,7 +92,8 @@ class PrideFlags {
     availableFlags.addAll(customPrideFlags.values);
     return availableFlags;
   }
-  static List<Color> getFlagByName(String name){
+
+  static List<Color> getFlagByName(String name) {
     switch (name) {
       case "trans":
         return trans;
@@ -118,6 +119,7 @@ class PrideFlags {
         return rainbow;
     }
   }
+
   static Iterable<Color> getColors(List<Color> sF) => sF.expand((c) => [c, c]);
   static List<double> getStops(List<Color> sF) {
     return [

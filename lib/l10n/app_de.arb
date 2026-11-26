@@ -437,5 +437,6 @@
             "type": "DateTime",
             "isCustomDateFormat": true
         }}
-    }
+    },
+    "stationRadius": "Der Radius in Metern, um die Station, in dem Abfahrten gesucht werden"
 }

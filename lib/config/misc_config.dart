@@ -51,7 +51,7 @@ class MiscConfig with ChangeNotifier {
   bool _enableLogging = false;
   @JsonKey(defaultValue: false)
   bool get enableLogging => _enableLogging && _logFile != null;
-  set enableLogging(bool val){
+  set enableLogging(bool val) {
     _enableLogging = val;
     notifyListeners();
   }
@@ -59,7 +59,7 @@ class MiscConfig with ChangeNotifier {
   String? _logFile;
   @JsonKey(defaultValue: null)
   String? get logFile => _logFile;
-  set logFile(String? val){
+  set logFile(String? val) {
     _logFile = val;
     notifyListeners();
   }
@@ -67,7 +67,7 @@ class MiscConfig with ChangeNotifier {
   bool _logSuccessFull = false;
   @JsonKey(defaultValue: false)
   bool get logSuccessFull => _logSuccessFull;
-  set logSuccessFull(bool val){
+  set logSuccessFull(bool val) {
     _logSuccessFull = val;
     notifyListeners();
   }
@@ -75,7 +75,7 @@ class MiscConfig with ChangeNotifier {
   bool _logBody = false;
   @JsonKey(defaultValue: false)
   bool get logBody => _logBody;
-  set logBody(bool val){
+  set logBody(bool val) {
     _logBody = val;
     notifyListeners();
   }

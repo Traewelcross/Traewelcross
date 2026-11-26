@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:traewelcross/l10n/app_localizations.dart';
+
 class FlagCreator extends StatefulWidget {
   const FlagCreator({super.key});
 
@@ -39,8 +40,8 @@ class _FlagCreatorState extends State<FlagCreator> {
                     context: context,
                     builder: (context) => _ColorPickerDialog(initColor: c),
                   );
-                  if(newC != null){
-                    if(!mounted) return;
+                  if (newC != null) {
+                    if (!mounted) return;
                     setState(() {
                       colors[idx] = newC;
                     });
@@ -102,7 +103,7 @@ class _ColorPickerDialog extends StatelessWidget {
   final Color initColor;
   @override
   Widget build(BuildContext context) {
-  Color color = initColor;
+    Color color = initColor;
     return AlertDialog(
       content: SingleChildScrollView(
         child: ColorPicker(

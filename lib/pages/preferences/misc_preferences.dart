@@ -109,7 +109,7 @@ class _MiscPreferencesState extends State<MiscPreferences> {
               title: Text(localize.loggerActivateTitle),
               subtitle: Text(localize.loggerActivateSubtitle),
               trailing: Switch(
-                  key: const ValueKey("enableLogging"),
+                key: const ValueKey("enableLogging"),
                 value: getIt<Config>().misc.enableLogging,
                 onChanged: toggleLogging,
               ),
@@ -138,7 +138,11 @@ class _MiscPreferencesState extends State<MiscPreferences> {
                   onChanged: toggleLoggingBody,
                 ),
               ),
-              Text(localize.loggerDisclaimer, textAlign: .center, style: .new(fontStyle: .italic),)
+              Text(
+                localize.loggerDisclaimer,
+                textAlign: .center,
+                style: .new(fontStyle: .italic),
+              ),
             ],
           ],
         ),

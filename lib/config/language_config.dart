@@ -12,7 +12,7 @@ class LanguageConfig with ChangeNotifier {
   String? _langCode;
   @JsonKey(defaultValue: null)
   String? get langCode => _langCode;
-  set langCode(String? val){
+  set langCode(String? val) {
     _langCode = val;
     notifyListeners();
   }

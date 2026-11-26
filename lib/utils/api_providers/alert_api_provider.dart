@@ -23,9 +23,12 @@ class AlertApiProvider {
       return [];
     }
   }
+
   Future<List<Alert>> getAppAlerts() async {
     final client = await getIt<ApiService>().getAuthenticatedClient();
-    final response = await client!.get(Uri.parse(appAlertUrl+(await PackageInfo.fromPlatform()).buildNumber));
+    final response = await client!.get(
+      Uri.parse(appAlertUrl + (await PackageInfo.fromPlatform()).buildNumber),
+    );
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body);
       final List<Alert> alerts = jsonData
