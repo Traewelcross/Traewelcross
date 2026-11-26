@@ -782,5 +782,6 @@
         "isCustomDateFormat": "true"
       }
     }
-  }
+  },
+  "stationRadius": "Radius in meters around the station in which departures are searched"
 }

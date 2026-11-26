@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:traewelcross/config/config.dart';
 import 'package:traewelcross/enums/depart_types.dart';
 import 'package:traewelcross/utils/api_providers/api_models.dart';
 import 'package:traewelcross/utils/api_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:traewelcross/utils/shared.dart';
 
 class StationApiProvider {
   final ApiService _api;
@@ -51,7 +53,7 @@ class StationApiProvider {
     http.Response response;
     try {
       response = await _api.request(
-        "/station/$stationId/departures?when=${when.toUtc().toIso8601String()}&travelType=$type",
+        "/station/$stationId/departures?when=${when.toUtc().toIso8601String()}&travelType=$type&radius=${getIt<Config>().behavior.stopSearchRadius}",
         .GET,
       );
     } on TimeoutException {

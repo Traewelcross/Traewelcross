@@ -19,6 +19,7 @@ BehaviorConfig _$BehaviorConfigFromJson(
   ..volumeBtnCtrlShowIndicator =
       json['volumeBtnCtrlShowIndicator'] as bool? ?? true
   ..showAltDepartureStops = json['showAltDepartureStops'] as bool? ?? true
+  ..stopSearchRadius = (json['stopSearchRadius'] as num?)?.toInt() ?? 500
   ..showActiveRideCard = json['showActiveRideCard'] as bool? ?? true
   ..multiAccountSupport = json['multiAccountSupport'] as bool? ?? false
   ..systemTimeDeviation = (json['systemTimeDeviation'] as num?)?.toInt() ?? -3
@@ -36,6 +37,7 @@ Map<String, dynamic> _$BehaviorConfigToJson(BehaviorConfig instance) =>
       'volumeBtnCtrl': instance.volumeBtnCtrl,
       'volumeBtnCtrlShowIndicator': instance.volumeBtnCtrlShowIndicator,
       'showAltDepartureStops': instance.showAltDepartureStops,
+      'stopSearchRadius': instance.stopSearchRadius,
       'showActiveRideCard': instance.showActiveRideCard,
       'multiAccountSupport': instance.multiAccountSupport,
       'systemTimeDeviation': instance.systemTimeDeviation,

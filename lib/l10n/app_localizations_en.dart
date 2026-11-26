@@ -1500,4 +1500,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
     return 'Last updated: $dateString';
   }
+
+  @override
+  String get stationRadius =>
+      'Radius in meters around the station in which departures are searched';
 }

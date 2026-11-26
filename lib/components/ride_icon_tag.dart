@@ -9,6 +9,7 @@ import 'package:traewelcross/utils/shared.dart';
 import 'package:watch_it/watch_it.dart';
 
 class RideIconTag extends WatchingStatefulWidget {
+  // TODO: Add optional text style so this can be used in select_stop.dart with proper custom line icons
   const RideIconTag({super.key, required this.iconInfo});
   final RideIconTagInfo iconInfo;
 

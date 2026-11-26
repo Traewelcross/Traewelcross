@@ -2683,6 +2683,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last updated: {date}'**
   String updateLineIconsLastUpdate(DateTime date);
+
+  /// No description provided for @stationRadius.
+  ///
+  /// In en, this message translates to:
+  /// **'Radius in meters around the station in which departures are searched'**
+  String get stationRadius;
 }
 
 class _AppLocalizationsDelegate

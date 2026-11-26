@@ -44,6 +44,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             title: Text(localize.overrideOnTimeTap),
             subtitle: Text(localize.overrideOnTimeTapExplain),
             trailing: Switch(
+              key: const ValueKey("overrideOnTimeTap"),
               value: config.behavior.overrideOnTimeTap,
               onChanged: (val) => setState(() {
                 config.behavior.overrideOnTimeTap = val;
@@ -69,6 +70,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             title: Text(localize.confirmDelete),
             subtitle: Text(localize.confirmDeleteExplain),
             trailing: Switch(
+              key: const ValueKey("confirmDelete"),
               value: config.behavior.confirmDelete,
               onChanged: (val) => setState(() {
                 config.behavior.confirmDelete = val;
@@ -84,6 +86,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             title: Text(localize.hideManualOnTimeOverride),
             subtitle: Text(localize.hideManualOnTimeOverrideExplain),
             trailing: Switch(
+              key: const ValueKey("hideManualOnTimeOverride"),
               value: config.behavior.hideManualOnTimeOverride,
               onChanged: (val) => setState(() {
                 config.behavior.hideManualOnTimeOverride = val;
@@ -104,12 +107,29 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             }),
             title: Text(localize.showAltDepStation),
             trailing: Switch(
+              key: const ValueKey("showAltDepStation"),
               value: config.behavior.showAltDepartureStops,
               onChanged: (val) => setState(() {
                 config.behavior.showAltDepartureStops = val;
               }),
             ),
           ),
+          if (config.behavior.showAltDepartureStops)
+            ListTile(
+              title: Text(localize.stationRadius),
+              subtitle: Slider(
+                value: config.behavior.stopSearchRadius.toDouble(),
+                onChanged: (val) => setState(
+                  () => config.behavior.stopSearchRadius = val.toInt(),
+                ),
+                min: 50.0,
+                max: 1000.0,
+                showValueIndicator: .onDrag,
+                label: "${config.behavior.stopSearchRadius}m",
+                divisions: ((1000 - 50) ~/ 10),
+              ),
+            ),
+
           ListTile(
             onTap: () => setState(() {
               config.behavior.showActiveRideCard =
@@ -118,6 +138,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             title: Text(localize.showActiveRideCard),
             subtitle: Text(localize.showActiveRideCardDesc),
             trailing: Switch(
+              key: const ValueKey("showActiveRideCard"),
               value: config.behavior.showActiveRideCard,
               onChanged: (val) => setState(() {
                 config.behavior.showActiveRideCard = val;
@@ -131,6 +152,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             }),
             title: Text(localize.hideTicketButton),
             trailing: Switch(
+              key: const ValueKey("hideTicketButton"),
               value: config.behavior.hideTicketButton,
               onChanged: (val) => setState(() {
                 config.behavior.hideTicketButton = val;
@@ -144,6 +166,7 @@ class _BehaviorPreferencesState extends State<BehaviorPreferences> {
             }),
             title: Text(localize.likeOwnPostAllowed),
             trailing: Switch(
+              key: const ValueKey("showLikeButtonForOwnRides"),
               value: config.behavior.showLikeButtonForOwnRides,
               onChanged: (val) => setState(() {
                 config.behavior.showLikeButtonForOwnRides = val;

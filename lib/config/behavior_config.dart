@@ -97,6 +97,14 @@ class BehaviorConfig with ChangeNotifier {
     notifyListeners();
   }
 
+  int _stopSearchRadius = 500;
+  @JsonKey(defaultValue: 500)
+  int get stopSearchRadius => _stopSearchRadius;
+  set stopSearchRadius(int val){
+    _stopSearchRadius = val;
+    notifyListeners();
+  }
+
   bool _showActiveRideCard = true;
   @JsonKey(defaultValue: true)
   bool get showActiveRideCard => _showActiveRideCard;
