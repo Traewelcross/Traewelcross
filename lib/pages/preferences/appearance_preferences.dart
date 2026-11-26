@@ -97,6 +97,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
               ListTile(
                 title: Text(localize.useSystemAccent),
                 trailing: Switch(
+                  key: const ValueKey("useSystemAccent"),
                   value: config.appearance.useSystemAccent,
                   onChanged: asyncSnapshot.data!
                       ? (val) => config.appearance.useSystemAccent = val
@@ -134,6 +135,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                       })
                     : null,
                 trailing: Switch(
+                  key: const ValueKey("isPrideActive"),
                   value: config.appearance.isPrideActive,
                   onChanged: DateTime.now().month != 6
                       ? (val) => setState(() {
@@ -241,6 +243,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                 }),
                 title: Text(localize.useLineIcons),
                 trailing: Switch(
+                  key: const ValueKey("customLineIcons"),
                   value: config.appearance.customLineIcons,
                   onChanged: (val) => setState(() {
                     config.appearance.customLineIcons = val;
@@ -265,6 +268,8 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                 title: Text(localize.routeColorColorSchemeTitle),
                 subtitle: Text(localize.routeColorColorSchemeSubtitle),
                 trailing: Switch(
+                  key: const ValueKey("routeColorColorScheme"),
+
                   value: config.appearance.routeColorColorScheme,
                   onChanged: (val) => setState(() {
                     config.appearance.routeColorColorScheme = val;
@@ -313,6 +318,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                 title: Text(localize.showActiveRideCard),
                 subtitle: Text(localize.showActiveRideCardDesc),
                 trailing: Switch(
+                  key: const ValueKey("showActiveRideCard"),
                   value: config.behavior.showActiveRideCard,
                   onChanged: (val) => setState(() {
                     config.behavior.showActiveRideCard = val;
@@ -326,6 +332,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                 }),
                 title: Text(localize.hideTicketButton),
                 trailing: Switch(
+                  key: const ValueKey("hideTicketButton"),
                   value: config.behavior.hideTicketButton,
                   onChanged: (val) => setState(() {
                     config.behavior.hideTicketButton = val;
@@ -339,6 +346,7 @@ class _AppearancePreferencesState extends State<AppearancePreferences> {
                 }),
                 title: Text(localize.likeOwnPostAllowed),
                 trailing: Switch(
+                  key: const ValueKey("showLikeButtonForOwnRides"),
                   value: config.behavior.showLikeButtonForOwnRides,
                   onChanged: (val) => setState(() {
                     config.behavior.showLikeButtonForOwnRides = val;
