@@ -681,6 +681,7 @@ class Departure {
   final LineResource? line;
   final bool cancelled;
   final Station station;
+  final Operator? operator;
   const Departure({
     required this.tripId,
     this.when,
@@ -689,6 +690,7 @@ class Departure {
     this.plannedPlatform,
     required this.direction,
     this.line,
+    this.operator,
     required this.cancelled,
     required this.station,
   });

@@ -637,6 +637,9 @@ Departure _$DepartureFromJson(Map<String, dynamic> json) => Departure(
   line: json['line'] == null
       ? null
       : LineResource.fromJson(json['line'] as Map<String, dynamic>),
+  operator: json['operator'] == null
+      ? null
+      : Operator.fromJson(json['operator'] as Map<String, dynamic>),
   cancelled: json['cancelled'] as bool,
   station: Station.fromJson(json['station'] as Map<String, dynamic>),
 );
@@ -651,6 +654,7 @@ Map<String, dynamic> _$DepartureToJson(Departure instance) => <String, dynamic>{
   'line': instance.line,
   'cancelled': instance.cancelled,
   'station': instance.station,
+  'operator': instance.operator,
 };
 
 LineResource _$LineResourceFromJson(Map<String, dynamic> json) => LineResource(

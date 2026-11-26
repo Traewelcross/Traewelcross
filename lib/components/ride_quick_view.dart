@@ -5,6 +5,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
+import 'package:traewelcross/components/cancel_chip.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/masto_emoji.dart';
 import 'package:traewelcross/components/pride_gradient.dart';
@@ -1237,24 +1238,7 @@ class _StationText extends StatelessWidget {
                 ),
               ),
               if (stopover.cancelled)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Container(
-                    color: Theme.of(context).colorScheme.errorContainer,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 2,
-                        horizontal: 8,
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!.stopCancelled,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onErrorContainer,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                CancelChip(),
             ],
           ),
         ),

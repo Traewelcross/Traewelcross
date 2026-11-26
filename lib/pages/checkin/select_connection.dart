@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl.dart';
 import 'package:traewelcross/components/app_bar_title.dart';
+import 'package:traewelcross/components/cancel_chip.dart';
 import 'package:traewelcross/components/departure_time.dart';
 import 'package:traewelcross/components/main_scaffold.dart';
 import 'package:traewelcross/components/ride_icon_tag.dart';
@@ -234,7 +235,7 @@ class _SelectConnectionState extends State<SelectConnection> {
       );
     } finally {
       if (mounted) {
-      _volumeSubscription = VolumeButtonService().stream.listen(_listener);
+        _volumeSubscription = VolumeButtonService().stream.listen(_listener);
       }
     }
   }
@@ -529,7 +530,8 @@ class _DepartureList extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.9)
+                          ? Theme.of(context).colorScheme.primaryContainer
+                                .withValues(alpha: 0.9)
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
@@ -556,6 +558,9 @@ class _DepartureList extends StatelessWidget {
                                         category: departure.line!.product,
                                         lineName: departure.line!.name,
                                         cancelled: departure.cancelled,
+                                        operatorIdentifier: departure.operator?.name,
+                                        routeColor: SharedFunctions.tryParseColor(departure.line?.color),
+                                        routeTextColor: SharedFunctions.tryParseColor(departure.line?.textColor),
                                         width: 24,
                                       ),
                                     ),
@@ -619,13 +624,22 @@ class _DepartureList extends StatelessWidget {
                                 real: departure.when,
                                 cancelled: departure.cancelled,
                               ),
-                              if (departure.platform?.toString().isNotEmpty ==
-                                  true)
-                                Platform(
-                                  platform: departure.platform!,
-                                  plannedPlatform: departure.plannedPlatform!,
-                                  cancelled: departure.cancelled,
-                                ),
+                              Row(
+                                mainAxisSize: .min,
+                                children: [
+                                  if (departure.cancelled) const CancelChip(),
+                                  if (departure.platform
+                                          ?.toString()
+                                          .isNotEmpty ==
+                                      true)
+                                    Platform(
+                                      platform: departure.platform!,
+                                      plannedPlatform:
+                                          departure.plannedPlatform!,
+                                      cancelled: departure.cancelled,
+                                    ),
+                                ],
+                              ),
                             ],
                           ),
                         ],
@@ -646,14 +660,14 @@ class _DepartureList extends StatelessWidget {
 class _DepartTypeChoiceChip extends StatelessWidget {
   const _DepartTypeChoiceChip({
     required this.label,
-    this.iconCategory,
+    required this.iconCategory,
     required this.value,
     required this.groupValue,
     required this.onChanged,
   });
 
   final String label;
-  final String? iconCategory;
+  final String iconCategory;
   final DepartTypes value;
   final DepartTypes groupValue;
   final ValueSetter<DepartTypes> onChanged;
@@ -666,12 +680,10 @@ class _DepartTypeChoiceChip extends StatelessWidget {
       label: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (iconCategory != null) ...[
-            RideIconTag(
-              iconInfo: RideIconTagInfo(category: iconCategory!, width: 24),
-            ),
-            const SizedBox(width: 8),
-          ],
+          RideIconTag(
+            iconInfo: RideIconTagInfo(category: iconCategory, width: 24),
+          ),
+          const SizedBox(width: 8),
           Text(label),
         ],
       ),

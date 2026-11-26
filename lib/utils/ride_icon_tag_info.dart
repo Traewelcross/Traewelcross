@@ -23,4 +23,8 @@ class RideIconTagInfo {
     this.routeColor,
     this.routeTextColor,
   });
+  @override
+  String toString() {
+    return "Line is: $lineName, of category $category, operated by $operatorIdentifier, routeColor is $routeColor, textColor is $routeTextColor. Line cancelled? $cancelled";
+  }
 }

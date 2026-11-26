@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:traewelcross/config/config.dart';
@@ -26,6 +27,7 @@ class _RideIconTagState extends State<RideIconTag> {
         lineName: widget.iconInfo.lineName,
       );
     }
+    getIt<Logger>().d(widget.iconInfo.toString());
   }
 
   @override
